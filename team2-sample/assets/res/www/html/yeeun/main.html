@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>직원 홈 페이지</title>
+  <link rel="stylesheet" href="../css/morpheus-style.css" />
+  <link rel="stylesheet" href="../css/swiper.min.css" />
+  <link rel="stylesheet" href="../css/muikit.css" />
+</head>
+
+<body>
+  <div class="wrapper">
+    <header class="header">
+      <!-- 헤더 입력 영역 (헤더 디자인에 따라 바꿔치기 가능) -->
+      <!-- 하단에 라인이 있는경우 class="line"추가 -->
+      <h1 class="logo">
+        직원페이지
+      </h1>
+      <button type="button" id="cart" class="btn-menu r-fix">
+        메뉴
+      </button>
+    </header>
+    <div class="container bg-gray line-t">
+      <!-- 헤더 입력 영역 (헤더 디자인에 따라 바꿔치기 가능) -->
+      <div class="cont-wrap main-box">
+        <!-- 태블릿에서 볼때 왼쪽에 정렬될 내용 -->
+        <div class="left-box">
+          <!-- section 단위로 순서 변경 가능 -->
+          <section class="main-box-01">
+            <div class="swiper-container">
+              <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                  <img src="../img/coffee1.png" alt="반갑습니다. 직원 페이지입니다." />
+                </div>
+                <div class="swiper-slide">
+                  <img src="../img/pic05.jpg" alt="희희 안농? 익개 너머가나요?" />
+                </div>
+                <div class="swiper-slide">
+                  Slide 3
+                </div>
+                <div class="swiper-slide">
+                  Slide 4
+                </div>
+              </div>
+            </div>
+          </section>
+          <ul class="main-menu type04">
+            <li id="order">
+              주문
+            </li>
+            <li id="pickup">
+              픽업
+            </li>
+            <li id="recipe">
+              레시피
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript">
+      var mySwiper = new Swiper('.swiper-container', {
+        pagination: {
+          el: '.swiper-pagination',
+        },
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        },
+      });
+    </script>
+  </div>
+
+</body>
+
+<script src="../js/swiper.min.js"></script>
+<script type="text/javascript" src="../js/mcore.min.js"></script>
+<script type="text/javascript" src="../js/ui/main.js"></script>
+
+</html>
