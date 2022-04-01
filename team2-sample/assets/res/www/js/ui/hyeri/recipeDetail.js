@@ -85,6 +85,16 @@
       this.els.$back.on('click', function () {
         M.page.back();
       });
+      $('.btn-menu').on('click', function () {
+        console.log('메뉴클릭');
+        $('.position').attr('style', 'position: absolute; top:0;right:0px;bottom:0;transition:1s ease;');
+        $('.container').fadeTo("fast", 0.3);
+      });
+      $('.btn-menu').on('blur', function () {
+        console.log('취소');
+        $('.position').attr('style', 'position: absolute; top:0;right:-130px;bottom:0;transition:1s ease;');
+        $('.container').fadeTo("fast", 1);
+      });
       $('#modiBtn').on('click', function(){
         M.page.html('./write-recipe.html',{param : { seqNo : M.data.param('seqNo')}});
       });

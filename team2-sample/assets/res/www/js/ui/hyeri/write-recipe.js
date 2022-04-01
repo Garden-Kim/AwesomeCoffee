@@ -82,7 +82,7 @@
       });
       $('#food-plus').on('click', function(){
         var items = "";
-        items += "<div class='ipt-form-row' id="+foodNum +">"
+        items += "<div class='ipt-form-row plus-food' id="+foodNum +">"
         items += "<div class='select-box recipe-select'>"
         items +=   "<select name='catergory' >"
         items +=     "<option value=''>식자재 등록</option>"
@@ -92,16 +92,18 @@
         items +=     "<option value='휘핑크림'>휘핑크림</option>"
         items +=   "</select>"
         items += "</div>"
-        items += "<button class='btn-line' id='food-del-"+ foodNum +"' type='button'>"
+        items += "<button class='btn-line' id='del' type='button' >"
         items +=   "식자재 삭제"
         items += "</button>"
         items += "</div>"
         $("#food-select").append(items);
       });
       foodNum = foodNum + 1;
-      $('#food-del-').on('click', function(){
       
-      }
+      $("#food-select").on("click", "#del", function(){
+        $(this).parent().remove();
+      });
+      
       this.els.$btnPoint.on('click', function(){
       // 작성버튼
         var title = self.els.$iptTitle.val().trim();
@@ -114,7 +116,6 @@
           if(module.isEmpty(content)){
             return alert('내용을 입력해주세요.');
           }
-          console.log(imgN);
           console.log(self.data.imgPath);
           if(!module.isEmpty(self.els.$iptImg)){
             if(!module.isEmpty(self.data.imgPath)){ // 새로 이미지파일을 설정했다면
