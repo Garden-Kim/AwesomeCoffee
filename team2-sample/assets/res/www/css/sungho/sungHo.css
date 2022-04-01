@@ -1,0 +1,113 @@
+@charset "utf-8";
+@import "morpheus-reset.css";
+@import "morpheus-common.css";
+/* uracle pjt-team */
+
+/** 
+ * CSS Order
+ * 1. clear/display/position/z-index/overflow/float
+ * 2. width/height/margin/padding
+ * 3. color/font/line-height/text/letter-spacing/vertical-align/white-spacing/word-spacing
+ * 4. etc/background/border
+ */
+
+/*====== Content ======*/
+/** Intro */
+/*공용*/
+
+
+/*메인*/
+.main-menu-box.type04 .memberOrderBtn{width:25%; background:url(../img/twoTeam_order.png) no-repeat center 2.1rem;background-size:2rem; border-right: 1px solid #ee0000 ;}
+.main-menu-box.type04 .memberOrderBtn2{width:25%; background:url(../img/ico-menu-02.png) no-repeat center 2.1rem;background-size:2.3rem; border-right: 1px solid #f30202 ;}
+.main-menu-box.type04 .memberOrderBtn3{width:25%; background:url(../img/ico-menu-03.png) no-repeat center 2.1rem;background-size:1.9rem; border-right: 1px solid #e0e0e0 ;}
+.main-menu-box.type04 .memberOrderBtn4{width:25%; background:url(../img/ico-menu-04.png) no-repeat center 2.1rem;background-size:2.8rem;}
+
+
+/** 매장 상세보기 **/
+.btn-point-colorOther{background-color: rgb(255, 208, 0);color:#8B4F1D; font-size:20px;font-weight:bold;}
+.detail-tit{padding:1rem 1.5rem;border-bottom:1px solid #e0e0e0;}
+.detail-tit p{font-size:1.5rem;line-height:1.8}
+.detail-tit p span{font-size:inherit;font-weight:400;}
+.detail-tit > span{font-size:1.3rem;font-weight:400;color:#666;}
+.detail-cont{padding:1.5rem; width: 100%; height: 400px; text-align: center;}
+.detail-cont .img-wrapDetail img{width:100%; height: 250px; object-fit: contain;}/**/
+.detail-cont .listConter{margin-top:1.5rem;font-size:25px; text-align: center;}
+.detail-cont p{ margin-top:1.5rem;font-size:15px; display: inline-block;  height: 130px; } 
+
+.detail-cont span{width: 100%; margin-top:1.5rem;font-size:25px; text-align: center; height: 20px; display: inline-block;}
+/** goodsDetail **/
+.orderBtn{width: 100%; height: 50px;  padding-top: 11px; text-align: center; background-color: rgb(255, 208, 0);}
+.orderList {width: 100%; height: 50px; padding-top: 11px; margin-bottom: 30px; border: 1px solid red;  font-size: 20px;  color: #FF0000; text-align: center; background-color: lightpink;}
+
+.goodsDetailUl{padding:1rem; }
+.goodsDetailUl li{float:left;width:25%; margin-bottom: 20px;  margin-left: 25px;background-color: rgb(245, 241, 241);  text-align: center; }
+.recommandationImg { text-align: center;}
+.recommandationImg img{ width: 97px;
+    align-content: center;
+    height: 40px;
+    object-fit: contain;
+    background-color: rgb(245, 241, 241);  }
+
+
+.orderQty{font-size: 25px; width: 100%; padding-top: 5rem;  color: #000; padding: 10px; }
+.orderQty .goodsPrice{padding-left: 4rem;  }
+.orderQty .goodsCnt{padding-right: 4rem;float: right; }
+.detail-conts{padding:1.5rem; text-align: center;}
+.detail-conts span{font-size: 30px;}
+.detail-conts p{margin-top: 15px; font-size: 15px;}
+.detail-conts .img-wraps img{width:70%; height: 100%;}
+.recommandationMenu{width: 100%; height: 200px; padding: .3rem; text-align: center; margin-bottom: 50px; font-size: 20px; }
+
+/**payment**/
+.commonLine{ background-color:rgb(223, 221, 221);  height: 10px;}
+.commonLine1{background-color:rgb(223, 221, 221);  height: 10px;}
+.header line{margin-bottom: 30px;}
+.paymeyContent{   overflow: hidden; width: 100%; height: 150px; border-bottom:1px solid #b1b1b1; }
+.imga{width: 50%; height: 150px; float:left;}
+.imga img{width: 100%; height: 100%;  object-fit: contain;}
+.paymentTitle{font-size: 25px; padding-top: 15px; display: inline-block; height: 40px;  }
+.paymentContent{font-size: 15px; padding-top: 20px; height: 110px;}
+.paymentChoice {width: 100%;  height: 100px; border: 1px solid #bbb; }
+.paymentMethod { font-size: 15px; width: 100%; height: 30px; padding-top: 5px; display: inline-block; font-size: 15px; } 
+
+.paymentChoice .paymentMethod2{width: 100%; height: 20px; margin-top: 5px;  font-size: 17px;}
+.paymentChoice label{width:100%;height:20px;text-align:center;border:1px solid #ddd;color:#bbb;}
+.paymentChoice input[type="radio"]{width:0;}
+.paymentChoice input[type="radio"]:checked + label{border:1px solid #ffeb9d;color:#333; text-align:center;}
+.paymentChoice label:first-of-type{margin:-1% 1% 0% 15%; text-align:center; padding: 1px; }
+.paymentChoice label:nth-of-type(2){margin:1% 5%; text-align:center; padding: 1px; }
+.paymentChoice label:nth-of-type(3){margin:2% 7% 0% 5%;  text-align:center; padding: 1px;}
+
+
+.paymetTotal {width: 100%; height: 50px;}
+.paymetTotal .paymentAmount{height: 100px; width: 40%; float: left;}
+.paymetTotal .paymentAmount1{height: 100px; width: 40%; float: right; text-align: right;}
+/*에이작스*/
+
+/*background-color:rgb(223, 221, 221) !important;*/
+.paymentAjax1{ height: auto; }
+.card span{display: inline-block; height: 10px;}
+.card{ height: 100%; width: 100%;  }
+.card .cardNameBox{width: 100%; height: 60px; border-bottom : 1px solid rgb(223, 221, 221)  ;}
+.card .cardName{background-color:rgb(223, 221, 221); width: 8rem; height: 70px; width: 100%; height: 30px;}
+.card .cardNumBox{width: 100%; height: 80px; border-bottom: 1px solid hsl(0, 0%, 100%) ;}
+.card .cardNumBox .cardNum{ width: 100%;    height: 20px;  ;}
+.card .cardNumBox .cardNum li{ float: left;  width: 20%; height: 10px; padding: 5px; margin: 5px;}
+
+/*회원 구매내역*/
+.list-wrap .info-box .membOderList .ico{width:1.5rem;height:1.5rem;}
+.info-wrap.type02 .info-box .membOderList{font-size:1.4rem; }
+.info-wrap.type02 .info-box .membOderList span{font-size: 10px; margin-top: 10px; text-align: left;}
+@media only screen and (min-width:768px) {/* tablet */
+/*
+    .tab-menu.count2,
+    .tab-menu.count3,
+    .tab-menu.count4,
+    .tab-menu.count5,
+    .tab-menu.count6 {max-width:70%;margin:0 auto;}
+*/
+
+/*    .tab-menu-wrap{max-width:70rem;margin:0 auto;}*/
+}
+
+
