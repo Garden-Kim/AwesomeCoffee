@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+	<domain-config cleartextTrafficPermitted="true">
+		<domain includeSubdomains="true">127.0.0.1</domain>
+		<domain includeSubdomains="true">211.241.199.241</domain>
+		<domain includeSubdomains="true">gardenk1m.dothome.co.kr</domain>
+		<domain includeSubdomains="true">dapi.kakao.com</domain>
+		<domain includeSubdomains="true">t1.daumcdn.net</domain>
+		<domain includeSubdomains="true">map0.daumcdn.net</domain>
+		<domain includeSubdomains="true">map1.daumcdn.net</domain>
+		<domain includeSubdomains="true">map2.daumcdn.net</domain>
+		<domain includeSubdomains="true">map3.daumcdn.net</domain>
+		<domain includeSubdomains="true">daumcdn.net</domain>
+		
+		
+		
+	</domain-config>
+</network-security-config>
