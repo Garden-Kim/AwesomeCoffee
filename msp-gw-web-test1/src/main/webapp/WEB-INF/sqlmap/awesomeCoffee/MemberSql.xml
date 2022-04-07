@@ -33,7 +33,7 @@
 	<select id="findId" parameterType="map" resultType="awesomeCoffee.dto.MemberDTO">
 		select member_id
 		from member
-		where member_num = #{memberNum} and member_phone = #{memberPhone}
+		where member_name = #{memberName} and member_phone = #{memberPhone}
 	</select>
 	
 	<select id="getMemberInfo" parameterType="map" resultType="awesomeCoffee.dto.MemberDTO">

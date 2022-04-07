@@ -30,7 +30,7 @@ public class MemberOrderController {
 	@Autowired(required = true)
 	private MemberService service;
 
-	// 회원 주문
+	// 주문 insert
 	@RequestMapping(method = RequestMethod.POST, value = "/api/member/order")
 	public ModelAndView memberOrder(HttpSession session, HttpServletRequest request, HttpServletResponse response) {
 		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);

@@ -6,23 +6,15 @@
 <mapper namespace="Order">
 
 	<insert id="insertOrder">
-		
 		INSERT INTO MEMBER_ORDER
 		VALUES
-	    	( concat(concat(TO_CHAR(SYSDATE, 'yymmdd'),'_'),nvl(seq_num.nextval,10)+1),
+	    	(concat(concat(TO_CHAR(SYSDATE, 'yymmdd'),'_'),nvl(order_seq.nextval,10)+1),
 	    	#{orderPrice},
 	    	TO_CHAR(SYSDATE, 'RRRR-MM-DD HH24:MI:SS'),
 	    	#{takeout}, #{memberNum})
-	    	
-	    	
 	</insert>
 	
-	<select id="getOrderInfo" parameterType="map" resultType="awesomeCoffee.dto.MemberOrderDTO">
-		select * 
-		from member_order
-		where order_num = #{orderNum}
-	</select>
-	
+
 	
 	
 	
