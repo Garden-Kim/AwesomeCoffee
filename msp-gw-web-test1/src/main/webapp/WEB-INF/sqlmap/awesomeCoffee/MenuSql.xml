@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE mapper
+                PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Menu">
+
+<select id="selectOneMenu" parameterType="map" resultType="awesomeCoffee.dto.MenuDTO">
+	select *
+	from goods
+	where goods_num = #{goodsNum}
+</select>
+
+<select id="selectAllMenu" resultType="awesomeCoffee.dto.MenuDTO">
+	select *
+	from goods
+	order by goods_num
+</select>
+
+<insert id="insertMenu">
+	insert into goods (GOODS_NUM, GOODS_NAME, GOODS_PRICE, GOODS_CONTENT, GOODS_IMAGE, 
+						GOODS_KAL, STORE_NUM, CATEGORY_NUM, original_file)
+	values 
+	(sequence_num.nextval, #{goodsName}, #{goodsPrice}, #{goodsContent}, #{goodsImage},
+	#{goodsKal}, sequence_num.nextval, #{categoryNum}, #{originalFile})
+</insert>
+
+<update id="updateFileMenu">
+	update goods
+	set goods_name = #{goodsName}, goods_price = #{goodsPrice}, goods_content = #{goodsContent}, 
+		 goods_image = #{goodsImage}, goods_kal = #{goodsKal}, category_num = #{categoryNum} 
+	where goods_num = #{goodsNum}
+</update>
+
+<update id="updateMenu">
+	update goods
+	set goods_name = #{goodsName}, goods_price = #{goodsPrice}, goods_content = #{goodsContent}, 
+		goods_kal = #{goodsKal}, category_num = #{categoryNum} 
+	where goods_num = #{goodsNum}
+</update>
+
+<delete id="deleteMenu">
+	delete 
+	from goods
+	where goods_num = #{goodsNum}
+</delete>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

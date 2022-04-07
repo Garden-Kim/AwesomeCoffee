@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE mapper
+                PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Member">
+
+	<insert id="insertMember">
+		INSERT INTO MEMBER
+		VALUES
+	    	( #{memberNum}, #{memberName}, #{memberPhone}, #{memberId}, #{memberPw}
+	    	, #{memberEmail})
+	</insert>
+	
+	<select id="idDuplicate" parameterType="map" resultType="awesomeCoffee.dto.MemberDTO">
+		select * 
+		from member
+		where member_id = #{memberId}
+	</select>
+	
+	<select id="confirmInfo" parameterType="map" resultType="awesomeCoffee.dto.MemberDTO">
+		select * 
+		from member
+		where member_id = #{memberId} and member_name = #{memberName} and member_phone = #{memberPhone}
+	</select>
+	
+	<update id="changePw">
+		update member
+		set member_pw = #{memberPw}
+		where  member_id = #{memberId}
+	</update>
+		
+	<select id="findId" parameterType="map" resultType="awesomeCoffee.dto.MemberDTO">
+		select member_id
+		from member
+		where member_num = #{memberNum} and member_phone = #{memberPhone}
+	</select>
+	
+	<select id="getMemberInfo" parameterType="map" resultType="awesomeCoffee.dto.MemberDTO">
+		SELECT *
+		FROM   MEMBER
+		<if test="memberId != null and memberId != '' ">
+			WHERE member_id = #{memberId}
+		</if>
+	</select>
+	
+	<select id="getMemberNum" parameterType="String" resultType="String">
+		SELECT member_num
+		FROM   MEMBER
+		WHERE member_id = #{memberId}
+	</select>
+	
+	<select id="login" parameterType="map" resultType="awesomeCoffee.dto.AuthInfo">
+		SELECT member_id, member_pw
+		FROM   MEMBER
+		<if test="memberId != null and memberId != '' ">
+			WHERE member_id = #{memberId}
+		</if>
+	</select>
+
+	
+	<update id="updateMember">
+		UPDATE MEMBER
+		SET    MEMBER_PHONE = #{memberPhone},
+		       MEMBER_EMAIL = #{memberEmail}
+		WHERE  member_id = #{memberId}
+	</update>
+	
+	<delete id="deleteMember">
+		DELETE FROM MEMBER
+		WHERE  member_id = #{memberId}
+	</delete>
+	 
+	 
+</mapper>

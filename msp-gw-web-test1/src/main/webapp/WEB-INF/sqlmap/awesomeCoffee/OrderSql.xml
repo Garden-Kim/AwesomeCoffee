@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE mapper
+                PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Order">
+
+	<insert id="insertOrder">
+		
+		INSERT INTO MEMBER_ORDER
+		VALUES
+	    	( concat(concat(TO_CHAR(SYSDATE, 'yymmdd'),'_'),nvl(seq_num.nextval,10)+1),
+	    	#{orderPrice},
+	    	TO_CHAR(SYSDATE, 'RRRR-MM-DD HH24:MI:SS'),
+	    	#{takeout}, #{memberNum})
+	    	
+	    	
+	</insert>
+	
+	<select id="getOrderInfo" parameterType="map" resultType="awesomeCoffee.dto.MemberOrderDTO">
+		select * 
+		from member_order
+		where order_num = #{orderNum}
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</mapper>

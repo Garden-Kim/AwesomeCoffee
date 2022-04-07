@@ -3,88 +3,88 @@
  * @author :
  * @date : 
  */
-
-(function ($, M, module,SERVER_PATH, MNet, window){
-
+// 페이지 단위 모듈
+(function ($, M, CONFIG, window) {
+  var CONSTANT = CONFIG.CONSTANT;
+  var SERVER_PATH = CONFIG.SERVER_PATH;
   var page = {
-    els:  {
+    els: {
       $percent: null,
       $progressBar: null,
     },
     data: {},
-    init: function init(){
+    init: function init() {
       this.els.$percent = $('#percent');
-      this.els.$progressBar = $('#progress-bar');
+      this.els.$progressBar = $('#progressBar');
     },
     /*
-      진행도를 표시한다.
-      @param {function} succCallback 완료 후 호출될 함수
+    진행도를 표시한다.
+    @param {function} succCallback 완료 후 호출된 함수
     */
-    startProgress: function startProgress(succCallback){
+    startProgress: function startProgress(succCallback) {
       var $percent = this.els.$percent;
       var $progressBar = this.els.$progressBar;
       var count = 0;
-      var interval = setInterval(function(){
-        $percent.html(++count);
-        $progressBar.css('width', count+'%');
-        if(count == 100){
-          clearInterval(interval); // 반복실행을 멈춘다.
+      var interval = setInterval(function () {
+        count += 10;
+        $percent.html(count);
+        $progressBar.css('width', count + '%');
+        if (count == 100) {
+          clearInterval(interval); // 반복 실행을 멈춘다.
           succCallback();
         }
-      }, 5); // 반복적으로 함수를 실행시켜준다. 
+      }, 50); // 반복적으로 함수를 실행시켜준다.
     },
-    moveLoginPage : function moveLoginPage(){
-      // 에러발생시 함수 이름이 뜨도록
+    moveLoginPage: function moveLoginPage() {
       M.page.html({
-              url: "./join4.html",
-              actionType: "CLEAR_TOP"
+        url: "./login.html",
+        actionType: "CLEAR_TOP"
       });
     },
-    initView : function initView(){
+    moveMainPage: function moveMainPage() {
+          $.movePage({
+            url: "./main.html",
+            actionType: "CLEAR_TOP"
+          });
+        },
+    initView: function initView() {
       // 화면에서 세팅할 동적데이터
       var self = this;
-      var existLoginData =  M.data.storage('AUTO_LOGIN_AUTH');
-      if(existLoginData){
-        this.startProgress(function(){
-          M.data.global({'id' : existLoginData.id });
-          MNet.sendHttp({
+      var existLoginData = M.data.storage('AUTO_LOGIN_AUTH');
+      if (existLoginData) {
+        this.startProgress(function () {
+          $.sendHttp({
             path: SERVER_PATH.LOGIN,
             data: {
-              loginId : existLoginData.id,
-              password : existLoginData.pw
+              loginId: existLoginData.id,
+              password: existLoginData.pw
             },
-            succ: function(data){
-              if(module.isEmpty(M.data.global('id'))){
-                self.moveLoginPage();
-              }else{
-                M.page.replace('./join4.html');
-              }
+            succ: function (data) {
+              //로그인이 성공했을 때 콜백
+              M.data.global({'userId':existLoginData.id});
+              self.moveMainPage();
             },
-            error : function() {
+            error: function () {
               self.moveLoginPage();
-            }
+            },
           });
-        });      
-      }else {
-        this.startProgress(this.moveLoginPage); // 함수 호출이 아닌 그대로 넘김.
+        });
+      } else {
+        this.startProgress(this.moveLoginPage);
       }
-      
     },
-    initEvent : function initEvent(){
+    initEvent: function initEvent() {
       // Dom Event 바인딩
-    }
+    },
   };
   window.__page__ = page;
-})(jQuery, M, __util__,__serverPath__,__mnet__, window);
+})(jQuery, M,  __config__, window);
 
 // 해당 페이지에서 실제 호출
-(function($,M,pageFunc,window){
+(function ($, M, pageFunc, window) {
 
-  // 화면에 리소스가 로딩을 끝내고 정상적으로 동작할 수 있는 시점에 대해 콜백
-  // 
-  M.onReady(function(){
+  M.onReady(function () {
     pageFunc.init(); // 최초 화면 초기화
     pageFunc.initView();
   });
-  
-})(jQuery,M,__page__,window);
+})(jQuery, M, __page__, window);

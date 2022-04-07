@@ -1,102 +1,111 @@
 /**
- * @file : intro.js 인트로 페이지
- * @author : 류혜리
- * @date : 2022-03-22
+ * @file : 로그인 페이지
+ * @author : 김예은
+ * @date : 2022-03-28
  */
 
-(function ($, M, MNet,CONFIG,SERVER_PATH, window){
+// 페이지 단위 모듈
+(function ($, M, CONFIG, window) {
+  var SERVER_PATH = CONFIG.SERVER_PATH;
   var page = {
-    els:  {
+    els: {
       $loginIdIpt: null,
       $passwordIpt: null,
       $loginBtn: null,
-      $autoLoginChk :  null,
-      $findIdBtn : null,
-      $findPwBtn : null,
-      $joinBtn : null,
+      $autoLoginChk: null,
+      $findIdBtn: null,
+      $findPwBtn: null,
+      $joinBtn: null,
     },
     data: {},
-    init: function init(){
-      this.els.$loginIdIpt = $('#loginId'); // input 태그
+    init: function init() {
+      this.els.$loginIdIpt = $('#loginId'); // input 
       this.els.$passwordIpt = $('#password');
-      this.els.$autoLoginChk = $('#auto-login-chk');
-      this.els.$findIdBtn = $('#findId');
-      this.els.$findPwBtn = $('#findPw');
+      this.els.$autoLoginChk = $('#autoLoginChk');
+      this.els.$findIdBtn = $('#findIdBtn');
+      this.els.$findPwBtn = $('#findPwBtn');
       this.els.$joinBtn = $('#joinBtn');
-      this.els.$loginBtn = $('#login-btn');
+      this.els.$loginBtn = $('#loginBtn');
     },
-    /*
-      진행도를 표시한다.
-      @param {function} succCallback 완료 후 호출될 함수
-    */
-    initView : function initView(){
-      console.log(M.data.global('id'));
-      console.log(M.data.storage('AUTO_LOGIN_AUTH'));
-    },
-    initEvent : function initEvent(){
-
-      var self = this;
-      this.els.$loginBtn.on('click', function(){
-        self.login();
-      });
-      this.els.$findIdBtn.on('click', function(){
-        M.page.html('./findId.html');
-      });
-      this.els.$findPwBtn.on('click', function(){
-        M.page.html('./findPw1.html');
-      });
-      this.els.$joinBtn.on('click', function(){
-        M.page.html('./join1.html');
-      });
+ 
+   
+    initView : function initView() {
+      // 화면에서 세팅할 동적데이터
     },
     
-    setAutoLogin: function(id, pw){
-      // 자동 로그인 기능
-      M.data.storage('AUTO_LOGIN_AUTH', {id: id, pw: pw});
+    initEvent : function initEvent() {
+      // Dom Event 바인딩
+      var self = this;
+      this.els.$loginBtn.on('click', function () {
+        self.login();
+      });
+      this.els.$findIdBtn.on('click', function() {
+        M.page.html('./findId.html');
+      });
+      this.els.$findPwBtn.on('click', function() {
+        M.page.html('./findPw1.html');
+      });
+      this.els.$joinBtn.on('click', function() {
+        M.page.html('./join1.html');
+      });
+ 
     },
-    unsetAutoLogin: function(){
+
+    setAutoLogin: function (id,pw) {
+      // 자동로그인 기능
+      M.data.storage('AUTO_LOGIN_AUTH', { id:id, pw:pw });
+    },
+
+    unsetAutoLogin:function () {
       M.data.removeStorage('AUTO_LOGIN_AUTH');
     },
-    login : function(){
+
+    login: function () {
       var self = this;
-      var id = this.els.$loginIdIpt.val().trim();  // 로그인 아이디 가져오기
-      var pw = this.els.$passwordIpt.val().trim();
-      var isAutoLogin = this.els.$autoLoginChk.prop('checked'); // true/false
-      if(id == ''){
-        return alert('아이디를 입력해주세요.');
+      var id = this.els.$loginIdIpt.val().trim(); // 로그인 아이디 가져오기
+      var pw = this.els.$passwordIpt.val().trim(); // 비밀번호 가져오기
+      var isAutoLogin = this.els.$autoLoginChk.prop('checked'); //true /false
+      if(id == '') {
+        return alert('아이디를 입력해주세요');
       }
-      MNet.sendHttp({
+      if(pw == '') {
+        return alert('비밀번호를 입력해주세요');
+      }
+      
+      $.sendHttp({
         path: SERVER_PATH.LOGIN,
         data: {
           loginId : id,
           password : pw
         },
-        succ: function(data){
-          //console.log(data); // 정상실행되었을때 log를 실행한다.
-          // 로그인 성공시 콜백 - true일때 id, pw 저장
-          if(data.rsltCode == '0000'){
-            M.data.global({'id' : id });
-            if(isAutoLogin) self.setAutoLogin(id, pw);
-            M.page.replace('./main.html');          
-          }else{
-            return alert('아이디와 비밀번호가 일치하지 않습니다.');
-          }
+        succ: function (data) {
+          //로그인이 성공했을 때 콜백
+          if(isAutoLogin) self.setAutoLogin(id, pw);
+          console.log(data);
+          M.data.global({'userId':id});
+          $.movePage({
+                      url: './main.html',
+                      actionType: 'CLEAR_TOP',
+                    });
+          //alert('로그인 성공')
+        }, 
+        error : function(data){
+           console.log(data);
+           alert('로그인 실패');      
         }
       });
-      
     }
-    
   };
+  
   window.__page__ = page;
-})(jQuery, M,__mnet__,__config__,__serverPath__, window);
+})(jQuery, M,  __config__, window);
 
 // 해당 페이지에서 실제 호출
-(function($,M,pageFunc,window){
-
-  M.onReady(function(){
-    pageFunc.init(); // 최초 화면 초기화
-    pageFunc.initView();
-    pageFunc.initEvent();
-  });
+(function($, M, pageFunc, window) {
   
-})(jQuery,M,__page__,window);
+  M.onReady(function() {
+      pageFunc.init(); // 최초 화면 초기화
+      pageFunc.initView();
+      pageFunc.initEvent();
+  });
+})(jQuery, M, __page__, window);

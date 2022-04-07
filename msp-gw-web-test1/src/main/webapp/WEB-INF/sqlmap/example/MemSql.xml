@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE mapper
+                PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Member2">
+
+	<select id="duplicate" parameterType="map" resultType="edu.example.dto.MemberDto">
+		select * 
+		from member
+		where login_id = #{loginId}
+	</select>
+	
+	<select id="find" parameterType="map" resultType="edu.example.dto.MemberDto">
+		select * 
+		from member
+		where login_id = #{loginId} and user_nm = #{userNm} and cell_phone = #{cellPhone}
+	</select>
+	
+	<update id="changePw">
+		update member
+		set password = #{password}
+		where  login_id = #{loginId}
+	</update>
+		
+	<select id="findId" parameterType="map" resultType="edu.example.dto.MemberDto">
+		select login_id
+		from member
+		where user_nm = #{userNm} and cell_phone = #{cellPhone}
+	</select>
+	
+	<select id="getMemberInfo" parameterType="map" resultType="edu.example.dto.MemberDto">
+		SELECT *
+		FROM   MEMBER
+		<if test="loginId != null and loginId != '' ">
+			WHERE LOGIN_ID = #{loginId}
+		</if>
+	</select>
+	
+	<select id="login" parameterType="map" resultType="edu.example.dto.LoginDTO">
+		SELECT LOGIN_ID, PASSWORD
+		FROM   MEMBER
+		<if test="loginId != null and loginId != '' ">
+			WHERE LOGIN_ID = #{loginId}
+		</if>
+	</select>
+
+	
+	<insert id="insertMember">
+		INSERT INTO MEMBER
+		VALUES
+	    	( #{loginId}, #{password}, #{userNm}, #{birthDate}, #{gender}
+	    	, #{cellPhone}, #{email}, SYSDATE )
+	</insert>
+	
+	<update id="updateMember">
+		UPDATE MEMBER
+		SET    CELL_PHONE = #{cellPhone},
+		       EMAIL = #{email}
+		WHERE  LOGIN_ID = #{loginId}
+	</update>
+	
+	<delete id="deleteMember">
+		DELETE FROM MEMBER
+		WHERE  LOGIN_ID = #{loginId}
+	</delete>
+	 
+</mapper>

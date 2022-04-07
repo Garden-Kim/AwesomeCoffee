@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE mapper
+                PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Wishlist">
+
+<select id="selectAllWishlist" resultType="awesomeCoffee.dto.WishlistDTO">
+	select *
+	from wishlist
+	where member_num = #{memberNum}
+	order by wishlist_date, goods_num
+</select>
+
+<insert id="insertWishlist">
+	insert into wishlist (member_num , goods_num, wishlist_date)
+	values 
+	(#{memberNum} , #{goodsNum}, sysdate)
+</insert>
+
+<delete id="deleteWishlist">
+	delete 
+	from wishlist
+	where goods_num = #{goodsNum} and member_num = #{memberNum}
+</delete>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

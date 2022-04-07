@@ -296,8 +296,91 @@ html, body {max-width: 100%;overflow-x: hidden;max-height: 100%;}
 .tbl-ipt tfoot td{padding:1.5rem 1.5rem;font-size:2rem;font-weight:bold;text-align:right;background-color:#eee; }
 /*발주주문 수정*/
 
+
+
+
+
+/* 메인 메뉴 버튼 */
+.emp-main-menu {overflow:hidden;}
+.emp-main-menu li{float:left;width:33.3333%;color:#fff;}
+.emp-main-menu li{float:left;width:33.3333%;color:#fff;}
+.emp-main-menu.type04,
+.emp-main-menu.type06{border:1px solid #e0e0e0;border-bottom:0;background-color:#fff;text-align:center;}
+.emp-main-menu.type04 li,
+.emp-main-menu.type06 li{padding:5.4rem 0 1.5rem;background-color:#fff;color:#333;font-size:1.4rem;font-weight:400;border-right:1px solid #e0e0e0;border-bottom:1px solid #e0e0e0;}
+.emp-main-menu.type04 li:nth-child(3n),
+.emp-main-menu.type06 li:nth-child(3n){border-right:0;}
+.emp-main-menu.type04 li:nth-child(1){background:url(../img/icon3.png) no-repeat center 2.1rem;background-size:2rem;}
+.emp-main-menu.type04 li:nth-child(2){background:url(../img/icon1.png) no-repeat center 2.1rem;background-size:2.3rem;}
+.emp-main-menu.type04 li:nth-child(3){background:url(../img/icon2.png) no-repeat center 2.1rem;background-size:1.9rem;}
+.emp-main-menu.type06 li{position:relative;font-size:1.5rem;padding:8rem 0 1rem;}
+.emp-main-menu.type06 li::before{content:'';position:absolute;top:1.4rem;left:50%;width:5rem;height:5rem;margin-left:-2.5rem;background:url(../img/sprite-ico-menu.png) no-repeat;background-size:auto 100%;}
+.emp-main-menu.type06 li:nth-child(1)::before{background-position:0 0;}
+.emp-main-menu.type06 li:nth-child(2)::before{background-position:-5rem 0;}
+.emp-main-menu.type06 li:nth-child(3)::before{background-position:-10rem 0;}
+
+/* top 버튼 */
+.btn-top{position:fixed;bottom:1.5rem;right:1.5rem;width: 4.5rem;height:4.5rem;text-indent:-9999rem;background:url(../img/btn-top.png)no-repeat;}
+
+/*직원 주문상세*/
+.empMenu .empOrderList{position:relative;padding:1.5rem;border-top:1px solid #e5e5e5;}
+.empOrderList{position:relative; text-align:left;}
+.empOrderList.label{position:absolute;}
+.empOrderList {text-align:left;padding-top:2px;;font-size:1.8rem;}
+.mg-b10{margin-bottom:10rem !important;}
+
+/*주문 리스트*/
+.empOrder-list { position:relative; height: 4.5rem; float:left; margin-top:1rem;width:100%;font-size:1.6rem;}
+.empOrder-list { padding: 1.4rem; color :  #8B4F1D;}
+.empOrder-list ul {float:left; width: 100%; }
+.empOrder-list ul li{float:left; width: 20%; text-align: center; font-weight: bold;}
+.empOrder li {border-top: 1px solid rgb(223, 221, 221);  float:left;width:20%;text-align: center;}
+.empOrder li {color: #000; position: relative; overflow:hidden; font-size: 14px; padding:2rem;}
+.empOrder { margin-bottom:0.1rem;}
+.empOrder li.empOrderState {color: red; font-size: 15px; font-weight: bold;}
+
+/* 픽업 리스트*/
+.pickup-list { position:relative; height: 4.5rem;float:left;margin-top:1rem;width:100%;font-size:1.6rem;}
+.pickup-list { padding: 1.4rem; color :  #8B4F1D;}
+.pickup-list ul {float:left; width: 100%; }
+.pickup-list ul li {float:left;width:25%; text-align: center; font-weight: bold;}
+.pickup li {border-top: 1px solid rgb(223, 221, 221); float:left;width:25%;text-align: center;}
+.pickup li {color: #000; position: relative; overflow:hidden; font-size: 14px; padding :2rem;}
+.pickup {margin-bottom:0.1rem;}
+.pickup li.pickupState {color: red; font-size: 15px; font-weight: bold;}
+
+
+
+/*주문 픽업 고정 tab*/
+/* Emp Tab Menu */
+.emp-tab-menu-wrap{width:100%;overflow-x:auto;white-space:nowrap;}
+.emp-tab-menu{overflow:hidden;padding:1rem 0 1.5rem;}
+.emp-tab-menu li{position:relative;float:left;text-align:center;font-size:1.5rem;font-weight:bold;}
+
+/****레시피 메뉴 리스트 색 수정****/
+.emp-tab-menu li.on{color:black;}
+.emp-tab-menu li.on span{border-bottom:3px solid black;}
+
+/* 메뉴 이름의 글자수가 동일한 경우 */
+.emp-tab-menu.count2 li{float:left;width:50%;}
+.emp-tab-menu.count3 li{float:left;width:33.3333%;}
+.emp-tab-menu.count4 li{float:left;width:25%;}
+.emp-tab-menu.count5 li{float:left;width:20%;}
+.emp-tab-menu.count6 li{float:left;width:16.6666%;}
+.emp-tab-menu.more{overflow-x:auto;}
+.emp-tab-menu.more li{float:none;display:inline-block;width:17%;}
+/* 메뉴 이름의 글자수가 동일하지 않은 경우 */
+.emp-tab-menu.table{width:100%;display:table;padding:0 1rem;text-align:center;height:4.5rem;}
+.emp-tab-menu.table li{float:none;display:table-cell;}
+.emp-tab-menu.table li span{display:inline-block;height:4.5rem;line-height:4.5rem;padding:0 .3rem;}
+.emp-tab-menu-wrap.type02 .tab-menu{padding:0;}
+.emp-tab-menu-wrap.type02 li{height:4rem;line-height:4rem;color:#666;font-size:1.3rem;font-weight:400;border-right:1px solid #e0e0e0;border-top:1px solid #e0e0e0;border-bottom:1px solid #e0e0e0;}
+.emp-tab-menu-wrap.type02 li:last-child{border-right:0;}
+.emp-tab-menu-wrap.type02 li.on{color:#333;font-weight:bold;border-top:2px solid #333;}   
+
+
 /* 레시피 디테일 */
-.recipe-detail-tit{padding:2rem 2.5rem;border-bottom:1px solid #E0E0E0;}
+.recipe-detail-tit{padding:2rem 2.5rem;border-bottom:1px solid #e0e0e0;}
 .recipe-detail-tit p{font-size:2.3rem;line-height:1.8}
 .recipe-detail-tit p span{font-size:inherit;font-weight:400;}
 .recipe-detail-tit span{font-size:1.5rem;font-weight:400;color:#666;}
@@ -305,7 +388,49 @@ html, body {max-width: 100%;overflow-x: hidden;max-height: 100%;}
 .recipe-detail-cont .img-wrap img{margin-left : 8rem; width:60%;}
 .recipe-detail-cont p{margin-top:1.5rem;font-size:1.4rem;font-weight:400;line-height:1.5;}
 .recipe-detail-cont p{margin-top:2.5rem;font-size:2rem;font-weight:400;line-height:1.5;text-align:center;}
-/* 레시피 디테일 */
+
+/* 장바구니 */
+.cartMenu {height: 110px; width: 100%;padding: 1.5rem;border-bottom: 1px solid rgb(223, 221, 221);}
+.cartMenu div {float: left; width : 20%; font-size: 15px; font-weight: bold;} 
+.cartMenu ul {float: left; width : 20%; font-size: 15px; font-weight: bold;} 
+.cartMenu ul li {border: solid 1px white; float: left; width: 100%; height: 30px; width: 30rem; padding: 1.8rem; }
+.qty {float: right; width:3rem; text-align: center;}
+.qty1 {float: right; width:3rem; text-align: center;font-size: 13px; width : 7rem; border:1px solid  rgb(223, 221, 221); border-radius:1rem; }
+.cart {color: #000; padding-bottom: 3rem;}
+
+/*사이드바*/
+.wrapper{position:relative;}
+.side-bar{background-color: rgb(255, 208, 0);color:#323232;width:120px;padding-top: 30px; padding-left: 30px;/* border-left:solid;*/}
+.side-bar.position{position: absolute; top:0;right:-130px;bottom:0;transition:1s ease;}
+.side-bar h1{font-size:2rem;color:#000;}
+.side-bar li{padding-top:2rem;}
+/* 모바일 수평 스크롤 금지 */
+html, body {max-width: 100%;overflow-x: hidden;max-height: 100%;}
+
+/*emp-metro*/
+.emp-metro-wrap{overflow:hidden;}
+.emp-metro-wrap.pd{padding:1rem;}
+.emp-metro-wrap li{float:left;width:30%;}
+.emp-metro-wrap{overflow:hidden;}
+.emp-metro-wrap li{position:relative;float:left;margin-top:1rem;width:49%;/*height:14.5rem;*/border:1px solid #e0e0e0;}
+.emp-metro-wrap li:nth-child(1),
+.emp-metro-wrap li:nth-child(2){margin-top:0;}
+.emp-metro-wrap li:nth-child(2n){margin-left:2%;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
