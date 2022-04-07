@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE mapper
+                PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Cart">
+
+<select id="selectAllCart" resultType="awesomeCoffee.dto.CartDTO">
+	select *
+	from cart
+	where member_num = #{memberNum}
+	order by goods_num
+</select>
+
+<insert id="insertCart">
+	insert into cart (member_num , goods_num, qty )
+	values 
+	(#{memberNum} , #{goodsNum}, #{qty})
+</insert>
+
+<delete id="deleteCart">
+	delete 
+	from cart
+	where goods_num = #{goodsNum} and member_num = #{memberNum}
+</delete>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>
