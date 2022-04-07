@@ -4,9 +4,8 @@
  * @date : 
  */
 
-(function ($, M, CONFIG, window) {
-  var CONSTANT = CONFIG.CONSTANT;
-  var SERVER_PATH = CONFIG.SERVER_PATH;
+(function ($, M, module, MNet, SERVER_PATH,CONFIG, window){
+
   var page = {
     els: {
       $btnModify: null,
@@ -20,7 +19,7 @@
     },
     data: {
       requset: {
-        loginId: M.data.global('userId'),
+        loginId: M.data.global('id'),
         lastSeqNo: '0',
         cnt: '100000'
       },
@@ -40,13 +39,16 @@
     },
     drawNoticeList: function () {
       var self = this;
-      $.sendHttp({
+      MNet.sendHttp({
         path: SERVER_PATH.NOTICE_LIST,
         data: self.data.requset,
         succ: function (data) {
           var items = "";
           self.data.lastSeqNum = data.lastSeqNo;
+          console.log(self.data.lastSeqNum);
           $.each(data.list, function (index, item) {
+            console.log(item);
+            console.log(item.imgUrl);
             items += "<li id='" + item.seqNo + "' class ='menu'>";
             items += "<div class='thumbnail-wrap'>";
             items += "<div class='thumbnail'>";
@@ -67,10 +69,10 @@
             items += "</p>";
             items += "</div>";
             items += "</div>";
-            items += "</a>";
+            items += "</div>";
             items += "</li>";
           });
-          $(".metro-wrap").append(items);
+          $("#card").append(items);
         },
         error: function (data) {
           alert("리스트를 가져오지 못했습니다.");
@@ -105,25 +107,24 @@
       this.els.$menuRecipeList.on('click', function () {
         M.page.html("./recipeList.html");
       })
-      this.els.$menuRecipeList.on('click', function () {
+      this.els.$menuStoreInfo.on('click', function () {
         // M.page.html("./.html"); 매장정보 페이지로 이동 
       })
       
       this.els.$btnTop.on('click', function () {
         $('.cont-wrap').scrollTop(0);
       });
-      $('.menu-store-info')
       $('.metro-wrap').on('click', '.menu', function () {
         var seqNo = $(this).attr('id');
-        $.sendHttp({
+        MNet.sendHttp({
           path: SERVER_PATH.NOTICE_DETAIL,
           data: {
-            loginId: M.data.global("userId"),
+            loginId: M.data.global("id"),
             seqNo: seqNo
           },
           succ: function (data) {
             if (data.rsltCode == '0000') {
-              M.page.html('./recipeDetail.html', {
+              M.page.html('./empRecipeDetail.html', {
                 param: {
                   seqNo: seqNo
                 }
@@ -140,24 +141,17 @@
       });
     }
   };
+  
   window.__page__ = page;
-})(jQuery, M, __config__, window);
-/*
-$.each(data.lists, function(index, item){
-  items += "<tr>";
-  items += "<td><a href='/'>"+ item.memberNum + "</a></td>";
-  items += "<td>"+ item.memberNum +"</td>";
-  items += "<td><input type='' name='' value='" + item.memberNum + "'></td>";
-  items += "</tr>";    
-})*/
+})(jQuery, M, __util__, __mnet__, __serverPath__,__difinition__, window);
 
 // 해당 페이지에서 실제 호출
-(function ($, M, pageFunc, window) {
+(function($,M,pageFunc,window){
 
-  M.onReady(function () {
+  M.onReady(function(){
     pageFunc.init(); // 최초 화면 초기화
     pageFunc.initView();
     pageFunc.initEvent();
   });
-
-})(jQuery, M, __page__, window);
+  
+})(jQuery,M,__page__,window);

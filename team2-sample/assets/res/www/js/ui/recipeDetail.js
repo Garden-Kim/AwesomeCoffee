@@ -4,25 +4,18 @@
  * @date : 22.03.30
  */
 
-(function ($, M, CONFIG, window) {
-  var CONSTANT = CONFIG.CONSTANT;
-  var SERVER_PATH = CONFIG.SERVER_PATH;
+ (function ($, M, MNet, module, SERVER_PATH, window) {
+
   var page = {
     els: {
       $title: null,
       $regDate: null,
       $imgUrl: null,
       $content: null,
-      $modiBtn: null,
-      $delBtn: null,
       $loginId: null,
       $seqNum: null,
       $back: null,
-      $menu: null,
-      $menuOrderList: null,
-      $menuPickup: null,
-      $menuRecipeList: null,
-      $menuStoreInfo: null,
+      $menu : null
     },
     data: {},
     init: function init() {
@@ -32,20 +25,15 @@
       this.els.$content = $('#content');
       this.els.$back = $("#back");
       this.els.$menu = $('#menu');
-      this.els.$menuOrderList = $('#menu-order-list');
-      this.els.$menuPickup = $('#menu-pickup');
-      this.els.$menuRecipeList = $('#menu-recipe-list');
-      this.els.$menuStoreInfo = $('#menu-store-info');
     },
     initView: function initView() {
       var self = this;
-      var seqNo = M.data.param("seqNo");
-      $.sendHttp({
+      MNet.sendHttp({
         path: SERVER_PATH.NOTICE_DETAIL,
         data: {
-          loginId: M.data.global("userId"),
-          seqNo: seqNo
-        },
+          loginId: M.data.global('id'),
+          seqNo: M.data.param('seqNo')
+        }, 
         succ: function (data) {
           var items = "";
           items += "<div class='recipe-detail-tit'>";
@@ -92,40 +80,38 @@
     initEvent: function initEvent() {
       // Dom Event 바인딩
       var self = this;
-
       this.els.$back.on('click', function () {
         M.page.back();
-      })
-      // 사이드바 
+      });
       $('.btn-menu').on('click', function () {
         console.log('메뉴클릭');
         $('.position').attr('style', 'position: absolute; top:0;right:0px;bottom:0;transition:1s ease;');
-        $('.wrapper').fadeTo("fast", 0.3);
+        $('.container').fadeTo("fast", 0.3);
       });
       $('.btn-menu').on('blur', function () {
         console.log('취소');
         $('.position').attr('style', 'position: absolute; top:0;right:-130px;bottom:0;transition:1s ease;');
-        $('.wrapper').fadeTo("fast", 1);
+        $('.container').fadeTo("fast", 1);
       });
-      // 사이드바 메뉴
-      this.els.$menuOrderList.on('click', function () {
-        M.page.html("./empOrderList.html");
-      })
-      this.els.$menuPickup.on('click', function () {
-        M.page.html("./pickupList.html");
-      })
-      this.els.$menuRecipeList.on('click', function () {
-        M.page.html("./recipeList.html");
-      })
-      this.els.$menuRecipeList.on('click', function () {
-        // M.page.html("./.html"); 매장정보 페이지로 이동 
-      })
-
+      $('#modiBtn').on('click', function(){
+        M.page.html('./write-recipe.html',{param : { seqNo : M.data.param('seqNo')}});
+      });
+      $('#delBtn').on('click', function(){
+        if (confirm("레시피를 삭제하시겠습니까?") == true){
+          alert("완료되었습니다.");
+          var pagelist = M.info.stack();
+          M.page.remove(pagelist[1].key);
+          M.page.replace('./list.html');
+        }else return;
+        
+      });
+      
+      
     },
   };
 
   window.__page__ = page;
-})(jQuery, M, __config__, window);
+})(jQuery, M, __mnet__, __util__,__serverPath__, window);
 
 // 해당 페이지에서 실제 호출
 (function ($, M, pageFunc, window) {

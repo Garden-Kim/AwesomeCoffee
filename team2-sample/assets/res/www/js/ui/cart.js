@@ -1,12 +1,11 @@
 /**
- * @file : 장바구니
- * @author : 김예은
- * @date : 22.03.31
+ * @file : intro.js 인트로 페이지
+ * @author :
+ * @date : 
  */
 
-(function ($, M, CONFIG, window) {
-  var CONSTANT = CONFIG.CONSTANT;
-  var SERVER_PATH = CONFIG.SERVER_PATH;
+(function ($, M, module, MNet, SERVER_PATH,CONFIG, window){
+
   var page = {
     els: {
       $back: null,
@@ -22,9 +21,9 @@
     },
     data: {
       requset: {
-        loginId: M.data.global('userId'),
+        loginId: M.data.global('id'),
         lastSeqNo: '0',
-        cnt: '20'
+        cnt: '5'
       },
     },
     init: function init() {
@@ -46,7 +45,7 @@
     },
     drawNoticeList: function () {
       var self = this;
-      $.sendHttp({
+      MNet.sendHttp({
         path: SERVER_PATH.NOTICE_LIST,
         data: self.data.requset,
         succ: function (data) {
@@ -97,6 +96,10 @@
     initEvent: function initEvent() {
       var self = this;
       // 사이드바 
+      $('.btn-back').on('click', function () {
+        M.page.back();
+      });
+      // 사이드바 
       $('.btn-menu').on('click', function () {
         console.log('메뉴클릭');
         $('.position').attr('style', 'position: absolute; top:0;right:0px;bottom:0;transition:1s ease;');
@@ -106,21 +109,7 @@
         console.log('취소');
         $('.position').attr('style', 'position: absolute; top:0;right:-130px;bottom:0;transition:1s ease;');
         $('.wrapper').fadeTo("fast", 1);
-        self.sideBarDisplay();
       });
-      // 사이드바 메뉴
-      this.els.$a.on('click', function () {
-        // M.page.html("./.html");
-      })
-      this.els.$b.on('click', function () {
-        // M.page.html("./.html");
-      })
-      this.els.$c.on('click', function () {
-        // M.page.html("./.html");
-      })
-      this.els.$menuStoreInfo.on('click', function () {
-        // M.page.html("./.html"); 매장정보 페이지로 이동 
-      })
 
       this.els.$qtyPlus.on('click', '.price', function () {
         var seqNo = $(this).attr('data-seq');
@@ -136,13 +125,14 @@
         }
       })
       this.els.$back.on('click', function () {
-        M.page.html("./main.html");
+        M.page.back();
       })
       this.els.$btnTop.on('click', function () {
         $('.cont-wrap').scrollTop(0);
       })
       this.els.$orderBtn.on('click', function () {
-        self.order();
+        // 상품번호 넘겨서 눌러야 함.
+        M.page.html('./payment.html');
       })
 
     },
@@ -167,21 +157,18 @@
       $('#goodsPrice').html(5000 * ser);
       $('#goodsQty').html(ser);
     },
-    order: function () {
-      // 주문하기 버튼 누를시 동작 
-    }
 
   };
-
   window.__page__ = page;
-})(jQuery, M, __config__, window);
+})(jQuery, M, __util__, __mnet__, __serverPath__,__difinition__, window);
 
 // 해당 페이지에서 실제 호출
-(function ($, M, pageFunc, window) {
-  M.onReady(function () {
-    pageFunc.init(); //최초 화면 초기화
+(function($,M,pageFunc,window){
+
+  M.onReady(function(){
+    pageFunc.init(); // 최초 화면 초기화
     pageFunc.initView();
     pageFunc.initEvent();
   });
-
-})(jQuery, M, __page__, window);
+  
+})(jQuery,M,__page__,window);

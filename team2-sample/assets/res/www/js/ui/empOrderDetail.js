@@ -1,12 +1,11 @@
 /**
- * @file : 주문내역
- * @author : 김예은
- * @date : 22.03.30
+ * @file : intro.js 인트로 페이지
+ * @author :
+ * @date : 
  */
 
-(function ($, M, CONFIG, window) {
-  var CONSTANT = CONFIG.CONSTANT;
-  var SERVER_PATH = CONFIG.SERVER_PATH;
+(function ($, M, module, MNet, SERVER_PATH,CONFIG, window){
+
   var page = {
     els: {
       $title: null,
@@ -22,7 +21,7 @@
     },
     data: {
       requset: {
-        loginId: M.data.global('userId'),
+        loginId: M.data.global('id'),
         lastSeqNo: '0',
         cnt: '100000'
       },
@@ -40,10 +39,10 @@
     },
     initView: function initView() {
       var self = this;
-      $.sendHttp({
+      MNet.sendHttp({
         path: SERVER_PATH.NOTICE_DETAIL,
         data: {
-          loginId: M.data.global("userId"),
+          loginId: M.data.global("id"),
           seqNo: M.data.global("seqNo")
         },
         succ: function (data) {
@@ -64,7 +63,7 @@
           alert("데이터를 불러오지 못했습니다.");
         }
       });
-      $.sendHttp({
+      MNet.sendHttp({
         path: SERVER_PATH.NOTICE_LIST,
         data: self.data.requset,
         succ: function (data) {
@@ -95,7 +94,7 @@
       var content = M.data.global('content');
       
       this.els.$back.on('click', function () {
-        M.page.html('./empOrderList.html');
+        M.page.back();
       })
 
        // 사이드바 
@@ -162,14 +161,15 @@
   };
 
   window.__page__ = page;
-})(jQuery, M, __config__, window);
+})(jQuery, M, __util__, __mnet__, __serverPath__,__difinition__, window);
 
 // 해당 페이지에서 실제 호출
-(function ($, M, pageFunc, window) {
-  M.onReady(function () {
-    pageFunc.init(); //최초 화면 초기화
+(function($,M,pageFunc,window){
+
+  M.onReady(function(){
+    pageFunc.init(); // 최초 화면 초기화
     pageFunc.initView();
     pageFunc.initEvent();
   });
-
-})(jQuery, M, __page__, window);
+  
+})(jQuery,M,__page__,window);

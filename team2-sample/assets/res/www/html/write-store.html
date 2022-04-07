@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, user-scalable=no" name="viewport"/>
+  <title>Hello! Mobile!</title>
+  <link href="../css/morpheus-style.css" rel="stylesheet"/>
+  <link href="../css/swiper.min.css" rel="stylesheet"/>
+  <link href="../css/muikit.css" rel="stylesheet"/>
+</head>
+
+<body>
+<div class="wrapper">
+  <header class="header line">
+    <!-- 하단에 라인이 있는경우 class="line"추가 -->
+    <h1>
+      매장 등록
+    </h1>
+    <button class="btn-back l-fix" type="button">
+      뒤로가기
+    </button>
+    <button class="btn-menu r-fix" type="button">
+      메뉴
+      <!-- 왼쪽 버튼 class="l-fix 추가 -->
+      <!-- 오른쪽 버튼 class="r-fix 추가 -->
+    </button>
+  </header>
+  <div class="container">
+    <div class="cont-wrap pd">
+      <div class="info-wrap"/>
+      <div class="ipt-wrap">
+
+        <div class="ipt-form-type2 store">
+						<span>
+							아이디/비밀번호
+						</span>
+          <div class="ipt-form-row">
+            <input id="loginId" placeholder="아이디 입력" type="text"/>
+            <button class="btn-line" id="dupBtn" type="button">
+              중복확인
+            </button>
+          </div>
+          <div class="ipt-form-col">
+            <input id="password" placeholder="패스워드 입력" type="password"/>
+            <input id="repassword" placeholder="패스워드 확인" type="password"/>
+          </div>
+        </div>
+        <div class="ipt-form-type2">
+						<span>
+							매장명
+						</span>
+          <div class="ipt-form-col">
+            <input id="ipt-title" maxlength="50" placeholder="매장명 입력(50자까지)" type="text"/>
+          </div>
+        </div>
+        <div class="ipt-form-type1">
+						<span>
+							주소
+						</span>
+          <div class="ipt-form-col">
+            <input id="ipt-content" maxlength="50" placeholder="주소 입력(50자까지)" type="text"/>
+          </div>
+        </div>
+        <div class="ipt-form-type1">
+						<span>
+							연락처
+						</span>
+          <div class="ipt-form-col">
+            <input id="ipt-price" maxlength="5" placeholder="숫자만 입력" type="text"/>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="btn-wrap btm-wrap pd">
+      <button class="btn-point-color" id="btn-write" type="button">
+        작성하기
+      </button>
+    </div>
+  </div>
+</div>
+<section class="side-bar position">
+  <h1>메뉴</h1>
+  <ul class="menu-side-bar">
+    <li id="menu-order-food">식자재</li>
+    <li id="menu-payment-list">발주내역</li>
+    <li id="menu-sales">매출현황</li>
+    <li id="menu-menu">상품관리</li>
+    <li id="menu-member-info">회원정보</li>
+    <li id="menu-store-info">매장정보</li>
+  </ul>
+</section>
+</body>
+
+<script src="../js/mcore.min.js" type="text/javascript"></script>
+<script src="../js/ui/write-menu.js" type="text/javascript"></script>
+</html>

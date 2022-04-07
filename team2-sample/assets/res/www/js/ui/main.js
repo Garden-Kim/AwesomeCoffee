@@ -1,57 +1,75 @@
 /**
- * @file : 직원페이지메인 
- * @author : 김예은
- * @date : 22.03.29
+ * @file : intro.js 인트로 페이지
+ * @author :
+ * @date : 
  */
 
-(function ($, M, CONFIG, window) {
+(function ($, M, MNet, module, SERVER_PATH, window){
 
-  var CONSTANT = CONFIG.CONSTANT;
-  var SERVER_PATH = CONFIG.SERVER_PATH;
-  
-  var seqNo = [];
   var page = {
     els: {
-      $order: null,
-      $pickup: null,
-      $recipe: null,
-      $cart : null,
+      $announcementBtn: null,
+      $btnTxt: null,
+      $userInfoBtn: null,
+      $orderList : null,
+      $storeList : null,
     },
     data: {},
     init: function init() {
-      this.els.$order = $('#order');
-      this.els.$pickup = $('#pickup');
-      this.els.$recipe = $('#recipe');
-      this.els.$cart= $('#cart');
+      this.els.$announcementBtn = $('#announcementBtn');
+      this.els.$btnTxt = $('#btn-txt1');
+      this.els.$userInfoBtn = $('#userInfoBtn');
+      this.els.$orderList = $('#orderList');
+      this.els.$storeList = $('#storeList');
     },
     initView: function initView() {
+      //화면에서 세팅할 동적데이터
+      var self = this;
+      
     },
     initEvent: function initEvent() {
+      // Dom Event 바인딩
+      
+      $('.announcementFour').on('click', '.ellipsis', function () {
+        var seqNo = $(this).attr('data');
+        console.log(seqNo);
+
+        M.data.global({
+          'seqNoSend': seqNo
+        });
+        console.log(M.data.global('seqNoSend'));
+        self.bulletinDetail();
+      })
+      //  버튼 클릭시 동작
       var self = this;
-      this.els.$order.on('click', function () {
-        M.page.html("./empOrderList.html");
-      })
-      this.els.$pickup.on('click', function () {
-        M.page.html("./pickupList.html");
-      })
-      this.els.$recipe.on('click', function () {
-        M.page.html("./recipeList.html");
-      })
-      this.els.$cart.on('click', function () {
-        M.page.html("./cart.html");
-      })
+      this.els.$orderList.on('click', function () {
+        M.page.html('./menuList.html');
+      });
+      this.els.$storeList.on('click', function () {
+        M.page.html('./storeList.html');
+      });
+      $('#userInfoBtn').on('click', function(){
+        M.page.html('./userInfo.html');
+      });
+      $('#cart').on('click', function(){
+        M.page.html('./cart.html');
+      });
+
+
     },
-    
+
+
   };
-
   window.__page__ = page;
-})(jQuery, M, __config__, window);
+})(jQuery, M, __mnet__, __util__, __serverPath__, window);
 
-(function ($, M, pageFunc, window) {
-  M.onReady(function () {
-    pageFunc.init(); //최초 화면 초기화
+// 해당 페이지에서 실제 호출
+(function($,M,pageFunc,window){
+
+  M.onReady(function(){
+    pageFunc.init(); // 최초 화면 초기화
     pageFunc.initView();
     pageFunc.initEvent();
   });
-
-})(jQuery, M, __page__, window);
+  
+})(jQuery,M,__page__,window);
