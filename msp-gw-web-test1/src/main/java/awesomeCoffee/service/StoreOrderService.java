@@ -1,5 +1,6 @@
 package awesomeCoffee.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
@@ -12,6 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
+
+import awesomeCoffee.dto.StoreDTO;
+import awesomeCoffee.dto.StoreOrderDTO;
 
 @Service
 public class StoreOrderService {
@@ -36,7 +40,7 @@ public class StoreOrderService {
 		try {
 			
 			
-			result = sqlSession.insert("StoreOrder.insertStoreOrder", param);
+			result = sqlSession.insert("storeOrder.insertStoreOrder", param);
 
 			transactionManager_sample.commit(status);
 			logger.info("========== 발주 완료 : {}", result);
@@ -48,6 +52,10 @@ public class StoreOrderService {
 		}
 		return result;
 
+	}
+
+	public List<StoreOrderDTO> storeOrderList() {
+		return sqlSession.selectList("storeOrder.storeOrderList");
 	}
 
 }

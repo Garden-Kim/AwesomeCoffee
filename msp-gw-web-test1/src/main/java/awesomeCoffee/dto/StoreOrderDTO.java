@@ -1,5 +1,7 @@
 package awesomeCoffee.dto;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class StoreOrderDTO {
@@ -40,8 +42,10 @@ public class StoreOrderDTO {
 	public void setStoreOrderQty(int storeOrderQty) {
 		this.storeOrderQty = storeOrderQty;
 	}
-	public Date getStoreOrderDate() {
-		return storeOrderDate;
+	public String getStoreOrderDate() {
+		DateFormat date = new SimpleDateFormat("yyyy-MM-dd");
+		String strDate = date.format(storeOrderDate);
+		return strDate;
 	}
 	public void setStoreOrderDate(Date storeOrderDate) {
 		this.storeOrderDate = storeOrderDate;
