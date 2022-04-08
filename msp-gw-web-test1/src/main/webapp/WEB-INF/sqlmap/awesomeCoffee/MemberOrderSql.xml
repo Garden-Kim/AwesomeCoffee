@@ -5,21 +5,29 @@
 
 <mapper namespace="Order">
 
+	<select id="memberCartList" resultType="awesomeCoffee.dto.MemberOrderDTO" parameterType="map">
+		select g.goods_num, c.qty, c.qty * g.goods_price as price_sum
+		from cart c, goods g, member m
+		where m.member_num = c.member_num and c.goods_num = g.goods_num
+		and m.member_num = #{memberNum}
+	</select>
+
 	<insert id="insertOrder">
-		INSERT INTO MEMBER_ORDER (order_num, order_price, order_time, takeout, member_num, cook_state)
+		INSERT INTO MEMBER_ORDER (order_num, order_price,
+		order_time, takeout, member_num, cook_state)
 		VALUES
-	    	(order_seq.nextval,
-	    		(select sum(price_sum)
-				from
-					(
-						select c.qty * g.goods_price as price_sum
-						from cart c, goods g, member m
-						where m.member_num = c.member_num and c.goods_num = g.goods_num
-						and m.member_num = #{memberNum}
-					)
-				),
-	    	TO_CHAR(SYSDATE, 'RRRR-MM-DD HH24:MI:SS'),
-	    	#{takeout}, #{memberNum}, #{cookState})
+		(order_seq.nextval,
+		(select sum(price_sum)
+		from
+		(
+		select c.qty * g.goods_price as price_sum
+		from cart c, goods g, member m
+		where m.member_num = c.member_num and c.goods_num = g.goods_num
+		and m.member_num = #{memberNum}
+		)
+		),
+		TO_CHAR(SYSDATE, 'RRRR-MM-DD HH24:MI:SS'),
+		#{takeout}, #{memberNum}, #{cookState})
 	</insert>
 
 	<delete id="deleteOrder">
@@ -35,44 +43,46 @@
 		where member_num = #{memberNum}
 		order by order_num
 	</select>
-	
+
 	<select id="selectAllEmpOrder"
 		resultType="awesomeCoffee.dto.MemberOrderDTO">
 		select *
 		from member_order
 		where cook_state = 'N'
-		order by order_num
+		order by
+		order_num
 	</select>
-	
+
 	<update id="updateOrderCookState">
 		update member_order
 		set cook_state = #{cookState}
 		where order_num = #{orderNum}
 	</update>
-	
+
 	<update id="updateOrderTakeout">
 		update member_order
 		set takeout = #{takeout}
-		where order_num = #{orderNum}
+		where
+		order_num = #{orderNum}
 	</update>
-	
+
 	<update id="updateOrderPrice">
 		update member_order
 		set order_price = #{orderPrice}
 		where order_num = #{orderNum}
 	</update>
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
 </mapper>

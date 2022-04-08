@@ -29,8 +29,10 @@ public class MemberOrderService {
 	@Qualifier("transactionManager_sample")
 	private DataSourceTransactionManager transactionManager_sample;
 
-	// 회원주문 insert
-	public int insertMemberOrder(Map<String, Object> param) {
+
+	
+	// 회원 주문 insert (결제 완료시 실행)
+	public int insertMemberOrder (Map<String, Object> param) {
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 		TransactionStatus status = transactionManager_sample.getTransaction(def);
@@ -40,7 +42,7 @@ public class MemberOrderService {
 			result = sqlSession.update("Order.insertOrder", param);
 
 			transactionManager_sample.commit(status);
-			logger.info("========== 회원 주문 완료 : {}", result);
+			logger.info("========== 장바구니 리스트 불러오기 완료 : {}", result);
 
 		} catch (Exception e) {
 			logger.error("[ERROR] updateMember() Fail : e : {}", e.getMessage());
@@ -48,6 +50,10 @@ public class MemberOrderService {
 			transactionManager_sample.rollback(status);
 		}
 		return result;
+	}
+	// 회원주문 select  (주문하기 클릭시 실행)
+	public List<MemberOrderDTO> memberCartList(Map<String, Object> param) {
+		return sqlSession.selectList("Order.memberCartList", param);
 	}
 	// 회원주문 read 회원 
 	public List<MemberOrderDTO> selectAllMemOrder(String memberNum) {

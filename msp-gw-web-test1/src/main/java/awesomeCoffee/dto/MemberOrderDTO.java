@@ -7,10 +7,15 @@ public class MemberOrderDTO {
 	private String takeout ;
 	private String memberNum;
 	private String cookState;
+
+	private String goodsNum;
+	private String qty;
+	private String priceSum;
 	@Override
 	public String toString() {
 		return "MemberOrderDTO [orderNum=" + orderNum + ", orderPrice=" + orderPrice + ", orderTime=" + orderTime
-				+ ", takeout=" + takeout + ", memberNum=" + memberNum + ", cookState=" + cookState + "]";
+				+ ", takeout=" + takeout + ", memberNum=" + memberNum + ", cookState=" + cookState + ", goodsNum="
+				+ goodsNum + ", qty=" + qty + ", priceSum=" + priceSum + "]";
 	}
 	public String getOrderNum() {
 		return orderNum;
@@ -47,7 +52,25 @@ public class MemberOrderDTO {
 	}
 	public void setCookState(String cookState) {
 		this.cookState = cookState;
-	} 
+	}
+	public String getGoodsNum() {
+		return goodsNum;
+	}
+	public void setGoodsNum(String goodsNum) {
+		this.goodsNum = goodsNum;
+	}
+	public String getQty() {
+		return qty;
+	}
+	public void setQty(String qty) {
+		this.qty = qty;
+	}
+	public String getPriceSum() {
+		return priceSum;
+	}
+	public void setPriceSum(String priceSum) {
+		this.priceSum = priceSum;
+	}
 	
 	
 	
