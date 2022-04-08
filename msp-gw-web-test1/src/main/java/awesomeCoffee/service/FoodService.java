@@ -56,4 +56,52 @@ public class FoodService {
 		return sqlSession.selectList("Food.foodList");
 	}
 
+	public FoodDTO foodInfo(Map<String, Object> param) {
+		return sqlSession.selectOne("Food.foodInfo", param);
+	}
+
+	public int updateFood(Map<String, Object> param) {
+
+		// 트렌젝션 구현
+		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+		TransactionStatus status = transactionManager_sample.getTransaction(def);
+
+		int result = 0;
+		try {
+
+			result = sqlSession.update("Food.updateFood", param);
+
+			transactionManager_sample.commit(status);
+			logger.info("========== 매장 등록 완료 : {}", result);
+
+		} catch (Exception e) {
+			logger.error("[ERROR] insertUser() Fail : e : {}", e.getMessage());
+			e.printStackTrace();
+			transactionManager_sample.rollback(status);
+		}
+		return result;
+	}
+
+	public int deleteFood(Map<String, Object> param) {
+		// 트렌젝션 구현
+		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+		TransactionStatus status = transactionManager_sample.getTransaction(def);
+
+		int result = 0;
+		try {
+
+			result = sqlSession.delete("Food.deleteFood", param);
+
+			transactionManager_sample.commit(status);
+			logger.info("========== 매장 등록 완료 : {}", result);
+
+		} catch (Exception e) {
+			logger.error("[ERROR] insertUser() Fail : e : {}", e.getMessage());
+			e.printStackTrace();
+			transactionManager_sample.rollback(status);
+		}
+		return result;
+	}
 }

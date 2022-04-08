@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +30,84 @@ public class FoodController {
 	@Autowired
 	FoodService foodService;
 
+	
+	// 식자재삭제
+		@RequestMapping(method = RequestMethod.POST, value = "/api/food/delete")
+		public ModelAndView deleteFood(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+
+			Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
+			Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
+			Map<String, Object> responseBodyMap = new HashMap<String, Object>();
+
+			if (reqHeadMap == null) {
+				reqHeadMap = new HashMap<String, Object>();
+			}
+
+			reqHeadMap.put(Const.RESULT_CODE, Const.OK);
+			reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
+
+			logger.info("======================= reqBodyMap : {}", reqBodyMap.toString());
+
+			FoodDTO info = foodService.foodInfo(reqBodyMap);
+			if (StringUtils.isEmpty(info)) {
+				responseBodyMap.put("rsltCode", "1003");
+				responseBodyMap.put("rsltMsg", "Login required.");
+			} else {
+
+				int result = foodService.deleteFood(reqBodyMap);
+
+				if (result > 0) {
+					responseBodyMap.put("rsltCode", "0000");
+					responseBodyMap.put("rsltMsg", "Success");
+				} else {
+					responseBodyMap.put("rsltCode", "2003");
+					responseBodyMap.put("rsltMsg", "Data not found.");
+				}
+			}
+
+			ModelAndView mv = new ModelAndView("defaultJsonView");
+			mv.addObject(Const.HEAD, reqHeadMap);
+			mv.addObject(Const.BODY, responseBodyMap);
+
+			return mv;
+		}
+
+		// 식자재 수정
+		@RequestMapping(method = RequestMethod.POST, value = "/api/food/update")
+		public ModelAndView updateFood(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+
+			Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
+			Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
+			Map<String, Object> responseBodyMap = new HashMap<String, Object>();
+
+			if (reqHeadMap == null) {
+				reqHeadMap = new HashMap<String, Object>();
+			}
+
+			reqHeadMap.put(Const.RESULT_CODE, Const.OK);
+			reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
+
+			logger.info("======================= reqBodyMap : {}", reqBodyMap.toString());
+
+			FoodDTO dto = foodService.foodInfo(reqBodyMap);
+
+			if (!StringUtils.isEmpty(dto)) {
+				int result = foodService.updateFood(reqBodyMap);
+				if (result > 0) {
+					responseBodyMap.put("rsltCode", "0000");
+					responseBodyMap.put("rsltMsg", "Success");
+				} else {
+					responseBodyMap.put("rsltCode", "2003");
+					responseBodyMap.put("rsltMsg", "Data not found.");
+				}
+			}
+
+			ModelAndView mv = new ModelAndView("defaultJsonView");
+			mv.addObject(Const.HEAD, reqHeadMap);
+			mv.addObject(Const.BODY, responseBodyMap);
+
+			return mv;
+		}
 	@RequestMapping(method = RequestMethod.POST, value = "/api/food/regist")
 	public ModelAndView registFood(HttpServletRequest request, HttpServletResponse response) {
 

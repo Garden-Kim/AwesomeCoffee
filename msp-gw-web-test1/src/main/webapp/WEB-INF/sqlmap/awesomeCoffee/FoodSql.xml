@@ -13,9 +13,26 @@
 
 	</insert>
 
+	<select id="foodInfo" parameterType="map" resultType="awesomeCoffee.dto.FoodDTO">
+		SELECT *
+		FROM FOOD
+		WHERE FOOD_NUM = #{foodNum}
+	</select>
 	<select id="foodList" resultType="awesomeCoffee.dto.FoodDTO">
 		SELECT *
 		FROM FOOD
 	</select>
+	
+	<delete id="deleteFood" parameterType="map">
+		DELETE
+		FROM FOOD
+		WHERE FOOD_NUM = #{foodNum}
+	</delete>
+	
+	<update id="updateFood" parameterType="map">
+		UPDATE FOOD
+		SET FOOD_NAME = #{foodName}, FOOD_PRICE = #{foodPrice}
+		WHERE FOOD_NUM = #{foodNum}
+	</update>
 	
 </mapper>
