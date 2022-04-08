@@ -52,7 +52,7 @@ public class WishlistController {
 			responseBodyMap.put("rsltCode", "1003");
 			responseBodyMap.put("rsltMsg", "Login required.");
 		} else {
-			String memberNum = memberService.getMemberNum(authInfo.getMemberId());
+			String memberNum = memberService.getMemberNum(authInfo.getLoginId());
 			reqBodyMap.put("memberNum", memberNum);
 			int result = wishlistService.insertWishlist(reqBodyMap);
 			if (result > 0) {
@@ -80,7 +80,7 @@ public class WishlistController {
 			responseBodyMap.put("rsltCode", "1003");
 			responseBodyMap.put("rsltMsg", "Login required.");
 		} else {
-			String memberNum = memberService.getMemberNum(authInfo.getMemberId());
+			String memberNum = memberService.getMemberNum(authInfo.getLoginId());
 			List<WishlistDTO> list = wishlistService.selectAllWishlist(memberNum);
 			logger.info("======================= responseBodyMap : {}", list.size());
 
@@ -129,7 +129,7 @@ public class WishlistController {
 			responseBodyMap.put("rsltCode", "1003");
 			responseBodyMap.put("rsltMsg", "Login required.");
 		} else {
-			String memberNum = memberService.getMemberNum(authInfo.getMemberId());
+			String memberNum = memberService.getMemberNum(authInfo.getLoginId());
 			reqBodyMap.put("memberNum", memberNum);
 			int result = wishlistService.deleteWishlist(reqBodyMap);
 			if (result > 0) {

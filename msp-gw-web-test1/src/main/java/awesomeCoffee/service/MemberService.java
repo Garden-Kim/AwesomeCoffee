@@ -157,23 +157,5 @@ public class MemberService {
 		return result;
 	}
 
-	// 로그인
-	public AuthInfo login(Map<String, Object> param) {
-		AuthInfo result = null;
-		AuthInfo authInfo = sqlSession.selectOne("Member.login", param);
-		System.out.println(authInfo.getMemberId());
-		System.out.println(authInfo.getMemberPw());
-		if (param.get("memberPw").equals(authInfo.getMemberPw())) {
-			result = authInfo;
-		}
-		return result;
-	}
-	// 로그아웃
-	public AuthInfo logout(Map<String, Object> param) {
-		AuthInfo result = null;
-		AuthInfo authInfo = sqlSession.selectOne("Member.login", param);
-		result = authInfo;
-		return result;
-	}
 
 }

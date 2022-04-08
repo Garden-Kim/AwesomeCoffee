@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE mapper
+                PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="storeOrder">
+
+	<!-- 발주 insert -->
+	<insert id="insertStoreOrder" parameterType="map">
+		INSERT INTO STORE_ORDER(STOREORDER_NUM, STORE_NUM, FOOD_NUM, 
+					STOREORDER_QTY, STOREORDER_DATE, STOREORDER_PRICE)
+		VALUES(STOREORDER_NUM_SEQ.NEXTVAL, #{storeNum}, #{foodNum}, 
+				#{storeOrderQty}, sysdate,
+				(SELECT (SELECT FOOD_PRICE 
+						FROM FOOD
+						where FOOD_NUM = #{foodNum}) * #{storeOrderQty}
+						FROM DUAL))
+	</insert>
+	
+	<select id="storeOrderList" resultType="awesomeCoffee.dto.StoreOrderDTO">
+		SELECT *
+		FROM STORE_ORDER
+	
+	</select>
+</mapper>

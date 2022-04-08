@@ -33,7 +33,7 @@
 	<select id="findId" parameterType="map" resultType="awesomeCoffee.dto.MemberDTO">
 		select member_id
 		from member
-		where member_num = #{memberNum} and member_phone = #{memberPhone}
+		where member_name = #{memberName} and member_phone = #{memberPhone}
 	</select>
 	
 	<select id="getMemberInfo" parameterType="map" resultType="awesomeCoffee.dto.MemberDTO">
@@ -50,13 +50,7 @@
 		WHERE member_id = #{memberId}
 	</select>
 	
-	<select id="login" parameterType="map" resultType="awesomeCoffee.dto.AuthInfo">
-		SELECT member_id, member_pw
-		FROM   MEMBER
-		<if test="memberId != null and memberId != '' ">
-			WHERE member_id = #{memberId}
-		</if>
-	</select>
+
 
 	
 	<update id="updateMember">

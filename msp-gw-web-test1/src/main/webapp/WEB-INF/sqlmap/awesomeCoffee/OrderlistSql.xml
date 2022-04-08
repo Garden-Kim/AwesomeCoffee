@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE mapper
+                PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Orderlist">
+	<insert id="insertOrderlist">
+		insert into orderlist (order_num, orderlist_qty, orderlist_sum, goods_num)
+		values
+		(#{orderNum}, #{orderlistQty},
+		 #{orderlistSum}, #{goodsNum})
+	</insert>
+	
+	<select id="selectAllOrderlist" parameterType="map" resultType="awesomeCoffee.dto.OrderlistDTO">
+		select *
+		from orderlist
+		where order_num = #{orderNum}
+		order by order_num
+	</select>
+	
+	<delete id="deleteOrderlist">
+		delete 
+		from orderlist
+		where order_num = #{orderNum}
+	</delete>
+	
+	
+</mapper>
+

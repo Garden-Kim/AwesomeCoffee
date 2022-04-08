@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE mapper
+                PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Payment">
+
+<sql id="priceSum">
+	select sum(price_sum)
+		from
+		(
+		select c.qty * g.goods_price as price_sum
+		from cart c, goods g, member m
+		where m.member_num = #{memberNum} and c.goods_num = g.goods_num
+		)
+</sql>
+
+<select id="asd" resultType="awesomeCoffee.dto.PaymentDTO">
+	select *
+	from payment
+	where member_num = #{memberNum}
+</select>
+
+<insert id="insertPayment">
+	insert into payment (order_num, payment_kind, payment_date, payment_price)
+	values 
+	(#{orderNum} , #{paymentKind}, SYSDATE, 
+		(select sum(price_sum)
+		from
+		(
+		select c.qty * g.goods_price as price_sum
+		from cart c, goods g, member m
+		where m.member_num = c.member_num and c.goods_num = g.goods_num
+		and m.member_num = #{memberNum}
+		)
+		)
+	)
+</insert>
+
+<delete id="deletePayment">
+	delete 
+	from payment
+	where member_num = #{memberNum}
+</delete>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

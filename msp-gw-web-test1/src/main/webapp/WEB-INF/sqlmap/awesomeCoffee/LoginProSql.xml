@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE mapper
+                PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="loginPro">
+
+	<select id="chkId" parameterType="map" resultType="awesomeCoffee.dto.AuthInfo">
+		SELECT MEMBER_ID loginId, MEMBER_PW password, 'member' grade
+		FROM   MEMBER
+		<if test="loginId != null and loginId != '' ">
+			WHERE MEMBER_ID = #{loginId}
+			AND	  MEMBER_PW = #{password}
+		</if>
+		UNION
+		SELECT STORE_ID loginId, STORE_PW password, 'store' grade
+		FROM STORE
+		<if test="loginId != null and loginId != '' ">
+			WHERE STORE_ID = #{loginId}
+			AND	  STORE_PW = #{password}
+		</if>
+	</select>
+	
+
+
+
+
+</mapper>
