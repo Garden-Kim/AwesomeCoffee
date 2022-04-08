@@ -57,14 +57,6 @@
 		SELECT *
 		FROM STORE
 	</select>
-	<!-- 로그인 -->
-	<select id="login" parameterType="map"
-		resultType="awesomeCoffee.dto.StoreDTO">
 
-		SELECT STORE_ID, STORE_PW
-		FROM STORE
-		WHERE STORE_ID = #{storeId}
-		AND STORE_PW =
-		#{password}
-	</select>
+
 </mapper>

@@ -50,13 +50,7 @@
 		WHERE member_id = #{memberId}
 	</select>
 	
-	<select id="login" parameterType="map" resultType="awesomeCoffee.dto.AuthInfo">
-		SELECT member_id, member_pw
-		FROM   MEMBER
-		<if test="memberId != null and memberId != '' ">
-			WHERE member_id = #{memberId}
-		</if>
-	</select>
+
 
 	
 	<update id="updateMember">

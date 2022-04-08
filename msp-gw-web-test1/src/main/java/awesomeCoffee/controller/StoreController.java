@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import awesomeCoffee.dto.AuthInfo;
 import awesomeCoffee.dto.StoreDTO;
 import awesomeCoffee.service.StoreService;
 import kr.msp.constant.Const;
@@ -31,7 +32,7 @@ public class StoreController {
 	StoreService storeService;
 
 	
-	// 매장정보 수정
+	// 매장상태 수정
 		@RequestMapping(method = RequestMethod.POST, value = "/api/store/state")
 		public ModelAndView updateStoreState(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
 
@@ -47,9 +48,9 @@ public class StoreController {
 			reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
 
 			logger.info("======================= reqBodyMap : {}", reqBodyMap.toString());
-
-			if (!StringUtils.isEmpty(session.getAttribute("loginId"))) {
-				if (!session.getAttribute("loginId").equals(reqBodyMap.get("storeId"))) {
+			AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
+			if (!StringUtils.isEmpty(authInfo.getLoginId())) {
+				if (!authInfo.getLoginId().equals(reqBodyMap.get("storeId"))) {
 					responseBodyMap.put("rsltCode", "1011");
 					responseBodyMap.put("rsltMsg", "No permisson.");
 				} else {
@@ -88,9 +89,9 @@ public class StoreController {
 		reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
 
 		logger.info("======================= reqBodyMap : {}", reqBodyMap.toString());
-
-		if (!StringUtils.isEmpty(session.getAttribute("loginId"))) {
-			if (!session.getAttribute("loginId").equals(reqBodyMap.get("storeId"))) {
+		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
+		if (!StringUtils.isEmpty(authInfo.getLoginId())) {
+			if (!authInfo.getLoginId().equals(reqBodyMap.get("storeId"))) {
 				responseBodyMap.put("rsltCode", "1011");
 				responseBodyMap.put("rsltMsg", "No permisson.");
 			} else {
@@ -131,11 +132,12 @@ public class StoreController {
 
 		logger.info("======================= reqBodyMap : {}", reqBodyMap.toString());
 
-		if (StringUtils.isEmpty(session.getAttribute("loginId"))) {
+		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
+		if (StringUtils.isEmpty(authInfo.getLoginId())) {
 			responseBodyMap.put("rsltCode", "1003");
 			responseBodyMap.put("rsltMsg", "Login required.");
 		} else {
-			if (!session.getAttribute("loginId").equals(reqBodyMap.get("storeId"))) {
+			if (!authInfo.getLoginId().equals(reqBodyMap.get("storeId"))) {
 				responseBodyMap.put("rsltCode", "1011");
 				responseBodyMap.put("rsltMsg", "No permission.");
 			} else {
@@ -198,81 +200,6 @@ public class StoreController {
 		return mv;
 	}
 
-	// 로그인
-	@RequestMapping(method = RequestMethod.POST, value = "/api/store/login")
-	public ModelAndView login(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
-
-		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
-		Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
-		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
-
-		if (reqHeadMap == null) {
-			reqHeadMap = new HashMap<String, Object>();
-		}
-
-		reqHeadMap.put(Const.RESULT_CODE, Const.OK);
-		reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
-
-		logger.info("======================= reqBodyMap : {}", reqBodyMap.toString());
-
-		StoreDTO info = storeService.login(reqBodyMap);
-
-		if (!StringUtils.isEmpty(info)) {
-			responseBodyMap.put("rsltCode", "0000");
-			responseBodyMap.put("rsltMsg", "Success");
-			session.setAttribute("storeId", info.getStoreId());
-		} else {
-			responseBodyMap.put("rsltCode", "2003");
-			responseBodyMap.put("rsltMsg", "Data not found.");
-		}
-
-		ModelAndView mv = new ModelAndView("defaultJsonView");
-		mv.addObject(Const.HEAD, reqHeadMap);
-		mv.addObject(Const.BODY, responseBodyMap);
-
-		return mv;
-	}
-
-	// 매장로그아웃
-	@RequestMapping(method = RequestMethod.POST, value = "/api/store/logout")
-	public ModelAndView logout(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
-
-		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
-		Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
-		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
-
-		if (reqHeadMap == null) {
-			reqHeadMap = new HashMap<String, Object>();
-		}
-
-		reqHeadMap.put(Const.RESULT_CODE, Const.OK);
-		reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
-
-		logger.info("======================= reqBodyMap : {}", reqBodyMap.toString());
-
-		System.out.println(reqBodyMap.get("storeId"));
-		StoreDTO info = storeService.getStoreInfoById(reqBodyMap);
-
-		if (session.getAttribute("loginId") != null) {
-			if (!StringUtils.isEmpty(info) && session.getAttribute("loginId").equals(info.getStoreId())) {
-				responseBodyMap.put("rsltCode", "0000");
-				responseBodyMap.put("rsltMsg", "Success");
-				session.invalidate();
-			} else {
-				responseBodyMap.put("rsltCode", "1011");
-				responseBodyMap.put("rsltMsg", "No permisson.");
-			}
-		} else {
-			responseBodyMap.put("rsltCode", "1003");
-			responseBodyMap.put("rsltMsg", "Login required.");
-		}
-
-		ModelAndView mv = new ModelAndView("defaultJsonView");
-		mv.addObject(Const.HEAD, reqHeadMap);
-		mv.addObject(Const.BODY, responseBodyMap);
-
-		return mv;
-	}
 
 	// 매장조회
 	@RequestMapping(method = RequestMethod.POST, value = "/api/store/info")

@@ -29,73 +29,7 @@ public class MemberController {
 	@Autowired(required = true)
 	private MemberService service;
 
-	// 로그아웃
-	@RequestMapping(method = RequestMethod.POST, value = "/api/member/logout")
-	public ModelAndView logout(HttpSession session, HttpServletRequest request, HttpServletResponse response) {
-		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
-		Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
-		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
-
-		if (reqHeadMap == null) {
-			reqHeadMap = new HashMap<String, Object>();
-		}
-		reqHeadMap.put(Const.RESULT_CODE, Const.OK);
-		reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
-
-		logger.info("======================= reqBodyMap : {}", reqBodyMap.toString());
-		System.out.println(reqBodyMap.get("memberId"));
-		
-		
-		AuthInfo authInfo = service.logout(reqBodyMap);
-
-		if (authInfo != null) {
-			responseBodyMap.put("rsltCode", "0000");
-			responseBodyMap.put("rsltMsg", "Success");
-			session.invalidate();
-			
-		} else {
-			responseBodyMap.put("rsltCode", "2003");
-			responseBodyMap.put("rsltMsg", "Data not found.");
-		}
-		ModelAndView mv = new ModelAndView("defaultJsonView");
-		mv.addObject(Const.HEAD, reqHeadMap);
-		mv.addObject(Const.BODY, responseBodyMap);
-
-		return mv;
-	}
-
-	// 로그인
-	@RequestMapping(method = RequestMethod.POST, value = "/api/member/login")
-	public ModelAndView login(HttpSession session, HttpServletRequest request, HttpServletResponse response) {
-		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
-		Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
-		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
-
-		if (reqHeadMap == null) {
-			reqHeadMap = new HashMap<String, Object>();
-		}
-		reqHeadMap.put(Const.RESULT_CODE, Const.OK);
-		reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
-
-		logger.info("======================= reqBodyMap : {}", reqBodyMap.toString());
-
-		AuthInfo authInfo = service.login(reqBodyMap);
-
-		if (authInfo != null) {
-			responseBodyMap.put("rsltCode", "0000");
-			responseBodyMap.put("rsltMsg", "Success");
-			session.setAttribute("authInfo", authInfo);
-
-		} else {
-			responseBodyMap.put("rsltCode", "2003");
-			responseBodyMap.put("rsltMsg", "Data not found.");
-		}
-		ModelAndView mv = new ModelAndView("defaultJsonView");
-		mv.addObject(Const.HEAD, reqHeadMap);
-		mv.addObject(Const.BODY, responseBodyMap);
-
-		return mv;
-	}
+	
 
 	// 아이디 중복확인
 	@RequestMapping(method = RequestMethod.POST, value = "/api/member/duplicate")
@@ -258,7 +192,7 @@ public class MemberController {
 			responseBodyMap.put("rsltCode", "1003");
 			responseBodyMap.put("rsltMsg", "Login required.");
 		} else {
-			if (reqBodyMap.get("memberId").equals(authInfo.getMemberId())) {
+			if (reqBodyMap.get("memberId").equals(authInfo.getLoginId())) {
 				int result = service.deleteMember(reqBodyMap);
 				if (result > 0) {
 					responseBodyMap.put("rsltCode", "0000");
@@ -301,7 +235,7 @@ public class MemberController {
 			responseBodyMap.put("rsltCode", "1003");
 			responseBodyMap.put("rsltMsg", "Login required.");
 		} else {
-			if (reqBodyMap.get("memberId").equals(authInfo.getMemberId())) {
+			if (reqBodyMap.get("memberId").equals(authInfo.getLoginId())) {
 				MemberDTO info = service.getMemberInfo(reqBodyMap);
 				if (!StringUtils.isEmpty(info)) {
 					responseBodyMap.put("rsltCode", "0000");
@@ -383,7 +317,7 @@ public class MemberController {
 			responseBodyMap.put("rsltCode", "1003");
 			responseBodyMap.put("rsltMsg", "Login required.");
 		} else {
-			if (reqBodyMap.get("memberId").equals(authInfo.getMemberId())) {
+			if (reqBodyMap.get("memberId").equals(authInfo.getLoginId())) {
 				int result = service.updateMember(reqBodyMap);
 				if (result > 0) {
 					responseBodyMap.put("rsltCode", "0000");

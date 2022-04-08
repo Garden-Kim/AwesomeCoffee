@@ -54,7 +54,7 @@ public class MemberOrderController {
 			responseBodyMap.put("rsltCode", "1003");
 			responseBodyMap.put("rsltMsg", "Login required.");
 		} else {
-			String memberNum = memberService.getMemberNum(authInfo.getMemberId());
+			String memberNum = memberService.getMemberNum(authInfo.getLoginId());
 			reqBodyMap.put("memberNum", memberNum);
 			int result = memberOrderService.insertMemberOrder(reqBodyMap);
 
@@ -84,7 +84,7 @@ public class MemberOrderController {
 			responseBodyMap.put("rsltCode", "1003");
 			responseBodyMap.put("rsltMsg", "Login required.");
 		} else {
-			String memberNum = memberService.getMemberNum(authInfo.getMemberId());
+			String memberNum = memberService.getMemberNum(authInfo.getLoginId());
 			List<MemberOrderDTO> list = memberOrderService.selectAllMemOrder(memberNum);
 			logger.info("======================= responseBodyMap : {}", list.size());
 
@@ -257,7 +257,7 @@ public class MemberOrderController {
 			responseBodyMap.put("rsltCode", "1003");
 			responseBodyMap.put("rsltMsg", "Login required.");
 		} else {
-			String memberNum = memberService.getMemberNum(authInfo.getMemberId());
+			String memberNum = memberService.getMemberNum(authInfo.getLoginId());
 			reqBodyMap.put("memberNum", memberNum);
 			int result = memberOrderService.deleteOrder(reqBodyMap);
 			if (result > 0) {

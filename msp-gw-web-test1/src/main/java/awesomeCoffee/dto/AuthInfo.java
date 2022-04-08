@@ -2,29 +2,32 @@ package awesomeCoffee.dto;
 
 public class AuthInfo {
 	
-	private String memberId;
-	private String memberPw;
-	
+	private String loginId;
+	private String password;
+	private String grade;
+	@Override
 	public String toString() {
-		return 	"memberId="+memberId
-			+	"\n memberPw="+memberPw;
+		return "AuthInfo [loginId=" + loginId + ", password=" + password + ", grade=" + grade + "]";
 	}
-
-	public String getMemberId() {
-		return memberId;
+	public String getLoginId() {
+		return loginId;
 	}
-
-	public void setMemberId(String memberId) {
-		this.memberId = memberId;
+	public void setLoginId(String loginId) {
+		this.loginId = loginId;
 	}
-
-	public String getMemberPw() {
-		return memberPw;
+	public String getPassword() {
+		return password;
 	}
-
-	public void setMemberPw(String memberPw) {
-		this.memberPw = memberPw;
+	public void setPassword(String password) {
+		this.password = password;
 	}
-
+	public String getGrade() {
+		return grade;
+	}
+	public void setGrade(String grade) {
+		this.grade = grade;
+	}
+	
+	
 
 }
