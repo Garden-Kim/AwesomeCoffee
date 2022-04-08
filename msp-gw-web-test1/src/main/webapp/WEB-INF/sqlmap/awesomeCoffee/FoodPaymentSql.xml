@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE mapper
+                PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="FoodPayment">
+
+
+	<!-- 매장등록 -->
+	<insert id="insertFood">
+		INSERT INTO FOOD
+		VALUES(FOOD_NUM_SEQ.NEXTVAL, #{foodPrice}, #{foodName})
+
+	</insert>
+
+	<select id="foodInfo" parameterType="map" resultType="awesomeCoffee.dto.FoodDTO">
+		SELECT *
+		FROM FOOD
+		WHERE FOOD_NUM = #{foodNum}
+	</select>
+	<select id="foodList" resultType="awesomeCoffee.dto.FoodDTO">
+		SELECT *
+		FROM FOOD
+	</select>
+	
+	<delete id="deleteFood" parameterType="map">
+		DELETE
+		FROM FOOD
+		WHERE FOOD_NUM = #{foodNum}
+	</delete>
+	
+	<update id="updateFood" parameterType="map">
+		UPDATE FOOD
+		SET FOOD_NAME = #{foodName}, FOOD_PRICE = #{foodPrice}
+		WHERE FOOD_NUM = #{foodNum}
+	</update>
+	
+</mapper>
