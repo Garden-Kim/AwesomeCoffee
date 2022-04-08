@@ -40,7 +40,7 @@ public class StoreOrderService {
 		try {
 			
 			
-			result = sqlSession.insert("storeOrder.insertStoreOrder", param);
+			result = sqlSession.insert("StoreOrder.insertStoreOrder", param);
 
 			transactionManager_sample.commit(status);
 			logger.info("========== 발주 완료 : {}", result);
@@ -55,7 +55,7 @@ public class StoreOrderService {
 	}
 
 	public List<StoreOrderDTO> storeOrderList() {
-		return sqlSession.selectList("storeOrder.storeOrderList");
+		return sqlSession.selectList("StoreOrder.storeOrderList");
 	}
 
 }
