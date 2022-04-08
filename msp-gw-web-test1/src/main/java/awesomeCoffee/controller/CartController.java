@@ -110,7 +110,7 @@ public class CartController {
 		return mv;
 	}
 
-	// 장바구니 delete
+	// 장바구니 deleteOne
 	@RequestMapping(method = RequestMethod.POST, value = "/api/cart/deleteOne")
 	public ModelAndView cartDeleteOne(HttpServletRequest request, HttpSession session) {
 		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);

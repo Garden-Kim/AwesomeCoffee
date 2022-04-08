@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import awesomeCoffee.dto.AuthInfo;
+import awesomeCoffee.service.CartService;
 import awesomeCoffee.service.MemberService;
 import awesomeCoffee.service.PaymentService;
 import kr.msp.constant.Const;
@@ -28,6 +29,8 @@ public class PaymentController {
 	private PaymentService paymentService;
 	@Autowired
 	private MemberService memberService;
+	@Autowired
+	private CartService cartService;
 
 	// 결제 insert
 	@RequestMapping(method = RequestMethod.POST, value = "/api/payment/regist")
@@ -53,8 +56,8 @@ public class PaymentController {
 			reqBodyMap.put("memberNum", memberNum);
 			
 			int result = paymentService.paymentInsert(reqBodyMap);
-
 			if (result > 0) {
+				cartService.deleteCart(reqBodyMap);
 				responseBodyMap.put("rsltCode", "0000");
 				responseBodyMap.put("rsltMsg", "Success");
 			} else {

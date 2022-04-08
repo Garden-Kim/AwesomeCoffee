@@ -8,7 +8,16 @@
 	<insert id="insertOrder">
 		INSERT INTO MEMBER_ORDER (order_num, order_price, order_time, takeout, member_num, cook_state)
 		VALUES
-	    	(order_seq.nextval, #{orderPrice},
+	    	(order_seq.nextval,
+	    		(select sum(price_sum)
+				from
+					(
+						select c.qty * g.goods_price as price_sum
+						from cart c, goods g, member m
+						where m.member_num = c.member_num and c.goods_num = g.goods_num
+						and m.member_num = #{memberNum}
+					)
+				),
 	    	TO_CHAR(SYSDATE, 'RRRR-MM-DD HH24:MI:SS'),
 	    	#{takeout}, #{memberNum}, #{cookState})
 	</insert>

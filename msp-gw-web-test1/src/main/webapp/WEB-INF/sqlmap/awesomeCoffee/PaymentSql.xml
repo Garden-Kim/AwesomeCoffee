@@ -5,16 +5,6 @@
 
 <mapper namespace="Payment">
 
-<sql id="priceSum">
-	select sum(price_sum)
-		from
-		(
-		select c.qty * g.goods_price as price_sum
-		from cart c, goods g, member m
-		where m.member_num = #{memberNum} and c.goods_num = g.goods_num
-		)
-</sql>
-
 <select id="asd" resultType="awesomeCoffee.dto.PaymentDTO">
 	select *
 	from payment

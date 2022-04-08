@@ -32,7 +32,7 @@ public class PaymentService {
 		int result = 0;
 		try {
 			result = sqlSession.update("Payment.insertPayment", param);
-
+			
 			transactionManager_sample.commit(status);
 			logger.info("========== 결제 완료 : {}", result);
 
