@@ -62,7 +62,7 @@ public class PaymentController {
 				responseBodyMap.put("rsltMsg", "Success");
 			} else {
 				responseBodyMap.put("rsltCode", "2003");
-				responseBodyMap.put("rsltMsg", "Data not found.");
+				responseBodyMap.put("rsltMsg", "Cart is empty");
 			}
 		}
 		ModelAndView mv = new ModelAndView("defaultJsonView");
