@@ -116,7 +116,7 @@ public class StoreController {
 	}
 
 	// 매장삭제
-	@RequestMapping(method = RequestMethod.POST, value = "/api/store/delte")
+	@RequestMapping(method = RequestMethod.POST, value = "/api/store/delete")
 	public ModelAndView deleteStore(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
 
 		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
@@ -160,7 +160,7 @@ public class StoreController {
 	}
 
 	// 매장리스트_기맹ver
-	@RequestMapping(method = RequestMethod.POST, value = "/api/store/storeList")
+	@RequestMapping(method = RequestMethod.POST, value = "/api/store/list")
 	public ModelAndView storeList() {
 		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
 		List<Map<String, Object>> storeList = new ArrayList<Map<String, Object>>();
