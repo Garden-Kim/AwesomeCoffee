@@ -220,7 +220,7 @@ public class StoreController {
 		if (!StringUtils.isEmpty(info)) {
 			responseBodyMap.put("rsltCode", "0000");
 			responseBodyMap.put("rsltMsg", "Success");
-			session.setAttribute("loginId", info.getStoreId());
+			session.setAttribute("storeId", info.getStoreId());
 		} else {
 			responseBodyMap.put("rsltCode", "2003");
 			responseBodyMap.put("rsltMsg", "Data not found.");
