@@ -22,6 +22,7 @@ import awesomeCoffee.dto.AuthInfo;
 import awesomeCoffee.dto.CartDTO;
 import awesomeCoffee.dto.MemberDTO;
 import awesomeCoffee.dto.MemberOrderDTO;
+import awesomeCoffee.service.CartService;
 import awesomeCoffee.service.MemberOrderService;
 import awesomeCoffee.service.MemberService;
 import kr.msp.constant.Const;
@@ -33,6 +34,8 @@ public class MemberOrderController {
 	private MemberOrderService memberOrderService;
 	@Autowired(required = true)
 	private MemberService memberService;
+	@Autowired
+	private CartService cartService;
 
 	// 주문 insert
 	@RequestMapping(method = RequestMethod.POST, value = "/api/order/regist")
@@ -55,16 +58,23 @@ public class MemberOrderController {
 			responseBodyMap.put("rsltMsg", "Login required.");
 		} else {
 			String memberNum = memberService.getMemberNum(authInfo.getLoginId());
-			reqBodyMap.put("memberNum", memberNum);
-			int result = memberOrderService.insertMemberOrder(reqBodyMap);
-
-			if (result > 0) {
-				responseBodyMap.put("rsltCode", "0000");
-				responseBodyMap.put("rsltMsg", "Success");
-			} else {
+			List<CartDTO> list = cartService.selectAllCart(memberNum);
+			if (!list.isEmpty() ) {
+				reqBodyMap.put("memberNum", memberNum);
+				int result = memberOrderService.insertMemberOrder(reqBodyMap);
+				if (result > 0) {
+					responseBodyMap.put("rsltCode", "0000");
+					responseBodyMap.put("rsltMsg", "Success");
+				} else {
+					responseBodyMap.put("rsltCode", "2003");
+					responseBodyMap.put("rsltMsg", "Data not found");
+				}
+			}else {
 				responseBodyMap.put("rsltCode", "2003");
-				responseBodyMap.put("rsltMsg", "Data not found.");
+				responseBodyMap.put("rsltMsg", "cart is empty");
 			}
+
+			
 		}
 		ModelAndView mv = new ModelAndView("defaultJsonView");
 		mv.addObject(Const.HEAD, reqHeadMap);

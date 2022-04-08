@@ -18,6 +18,13 @@
 	(#{memberNum} , #{goodsNum}, #{qty})
 </insert>
 
+<update id="updateCart">
+	update cart
+	set qty = qty+1
+	where goods_num = #{goodsNum}
+
+</update>
+
 <delete id="deleteCartOne">
 	delete 
 	from cart

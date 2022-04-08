@@ -46,6 +46,24 @@ public class CartService {
 		}
 		return result;
 	}
+	// 장바구니 update 
+	public int updateCart(Map<String, Object> param ) {
+		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+		TransactionStatus status = transactionManager_sample.getTransaction(def);
+		int result = 0;
+		try {
+			result = sqlSession.update("Cart.updateCart", param);
+			transactionManager_sample.commit(status);
+			logger.info("========== 장바구니 수량 수정 완료 : {}", result);
+
+		} catch (Exception e) {
+			logger.error("[ERROR] insertUser() Fail : e : {}", e.getMessage());
+			e.printStackTrace();
+			transactionManager_sample.rollback(status);
+		}
+		return result;
+	}
 	// 장바구니 read
 	public List<CartDTO> selectAllCart(String memberNum) {
 		return sqlSession.selectList("Cart.selectAllCart", memberNum);

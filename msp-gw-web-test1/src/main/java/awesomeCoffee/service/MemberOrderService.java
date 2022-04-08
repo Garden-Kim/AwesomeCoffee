@@ -36,6 +36,7 @@ public class MemberOrderService {
 		TransactionStatus status = transactionManager_sample.getTransaction(def);
 		int result = 0;
 		try {
+
 			result = sqlSession.update("Order.insertOrder", param);
 
 			transactionManager_sample.commit(status);
