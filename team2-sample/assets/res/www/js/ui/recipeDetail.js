@@ -83,15 +83,18 @@
       this.els.$back.on('click', function () {
         M.page.back();
       });
+      // 사이드바 
       $('.btn-menu').on('click', function () {
         console.log('메뉴클릭');
         $('.position').attr('style', 'position: absolute; top:0;right:0px;bottom:0;transition:1s ease;');
-        $('.container').fadeTo("fast", 0.3);
+        $('.wrapper').fadeTo("fast", 0.3);
+        $('.wrapper').attr('style', 'position:relative;height:100%;background-color:#fff;pointer-events: none;cursor: default;');
       });
       $('.btn-menu').on('blur', function () {
         console.log('취소');
         $('.position').attr('style', 'position: absolute; top:0;right:-130px;bottom:0;transition:1s ease;');
-        $('.container').fadeTo("fast", 1);
+        $('.wrapper').fadeTo("fast", 1);
+        $('.wrapper').attr('style', 'position:relative;height:100%;background-color:#fff;');
       });
       $('#modiBtn').on('click', function(){
         M.page.html('./write-recipe.html',{param : { seqNo : M.data.param('seqNo')}});

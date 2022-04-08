@@ -86,17 +86,66 @@
       $('.l-fix').on('click', function(){
         M.page.back();
       });
-// 사이드바 
+      // 카테고리
+      const tabList = document.querySelectorAll('.category li');
+      for(var i = 0; i < tabList.length; i++){
+        tabList[i].querySelector('.btn-category').addEventListener('click', function(){
+          for(var j = 0; j < tabList.length; j++){
+            tabList[j].classList.remove('on');
+          }
+          this.parentNode.classList.add('on');
+          // menu 목록 출력
+        });
+      }
+      // 사이드바 
       $('.btn-menu').on('click', function () {
         console.log('메뉴클릭');
         $('.position').attr('style', 'position: absolute; top:0;right:0px;bottom:0;transition:1s ease;');
         $('.wrapper').fadeTo("fast", 0.3);
+        $('.wrapper').attr('style', 'position:relative;height:100%;background-color:#fff;pointer-events: none;cursor: default;');
       });
       $('.btn-menu').on('blur', function () {
         console.log('취소');
         $('.position').attr('style', 'position: absolute; top:0;right:-130px;bottom:0;transition:1s ease;');
         $('.wrapper').fadeTo("fast", 1);
+        $('.wrapper').attr('style', 'position:relative;height:100%;background-color:#fff;');
       });
+// 회원 사이드바
+      $('#m-orderList').on('click', function(){
+        M.page.replace('./menuList.html');
+      });
+      $('#m-storeList').on('click', function(){
+        M.page.html('./storeList.html');
+      });
+      $('#m-userInfo').on('click', function(){
+        M.page.html('./userInfo.html');
+      });
+      $('#m-cart').on('click', function(){
+        M.page.html('./cart.html');
+      });
+      $('#m-payList').on('click', function(){
+        // M.page.replace('./menuList.html');
+      });
+// 관리자 사이드바
+      $('#menu-order-food').on('click', function(){
+        M.page.html('./order.html');
+      });      
+      $('#menu-payment-list').on('click', function(){
+      //   발주내역   M.page.html('./.html');
+      });       
+      $('#menu-sales').on('click', function(){
+        M.page.html('./sales.html');
+      });      
+      $('#menu-menu').on('click', function(){
+        M.page.replace('./menuList.html');
+      });          
+      $('#menu-member-info').on('click', function(){
+      //    회원정보  M.page.html('./.html');
+      });   
+      $('#menu-store-info').on('click', function(){
+        M.page.html('./storeList.html');
+      });
+      
       this.els.$btnModify.on('click', function(){
         M.page.html('./write-menu.html');
       });

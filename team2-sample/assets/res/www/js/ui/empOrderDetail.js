@@ -96,17 +96,18 @@
       this.els.$back.on('click', function () {
         M.page.back();
       })
-
-       // 사이드바 
-       $('.btn-menu').on('click', function () {
+      // 사이드바 
+      $('.btn-menu').on('click', function () {
         console.log('메뉴클릭');
         $('.position').attr('style', 'position: absolute; top:0;right:0px;bottom:0;transition:1s ease;');
         $('.wrapper').fadeTo("fast", 0.3);
+        $('.wrapper').attr('style', 'position:relative;height:100%;background-color:#fff;pointer-events: none;cursor: default;');
       });
       $('.btn-menu').on('blur', function () {
         console.log('취소');
         $('.position').attr('style', 'position: absolute; top:0;right:-130px;bottom:0;transition:1s ease;');
         $('.wrapper').fadeTo("fast", 1);
+        $('.wrapper').attr('style', 'position:relative;height:100%;background-color:#fff;');
       });
       // 사이드바 메뉴
       this.els.$menuOrderList.on('click', function () {
@@ -118,8 +119,8 @@
       this.els.$menuRecipeList.on('click', function () {
         M.page.html("./recipeList.html");
       })
-      this.els.$menuRecipeList.on('click', function () {
-        // M.page.html("./.html"); 매장정보 페이지로 이동 
+      this.els.$menuStoreInfo.on('click', function () {
+        M.page.html("./storeInfo.html");
       })
 
       this.els.$finish.on('click', function () {

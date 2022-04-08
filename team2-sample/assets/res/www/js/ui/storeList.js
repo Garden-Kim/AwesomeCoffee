@@ -37,8 +37,8 @@
           var items = "";
           $.each(data.list, function (index, item) {
             items += "<ul data='" + item.seqNo + "' class='numSend metro-wrap store bg-white' >";
-            items += "<li class='img-wrap'>";
-            items += "<div class='img '>";
+            items += "<li class='img-wrap storeM'>";
+            items += "<div class='img storeE'>";
             items += "<img src='";
             items += item.imgUrl;
             items += "' alt=''/>";
@@ -91,11 +91,29 @@
         console.log('메뉴클릭');
         $('.position').attr('style', 'position: absolute; top:0;right:0px;bottom:0;transition:1s ease;');
         $('.wrapper').fadeTo("fast", 0.3);
+        $('.wrapper').attr('style', 'position:relative;height:100%;background-color:#fff;pointer-events: none;cursor: default;');
       });
       $('.btn-menu').on('blur', function () {
         console.log('취소');
         $('.position').attr('style', 'position: absolute; top:0;right:-130px;bottom:0;transition:1s ease;');
         $('.wrapper').fadeTo("fast", 1);
+        $('.wrapper').attr('style', 'position:relative;height:100%;background-color:#fff;');
+      });
+// 회원 사이드바
+      $('#m-orderList').on('click', function(){
+        M.page.html('./menuList.html');
+      });
+      $('#m-storeList').on('click', function(){
+        M.page.replace('./storeList.html');
+      });
+      $('#m-userInfo').on('click', function(){
+        M.page.html('./userInfo.html');
+      });
+      $('#m-cart').on('click', function(){
+        M.page.html('./cart.html');
+      });
+      $('#m-payList').on('click', function(){
+        // M.page.replace('./menuList.html');
       });
 
       //  게시글 클릭시 게시글 상세보기 동작

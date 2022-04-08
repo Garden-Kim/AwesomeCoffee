@@ -13,9 +13,10 @@
 	<div class="wrapper">
     <header class="header bg-gray">
       <!-- 하단에 라인이 있는경우 class="line"추가 -->
-      <h1>
-        상품 메뉴
-      </h1>
+      <div class="search-box">
+        <input type="text" id="value" placeholder="메뉴 검색">
+        <button class="btn-search"></button>
+      </div>
       <button type="button" class="btn-back l-fix">
         뒤로가기
       </button>
@@ -28,32 +29,32 @@
     </header>
     <div class="tab-menu-wrap  bg-yellow">
       <!-- 헤더 입력 영역 (헤더 디자인에 따라 바꿔치기 가능) -->
-      <ul class="tab-menu table menu">
+      <ul class="tab-menu table category">
         <!-- 메뉴글자수가 동일하지 않은경우,tab갯수 상관없음 class="table" -->
         <!-- 메뉴글자수가 동일한경우, tab갯수에 따른 class추가 2개:count2, 3개:count3 ,count4, count5, count6, 6개이상: more -->
         <li class="on" id="hot">
           <!-- 해당 tab시 class="on" 추가 -->
-          <span>
+          <span class="btn-category">
 						커피(Hot)
 					</span>
         </li>
         <li id="ice">
-					<span>
+					<span class="btn-category">
 						커피(Ice)
 					</span>
         </li>
         <li id="blended">
-					<span>
+					<span class="btn-category">
 						블렌디드
 					</span>
         </li>
         <li id="tea">
-					<span>
+					<span class="btn-category">
 						음료
 					</span>
         </li>
         <li id="dessert">
-					<span>
+					<span class="btn-category">
 						디저트
 					</span>
         </li>
@@ -83,7 +84,7 @@
       <li id="menu-store-info">매장정보</li>
     </ul>
   </section>
-  <section class="side-bar position">
+  <section class="side-bar position member">
     <h1>메뉴</h1>
     <ul class="menu-side-bar">
       <li id="m-orderList">메뉴보기</li>

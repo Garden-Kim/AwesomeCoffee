@@ -26,9 +26,9 @@
     },
     initEvent : function initEvent(){
       var self = this;
-// 사이드바 
+      // 사이드바 
       $('.btn-menu').on('click', function () {
-        console.log('사이드바클릭');
+        console.log('메뉴클릭');
         $('.position').attr('style', 'position: absolute; top:0;right:0px;bottom:0;transition:1s ease;');
         $('.wrapper').fadeTo("fast", 0.3);
       });
@@ -37,9 +37,30 @@
         $('.position').attr('style', 'position: absolute; top:0;right:-130px;bottom:0;transition:1s ease;');
         $('.wrapper').fadeTo("fast", 1);
       });
+      $('#menu-order-food').on('click', function(){
+        console.log('사이드바클릭');
+        M.page.html('./order.html');
+      });
+      $('#menu-payment-list').on('click', function(){
+      //   발주내역   M.page.html('./.html');
+      });       
+      $('#menu-sales').on('click', function(){
+        console.log('사이드바클릭');
+        M.page.html('./sales.html');
+      });      
+      $('#menu-menu').on('click', function(){
+        console.log('사이드바클릭');
+        M.page.html('./menuList.html');
+      });          
+      $('#menu-member-info').on('click', function(){
+        console.log('사이드바클릭');
+      //    회원정보  M.page.html('./.html');
+      });
       $('#menu-store-info').on('click', function(){
+        console.log('사이드바클릭');
         M.page.html('./storeList.html');
       });
+      
       this.els.$btnOrder.on('click', function(){
         M.page.html('./order.html');
       });      
