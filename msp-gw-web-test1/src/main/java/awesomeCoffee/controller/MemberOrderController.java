@@ -22,6 +22,7 @@ import awesomeCoffee.dto.AuthInfo;
 import awesomeCoffee.dto.CartDTO;
 import awesomeCoffee.dto.MemberDTO;
 import awesomeCoffee.dto.MemberOrderDTO;
+import awesomeCoffee.dto.MenuCategoryDTO;
 import awesomeCoffee.service.CartService;
 import awesomeCoffee.service.MemberOrderService;
 import awesomeCoffee.service.MemberService;
@@ -36,48 +37,46 @@ public class MemberOrderController {
 	private MemberService memberService;
 	@Autowired
 	private CartService cartService;
-
-	// 주문 insert
-	@RequestMapping(method = RequestMethod.POST, value = "/api/order/regist")
-	public ModelAndView memberOrder(HttpSession session, HttpServletRequest request, HttpServletResponse response) {
+	
+	// 바로 주문 select 
+	// 주문 select (장바구니에서 주문하기 버튼 클릭시 )
+	@RequestMapping(method = RequestMethod.POST, value = "/api/order/selectCartlist")
+	public ModelAndView memberCartList(HttpSession session, HttpServletRequest request, HttpServletResponse response) {
 		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
 		Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
 		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
-
-		if (reqHeadMap == null) {
-			reqHeadMap = new HashMap<String, Object>();
-		}
-		reqHeadMap.put(Const.RESULT_CODE, Const.OK);
-		reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
-
-		logger.info("======================= reqBodyMap : {}", reqBodyMap.toString());
+		List<Map<String, Object>> memberCartList = new ArrayList<Map<String, Object>>();
 
 		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
+		String memberNum = memberService.getMemberNum(authInfo.getLoginId());
+		reqBodyMap.put("memberNum",memberNum);
 		if (StringUtils.isEmpty(authInfo)) {
 			responseBodyMap.put("rsltCode", "1003");
 			responseBodyMap.put("rsltMsg", "Login required.");
 		} else {
-			String memberNum = memberService.getMemberNum(authInfo.getLoginId());
-			List<CartDTO> list = cartService.selectAllCart(memberNum);
-			if (!list.isEmpty() ) {
-				reqBodyMap.put("memberNum", memberNum);
-				int result = memberOrderService.insertMemberOrder(reqBodyMap);
-				if (result > 0) {
-					responseBodyMap.put("rsltCode", "0000");
-					responseBodyMap.put("rsltMsg", "Success");
-				} else {
-					responseBodyMap.put("rsltCode", "2003");
-					responseBodyMap.put("rsltMsg", "Data not found");
-				}
-			}else {
-				responseBodyMap.put("rsltCode", "2003");
-				responseBodyMap.put("rsltMsg", "cart is empty");
-			}
+			List<MemberOrderDTO> list = memberOrderService.memberCartList(reqBodyMap);
+			logger.info("======================= CartListSize : {}", list.size());
 
-			
+			for (int i =0; i<list.size() ; i++) {
+				Map<String , Object> map = new HashMap<String, Object>();
+				map.put("goodsNum", list.get(i).getGoodsNum());
+				map.put("qty", list.get(i).getQty());
+				map.put("priceSum", list.get(i).getPriceSum());
+
+				memberCartList.add(map);
+			}
+			logger.info("======================= categoryList : {}" , memberCartList.toString());
+						
+			if (!StringUtils.isEmpty(list)) {
+				responseBodyMap.put("rsltCode", "0000");
+				responseBodyMap.put("rsltMsg", "Success");
+				responseBodyMap.put("list",memberCartList);
+			} else { 
+				responseBodyMap.put("rsltCode", "2003");
+				responseBodyMap.put("rsltMsg", "Data not found.");
+			}
 		}
 		ModelAndView mv = new ModelAndView("defaultJsonView");
-		mv.addObject(Const.HEAD, reqHeadMap);
 		mv.addObject(Const.BODY, responseBodyMap);
 
 		return mv;
