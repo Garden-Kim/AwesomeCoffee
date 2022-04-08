@@ -56,22 +56,33 @@ public class CartController {
 			String memberNum = memberService.getMemberNum(authInfo.getLoginId());
 			reqBodyMap.put("memberNum", memberNum);
 			List<CartDTO> list = cartService.selectAllCart(memberNum);
-			for (int i=0; i<list.size(); i++) {
-				if (list.get(i).getGoodsNum().equals(reqBodyMap.get("goodsNum"))) {
-					System.out.println(list.get(i).getGoodsNum());
-					System.out.println(reqBodyMap.get("goodsNum"));
-					result = cartService.updateCart(reqBodyMap);
-				}else {
-					result = cartService.insertCart(reqBodyMap);
+			if (list.isEmpty()) {
+				result = cartService.insertCart(reqBodyMap);
+				if (result > 0) {
+					responseBodyMap.put("rsltCode", "0000");
+					responseBodyMap.put("rsltMsg", "Success");
+				} else {
+					responseBodyMap.put("rsltCode", "2003");
+					responseBodyMap.put("rsltMsg", "Data not found.");
+				}
+			}else {
+				for (int i=0; i<list.size(); i++) {
+					if (list.get(i).getGoodsNum().equals(reqBodyMap.get("goodsNum"))) {
+						result = cartService.updateCart(reqBodyMap);
+					}else {
+						result = cartService.insertCart(reqBodyMap);
+					}
+				}
+				if (result > 0) {
+					responseBodyMap.put("rsltCode", "0000");
+					responseBodyMap.put("rsltMsg", "Success");
+				} else {
+					responseBodyMap.put("rsltCode", "2003");
+					responseBodyMap.put("rsltMsg", "Data not found.");
 				}
 			}
-			if (result > 0) {
-				responseBodyMap.put("rsltCode", "0000");
-				responseBodyMap.put("rsltMsg", "Success");
-			} else {
-				responseBodyMap.put("rsltCode", "2003");
-				responseBodyMap.put("rsltMsg", "Data not found.");
-			}
+			
+			
 		}
 		ModelAndView mv = new ModelAndView("defaultJsonView");
 		mv.addObject(Const.HEAD, reqHeadMap);

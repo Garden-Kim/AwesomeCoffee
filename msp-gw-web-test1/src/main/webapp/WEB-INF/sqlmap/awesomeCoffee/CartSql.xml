@@ -15,7 +15,7 @@
 <insert id="insertCart">
 	insert into cart (member_num , goods_num, qty )
 	values 
-	(#{memberNum} , #{goodsNum}, 1)
+	(#{memberNum} , #{goodsNum}, '1')
 </insert>
 
 <update id="updateCart">

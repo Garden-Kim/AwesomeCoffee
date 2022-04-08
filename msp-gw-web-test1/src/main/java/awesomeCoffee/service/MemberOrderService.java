@@ -30,7 +30,10 @@ public class MemberOrderService {
 	private DataSourceTransactionManager transactionManager_sample;
 
 
-	
+	// 주문 번호 자동 생성
+	public String createOrderNum() {
+		return sqlSession.selectOne("Order.createOrderNum");
+	}
 	// 회원 주문 insert (결제 완료시 실행)
 	public int insertMemberOrder (Map<String, Object> param) {
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();

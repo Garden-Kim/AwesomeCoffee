@@ -1,6 +1,7 @@
 package awesomeCoffee.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,8 +18,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import awesomeCoffee.dto.AuthInfo;
+import awesomeCoffee.dto.CartDTO;
 import awesomeCoffee.service.CartService;
+import awesomeCoffee.service.MemberOrderService;
 import awesomeCoffee.service.MemberService;
+import awesomeCoffee.service.OrderlistService;
 import awesomeCoffee.service.PaymentService;
 import kr.msp.constant.Const;
 
@@ -31,8 +35,12 @@ public class PaymentController {
 	private MemberService memberService;
 	@Autowired
 	private CartService cartService;
+	@Autowired
+	private OrderlistService orderlistService;
+	@Autowired
+	private MemberOrderService memberOrderService;
 
-	// 결제 insert
+	// 결제 insert 주문 insert
 	@RequestMapping(method = RequestMethod.POST, value = "/api/payment/regist")
 	public ModelAndView payment(HttpSession session, HttpServletRequest request, HttpServletResponse response) {
 		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
@@ -54,16 +62,35 @@ public class PaymentController {
 		} else {
 			String memberNum = memberService.getMemberNum(authInfo.getLoginId());
 			reqBodyMap.put("memberNum", memberNum);
-			
-			int result = paymentService.paymentInsert(reqBodyMap);
-			if (result > 0) {
-				cartService.deleteCart(reqBodyMap);
-				responseBodyMap.put("rsltCode", "0000");
-				responseBodyMap.put("rsltMsg", "Success");
-			} else {
+			String orderNum = memberOrderService.createOrderNum();
+			reqBodyMap.put("orderNum", orderNum);
+			List<CartDTO> list = cartService.selectAllCart(memberNum);
+			if(!list.isEmpty()) {
+				int i = memberOrderService.insertMemberOrder(reqBodyMap);
+				if (i > 0) {
+					responseBodyMap.put("rsltCode", "0000");
+					responseBodyMap.put("rsltMsg", "Success");
+					int result = paymentService.paymentInsert(reqBodyMap);
+					if (result > 0) {
+						cartService.deleteCart(reqBodyMap);
+						responseBodyMap.put("rsltCode", "0000");
+						responseBodyMap.put("rsltMsg", "Success & Delete CartList");
+					} else {
+						responseBodyMap.put("rsltCode", "2003");
+						responseBodyMap.put("rsltMsg", "Payment Fail");
+					}
+				} else {
+					responseBodyMap.put("rsltCode", "2003");
+					responseBodyMap.put("rsltMsg", "Order Fail");
+				}
+			}else {
 				responseBodyMap.put("rsltCode", "2003");
-				responseBodyMap.put("rsltMsg", "Cart is empty");
+				responseBodyMap.put("rsltMsg", "cart is empty");
 			}
+			
+			
+			
+			
 		}
 		ModelAndView mv = new ModelAndView("defaultJsonView");
 		mv.addObject(Const.HEAD, reqHeadMap);
