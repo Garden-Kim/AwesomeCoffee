@@ -6,16 +6,38 @@
 <mapper namespace="Order">
 
 	<insert id="insertOrder">
-		INSERT INTO MEMBER_ORDER
+		INSERT INTO MEMBER_ORDER (order_num, order_price, order_time, takeout, member_num, cook_state)
 		VALUES
-	    	(concat(concat(TO_CHAR(SYSDATE, 'yymmdd'),'_'),nvl(order_seq.nextval,10)+1),
-	    	#{orderPrice},
+	    	(order_seq.nextval, #{orderPrice},
 	    	TO_CHAR(SYSDATE, 'RRRR-MM-DD HH24:MI:SS'),
-	    	#{takeout}, #{memberNum})
+	    	#{takeout}, #{memberNum}, #{cookState})
 	</insert>
-	
 
+	<delete id="deleteOrder">
+		delete
+		from member_order
+		where order_num = #{orderNum}
+	</delete>
+
+	<select id="selectAllOrder"
+		resultType="awesomeCoffee.dto.MemberOrderDTO">
+		select *
+		from member_order
+		where member_num = #{memberNum}
+		order by order_num
+	</select>
 	
+	<update id="updateOrderCookState">
+		update member_order
+		set cook_state = #{cookState}
+		where order_num = #{orderNum}
+	</update>
+	
+	<update id="updateOrderTakeout">
+		update member_order
+		set takeout = #{takeout}
+		where order_num = #{orderNum}
+	</update>
 	
 	
 	

@@ -3,7 +3,6 @@ package awesomeCoffee.service;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,12 +14,15 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
-import awesomeCoffee.dto.CartDTO;
-import awesomeCoffee.dto.MemberOrderDTO;
+import awesomeCoffee.dto.StoreDTO;
+
+
 
 @Service
-public class MemberOrderService {
-	private Logger logger = LoggerFactory.getLogger(MemberService.class);
+public class StoreService {
+
+	private Logger logger = LoggerFactory.getLogger(StoreService.class);
+
 	@Autowired(required = true)
 	@Qualifier("sqlSession_sample")
 	private SqlSession sqlSession;
@@ -29,17 +31,88 @@ public class MemberOrderService {
 	@Qualifier("transactionManager_sample")
 	private DataSourceTransactionManager transactionManager_sample;
 
-	// 회원 주문
-	public int insertMemberOrder(Map<String, Object> param) {
+	//매장 등록
+	public int insertStore(Map<String, Object> param) {
+
+		// 트렌젝션 구현
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 		TransactionStatus status = transactionManager_sample.getTransaction(def);
+
 		int result = 0;
 		try {
-			result = sqlSession.update("Order.insertOrder", param);
+
+			result = sqlSession.insert("Store.insertStore", param);
 
 			transactionManager_sample.commit(status);
-			logger.info("========== 회원 주문 완료 : {}", result);
+			logger.info("========== 매장 등록 완료 : {}", result);
+
+		} catch (Exception e) {
+			logger.error("[ERROR] insertUser() Fail : e : {}", e.getMessage());
+			e.printStackTrace();
+			transactionManager_sample.rollback(status);
+		}
+		return result;
+	}
+	
+	// 매장 정보 이름으로
+	public StoreDTO getStoreInfoByName(Map<String, Object> param) {
+		return sqlSession.selectOne("Store.getStoreInfoByName", param);
+	}
+	
+	// 매장 로그인
+	public StoreDTO login(Map<String, Object> param) {
+		return sqlSession.selectOne("Store.login", param);
+	}
+	//매장 리스트 조회
+	public List<StoreDTO> storeList() {
+		return sqlSession.selectList("Store.storeList");
+	}
+	
+	//삭제
+	public int deleteStore(Map<String, Object> param) {
+		// 트렌젝션 구현
+		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+		TransactionStatus status = transactionManager_sample.getTransaction(def);
+
+		int result = 0;
+		try {
+
+			StoreDTO info = sqlSession.selectOne("Store.getStoreInfoById", param);
+
+			if (info != null) {
+				result = sqlSession.delete("Store.deleteStore", param);
+			}
+
+			transactionManager_sample.commit(status);
+			logger.info("========== 회원탈퇴 완료 : {}", result);
+
+		} catch (Exception e) {
+			logger.error("[ERROR] deleteMember() Fail : e : {}", e.getMessage());
+			e.printStackTrace();
+			transactionManager_sample.rollback(status);
+		}
+		return result;
+	}
+
+	public int updateStore(Map<String, Object> param) {
+		// 트렌젝션 구현
+		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+		TransactionStatus status = transactionManager_sample.getTransaction(def);
+
+		int result = 0;
+		try {
+
+			StoreDTO info = sqlSession.selectOne("Store.getStoreInfoById", param);
+
+			// if (param.get("password").equals(info.getPassword())) {
+			result = sqlSession.update("Store.updateStore", param);
+			// }
+
+			transactionManager_sample.commit(status);
+			logger.info("========== 매장정보 수정 완료 : {}", result);
 
 		} catch (Exception e) {
 			logger.error("[ERROR] updateMember() Fail : e : {}", e.getMessage());
@@ -48,62 +121,35 @@ public class MemberOrderService {
 		}
 		return result;
 	}
-	// 회원주문 read
-	public List<MemberOrderDTO> selectAllOrder(String memberNum) {
-		return sqlSession.selectList("Order.selectAllOrder", memberNum);
+
+	public StoreDTO getStoreInfoById(Map<String, Object> param) {
+		return sqlSession.selectOne("Store.getStoreInfoById", param);
 	}
-	// 회원주문 update 수령여부
-	public int updateOrderTakeout(Map<String, Object> param) {
+
+	public int updateState(Map<String, Object> param) {
+		// 트렌젝션 구현
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 		TransactionStatus status = transactionManager_sample.getTransaction(def);
+
 		int result = 0;
 		try {
-			result = sqlSession.update("Order.updateOrderTakeout", param);
+
+			StoreDTO info = sqlSession.selectOne("Store.getStoreInfoById", param);
+
+			// if (param.get("password").equals(info.getPassword())) {
+			result = sqlSession.update("Store.updateState", param);
+			// }
+
 			transactionManager_sample.commit(status);
-			logger.info("========== 회원주문 수령여부 수정 완료 : {}", result);
+			logger.info("========== 매장정보 수정 완료 : {}", result);
 
 		} catch (Exception e) {
-			logger.error("[ERROR] insertUser() Fail : e : {}", e.getMessage());
+			logger.error("[ERROR] updateMember() Fail : e : {}", e.getMessage());
 			e.printStackTrace();
 			transactionManager_sample.rollback(status);
 		}
 		return result;
 	}
-	// 회원주문 update 조리여부
-	public int updateOrderCookState(Map<String, Object> param) {
-		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-		TransactionStatus status = transactionManager_sample.getTransaction(def);
-		int result = 0;
-		try {
-			result = sqlSession.update("Order.updateOrderCookState", param);
-			transactionManager_sample.commit(status);
-			logger.info("========== 회원주문 조리상태 수정 완료 : {}", result);
 
-		} catch (Exception e) {
-			logger.error("[ERROR] insertUser() Fail : e : {}", e.getMessage());
-			e.printStackTrace();
-			transactionManager_sample.rollback(status);
-		}
-		return result;
-	}
-	// 회원주문 delete
-	public int deleteOrder(Map<String, Object> param) {
-		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-		TransactionStatus status = transactionManager_sample.getTransaction(def);
-		int result = 0;
-		try {
-			result = sqlSession.delete("Order.deleteOrder", param);
-			transactionManager_sample.commit(status);
-			logger.info("========== 회원주문 삭제 완료 : {}", result);
-
-		} catch (Exception e) {
-			logger.error("[ERROR] insertUser() Fail : e : {}", e.getMessage());
-			e.printStackTrace();
-			transactionManager_sample.rollback(status);
-		}
-		return result;
-	}
 }
