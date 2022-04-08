@@ -20,7 +20,7 @@ import awesomeCoffee.dto.MemberOrderDTO;
 
 @Service
 public class MemberOrderService {
-	private Logger logger = LoggerFactory.getLogger(MemberService.class);
+	private Logger logger = LoggerFactory.getLogger(MemberOrderService.class);
 	@Autowired(required = true)
 	@Qualifier("sqlSession_sample")
 	private SqlSession sqlSession;
@@ -29,7 +29,7 @@ public class MemberOrderService {
 	@Qualifier("transactionManager_sample")
 	private DataSourceTransactionManager transactionManager_sample;
 
-	// 회원 주문
+	// 회원주문 insert
 	public int insertMemberOrder(Map<String, Object> param) {
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
@@ -48,9 +48,13 @@ public class MemberOrderService {
 		}
 		return result;
 	}
-	// 회원주문 read
-	public List<MemberOrderDTO> selectAllOrder(String memberNum) {
-		return sqlSession.selectList("Order.selectAllOrder", memberNum);
+	// 회원주문 read 회원 
+	public List<MemberOrderDTO> selectAllMemOrder(String memberNum) {
+		return sqlSession.selectList("Order.selectAllMemOrder", memberNum);
+	}
+	// 회원주문 read 직원
+	public List<MemberOrderDTO> selectAllEmpOrder(){
+		return sqlSession.selectList("Order.selectAllEmpOrder");
 	}
 	// 회원주문 update 수령여부
 	public int updateOrderTakeout(Map<String, Object> param) {

@@ -18,7 +18,7 @@ import awesomeCoffee.dto.WishlistDTO;
 
 @Service
 public class WishlistService {
-	private Logger logger = LoggerFactory.getLogger(MenuCategoryService.class);
+	private Logger logger = LoggerFactory.getLogger(WishlistService.class);
 
 	@Autowired(required = true)
 	@Qualifier("sqlSession_sample")

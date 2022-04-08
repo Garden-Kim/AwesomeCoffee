@@ -19,11 +19,19 @@
 		where order_num = #{orderNum}
 	</delete>
 
-	<select id="selectAllOrder"
+	<select id="selectAllMemOrder"
 		resultType="awesomeCoffee.dto.MemberOrderDTO">
 		select *
 		from member_order
 		where member_num = #{memberNum}
+		order by order_num
+	</select>
+	
+	<select id="selectAllEmpOrder"
+		resultType="awesomeCoffee.dto.MemberOrderDTO">
+		select *
+		from member_order
+		where cook_state = 'N'
 		order by order_num
 	</select>
 	

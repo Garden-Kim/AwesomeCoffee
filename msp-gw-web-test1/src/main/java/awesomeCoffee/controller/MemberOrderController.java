@@ -73,9 +73,9 @@ public class MemberOrderController {
 		return mv;
 	}
 
-	// 주문 read
-	@RequestMapping(method = RequestMethod.POST, value = "/api/order/list")
-	public ModelAndView cartList(HttpSession session) {
+	// 주문 read 회원
+	@RequestMapping(method = RequestMethod.POST, value = "/api/order/memList")
+	public ModelAndView orderMemList(HttpSession session) {
 		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
 		List<Map<String, Object>> orderList = new ArrayList<Map<String, Object>>();
 
@@ -85,7 +85,7 @@ public class MemberOrderController {
 			responseBodyMap.put("rsltMsg", "Login required.");
 		} else {
 			String memberNum = memberService.getMemberNum(authInfo.getMemberId());
-			List<MemberOrderDTO> list = memberOrderService.selectAllOrder(memberNum);
+			List<MemberOrderDTO> list = memberOrderService.selectAllMemOrder(memberNum);
 			logger.info("======================= responseBodyMap : {}", list.size());
 
 			for (int i = 0; i < list.size(); i++) {
@@ -116,9 +116,52 @@ public class MemberOrderController {
 		return mv;
 	}
 
-	// 주문 update 조리여부 
+	// 주문 read 직원 (조리상태가 N인 모든 것 )
+	@RequestMapping(method = RequestMethod.POST, value = "/api/order/empList")
+	public ModelAndView orderEmpList(HttpSession session) {
+		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
+		List<Map<String, Object>> orderList = new ArrayList<Map<String, Object>>();
+
+		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
+		if (StringUtils.isEmpty(authInfo)) {
+			responseBodyMap.put("rsltCode", "1003");
+			responseBodyMap.put("rsltMsg", "Login required.");
+		} else {
+			List<MemberOrderDTO> list = memberOrderService.selectAllEmpOrder();
+			logger.info("======================= responseBodyMap : {}", list.size());
+
+			for (int i = 0; i < list.size(); i++) {
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("takeout", list.get(i).getTakeout());
+				map.put("cookState", list.get(i).getCookState());
+				map.put("orderPrice", list.get(i).getOrderPrice());
+				map.put("orderTime", list.get(i).getOrderTime());
+				map.put("memberNum", list.get(i).getMemberNum());
+				map.put("orderNum", list.get(i).getOrderNum());
+
+				orderList.add(map);
+			}
+			logger.info("======================= orderList : {}", orderList.toString());
+
+			if (!StringUtils.isEmpty(list)) {
+				responseBodyMap.put("rsltCode", "0000");
+				responseBodyMap.put("rsltMsg", "Success");
+				responseBodyMap.put("list", orderList);
+			} else {
+				responseBodyMap.put("rsltCode", "2003");
+				responseBodyMap.put("rsltMsg", "Data not found.");
+			}
+		}
+		ModelAndView mv = new ModelAndView("defaultJsonView");
+		mv.addObject(Const.BODY, responseBodyMap);
+
+		return mv;
+	}
+
+	// 주문 update 조리여부
 	@RequestMapping(method = RequestMethod.POST, value = "/api/order/updateCookState")
-	public ModelAndView orderCookStateUpdate(HttpSession session, HttpServletRequest request, HttpServletResponse response) {
+	public ModelAndView orderCookStateUpdate(HttpSession session, HttpServletRequest request,
+			HttpServletResponse response) {
 
 		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
 		Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
@@ -153,9 +196,11 @@ public class MemberOrderController {
 
 		return mv;
 	}
+
 	// 주문 update 수령여부
 	@RequestMapping(method = RequestMethod.POST, value = "/api/order/updateTakeout")
-	public ModelAndView orderTakeoutUpdate(HttpSession session, HttpServletRequest request, HttpServletResponse response) {
+	public ModelAndView orderTakeoutUpdate(HttpSession session, HttpServletRequest request,
+			HttpServletResponse response) {
 
 		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
 		Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
@@ -193,7 +238,7 @@ public class MemberOrderController {
 
 	// 주문 delete
 	@RequestMapping(method = RequestMethod.POST, value = "/api/order/delete")
-	public ModelAndView cartDelete(HttpServletRequest request, HttpSession session) {
+	public ModelAndView orderDelete(HttpServletRequest request, HttpSession session) {
 		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
 		Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
 		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
