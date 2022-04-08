@@ -1,6 +1,5 @@
 package awesomeCoffee.service;
 
-import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
@@ -14,11 +13,9 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
-import awesomeCoffee.dto.OrderlistDTO;
-
 @Service
-public class OrderlistService {
-	private Logger logger = LoggerFactory.getLogger(OrderlistService.class);
+public class PaymentService {
+	private Logger logger = LoggerFactory.getLogger(PaymentService.class);
 	@Autowired(required = true)
 	@Qualifier("sqlSession_sample")
 	private SqlSession sqlSession;
@@ -27,17 +24,17 @@ public class OrderlistService {
 	@Qualifier("transactionManager_sample")
 	private DataSourceTransactionManager transactionManager_sample;
 
-	// 주문 내역 insert
-	public int insertOrderlist(Map <String, Object> param) {
+	// 결제 insert
+	public int paymentInsert (Map<String, Object> param) {
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 		TransactionStatus status = transactionManager_sample.getTransaction(def);
 		int result = 0;
 		try {
-			result = sqlSession.update("Orderlist.insertOrderlist", param);
+			result = sqlSession.update("Payment.insertPayment", param);
 
 			transactionManager_sample.commit(status);
-			logger.info("========== 주문 내역 등록 완료 : {}", result);
+			logger.info("========== 결제 완료 : {}", result);
 
 		} catch (Exception e) {
 			logger.error("[ERROR] updateMember() Fail : e : {}", e.getMessage());
@@ -46,28 +43,5 @@ public class OrderlistService {
 		}
 		return result;
 	}
-	// 주문 내역 리스트 read 
-	public List<OrderlistDTO> selectOrderlist (Map<String, Object> param) {
-		return sqlSession.selectList("Orderlist.selectAllOrderlist", param);
-	}
-	// 주문 내역 delete 
-	public int deleteOrderlist(Map<String, Object> param) {
-		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-		TransactionStatus status = transactionManager_sample.getTransaction(def);
-		int result = 0;
-		try {
-			result = sqlSession.update("Orderlist.deleteOrderlist", param);
-
-			transactionManager_sample.commit(status);
-			logger.info("========== 주문 내역 삭제 완료 : {}", result);
-
-		} catch (Exception e) {
-			logger.error("[ERROR] updateMember() Fail : e : {}", e.getMessage());
-			e.printStackTrace();
-			transactionManager_sample.rollback(status);
-		}
-		return result;
-	}
+	
 }
-

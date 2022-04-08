@@ -47,7 +47,12 @@
 		where order_num = #{orderNum}
 	</update>
 	
-	
+	<update id="updateOrderPrice">
+		update member_order
+		set order_price = #{orderPrice}
+		where order_num = #{orderNum}
+	</update>
+
 	
 	
 	

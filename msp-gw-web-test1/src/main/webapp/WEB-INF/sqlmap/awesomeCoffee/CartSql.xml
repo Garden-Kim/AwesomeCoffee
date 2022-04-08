@@ -18,10 +18,16 @@
 	(#{memberNum} , #{goodsNum}, #{qty})
 </insert>
 
-<delete id="deleteCart">
+<delete id="deleteCartOne">
 	delete 
 	from cart
 	where goods_num = #{goodsNum} and member_num = #{memberNum}
+</delete>
+
+<delete id="deleteCart">
+	delete 
+	from cart
+	where member_num = #{memberNum}
 </delete>
 
 

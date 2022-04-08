@@ -50,7 +50,25 @@ public class CartService {
 	public List<CartDTO> selectAllCart(String memberNum) {
 		return sqlSession.selectList("Cart.selectAllCart", memberNum);
 	}
-	// 장바구니 delete
+	// 장바구니 deleteOne (사용자가 직접 삭제버튼 누를시 해당 메뉴 삭제)
+	public int deleteCartOne(Map<String, Object> param) {
+		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+		TransactionStatus status = transactionManager_sample.getTransaction(def);
+		int result = 0;
+		try {
+			result = sqlSession.delete("Cart.deleteCartOne", param);
+			transactionManager_sample.commit(status);
+			logger.info("========== 장바구니 삭제 완료 : {}", result);
+
+		} catch (Exception e) {
+			logger.error("[ERROR] insertUser() Fail : e : {}", e.getMessage());
+			e.printStackTrace();
+			transactionManager_sample.rollback(status);
+		}
+		return result;
+	}
+	// 장바구니 delete (결제시)
 	public int deleteCart(Map<String, Object> param) {
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
@@ -59,7 +77,7 @@ public class CartService {
 		try {
 			result = sqlSession.delete("Cart.deleteCart", param);
 			transactionManager_sample.commit(status);
-			logger.info("========== 장바구니 삭제 완료 : {}", result);
+			logger.info("========== 결제 후 장바구니 삭제 완료 : {}", result);
 
 		} catch (Exception e) {
 			logger.error("[ERROR] insertUser() Fail : e : {}", e.getMessage());

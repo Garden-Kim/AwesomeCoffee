@@ -17,7 +17,13 @@
 		where order_num = #{orderNum}
 		order by order_num
 	</select>
-
+	
+	<delete id="deleteOrderlist">
+		delete 
+		from orderlist
+		where order_num = #{orderNum}
+	</delete>
+	
 	
 </mapper>
 

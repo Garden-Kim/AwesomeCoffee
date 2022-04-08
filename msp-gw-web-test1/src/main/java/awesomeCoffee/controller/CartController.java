@@ -30,10 +30,10 @@ public class CartController {
 	private CartService cartService;
 	@Autowired
 	private MemberService memberService;
-	
+
 	// 장바구니 create
-	@RequestMapping(method = RequestMethod.POST, value ="/api/cart/regist")
-	public ModelAndView wishlistInsert (HttpServletRequest request, HttpSession session) {
+	@RequestMapping(method = RequestMethod.POST, value = "/api/cart/regist")
+	public ModelAndView wishlistInsert(HttpServletRequest request, HttpSession session) {
 		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
 		Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
 		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
@@ -69,9 +69,10 @@ public class CartController {
 
 		return mv;
 	}
+
 	// 장바구니 read
-	@RequestMapping(method = RequestMethod.POST, value="/api/cart/list")
-	public ModelAndView cartList( HttpSession session) {
+	@RequestMapping(method = RequestMethod.POST, value = "/api/cart/list")
+	public ModelAndView cartList(HttpSession session) {
 		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
 		List<Map<String, Object>> cartList = new ArrayList<Map<String, Object>>();
 
@@ -84,21 +85,21 @@ public class CartController {
 			List<CartDTO> list = cartService.selectAllCart(memberNum);
 			logger.info("======================= responseBodyMap : {}", list.size());
 
-			for (int i =0; i<list.size() ; i++) {
-				Map<String , Object> map = new HashMap<String, Object>();
+			for (int i = 0; i < list.size(); i++) {
+				Map<String, Object> map = new HashMap<String, Object>();
 				map.put("memberNum", list.get(i).getMemberNum());
 				map.put("goodsNum", list.get(i).getGoodsNum());
 				map.put("qty", list.get(i).getQty());
 
 				cartList.add(map);
 			}
-			logger.info("======================= wishlist : {}" , cartList.toString());
-						
+			logger.info("======================= wishlist : {}", cartList.toString());
+
 			if (!StringUtils.isEmpty(list)) {
 				responseBodyMap.put("rsltCode", "0000");
 				responseBodyMap.put("rsltMsg", "Success");
-				responseBodyMap.put("list",cartList);
-			} else { 
+				responseBodyMap.put("list", cartList);
+			} else {
 				responseBodyMap.put("rsltCode", "2003");
 				responseBodyMap.put("rsltMsg", "Data not found.");
 			}
@@ -108,9 +109,47 @@ public class CartController {
 
 		return mv;
 	}
+
 	// 장바구니 delete
-	@RequestMapping(method = RequestMethod.POST, value ="/api/cart/delete")
-	public ModelAndView cartDelete (HttpServletRequest request, HttpSession session) {
+	@RequestMapping(method = RequestMethod.POST, value = "/api/cart/deleteOne")
+	public ModelAndView cartDeleteOne(HttpServletRequest request, HttpSession session) {
+		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
+		Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
+		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
+		if (reqHeadMap == null) {
+			reqHeadMap = new HashMap<String, Object>();
+		}
+		reqHeadMap.put(Const.RESULT_CODE, Const.OK);
+		reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
+
+		logger.info("======================= reqBodyMap : {}", reqBodyMap.toString());
+
+		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
+		if (StringUtils.isEmpty(authInfo)) {
+			responseBodyMap.put("rsltCode", "1003");
+			responseBodyMap.put("rsltMsg", "Login required.");
+		} else {
+			String memberNum = memberService.getMemberNum(authInfo.getLoginId());
+			reqBodyMap.put("memberNum", memberNum);
+			int result = cartService.deleteCartOne(reqBodyMap);
+			if (result > 0) {
+				responseBodyMap.put("rsltCode", "0000");
+				responseBodyMap.put("rsltMsg", "Success");
+			} else {
+				responseBodyMap.put("rsltCode", "2003");
+				responseBodyMap.put("rsltMsg", "Data not found.");
+			}
+		}
+		ModelAndView mv = new ModelAndView("defaultJsonView");
+		mv.addObject(Const.HEAD, reqHeadMap);
+		mv.addObject(Const.BODY, responseBodyMap);
+
+		return mv;
+	}
+
+	// 장바구니 delete
+	@RequestMapping(method = RequestMethod.POST, value = "/api/cart/delete")
+	public ModelAndView cartDelete(HttpServletRequest request, HttpSession session) {
 		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
 		Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
 		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
@@ -146,7 +185,5 @@ public class CartController {
 
 		return mv;
 	}
-	
-	
-	
+
 }
