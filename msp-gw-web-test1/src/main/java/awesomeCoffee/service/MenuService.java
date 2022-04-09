@@ -95,6 +95,10 @@ public class MenuService {
 	public List<MenuDTO> selectAllMenu() {
 		return sqlSession.selectList("Menu.selectAllMenu");
 	}
+	// 메뉴 리스트 (카테고리별)
+	public List<MenuDTO> selectCategoryMenu(Map<String, Object> categoryNum){
+		return sqlSession.selectList("Menu.selectCategoryMenu", categoryNum);
+	}
 	// 메뉴 등록
 	public int insertMenu(Map<String, Object> param) {
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();

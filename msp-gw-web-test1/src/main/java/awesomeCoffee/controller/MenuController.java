@@ -171,9 +171,51 @@ public class MenuController {
 		}
 		return responseBodyMap;
 	}
+	// 메뉴 리스트 (카테고리별)
+	@RequestMapping(method = RequestMethod.POST , value="/api/category/menuList")
+	public ModelAndView menuCategoryList (HttpServletRequest request, HttpSession session) {
+		Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
+		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
+		List<Map<String, Object>> menuList = new ArrayList<Map<String, Object>>();
+
+		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
+		if (StringUtils.isEmpty(authInfo)) {
+			responseBodyMap.put("rsltCode", "1003");
+			responseBodyMap.put("rsltMsg", "Login required.");
+		} else {
+			List<MenuDTO> dto = menuService.selectCategoryMenu(reqBodyMap);
+			for (int i =0; i<dto.size() ; i++) {
+				Map<String , Object> map = new HashMap<String, Object>();
+				map.put("goodsNum", dto.get(i).getGoodsNum());
+				map.put("goodsName", dto.get(i).getGoodsName());
+				map.put("goodsPrice", dto.get(i).getGoodsPrice());
+				map.put("goodsContent", dto.get(i).getGoodsContent());
+				map.put("goodsImage", dto.get(i).getGoodsImage());
+				map.put("goodsKal ", dto.get(i).getGoodsKal());
+				map.put("categoryNum", dto.get(i).getCategoryNum());
+				map.put("storeNum", dto.get(i).getStoreNum());
+
+				menuList.add(map);
+			}
+			logger.info("======================= categoryList : {}" , dto.toString());
+						
+			if (!StringUtils.isEmpty(dto)) {
+				responseBodyMap.put("rsltCode", "0000");
+				responseBodyMap.put("rsltMsg", "Success");
+				responseBodyMap.put("list",menuList);
+			} else { 
+				responseBodyMap.put("rsltCode", "2003");
+				responseBodyMap.put("rsltMsg", "Data not found.");
+			}
+		}
+		ModelAndView mv = new ModelAndView("defaultJsonView");
+		mv.addObject(Const.BODY, responseBodyMap);
+
+		return mv;
+	}
 	// 메뉴 리스트
 	@RequestMapping(method = RequestMethod.POST, value="/api/menu/list")
-	public ModelAndView MenuCategoryList( HttpSession session) {
+	public ModelAndView menuList( HttpSession session) {
 		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
 		List<Map<String, Object>> menuList = new ArrayList<Map<String, Object>>();
 

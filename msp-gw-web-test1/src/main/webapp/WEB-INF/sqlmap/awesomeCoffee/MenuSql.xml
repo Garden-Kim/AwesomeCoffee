@@ -11,6 +11,13 @@
 	where goods_num = #{goodsNum}
 </select>
 
+<select id="selectCategoryMenu" parameterType="map" resultType="awesomeCoffee.dto.MenuDTO">
+	select *
+	from goods
+	where category_num = #{categoryNum}
+	order by goods_num
+</select>
+
 <select id="selectAllMenu" resultType="awesomeCoffee.dto.MenuDTO">
 	select *
 	from goods

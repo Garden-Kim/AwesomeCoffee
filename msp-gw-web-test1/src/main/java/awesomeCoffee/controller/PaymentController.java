@@ -1,5 +1,6 @@
 package awesomeCoffee.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,9 +18,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.ibm.db2.jcc.am.re;
+
 import awesomeCoffee.dto.AuthInfo;
 import awesomeCoffee.dto.CartDTO;
+import awesomeCoffee.dto.MenuCategoryDTO;
 import awesomeCoffee.dto.MenuDTO;
+import awesomeCoffee.dto.PaymentDTO;
+import awesomeCoffee.dto.RecipeDTO;
 import awesomeCoffee.service.CartService;
 import awesomeCoffee.service.MemberOrderService;
 import awesomeCoffee.service.MemberService;
@@ -42,12 +48,13 @@ public class PaymentController {
 	private MemberOrderService memberOrderService;
 
 	// 결제 insert 주문 insert 바로주문
-	@RequestMapping(method = RequestMethod.POST, value= "/api/payment/directRegist")
-	public ModelAndView directPayment (HttpSession session, HttpServletRequest request, HttpServletResponse response) {
+	@RequestMapping(method = RequestMethod.POST, value = "/api/payment/directRegist")
+	public ModelAndView directPayment(HttpSession session, HttpServletRequest request, HttpServletResponse response) {
 		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
-		Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY); // goodsNum과 paymentKind 받음
+		Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY); // goodsNum과
+																									// paymentKind 받음
 		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
-		
+
 		if (reqHeadMap == null) {
 			reqHeadMap = new HashMap<String, Object>();
 		}
@@ -68,7 +75,7 @@ public class PaymentController {
 			MenuDTO dto = memberOrderService.directOrder(reqBodyMap);
 			reqBodyMap.put("paymentPrice", dto.getGoodsPrice());
 			reqBodyMap.put("orderPrice", dto.getGoodsPrice());
-			if(dto!=null) {
+			if (dto != null) {
 				int i = memberOrderService.insertDirectOrder(reqBodyMap);
 				if (i > 0) {
 					responseBodyMap.put("rsltCode", "0000");
@@ -85,11 +92,11 @@ public class PaymentController {
 					responseBodyMap.put("rsltCode", "2003");
 					responseBodyMap.put("rsltMsg", "Order Fail");
 				}
-			}else {
+			} else {
 				responseBodyMap.put("rsltCode", "2003");
 				responseBodyMap.put("rsltMsg", "Data not found");
 			}
-			
+
 		}
 		ModelAndView mv = new ModelAndView("defaultJsonView");
 		mv.addObject(Const.HEAD, reqHeadMap);
@@ -97,7 +104,7 @@ public class PaymentController {
 
 		return mv;
 	}
-	
+
 	// 결제 insert 주문 insert
 	@RequestMapping(method = RequestMethod.POST, value = "/api/payment/regist")
 	public ModelAndView payment(HttpSession session, HttpServletRequest request, HttpServletResponse response) {
@@ -123,7 +130,7 @@ public class PaymentController {
 			String orderNum = memberOrderService.createOrderNum();
 			reqBodyMap.put("orderNum", orderNum);
 			List<CartDTO> list = cartService.selectAllCart(memberNum);
-			if(!list.isEmpty()) {
+			if (!list.isEmpty()) {
 				int i = memberOrderService.insertMemberOrder(reqBodyMap);
 				if (i > 0) {
 					responseBodyMap.put("rsltCode", "0000");
@@ -141,14 +148,45 @@ public class PaymentController {
 					responseBodyMap.put("rsltCode", "2003");
 					responseBodyMap.put("rsltMsg", "Order Fail");
 				}
-			}else {
+			} else {
 				responseBodyMap.put("rsltCode", "2003");
 				responseBodyMap.put("rsltMsg", "Cart is empty");
 			}
-			
-			
-			
-			
+		}
+		ModelAndView mv = new ModelAndView("defaultJsonView");
+		mv.addObject(Const.HEAD, reqHeadMap);
+		mv.addObject(Const.BODY, responseBodyMap);
+
+		return mv;
+	}
+
+	// 결제 합계 (년도)
+	@RequestMapping(method = RequestMethod.POST, value = "/api/payment/yearSum")
+	public ModelAndView paymentYearSum(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
+		Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
+		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
+		if (reqHeadMap == null) {
+			reqHeadMap = new HashMap<String, Object>();
+		}
+		reqHeadMap.put(Const.RESULT_CODE, Const.OK);
+		reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
+		logger.info("======================= reqBodyMap : {}", reqBodyMap.toString());
+		// String year = reqBodyMap.get("paymentDate").toString();
+		String sum = paymentService.selectYearPayment(reqBodyMap);
+		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
+		if (StringUtils.isEmpty(authInfo)) {
+			responseBodyMap.put("rsltCode", "1003");
+			responseBodyMap.put("rsltMsg", "Login required.");
+		} else {
+			if (!StringUtils.isEmpty(sum)) {
+				responseBodyMap.put("rsltCode", "0000");
+				responseBodyMap.put("rsltMsg", "Success");
+				responseBodyMap.put("yearSum", sum);
+			} else {
+				responseBodyMap.put("rsltCode", "2003");
+				responseBodyMap.put("rsltMsg", "Data not found.");
+			}
 		}
 		ModelAndView mv = new ModelAndView("defaultJsonView");
 		mv.addObject(Const.HEAD, reqHeadMap);

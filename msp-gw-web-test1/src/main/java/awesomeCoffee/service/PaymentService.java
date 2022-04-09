@@ -23,7 +23,12 @@ public class PaymentService {
 	@Autowired(required = true)
 	@Qualifier("transactionManager_sample")
 	private DataSourceTransactionManager transactionManager_sample;
-
+	
+	// 결제 합계 (연도)
+	public String selectYearPayment (Map<String, Object> param) {
+		return sqlSession.selectOne("Payment.selectYearPayment", param);
+	}
+	// 바로 주문 결제 
 	public int directPaymentInsert (Map<String, Object> param) {
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);

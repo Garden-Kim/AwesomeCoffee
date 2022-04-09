@@ -5,11 +5,19 @@
 
 <mapper namespace="Payment">
 
-	<select id="asd" resultType="awesomeCoffee.dto.PaymentDTO">
+	<select id="selectYearPayment" resultType="String" parameterType="String">
+		select sum(case when payment_date like '22%' then payment_price end)
+		from payment
+		where payment_date like '22%'
+		group by to_char(payment_date,'yy')
+	</select>
+	
+	<select id="selectOnePayment" parameterType="map" resultType="awesomeCoffee.dto.PaymentDTO">
 		select *
 		from payment
-		where member_num = #{memberNum}
+		where order_num = #{orderNum}
 	</select>
+	
 	<insert id="insertDirectPayment">
 		insert into payment (order_num, payment_kind, payment_date, payment_price)
 		values
