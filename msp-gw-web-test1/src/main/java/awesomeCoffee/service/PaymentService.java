@@ -24,7 +24,25 @@ public class PaymentService {
 	@Qualifier("transactionManager_sample")
 	private DataSourceTransactionManager transactionManager_sample;
 
-	// 결제 insert
+	public int directPaymentInsert (Map<String, Object> param) {
+		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+		TransactionStatus status = transactionManager_sample.getTransaction(def);
+		int result = 0;
+		try {
+			result = sqlSession.update("Payment.insertDirectPayment", param);
+			
+			transactionManager_sample.commit(status);
+			logger.info("========== 바로주문 결제 완료 : {}", result);
+
+		} catch (Exception e) {
+			logger.error("[ERROR] updateMember() Fail : e : {}", e.getMessage());
+			e.printStackTrace();
+			transactionManager_sample.rollback(status);
+		}
+		return result;
+	}
+	// 결제 insert 
 	public int paymentInsert (Map<String, Object> param) {
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);

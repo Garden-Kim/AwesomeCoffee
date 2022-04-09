@@ -3,7 +3,6 @@ package awesomeCoffee.service;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,8 +14,8 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
-import awesomeCoffee.dto.CartDTO;
 import awesomeCoffee.dto.MemberOrderDTO;
+import awesomeCoffee.dto.MenuDTO;
 
 @Service
 public class MemberOrderService {
@@ -30,9 +29,32 @@ public class MemberOrderService {
 	private DataSourceTransactionManager transactionManager_sample;
 
 
+	// 바로주문
+	public MenuDTO directOrder(Map<String, Object> param) {
+		return sqlSession.selectOne("Order.directOrder", param);
+	}
 	// 주문 번호 자동 생성
 	public String createOrderNum() {
 		return sqlSession.selectOne("Order.createOrderNum");
+	}
+	// 바로 주문 insert (결제 완료시 실행)
+	public int insertDirectOrder (Map<String, Object> param) {
+		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+		TransactionStatus status = transactionManager_sample.getTransaction(def);
+		int result = 0;
+		try {
+			result = sqlSession.update("Order.insertDirectOrder", param);
+
+			transactionManager_sample.commit(status);
+			logger.info("========== 바로주문 접수 완료 : {}", result);
+
+		} catch (Exception e) {
+			logger.error("[ERROR] updateMember() Fail : e : {}", e.getMessage());
+			e.printStackTrace();
+			transactionManager_sample.rollback(status);
+		}
+		return result;
 	}
 	// 회원 주문 insert (결제 완료시 실행)
 	public int insertMemberOrder (Map<String, Object> param) {
@@ -45,7 +67,7 @@ public class MemberOrderService {
 			result = sqlSession.update("Order.insertOrder", param);
 
 			transactionManager_sample.commit(status);
-			logger.info("========== 장바구니 리스트 불러오기 완료 : {}", result);
+			logger.info("========== 주문 접수 완료 : {}", result);
 
 		} catch (Exception e) {
 			logger.error("[ERROR] updateMember() Fail : e : {}", e.getMessage());

@@ -5,17 +5,31 @@
 
 <mapper namespace="Order">
 
+	<select id="directOrder" resultType="awesomeCoffee.dto.MenuDTO">
+		select *
+		from goods
+		where goods_num = #{goodsNum}
+	</select>
 	<select id="createOrderNum" resultType="String">
 		select order_seq.nextval from dual
 	</select>
 	
 	<select id="memberCartList" resultType="awesomeCoffee.dto.MemberOrderDTO" parameterType="map">
-		select g.goods_num, c.qty, c.qty * g.goods_price as price_sum
+		select g.goods_num, c.qty, c.qty * g.goods_price as price_sum,
+				g.goods_image, g.goods_name
 		from cart c, goods g, member m
 		where m.member_num = c.member_num and c.goods_num = g.goods_num
 		and m.member_num = #{memberNum}
 	</select>
-
+	
+	<insert id="insertDirectOrder">
+		INSERT INTO MEMBER_ORDER (order_num, order_price,
+		order_time, takeout, member_num, cook_state)
+		VALUES
+		(#{orderNum}, #{orderPrice}, TO_CHAR(SYSDATE, 'RRRR-MM-DD HH24:MI:SS'),
+		'N', #{memberNum}, 'N')
+	</insert>
+	
 	<insert id="insertOrder">
 		INSERT INTO MEMBER_ORDER (order_num, order_price,
 		order_time, takeout, member_num, cook_state)
