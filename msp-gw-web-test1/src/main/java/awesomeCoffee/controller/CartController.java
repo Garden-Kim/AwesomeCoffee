@@ -33,7 +33,7 @@ public class CartController {
 
 	// 장바구니 create
 	@RequestMapping(method = RequestMethod.POST, value = "/api/cart/regist")
-	public ModelAndView wishlistInsert(HttpServletRequest request, HttpSession session) {
+	public ModelAndView cartInsert(HttpServletRequest request, HttpSession session) {
 		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
 		Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
 		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
@@ -56,34 +56,30 @@ public class CartController {
 			String memberNum = memberService.getMemberNum(authInfo.getLoginId());
 			reqBodyMap.put("memberNum", memberNum);
 			List<CartDTO> list = cartService.selectAllCart(memberNum);
-			if (list.isEmpty()) {
+			// 장바구니가 비어있지않으면 찾아서 update sql 에서 merge사용 (없으면 insert)
+			if (!StringUtils.isEmpty(list)) {
+				result = cartService.updateCart(reqBodyMap);
+				if (result > 0) {
+					responseBodyMap.put("rsltCode", "0000");
+					responseBodyMap.put("rsltMsg", "Success");
+				} else {
+					responseBodyMap.put("rsltCode", "2003");
+					responseBodyMap.put("rsltMsg", "Update Fail");
+				}
+			// 장바구니가 비어있으면 insert
+			} else {
 				result = cartService.insertCart(reqBodyMap);
 				if (result > 0) {
 					responseBodyMap.put("rsltCode", "0000");
 					responseBodyMap.put("rsltMsg", "Success");
 				} else {
 					responseBodyMap.put("rsltCode", "2003");
-					responseBodyMap.put("rsltMsg", "Data not found.");
-				}
-			}else {
-				for (int i=0; i<list.size(); i++) {
-					if (list.get(i).getGoodsNum().equals(reqBodyMap.get("goodsNum"))) {
-						result = cartService.updateCart(reqBodyMap);
-					}else {
-						result = cartService.insertCart(reqBodyMap);
-					}
-				}
-				if (result > 0) {
-					responseBodyMap.put("rsltCode", "0000");
-					responseBodyMap.put("rsltMsg", "Success");
-				} else {
-					responseBodyMap.put("rsltCode", "2003");
-					responseBodyMap.put("rsltMsg", "Data not found.");
+					responseBodyMap.put("rsltMsg", "Insert Fail");
 				}
 			}
-			
-			
+
 		}
+
 		ModelAndView mv = new ModelAndView("defaultJsonView");
 		mv.addObject(Const.HEAD, reqHeadMap);
 		mv.addObject(Const.BODY, responseBodyMap);

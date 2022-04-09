@@ -28,13 +28,13 @@ public class WishlistService {
 	@Qualifier("transactionManager_sample")
 	private DataSourceTransactionManager transactionManager_sample;
 	// 관심상품 insert 
-	public int insertWishlist(Map<String, Object> param) {
+	public int updateWishlist(Map<String, Object> param) {
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 		TransactionStatus status = transactionManager_sample.getTransaction(def);
 		int result = 0;
 		try {
-			result = sqlSession.insert("Wishlist.insertWishlist", param);
+			result = sqlSession.update("Wishlist.updateWishlist", param);
 			transactionManager_sample.commit(status);
 			logger.info("========== 관심상품 등록 완료 : {}", result);
 

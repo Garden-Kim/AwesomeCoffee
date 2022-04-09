@@ -31,9 +31,9 @@ public class WishlistController {
 	@Autowired
 	private MemberService memberService;
 	
-	// 관심상품 create
+	// 관심상품 update (insert/delete)
 	@RequestMapping(method = RequestMethod.POST, value ="/api/wishlist/regist")
-	public ModelAndView wishlistInsert (HttpServletRequest request, HttpSession session) {
+	public ModelAndView wishlistUpdate (HttpServletRequest request, HttpSession session) {
 		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
 		Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
 		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
@@ -54,7 +54,7 @@ public class WishlistController {
 		} else {
 			String memberNum = memberService.getMemberNum(authInfo.getLoginId());
 			reqBodyMap.put("memberNum", memberNum);
-			int result = wishlistService.insertWishlist(reqBodyMap);
+			int result = wishlistService.updateWishlist(reqBodyMap);
 			if (result > 0) {
 				responseBodyMap.put("rsltCode", "0000");
 				responseBodyMap.put("rsltMsg", "Success");
