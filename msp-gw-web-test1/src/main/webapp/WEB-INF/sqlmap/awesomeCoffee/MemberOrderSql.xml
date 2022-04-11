@@ -87,6 +87,7 @@
 		update member_order
 		set cook_state = #{cookState}
 		where order_num = #{orderNum}
+		
 	</update>
 	
 	
