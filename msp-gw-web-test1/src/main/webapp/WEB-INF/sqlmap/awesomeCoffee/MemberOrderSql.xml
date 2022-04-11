@@ -62,21 +62,40 @@
 		where member_num = #{memberNum}
 		order by order_num
 	</select>
-
-	<select id="selectAllEmpOrder"
+	<!-- 조리상태 'N' 전부 출력 -->
+	<select id="selectAllEmpOrderN"
 		resultType="awesomeCoffee.dto.MemberOrderDTO">
 		select *
 		from member_order
 		where cook_state = 'N'
-		order by
-		order_num
+		order by order_num
 	</select>
-
+	<!-- 조리상태 'Y' 전부 출력 -->
+	<select id="selectAllEmpOrderY" resultType="awesomeCoffee.dto.MemberOrderDTO">
+		select *
+		from member_order
+		where cook_state = 'Y'
+		order by order_num
+	</select>
+	<!-- 조리상태 상관없이 전부 출력 -->
+	<select id="selectAllEmpOrder" resultType="awesomeCoffee.dto.MemberOrderDTO">
+		select *
+		from member_order
+		order by order_num
+	</select>
+	
 	<update id="updateOrderCookState">
 		update member_order
 		set cook_state = #{cookState}
 		where order_num = #{orderNum}
 	</update>
+	
+	
+	<select id="selectOrderDetail" parameterType="map" resultType="awesomeCoffee.dto.MemberOrderDTO">
+		select *
+		from member_order
+		where order_num = #{orderNum}
+	</select>
 
 	<update id="updateOrderTakeout">
 		update member_order

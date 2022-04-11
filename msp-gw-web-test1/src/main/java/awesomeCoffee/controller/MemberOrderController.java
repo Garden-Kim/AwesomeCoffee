@@ -173,19 +173,21 @@ public class MemberOrderController {
 		return mv;
 	}
 
-	// 주문 read 직원 (조리상태가 N인 모든 것 )
+	
+	
+	// 주문 read 직원 (조리상태가 상관없이 모든 것 )
 	@RequestMapping(method = RequestMethod.POST, value = "/api/order/empList")
 	public ModelAndView orderEmpList(HttpSession session, HttpServletRequest request) {
 		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
 		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
 		List<Map<String, Object>> orderList = new ArrayList<Map<String, Object>>();
 
-	    if (reqHeadMap == null) {
-	         reqHeadMap = new HashMap<String, Object>();
-	      }
+		if (reqHeadMap == null) {
+			reqHeadMap = new HashMap<String, Object>();
+		}
 
-	      reqHeadMap.put(Const.RESULT_CODE, Const.OK);
-	      reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
+		reqHeadMap.put(Const.RESULT_CODE, Const.OK);
+		reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
 		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
 		if (StringUtils.isEmpty(authInfo)) {
 			responseBodyMap.put("rsltCode", "1003");
@@ -219,6 +221,148 @@ public class MemberOrderController {
 		ModelAndView mv = new ModelAndView("defaultJsonView");
 		mv.addObject(Const.BODY, responseBodyMap);
 		mv.addObject(Const.HEAD, reqHeadMap);
+		return mv;
+	}
+
+	// 주문 read 직원 (조리상태가 Y인 모든 것 )
+	@RequestMapping(method = RequestMethod.POST, value = "/api/order/empListY")
+	public ModelAndView orderEmpListY(HttpSession session, HttpServletRequest request) {
+		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
+		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
+		List<Map<String, Object>> orderList = new ArrayList<Map<String, Object>>();
+
+		if (reqHeadMap == null) {
+			reqHeadMap = new HashMap<String, Object>();
+		}
+
+		reqHeadMap.put(Const.RESULT_CODE, Const.OK);
+		reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
+		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
+		if (StringUtils.isEmpty(authInfo)) {
+			responseBodyMap.put("rsltCode", "1003");
+			responseBodyMap.put("rsltMsg", "Login required.");
+		} else {
+			List<MemberOrderDTO> list = memberOrderService.selectAllEmpOrderY();
+			logger.info("======================= responseBodyMap : {}", list.size());
+
+			for (int i = 0; i < list.size(); i++) {
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("takeout", list.get(i).getTakeout());
+				map.put("cookState", list.get(i).getCookState());
+				map.put("orderPrice", list.get(i).getOrderPrice());
+				map.put("orderTime", list.get(i).getOrderTime());
+				map.put("memberNum", list.get(i).getMemberNum());
+				map.put("orderNum", list.get(i).getOrderNum());
+
+				orderList.add(map);
+			}
+			logger.info("======================= orderList : {}", orderList.toString());
+
+			if (!StringUtils.isEmpty(list)) {
+				responseBodyMap.put("rsltCode", "0000");
+				responseBodyMap.put("rsltMsg", "Success");
+				responseBodyMap.put("list", orderList);
+			} else {
+				responseBodyMap.put("rsltCode", "2003");
+				responseBodyMap.put("rsltMsg", "Data not found.");
+			}
+		}
+		ModelAndView mv = new ModelAndView("defaultJsonView");
+		mv.addObject(Const.BODY, responseBodyMap);
+		mv.addObject(Const.HEAD, reqHeadMap);
+		return mv;
+	}
+
+	// 주문 read 직원 (조리상태가 N인 모든 것 )
+	@RequestMapping(method = RequestMethod.POST, value = "/api/order/empListN")
+	public ModelAndView orderEmpListN(HttpSession session, HttpServletRequest request) {
+		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
+		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
+		List<Map<String, Object>> orderList = new ArrayList<Map<String, Object>>();
+
+		if (reqHeadMap == null) {
+			reqHeadMap = new HashMap<String, Object>();
+		}
+
+		reqHeadMap.put(Const.RESULT_CODE, Const.OK);
+		reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
+		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
+		if (StringUtils.isEmpty(authInfo)) {
+			responseBodyMap.put("rsltCode", "1003");
+			responseBodyMap.put("rsltMsg", "Login required.");
+		} else {
+			List<MemberOrderDTO> list = memberOrderService.selectAllEmpOrderN();
+			logger.info("======================= responseBodyMap : {}", list.size());
+
+			for (int i = 0; i < list.size(); i++) {
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("takeout", list.get(i).getTakeout());
+				map.put("cookState", list.get(i).getCookState());
+				map.put("orderPrice", list.get(i).getOrderPrice());
+				map.put("orderTime", list.get(i).getOrderTime());
+				map.put("memberNum", list.get(i).getMemberNum());
+				map.put("orderNum", list.get(i).getOrderNum());
+
+				orderList.add(map);
+			}
+			logger.info("======================= orderList : {}", orderList.toString());
+
+			if (!StringUtils.isEmpty(list)) {
+				responseBodyMap.put("rsltCode", "0000");
+				responseBodyMap.put("rsltMsg", "Success");
+				responseBodyMap.put("list", orderList);
+			} else {
+				responseBodyMap.put("rsltCode", "2003");
+				responseBodyMap.put("rsltMsg", "Data not found.");
+			}
+		}
+		ModelAndView mv = new ModelAndView("defaultJsonView");
+		mv.addObject(Const.BODY, responseBodyMap);
+		mv.addObject(Const.HEAD, reqHeadMap);
+		return mv;
+	}
+	
+	// 주문 detail
+	@RequestMapping(method = RequestMethod.POST, value = "/api/order/empDetail")
+	public ModelAndView orderEmpDetail(HttpServletRequest request, HttpSession session) {
+		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
+		Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
+		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
+
+		if (reqHeadMap == null) {
+			reqHeadMap = new HashMap<String, Object>();
+		}
+
+		reqHeadMap.put(Const.RESULT_CODE, Const.OK);
+		reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
+
+		logger.info("======================= reqBodyMap : {}", reqBodyMap.toString());
+
+		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
+		if (StringUtils.isEmpty(authInfo)) {
+			responseBodyMap.put("rsltCode", "1003");
+			responseBodyMap.put("rsltMsg", "Login required.");
+		} else {
+			MemberOrderDTO dto = memberOrderService.selectOrderDetail(reqBodyMap);
+			if (!StringUtils.isEmpty(dto)) {
+				responseBodyMap.put("rsltCode", "0000");
+				responseBodyMap.put("rsltMsg", "Success");
+				responseBodyMap.put("takeout", dto.getTakeout());
+				responseBodyMap.put("cookState", dto.getCookState());
+				responseBodyMap.put("orderPrice", dto.getOrderPrice());
+				responseBodyMap.put("orderTime", dto.getOrderTime());
+				responseBodyMap.put("memberNum", dto.getMemberNum());
+				responseBodyMap.put("orderNum", dto.getOrderNum());
+				
+			} else {
+				responseBodyMap.put("rsltCode", "2003");
+				responseBodyMap.put("rsltMsg", "Data not found.");
+			}
+		}
+		ModelAndView mv = new ModelAndView("defaultJsonView");
+		mv.addObject(Const.HEAD, reqHeadMap);
+		mv.addObject(Const.BODY, responseBodyMap);
+
 		return mv;
 	}
 

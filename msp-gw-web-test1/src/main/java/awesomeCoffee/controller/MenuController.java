@@ -38,7 +38,7 @@ public class MenuController {
 	private MenuService menuService;
 
 	// 메뉴검색
-	@RequestMapping(method = RequestMethod.POST, value="/api/menu/search")
+	@RequestMapping(method = RequestMethod.POST, value = "/api/menu/search")
 	public ModelAndView menuSearch(HttpServletRequest request, HttpSession session) {
 		Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
 		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
@@ -71,7 +71,7 @@ public class MenuController {
 
 				menu.add(map);
 			}
-			logger.info("======================= categoryList : {}", dto.toString());
+			logger.info("======================= menuSearch : {}", dto.toString());
 
 			if (!StringUtils.isEmpty(dto)) {
 				responseBodyMap.put("rsltCode", "0000");
@@ -88,7 +88,7 @@ public class MenuController {
 
 		return mv;
 	}
-	
+
 	// 메뉴상세
 	@RequestMapping(method = RequestMethod.POST, value = "/api/menu/info")
 	public ModelAndView getMemberInfo(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
@@ -150,6 +150,20 @@ public class MenuController {
 
 		logger.info("======================= reqBodyMap : {}", reqBodyMap.toString());
 
+		// 메뉴 이미지 가져오기
+		MenuDTO dto = menuService.getMenuInfoByNum(reqBodyMap);
+		String fileName = dto.getGoodsImage();
+
+		String fileDir = "/view/goods/upload";
+		String filePath = request.getSession().getServletContext().getRealPath(fileDir);
+		// 메뉴 이미지 있으면 폴더에서 삭제
+		if (fileName != null) {
+			File f = new File(filePath + "/" + fileName);
+			if (f.exists()) {
+				f.delete();
+			}
+		}
+
 		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
 		if (StringUtils.isEmpty(authInfo)) {
 			responseBodyMap.put("rsltCode", "1003");
@@ -193,6 +207,7 @@ public class MenuController {
 		reqBodyMap.put("categoryNum", request.getParameter("categoryNum"));
 
 		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
+
 		if (StringUtils.isEmpty(authInfo)) {
 			responseBodyMap.put("rsltCode", "1003");
 			responseBodyMap.put("rsltMsg", "Login required.");
@@ -232,9 +247,23 @@ public class MenuController {
 
 		MultipartFile menuImage = request.getFile("goodsImage");
 
+
 		String fileDir = "/view/goods/upload";
 		String filePath = request.getSession().getServletContext().getRealPath(fileDir);
 		System.out.println(filePath);
+		
+		// 메뉴 이미지 가져오기
+		MenuDTO dto = menuService.getMenuInfoByNum(reqBodyMap);
+		String fileName = dto.getGoodsImage();
+
+		
+		// 메뉴 이미지 있으면 폴더에서 삭제
+		if (fileName != null) {
+			File f = new File(filePath + "/" + fileName);
+			if (f.exists()) {
+				f.delete();
+			}
+		}
 
 		String originalFile = menuImage.getOriginalFilename();
 
