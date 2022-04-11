@@ -5,21 +5,45 @@
 
 <mapper namespace="StoreOrder">
 
+
+	<select id="createStoreOrderNum" resultType="String">
+		select STOREORDER_NUM_SEQ.NEXTVAL from dual
+	</select>
+	
 	<!-- 발주 insert -->
 	<insert id="insertStoreOrder" parameterType="map">
 		INSERT INTO STORE_ORDER(STOREORDER_NUM, STORE_NUM, FOOD_NUM, 
 					STOREORDER_QTY, STOREORDER_DATE, STOREORDER_PRICE)
-		VALUES(STOREORDER_NUM_SEQ.NEXTVAL, #{storeNum}, #{foodNum}, 
+		VALUES(#{storeOrderNum}, #{storeNum}, #{foodNum}, 
 				#{storeOrderQty}, sysdate,
 				(SELECT (SELECT FOOD_PRICE 
 						FROM FOOD
 						where FOOD_NUM = #{foodNum}) * #{storeOrderQty}
 						FROM DUAL))
 	</insert>
-	
+
 	<select id="storeOrderList" resultType="awesomeCoffee.dto.StoreOrderDTO">
 		SELECT *
 		FROM STORE_ORDER
-	
 	</select>
+	
+	<!-- 발주내역 총합계 -->
+	<select id="storeOrderPriceSum" resultType="String">
+		select sum(storeorder_price)
+		from store_order
+	</select>
+	
+	<!-- 발주내역 상세페이지 총합계 -->
+	<select id="storeOrderPrice" resultType="String" parameterType="map"> 
+		select sum(storeorder_price)
+		from store_order
+		where storeorder_num = #{storeOrderNum}
+	</select>
+	
+	<select id="selectOrderDetail" parameterType="map" resultType="awesomeCoffee.dto.StoreOrderDTO">
+		select * 
+		from store_order
+		where storeorder_num = #{storeOrderNum}
+	</select>
+	
 </mapper>

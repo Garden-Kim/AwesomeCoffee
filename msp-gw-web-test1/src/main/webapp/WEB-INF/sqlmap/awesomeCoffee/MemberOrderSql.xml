@@ -10,6 +10,7 @@
 		from goods
 		where goods_num = #{goodsNum}
 	</select>
+	
 	<select id="createOrderNum" resultType="String">
 		select order_seq.nextval from dual
 	</select>

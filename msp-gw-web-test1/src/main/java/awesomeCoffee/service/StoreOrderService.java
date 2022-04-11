@@ -29,19 +29,28 @@ public class StoreOrderService {
 	@Qualifier("transactionManager_sample")
 	private DataSourceTransactionManager transactionManager_sample;
 
-	public int insertStoreOrder(Map<String, Object> param) {
 
-		// 트렌젝션 구현
+	// 발주 insert 
+	public int insertStoreOrder(List<Map<String, Object>> reqBodyMap) {
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 		TransactionStatus status = transactionManager_sample.getTransaction(def);
-
+		
 		int result = 0;
 		try {
-			
-			
-			result = sqlSession.insert("StoreOrder.insertStoreOrder", param);
-
+			for(Map<String, Object> map : reqBodyMap) {
+				StoreOrderDTO dto = new StoreOrderDTO();
+				dto.setFoodNum(map.get("foodNum").toString());
+				dto.setStoreNum(map.get("storeNum").toString());
+				dto.setStoreOrderNum(map.get("storeOrderNum").toString());
+				dto.setStoreOrderQty(Integer.parseInt((String)map.get("storeOrderQty")));
+				
+//				String storeOrderNum = sqlSession.selectOne("StoreOrder.createStoreOrderNum");
+//				dto.setStoreOrderNum(storeOrderNum);
+				
+				sqlSession.insert("StoreOrder.insertStoreOrder", dto);
+				result++;
+			}
 			transactionManager_sample.commit(status);
 			logger.info("========== 발주 완료 : {}", result);
 
@@ -53,9 +62,21 @@ public class StoreOrderService {
 		return result;
 
 	}
-
+	// 발주내역 총합계
+	public String storeOrderPriceSum() {
+		return sqlSession.selectOne("StoreOrder.storeOrderPriceSum");
+	}
+	// 발주내역
 	public List<StoreOrderDTO> storeOrderList() {
 		return sqlSession.selectList("StoreOrder.storeOrderList");
+	}
+	// 발주 detail
+	public List<StoreOrderDTO> selectOrderDetail(Map<String, Object> param) {
+		return sqlSession.selectList("StoreOrder.selectOrderDetail", param);
+	}
+	// 발주 detail 합계
+	public String storeOrderPrice(Map<String, Object> param) {
+		return sqlSession.selectOne("StoreOrder.storeOrderPrice", param);
 	}
 
 }
