@@ -19,7 +19,6 @@ import awesomeCoffee.dto.FoodPaymentDTO;
 @Service
 public class FoodPaymentService {
 
-	
 	private Logger logger = LoggerFactory.getLogger(FoodPaymentService.class);
 
 	@Autowired(required = true)
@@ -29,8 +28,8 @@ public class FoodPaymentService {
 	@Autowired(required = true)
 	@Qualifier("transactionManager_sample")
 	private DataSourceTransactionManager transactionManager_sample;
-	
-	// 입금(결제) insert 
+
+	// 입금(결제) insert
 	public int insertFoodPayment(Map<String, Object> param) {
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
@@ -48,10 +47,15 @@ public class FoodPaymentService {
 		}
 		return result;
 	}
-	// 입금(결제) 내역 read 
-	public List<FoodPaymentDTO> selectFoodPaymentList(){
+
+	// 입금(결제) 내역 read
+	public List<FoodPaymentDTO> selectFoodPaymentList(String storeNum) {
 		return sqlSession.selectList("FoodPayment.selectFoodPaymentList");
 	}
-	
-	
+
+	// 입금(결제) 총액
+	public String foodPaymentPriceSum(String storeNum) {
+		return sqlSession.selectOne("FoodPayment.foodPaymentPriceSum", storeNum);
+	}
+
 }

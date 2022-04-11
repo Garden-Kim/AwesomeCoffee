@@ -16,4 +16,10 @@
 		order by food_payment_num
 	</select>
 
+	<!-- 입금내역 총합계 -->
+	<select id="foodPaymentPriceSum" resultType="String" parameterType="String">
+		select sum(food_payment_price)
+		from food_payment 
+		where store_num = #{storeNum}
+	</select>
 </mapper>

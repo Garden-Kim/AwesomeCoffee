@@ -21,15 +21,17 @@
 						FROM DUAL))
 	</insert>
 
-	<select id="storeOrderList" resultType="awesomeCoffee.dto.StoreOrderDTO">
+	<select id="storeOrderList" resultType="awesomeCoffee.dto.StoreOrderDTO" parameterType="String">
 		SELECT *
 		FROM STORE_ORDER
+		where store_num = #{storeNum}
 	</select>
 	
 	<!-- 발주내역 총합계 -->
-	<select id="storeOrderPriceSum" resultType="String">
+	<select id="storeOrderPriceSum" resultType="String" parameterType="String">
 		select sum(storeorder_price)
 		from store_order
+		where store_num = #{storeNum}
 	</select>
 	
 	<!-- 발주내역 상세페이지 총합계 -->

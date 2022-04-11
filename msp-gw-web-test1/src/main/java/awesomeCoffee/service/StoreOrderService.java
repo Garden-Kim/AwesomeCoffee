@@ -30,22 +30,22 @@ public class StoreOrderService {
 	private DataSourceTransactionManager transactionManager_sample;
 
 	// 발주 insert 
-	public int insertStoreOrder(List<Map<String, Object>> param) {
+	public int insertStoreOrder(List<Map<String, Object>> param, String storeNum) {
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 		TransactionStatus status = transactionManager_sample.getTransaction(def);
 		
 		int result = 0;
 		try {
+
+			String storeOrderNum = sqlSession.selectOne("StoreOrder.createStoreOrderNum");
+			
 			for(Map<String, Object> map : param) {
 				StoreOrderDTO dto = new StoreOrderDTO();
 				dto.setFoodNum(map.get("foodNum").toString());
-				dto.setStoreNum(map.get("storeNum").toString());
-				dto.setStoreOrderNum(map.get("storeOrderNum").toString());
+				dto.setStoreNum(storeNum);
+				dto.setStoreOrderNum(storeOrderNum);
 				dto.setStoreOrderQty(Integer.parseInt((String)map.get("storeOrderQty")));
-				
-//				String storeOrderNum = sqlSession.selectOne("StoreOrder.createStoreOrderNum");
-//				dto.setStoreOrderNum(storeOrderNum);
 				
 				sqlSession.insert("StoreOrder.insertStoreOrder", dto);
 				result++;
@@ -62,12 +62,12 @@ public class StoreOrderService {
 
 	}
 	// 발주내역 총합계
-	public String storeOrderPriceSum() {
-		return sqlSession.selectOne("StoreOrder.storeOrderPriceSum");
+	public String storeOrderPriceSum(String storeNum) {
+		return sqlSession.selectOne("StoreOrder.storeOrderPriceSum",storeNum);
 	}
 	// 발주내역
-	public List<StoreOrderDTO> storeOrderList() {
-		return sqlSession.selectList("StoreOrder.storeOrderList");
+	public List<StoreOrderDTO> storeOrderList(String storeNum) {
+		return sqlSession.selectList("StoreOrder.storeOrderList", storeNum);
 	}
 	// 발주 detail
 	public List<StoreOrderDTO> selectOrderDetail(Map<String, Object> param) {
