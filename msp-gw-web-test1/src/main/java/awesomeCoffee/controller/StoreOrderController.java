@@ -33,9 +33,6 @@ import kr.msp.constant.Const;
 
 @Controller
 public class StoreOrderController {
-
-	private static final int Map = 0;
-
 	private Logger logger = LoggerFactory.getLogger(StoreOrderController.class);
 
 	@Autowired
@@ -44,7 +41,7 @@ public class StoreOrderController {
 	FoodService foodService;
 	@Autowired
 	StoreOrderService storeOrderService;
-
+	
 	// 발주 상세페이지
 	@RequestMapping(method = RequestMethod.POST, value = "/api/storeOrder/detail")
 	public ModelAndView storeOrderDetail(HttpServletRequest request, HttpSession session) {

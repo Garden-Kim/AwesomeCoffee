@@ -5,7 +5,6 @@
 
 <mapper namespace="StoreOrder">
 
-
 	<select id="createStoreOrderNum" resultType="String">
 		select STOREORDER_NUM_SEQ.NEXTVAL from dual
 	</select>

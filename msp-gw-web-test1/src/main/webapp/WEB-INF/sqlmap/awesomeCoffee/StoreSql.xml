@@ -35,10 +35,17 @@
 
 	</insert>
 
-	<!-- 매장 상세정보 아이디로 -->
+	<!-- 매장 상세정보 아이디로 map)-->
 	<select id="getStoreInfoById" parameterType="map"
 		resultType="awesomeCoffee.dto.StoreDTO">
 		SELECT *
+		FROM STORE
+		WHERE STORE_ID = #{storeId}
+	</select>
+	
+	<!-- 매장 상세정보 아이디로 string-->
+	<select id="getStoreNumById" parameterType="String" resultType="String">
+		SELECT store_num
 		FROM STORE
 		WHERE STORE_ID = #{storeId}
 	</select>

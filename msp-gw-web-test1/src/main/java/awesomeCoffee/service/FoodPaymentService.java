@@ -1,5 +1,6 @@
 package awesomeCoffee.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
+
+import awesomeCoffee.dto.FoodPaymentDTO;
 
 @Service
 public class FoodPaymentService {
@@ -26,9 +29,8 @@ public class FoodPaymentService {
 	@Autowired(required = true)
 	@Qualifier("transactionManager_sample")
 	private DataSourceTransactionManager transactionManager_sample;
-
 	
-	//결제 입력
+	// 입금(결제) insert 
 	public int insertFoodPayment(Map<String, Object> param) {
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
@@ -37,7 +39,7 @@ public class FoodPaymentService {
 		try {
 			result = sqlSession.insert("FoodPayment.insertFoodPayment", param);
 			transactionManager_sample.commit(status);
-			logger.info("========== 식자재 결제 등록 완료 : {}", result);
+			logger.info("========== 입금 완료 : {}", result);
 
 		} catch (Exception e) {
 			logger.error("[ERROR] insertUser() Fail : e : {}", e.getMessage());
@@ -46,7 +48,10 @@ public class FoodPaymentService {
 		}
 		return result;
 	}
-	
+	// 입금(결제) 내역 read 
+	public List<FoodPaymentDTO> selectFoodPaymentList(){
+		return sqlSession.selectList("FoodPayment.selectFoodPaymentList");
+	}
 	
 	
 }

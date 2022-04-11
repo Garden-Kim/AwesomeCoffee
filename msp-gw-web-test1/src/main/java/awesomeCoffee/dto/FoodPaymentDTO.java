@@ -34,13 +34,13 @@ public class FoodPaymentDTO {
 	public void setFoodPaymentPrice(int foodPaymentPrice) {
 		this.foodPaymentPrice = foodPaymentPrice;
 	}
-	public Date getFoodPaymentDate() {
-		return foodPaymentDate;
-	}
-	public String setFoodPaymentDate(Date foodPaymentDate) {
+	public String getFoodPaymentDate() {
 		DateFormat date = new SimpleDateFormat("yyyy-MM-dd");
 		String strDate = date.format(foodPaymentDate);
 		return strDate;
+	}
+	public void setFoodPaymentDate(Date foodPaymentDate) {
+		this.foodPaymentDate = foodPaymentDate;
 	} 
 	
 	

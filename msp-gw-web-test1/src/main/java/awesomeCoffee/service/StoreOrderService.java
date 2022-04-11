@@ -29,16 +29,15 @@ public class StoreOrderService {
 	@Qualifier("transactionManager_sample")
 	private DataSourceTransactionManager transactionManager_sample;
 
-
 	// 발주 insert 
-	public int insertStoreOrder(List<Map<String, Object>> reqBodyMap) {
+	public int insertStoreOrder(List<Map<String, Object>> param) {
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 		TransactionStatus status = transactionManager_sample.getTransaction(def);
 		
 		int result = 0;
 		try {
-			for(Map<String, Object> map : reqBodyMap) {
+			for(Map<String, Object> map : param) {
 				StoreOrderDTO dto = new StoreOrderDTO();
 				dto.setFoodNum(map.get("foodNum").toString());
 				dto.setStoreNum(map.get("storeNum").toString());

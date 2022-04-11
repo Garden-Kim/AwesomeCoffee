@@ -5,34 +5,15 @@
 
 <mapper namespace="FoodPayment">
 
-
-	<!-- 매장등록 -->
-	<insert id="insertFood">
-		INSERT INTO FOOD
-		VALUES(FOOD_NUM_SEQ.NEXTVAL, #{foodPrice}, #{foodName})
-
+	<insert id="insertFoodPayment">
+		insert into food_payment (FOOD_PAYMENT_NUM, STORE_NUM, FOOD_PAYMENT_PRICE, FOOD_PAYMENT_DATE)
+		values (food_payment_seq.nextval, #{storeNum}, #{foodPaymentPrice}, sysdate)
 	</insert>
+	
+	<select id="selectFoodPaymentList" resultType="awesomeCoffee.dto.FoodPaymentDTO">
+		select * 
+		from food_payment
+		order by food_payment_num
+	</select>
 
-	<select id="foodInfo" parameterType="map" resultType="awesomeCoffee.dto.FoodDTO">
-		SELECT *
-		FROM FOOD
-		WHERE FOOD_NUM = #{foodNum}
-	</select>
-	<select id="foodList" resultType="awesomeCoffee.dto.FoodDTO">
-		SELECT *
-		FROM FOOD
-	</select>
-	
-	<delete id="deleteFood" parameterType="map">
-		DELETE
-		FROM FOOD
-		WHERE FOOD_NUM = #{foodNum}
-	</delete>
-	
-	<update id="updateFood" parameterType="map">
-		UPDATE FOOD
-		SET FOOD_NAME = #{foodName}, FOOD_PRICE = #{foodPrice}
-		WHERE FOOD_NUM = #{foodNum}
-	</update>
-	
 </mapper>
