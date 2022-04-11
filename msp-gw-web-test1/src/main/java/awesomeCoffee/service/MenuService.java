@@ -118,7 +118,7 @@ public class MenuService {
 		return result;
 	}
 	public MenuDTO getMenuInfo(Map<String, Object> param) {
-		return sqlSession.selectOne("Menu.getMemberInfo", param);
+		return sqlSession.selectOne("Menu.getMenuInfo", param);
 	}
 	
 }
