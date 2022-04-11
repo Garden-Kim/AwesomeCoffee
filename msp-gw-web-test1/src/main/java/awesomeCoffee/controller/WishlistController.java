@@ -32,7 +32,7 @@ public class WishlistController {
 	private MemberService memberService;
 	
 	// 관심상품 update (insert/delete)
-	@RequestMapping(method = RequestMethod.POST, value ="/api/wishlist/regist")
+	@RequestMapping(method = RequestMethod.POST, value ="/api/wishlist/update")
 	public ModelAndView wishlistUpdate (HttpServletRequest request, HttpSession session) {
 		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
 		Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
@@ -115,44 +115,44 @@ public class WishlistController {
 		mv.addObject(Const.HEAD, reqHeadMap);
 		return mv;
 	}
-	// 관심상품 delete
-	@RequestMapping(method = RequestMethod.POST, value ="/api/wishlist/delete")
-	public ModelAndView wishlistDelete (HttpServletRequest request, HttpSession session) {
-		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
-		Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
-		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
-
-		if (reqHeadMap == null) {
-			reqHeadMap = new HashMap<String, Object>();
-		}
-
-		reqHeadMap.put(Const.RESULT_CODE, Const.OK);
-		reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
-
-		logger.info("======================= reqBodyMap : {}", reqBodyMap.toString());
-
-		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
-		if (StringUtils.isEmpty(authInfo)) {
-			responseBodyMap.put("rsltCode", "1003");
-			responseBodyMap.put("rsltMsg", "Login required.");
-		} else {
-			String memberNum = memberService.getMemberNum(authInfo.getLoginId());
-			reqBodyMap.put("memberNum", memberNum);
-			int result = wishlistService.deleteWishlist(reqBodyMap);
-			if (result > 0) {
-				responseBodyMap.put("rsltCode", "0000");
-				responseBodyMap.put("rsltMsg", "Success");
-			} else {
-				responseBodyMap.put("rsltCode", "2003");
-				responseBodyMap.put("rsltMsg", "Data not found.");
-			}
-		}
-		ModelAndView mv = new ModelAndView("defaultJsonView");
-		mv.addObject(Const.HEAD, reqHeadMap);
-		mv.addObject(Const.BODY, responseBodyMap);
-
-		return mv;
-	}
+//	// 관심상품 delete
+//	@RequestMapping(method = RequestMethod.POST, value ="/api/wishlist/delete")
+//	public ModelAndView wishlistDelete (HttpServletRequest request, HttpSession session) {
+//		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
+//		Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
+//		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
+//
+//		if (reqHeadMap == null) {
+//			reqHeadMap = new HashMap<String, Object>();
+//		}
+//
+//		reqHeadMap.put(Const.RESULT_CODE, Const.OK);
+//		reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
+//
+//		logger.info("======================= reqBodyMap : {}", reqBodyMap.toString());
+//
+//		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
+//		if (StringUtils.isEmpty(authInfo)) {
+//			responseBodyMap.put("rsltCode", "1003");
+//			responseBodyMap.put("rsltMsg", "Login required.");
+//		} else {
+//			String memberNum = memberService.getMemberNum(authInfo.getLoginId());
+//			reqBodyMap.put("memberNum", memberNum);
+//			int result = wishlistService.deleteWishlist(reqBodyMap);
+//			if (result > 0) {
+//				responseBodyMap.put("rsltCode", "0000");
+//				responseBodyMap.put("rsltMsg", "Success");
+//			} else {
+//				responseBodyMap.put("rsltCode", "2003");
+//				responseBodyMap.put("rsltMsg", "Data not found.");
+//			}
+//		}
+//		ModelAndView mv = new ModelAndView("defaultJsonView");
+//		mv.addObject(Const.HEAD, reqHeadMap);
+//		mv.addObject(Const.BODY, responseBodyMap);
+//
+//		return mv;
+//	}
 	
 	
 	
