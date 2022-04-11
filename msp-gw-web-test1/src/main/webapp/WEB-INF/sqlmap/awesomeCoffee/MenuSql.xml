@@ -5,6 +5,12 @@
 
 <mapper namespace="Menu">
 
+<select id="selectSearchMenu" parameterType="map" resultType="awesomeCoffee.dto.MenuDTO">
+	select *
+	from goods
+	where goods_name like '%'||#{goodsName}||'%'
+</select>
+
 <select id="getMenuInfo" parameterType="map" resultType="awesomeCoffee.dto.MenuDTO">
 	SELECT *
 	FROM GOODS

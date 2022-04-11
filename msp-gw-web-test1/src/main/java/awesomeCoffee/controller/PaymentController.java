@@ -1,6 +1,5 @@
 package awesomeCoffee.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,14 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.ibm.db2.jcc.am.re;
-
 import awesomeCoffee.dto.AuthInfo;
 import awesomeCoffee.dto.CartDTO;
-import awesomeCoffee.dto.MenuCategoryDTO;
 import awesomeCoffee.dto.MenuDTO;
-import awesomeCoffee.dto.PaymentDTO;
-import awesomeCoffee.dto.RecipeDTO;
 import awesomeCoffee.service.CartService;
 import awesomeCoffee.service.MemberOrderService;
 import awesomeCoffee.service.MemberService;

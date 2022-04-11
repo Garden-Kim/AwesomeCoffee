@@ -28,6 +28,11 @@ public class MenuService {
 	@Qualifier("transactionManager_sample")
 	private DataSourceTransactionManager transactionManager_sample;
 	
+	// 메뉴 검색
+	public List<MenuDTO> selectSearchMenu(Map<String, Object> goodsName){
+		return sqlSession.selectList("Menu.selectSearchMenu", goodsName);
+	}
+	
 	// 메뉴 삭제
 	public int deleteMenu(Map<String, Object> param) {
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();

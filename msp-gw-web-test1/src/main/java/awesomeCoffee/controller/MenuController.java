@@ -37,6 +37,58 @@ public class MenuController {
 	@Autowired(required = true)
 	private MenuService menuService;
 
+	// 메뉴검색
+	@RequestMapping(method = RequestMethod.POST, value="/api/menu/search")
+	public ModelAndView menuSearch(HttpServletRequest request, HttpSession session) {
+		Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
+		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
+		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
+		List<Map<String, Object>> menu = new ArrayList<Map<String, Object>>();
+
+		if (reqHeadMap == null) {
+			reqHeadMap = new HashMap<String, Object>();
+		}
+
+		reqHeadMap.put(Const.RESULT_CODE, Const.OK);
+		reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
+
+		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
+		if (StringUtils.isEmpty(authInfo)) {
+			responseBodyMap.put("rsltCode", "1003");
+			responseBodyMap.put("rsltMsg", "Login required.");
+		} else {
+			List<MenuDTO> dto = menuService.selectSearchMenu(reqBodyMap);
+			for (int i = 0; i < dto.size(); i++) {
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("goodsNum", dto.get(i).getGoodsNum());
+				map.put("goodsName", dto.get(i).getGoodsName());
+				map.put("goodsPrice", dto.get(i).getGoodsPrice());
+				map.put("goodsContent", dto.get(i).getGoodsContent());
+				map.put("goodsImage", dto.get(i).getGoodsImage());
+				map.put("goodsKal ", dto.get(i).getGoodsKal());
+				map.put("categoryNum", dto.get(i).getCategoryNum());
+				map.put("storeNum", dto.get(i).getStoreNum());
+
+				menu.add(map);
+			}
+			logger.info("======================= categoryList : {}", dto.toString());
+
+			if (!StringUtils.isEmpty(dto)) {
+				responseBodyMap.put("rsltCode", "0000");
+				responseBodyMap.put("rsltMsg", "Success");
+				responseBodyMap.put("list", menu);
+			} else {
+				responseBodyMap.put("rsltCode", "2003");
+				responseBodyMap.put("rsltMsg", "Data not found.");
+			}
+		}
+		ModelAndView mv = new ModelAndView("defaultJsonView");
+		mv.addObject(Const.BODY, responseBodyMap);
+		mv.addObject(Const.HEAD, reqHeadMap);
+
+		return mv;
+	}
+	
 	// 메뉴상세
 	@RequestMapping(method = RequestMethod.POST, value = "/api/menu/info")
 	public ModelAndView getMemberInfo(HttpServletRequest request, HttpServletResponse response, HttpSession session) {

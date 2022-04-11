@@ -6,9 +6,9 @@
 <mapper namespace="Payment">
 
 	<select id="selectYearPayment" resultType="String" parameterType="String">
-		select sum(case when payment_date like '22%' then payment_price end)
+		select sum(case when payment_date like #{paymentDate}||'%' then payment_price end)
 		from payment
-		where payment_date like '22%'
+		where payment_date like #{paymentDate}||'%'
 		group by to_char(payment_date,'yy')
 	</select>
 	
