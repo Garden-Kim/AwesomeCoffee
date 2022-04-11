@@ -46,45 +46,57 @@
     drawNoticeList: function () {
       var self = this;
       MNet.sendHttp({
-        path: SERVER_PATH.NOTICE_LIST,
+        path: SERVER_PATH.CART_LIST,
         data: self.data.requset,
         succ: function (data) {
           var items = "";
-          self.data.requset.lastSeqNo = data.lastSeqNo;
-          $.each(data.list, function (index, item) {
-            items += "<div class='cartMenu'>";
-            items += "<div class='cartImg'>";
-            // 데이터 있을 경우 바꿔야할 코드 (현재는 임의의 이미지)
-            //items += "<img id='imgUrl' src='" + data.imgUrl + "'/>";
-            items += "<img src='../img/coffee_exam.png'>";
-            items += "</div>";
-            items += "<ul>";
-            items += "<li data-seq='" + item.seqNo + "' class='menuName' >";
-            items += "<span>";
-            items += item.title;
-            items += "</span>";
-            items += "<button type='button' id='delete' class='qty' style='font-size: 13px; width : 7rem; border:1px solid  rgb(223, 221, 221); border-radius:1rem;'>";
-            items += "삭제";
-            items += "</button>";
-            items += "</li>";
-            items += "<li data-seq='" + item.seqNo + "' class='price' >";
-            items += "<span id='goodsPrice'> "
-            items += "5000";
-            items += "</span>";
-            items += "<button type='button' id='qtyPlus' class='qty'>";
-            items += "<img src='../img/icon-plus.png' >";
-            items += "</button>";
-            items += "<span id='goodsQty' class='qty'>";
-            items += "1";
-            items += "</span>";
-            items += "<button type='button' id='qtyMinus' class='qty'>";
-            items += "<img src='../img/icon-minus.png' >";
-            items += "</button>";
-            items += "</li>";
-            items += "</ul>";
-            items += "</div>";
-          });
-          $(".metro-wrap").append(items);
+          console.log(data);
+          if(data.list == ''){
+            items += "<h1 style='font-size:2rem;color:#888;text-align:center;margin-top:5rem;'>"
+            items += "장바구니가 비었습니다.</h1>"
+            $(".metro-wrap").append(items);
+            $("#tp").html('0 원');
+          }else{
+            var totalP = "";
+            $.each(data.list, function (index, item) {
+              items += "<div class='cartMenu'>";
+              items += "<div class='cartImg'>";
+              // 데이터 있을 경우 바꿔야할 코드 (현재는 임의의 이미지)
+              //items += "<img id='imgUrl' src='" + data.imgUrl + "'/>";
+              items += "<img src='../img/coffee_exam.png'>";
+              items += "</div>";
+              items += "<ul>";
+              items += "<li data-seq='" + item.goodsName + "' class='menuName' >";
+              items += "<span>";
+              items += item.goodsName;
+              items += "</span>";
+              items += "<button type='button' class='qty delete' style='font-size: 13px; width : 7rem; border:1px solid  rgb(223, 221, 221); border-radius:1rem;'>";
+              items += "삭제";
+              items += "</button>";
+              items += "</li>";
+              items += "<li data-seq='" + item.goodsName + "' class='price' >";
+              items += "<span class='goodsPrice' data-p='"+ (Number(item.goodsPrice) * Number(item.goodsQty)) +"'> "
+              items += item.goodsPrice;
+              items += "</span>";
+              items += "<button type='button' class='qty qtyPlus'>";
+              items += "<img src='../img/icon-plus.png' >";
+              items += "</button>";
+              items += "<span data-q='"+ item.goodsQty +"' class='qty goodsQty'>";
+              items += item.goodsQty;
+              items += "</span>";
+              items += "<button type='button' class='qty qtyMinus'>";
+              items += "<img src='../img/icon-minus.png' >";
+              items += "</button>";
+              items += "</li>";
+              items += "</ul>";
+              items += "</div>";
+              totalP += Number($('.goodsPrice').attr('data-p'));
+              console.log(totalP);
+            });
+            $(".metro-wrap").append(items);
+            console.log(totalP);
+            $("#tp").html(totalP + ' 원');
+          }
         },
         error: function (data) {
           $(".btn-wrap").css("display", "none");
@@ -112,8 +124,9 @@
         $('.wrapper').fadeTo("fast", 1);
         $('.wrapper').attr('style', 'position:relative;height:100%;background-color:#fff;');
       });
+// 회원 사이드바
       $('#m-orderList').on('click', function(){
-        M.page.html('./menuList.html');
+        M.page.replace('./menuList.html');
       });
       $('#m-storeList').on('click', function(){
         M.page.html('./storeList.html');
@@ -122,25 +135,33 @@
         M.page.html('./userInfo.html');
       });
       $('#m-cart').on('click', function(){
-        M.page.replace('./cart.html');
+        M.page.html('./cart.html');
       });
       $('#m-payList').on('click', function(){
-        // M.page.replace('./menuList.html');
+        M.page.html('./payList.html');
       });
 
-      this.els.$qtyPlus.on('click', '.price', function () {
-        var seqNo = $(this).attr('data-seq');
-        var ser = Number($('#goodsQty').html()) + 1;
-        $('#goodsPrice').html(5000 * ser);
-        $('#goodsQty').html(ser);
-        // self.qtyPlus();
-      })
-
-      this.els.$qtyMinus.on('click', function () {
-        if ($('#goodsQty').html() != 1) {
-          self.qtyMinus();
+      $(".metro-wrap").on("click", ".qtyPlus " , function(){
+        var qty = Number($(this).parent().children('.goodsQty').text());
+        var ser = qty + 1;
+        var price = Number($(this).parent().children('.goodsPrice').attr('data-p'));
+        $(this).parent().children('.goodsPrice').html(price * ser);
+        $(this).parent().children('.goodsPrice').attr('data-p', price * ser);
+        $(this).parent().children('.goodsQty').html(ser);
+        $(this).parent().children('.goodsQty').attr('data-q', ser);
+      });
+      $(".metro-wrap").on("click", ".qtyMinus " , function(){
+        var qty = Number($(this).parent().children('.goodsQty').text());
+        if (qty != 1){
+          var ser = qty - 1;
+          var price = Number($(this).parent().children('.goodsPrice').attr('data-p'));
+          $(this).parent().children('.goodsPrice').html(price * ser);
+          $(this).parent().children('.goodsPrice').attr('data-p', price * ser);
+          $(this).parent().children('.goodsQty').html(ser);
+          $(this).parent().children('.goodsQty').attr('data-q', ser);
         }
-      })
+      });
+      
       this.els.$back.on('click', function () {
         M.page.back();
       })

@@ -52,7 +52,7 @@
 .detail-conts span{font-size:1.5rem;font-weight:bold;}
 .detail-conts p{margin-top: 15px; font-size: 15px;}
 .detail-conts .img-wraps img{width:50%; height: 100%;margin-bottom:1.5rem;}
-.recommandationMenu{width: 100%; height: 200px; padding: 1rem; font-size: 20px; }
+.recommandationMenu{width: 100%; height: 280px; padding: 1rem; font-size: 20px; }
 
 /**payment**/
 .commonLine{ background-color:rgb(223, 221, 221);  height: 5px;}

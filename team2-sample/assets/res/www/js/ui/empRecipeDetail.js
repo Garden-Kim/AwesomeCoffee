@@ -31,14 +31,13 @@
       MNet.sendHttp({
         path: SERVER_PATH.NOTICE_DETAIL,
         data: {
-          loginId: M.data.global('id'),
-          seqNo: M.data.param('seqNo')
+          goodsNum: M.data.param('goodsNum')
         }, 
         succ: function (data) {
           var items = "";
           items += "<div class='recipe-detail-tit'>";
           items += "<p id='title'>";
-          items += "아인슈페너";
+          items += item.goodsName;
           items += "</p>";
           items += "<span id='regDate'>";
           items += "RecipeNumber : 11";
@@ -49,13 +48,13 @@
           items += "</div>";
           items += "<div class='recipe-detail-cont'>";
           // 이미지 url
-          if (data.imgUrl != null) {
+          if (data.goodsImage != null) {
             items += "<div class='img-wrap'>";
-            items += "<img id='imgUrl' src='" + data.imgUrl + "'/>";
+            items += "<img id='imgUrl' src='" + data.goodsImage + "'/>";
             items += "</div>";
-            M.data.global("imgUrl", data.imgUrl);
-            var split = data.imgUrl.lastIndexOf('/');
-            var imgName = data.imgUrl.toString().substring(split + 1, );
+            M.data.global("imgUrl", data.goodsImage);
+            var split = data.goodsImage.lastIndexOf('/');
+            var imgName = data.goodsImage.toString().substring(split + 1, );
             M.data.global("imgName", imgName);
           }
           items += "<p id='content'>";

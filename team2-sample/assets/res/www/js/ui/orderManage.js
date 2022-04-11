@@ -40,7 +40,7 @@
     drawNoticeList: function () {
       var self = this;
       MNet.sendHttp({
-        path: SERVER_PATH.ORDER_EMP_LIST_N,
+        path: SERVER_PATH.ORDER_EMP_LIST,
         data: self.data.requset,
         succ: function (data) {
           var items = "";
@@ -56,11 +56,11 @@
             items += "<li data-seq='" + item.orderNum + "' class='empOrderDetail'>";
             items += item.orderTime;
             items += "</li>";
-            items += "<li data-seq='" + item.orderNum + "' class='empOrderDetail'>";
-            items += item.orderPrice;
-            items += "</li>";
             items += "<li data-seq='" + item.orderNum + "' class='empOrderState'>";
             items += item.cookState;
+            items += "</li>";
+            items += "<li data-seq='" + item.orderNum + "' class='pickupState'>";
+            items += item.takeout;
             items += "</li>";
             items += "</ul>"
           });

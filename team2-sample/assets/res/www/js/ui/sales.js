@@ -65,7 +65,7 @@
         $('.wrapper').attr('style', 'position:relative;height:100%;background-color:#fff;');
       });
       $('#menu-order-food').on('click', function(){
-        M.page.html('./order.html');
+        M.page.html('./foodOrder.html');
       });      
       $('#menu-payment-list').on('click', function(){
   //   발주내역   M.page.html('./.html');
