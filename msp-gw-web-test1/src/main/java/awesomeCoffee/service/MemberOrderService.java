@@ -3,7 +3,6 @@ package awesomeCoffee.service;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,8 +14,8 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
-import awesomeCoffee.dto.CartDTO;
 import awesomeCoffee.dto.MemberOrderDTO;
+import awesomeCoffee.dto.MenuDTO;
 
 @Service
 public class MemberOrderService {
@@ -29,17 +28,26 @@ public class MemberOrderService {
 	@Qualifier("transactionManager_sample")
 	private DataSourceTransactionManager transactionManager_sample;
 
-	// 회원주문 insert
-	public int insertMemberOrder(Map<String, Object> param) {
+
+	// 바로주문
+	public MenuDTO directOrder(Map<String, Object> param) {
+		return sqlSession.selectOne("Order.directOrder", param);
+	}
+	// 주문 번호 자동 생성
+	public String createOrderNum() {
+		return sqlSession.selectOne("Order.createOrderNum");
+	}
+	// 바로 주문 insert (결제 완료시 실행)
+	public int insertDirectOrder (Map<String, Object> param) {
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 		TransactionStatus status = transactionManager_sample.getTransaction(def);
 		int result = 0;
 		try {
-			result = sqlSession.update("Order.insertOrder", param);
+			result = sqlSession.update("Order.insertDirectOrder", param);
 
 			transactionManager_sample.commit(status);
-			logger.info("========== 회원 주문 완료 : {}", result);
+			logger.info("========== 바로주문 접수 완료 : {}", result);
 
 		} catch (Exception e) {
 			logger.error("[ERROR] updateMember() Fail : e : {}", e.getMessage());
@@ -48,11 +56,43 @@ public class MemberOrderService {
 		}
 		return result;
 	}
+	// 회원 주문 insert (결제 완료시 실행)
+	public int insertMemberOrder (Map<String, Object> param) {
+		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+		TransactionStatus status = transactionManager_sample.getTransaction(def);
+		int result = 0;
+		try {
+
+			result = sqlSession.update("Order.insertOrder", param);
+
+			transactionManager_sample.commit(status);
+			logger.info("========== 주문 접수 완료 : {}", result);
+
+		} catch (Exception e) {
+			logger.error("[ERROR] updateMember() Fail : e : {}", e.getMessage());
+			e.printStackTrace();
+			transactionManager_sample.rollback(status);
+		}
+		return result;
+	}
+	// 회원주문 select  (주문하기 클릭시 실행)
+	public List<MemberOrderDTO> memberCartList(Map<String, Object> param) {
+		return sqlSession.selectList("Order.memberCartList", param);
+	}
 	// 회원주문 read 회원 
 	public List<MemberOrderDTO> selectAllMemOrder(String memberNum) {
 		return sqlSession.selectList("Order.selectAllMemOrder", memberNum);
 	}
-	// 회원주문 read 직원
+	// 회원주문 read 직원 조리상태 N
+	public List<MemberOrderDTO> selectAllEmpOrderN(){
+		return sqlSession.selectList("Order.selectAllEmpOrderN");
+	}
+	// 회원주문 read 직원 조리상태 Y
+	public List<MemberOrderDTO> selectAllEmpOrderY(){
+		return sqlSession.selectList("Order.selectAllEmpOrderY");
+	}
+	// 회원주문 read 직원 조리상태 상관없이 전부
 	public List<MemberOrderDTO> selectAllEmpOrder(){
 		return sqlSession.selectList("Order.selectAllEmpOrder");
 	}
@@ -110,4 +150,8 @@ public class MemberOrderService {
 		}
 		return result;
 	}
+	public MemberOrderDTO selectOrderDetail(Map<String, Object> param) {
+		return sqlSession.selectOne("Order.selectOrderDetail", param);
+	}
+
 }

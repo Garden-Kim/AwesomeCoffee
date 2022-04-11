@@ -18,6 +18,11 @@
 		FROM FOOD
 		WHERE FOOD_NUM = #{foodNum}
 	</select>
+	<select id="foodOrderList" parameterType="map" resultType="awesomeCoffee.dto.FoodDTO">
+		select *
+		from food
+		where foodNum = #{foodNum}
+	</select>
 	<select id="foodList" resultType="awesomeCoffee.dto.FoodDTO">
 		SELECT *
 		FROM FOOD

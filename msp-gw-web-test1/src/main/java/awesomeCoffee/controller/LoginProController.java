@@ -50,7 +50,7 @@ public class LoginProController {
 		System.out.println(reqBodyMap.get("loginId"));
 
 		
-		AuthInfo authInfo = loginService.logout(reqBodyMap);
+		AuthInfo authInfo = (AuthInfo)session.getAttribute("authInfo");
 
 		if (authInfo != null) {
 			responseBodyMap.put("rsltCode", "0000");
@@ -84,7 +84,7 @@ public class LoginProController {
 		logger.info("======================= reqBodyMap : {}", reqBodyMap.toString());
 
 		AuthInfo authInfo = loginService.login(reqBodyMap);
-
+	
 		if (authInfo != null) {
 			responseBodyMap.put("rsltCode", "0000");
 			responseBodyMap.put("rsltMsg", "Success");

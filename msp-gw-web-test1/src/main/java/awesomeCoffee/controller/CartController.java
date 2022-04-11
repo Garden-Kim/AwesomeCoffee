@@ -33,7 +33,7 @@ public class CartController {
 
 	// 장바구니 create
 	@RequestMapping(method = RequestMethod.POST, value = "/api/cart/regist")
-	public ModelAndView wishlistInsert(HttpServletRequest request, HttpSession session) {
+	public ModelAndView cartInsert(HttpServletRequest request, HttpSession session) {
 		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
 		Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
 		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
@@ -52,17 +52,34 @@ public class CartController {
 			responseBodyMap.put("rsltCode", "1003");
 			responseBodyMap.put("rsltMsg", "Login required.");
 		} else {
+			int result = 0;
 			String memberNum = memberService.getMemberNum(authInfo.getLoginId());
 			reqBodyMap.put("memberNum", memberNum);
-			int result = cartService.insertCart(reqBodyMap);
-			if (result > 0) {
-				responseBodyMap.put("rsltCode", "0000");
-				responseBodyMap.put("rsltMsg", "Success");
+			List<CartDTO> list = cartService.selectAllCart(memberNum);
+			// 장바구니가 비어있지않으면 찾아서 update sql 에서 merge사용 (없으면 insert)
+			if (!StringUtils.isEmpty(list)) {
+				result = cartService.updateCart(reqBodyMap);
+				if (result > 0) {
+					responseBodyMap.put("rsltCode", "0000");
+					responseBodyMap.put("rsltMsg", "Success");
+				} else {
+					responseBodyMap.put("rsltCode", "2003");
+					responseBodyMap.put("rsltMsg", "Update Fail");
+				}
+				// 장바구니가 비어있으면 insert
 			} else {
-				responseBodyMap.put("rsltCode", "2003");
-				responseBodyMap.put("rsltMsg", "Data not found.");
+				result = cartService.insertCart(reqBodyMap);
+				if (result > 0) {
+					responseBodyMap.put("rsltCode", "0000");
+					responseBodyMap.put("rsltMsg", "Success");
+				} else {
+					responseBodyMap.put("rsltCode", "2003");
+					responseBodyMap.put("rsltMsg", "Insert Fail");
+				}
 			}
+
 		}
+
 		ModelAndView mv = new ModelAndView("defaultJsonView");
 		mv.addObject(Const.HEAD, reqHeadMap);
 		mv.addObject(Const.BODY, responseBodyMap);
@@ -72,10 +89,17 @@ public class CartController {
 
 	// 장바구니 read
 	@RequestMapping(method = RequestMethod.POST, value = "/api/cart/list")
-	public ModelAndView cartList(HttpSession session) {
+	public ModelAndView cartList(HttpSession session, HttpServletRequest request) {
 		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
+		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
 		List<Map<String, Object>> cartList = new ArrayList<Map<String, Object>>();
 
+		if (reqHeadMap == null) {
+			reqHeadMap = new HashMap<String, Object>();
+		}
+
+		reqHeadMap.put(Const.RESULT_CODE, Const.OK);
+		reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
 		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
 		if (StringUtils.isEmpty(authInfo)) {
 			responseBodyMap.put("rsltCode", "1003");
@@ -106,11 +130,11 @@ public class CartController {
 		}
 		ModelAndView mv = new ModelAndView("defaultJsonView");
 		mv.addObject(Const.BODY, responseBodyMap);
-
+		mv.addObject(Const.HEAD, reqHeadMap);
 		return mv;
 	}
 
-	// 장바구니 delete
+	// 장바구니 deleteOne
 	@RequestMapping(method = RequestMethod.POST, value = "/api/cart/deleteOne")
 	public ModelAndView cartDeleteOne(HttpServletRequest request, HttpSession session) {
 		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);

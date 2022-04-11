@@ -29,19 +29,27 @@ public class StoreOrderService {
 	@Qualifier("transactionManager_sample")
 	private DataSourceTransactionManager transactionManager_sample;
 
-	public int insertStoreOrder(Map<String, Object> param) {
-
-		// 트렌젝션 구현
+	// 발주 insert 
+	public int insertStoreOrder(List<Map<String, Object>> param, String storeNum) {
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 		TransactionStatus status = transactionManager_sample.getTransaction(def);
-
+		
 		int result = 0;
 		try {
-			
-			
-			result = sqlSession.insert("storeOrder.insertStoreOrder", param);
 
+			String storeOrderNum = sqlSession.selectOne("StoreOrder.createStoreOrderNum");
+			
+			for(Map<String, Object> map : param) {
+				StoreOrderDTO dto = new StoreOrderDTO();
+				dto.setFoodNum(map.get("foodNum").toString());
+				dto.setStoreNum(storeNum);
+				dto.setStoreOrderNum(storeOrderNum);
+				dto.setStoreOrderQty(Integer.parseInt((String)map.get("storeOrderQty")));
+				
+				sqlSession.insert("StoreOrder.insertStoreOrder", dto);
+				result++;
+			}
 			transactionManager_sample.commit(status);
 			logger.info("========== 발주 완료 : {}", result);
 
@@ -53,9 +61,21 @@ public class StoreOrderService {
 		return result;
 
 	}
-
-	public List<StoreOrderDTO> storeOrderList() {
-		return sqlSession.selectList("storeOrder.storeOrderList");
+	// 발주내역 총합계
+	public String storeOrderPriceSum(String storeNum) {
+		return sqlSession.selectOne("StoreOrder.storeOrderPriceSum",storeNum);
+	}
+	// 발주내역
+	public List<StoreOrderDTO> storeOrderList(String storeNum) {
+		return sqlSession.selectList("StoreOrder.storeOrderList", storeNum);
+	}
+	// 발주 detail
+	public List<StoreOrderDTO> selectOrderDetail(Map<String, Object> param) {
+		return sqlSession.selectList("StoreOrder.selectOrderDetail", param);
+	}
+	// 발주 detail 합계
+	public String storeOrderPrice(Map<String, Object> param) {
+		return sqlSession.selectOne("StoreOrder.storeOrderPrice", param);
 	}
 
 }

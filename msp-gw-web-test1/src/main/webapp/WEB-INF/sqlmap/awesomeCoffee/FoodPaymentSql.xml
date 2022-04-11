@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE mapper
+                PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="FoodPayment">
+
+	<insert id="insertFoodPayment">
+		insert into food_payment (FOOD_PAYMENT_NUM, STORE_NUM, FOOD_PAYMENT_PRICE, FOOD_PAYMENT_DATE)
+		values (food_payment_seq.nextval, #{storeNum}, #{foodPaymentPrice}, sysdate)
+	</insert>
+	
+	<select id="selectFoodPaymentList" resultType="awesomeCoffee.dto.FoodPaymentDTO">
+		select * 
+		from food_payment
+		order by food_payment_num
+	</select>
+
+	<!-- 입금내역 총합계 -->
+	<select id="foodPaymentPriceSum" resultType="String" parameterType="String">
+		select sum(food_payment_price)
+		from food_payment 
+		where store_num = #{storeNum}
+	</select>
+</mapper>

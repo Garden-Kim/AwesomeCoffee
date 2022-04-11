@@ -19,20 +19,70 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import awesomeCoffee.dto.AuthInfo;
-import awesomeCoffee.dto.MenuCategoryDTO;
-import awesomeCoffee.service.MenuCategoryService;
+import awesomeCoffee.dto.FoodDTO;
+import awesomeCoffee.dto.FoodPaymentDTO;
+import awesomeCoffee.dto.MemberOrderDTO;
+import awesomeCoffee.service.FoodPaymentService;
+import awesomeCoffee.service.FoodService;
+import awesomeCoffee.service.StoreOrderService;
+import awesomeCoffee.service.StoreService;
 import kr.msp.constant.Const;
 
 @Controller
-public class MenuCategoryController {
-	private Logger logger = LoggerFactory.getLogger(MenuCategoryController.class);
+public class FoodPaymentController {
 
-	@Autowired(required = true)
-	private MenuCategoryService menuCategoryService;
+	private Logger logger = LoggerFactory.getLogger(FoodPaymentController.class);
 
-	// 카테고리 delete
-	@RequestMapping(method = RequestMethod.POST, value="/api/menu/categoryDelete")
-	public ModelAndView categoryDelete (HttpSession session, HttpServletRequest request, HttpServletResponse response) {
+	@Autowired
+	FoodPaymentService foodPaymentService;
+	@Autowired
+	StoreOrderService storeOrderService;
+	@Autowired
+	StoreService storeService;
+
+	// 입금 (발주 결제) insert
+	@RequestMapping(method = RequestMethod.POST, value = "/api/foodPayment/deposit")
+	public ModelAndView foodPaymentPrice(HttpServletRequest request, HttpSession session) {
+		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
+		Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
+		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
+
+		if (reqHeadMap == null) {
+			reqHeadMap = new HashMap<String, Object>();
+		}
+
+		reqHeadMap.put(Const.RESULT_CODE, Const.OK);
+		reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
+
+		logger.info("======================= reqBodyMap : {}", reqBodyMap.toString());
+
+		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
+		String storeNum = storeService.getStoreNumById(authInfo.getLoginId());
+		reqBodyMap.put("storeNum", storeNum);
+		
+		if (StringUtils.isEmpty(authInfo)) {
+			responseBodyMap.put("rsltCode", "1003");
+			responseBodyMap.put("rsltMsg", "Login required.");
+		} else {
+			int result = foodPaymentService.insertFoodPayment(reqBodyMap);
+			if (result > 0) {
+				responseBodyMap.put("rsltCode", "0000");
+				responseBodyMap.put("rsltMsg", "Success");
+			} else {
+				responseBodyMap.put("rsltCode", "2003");
+				responseBodyMap.put("rsltMsg", "Data not found.");
+			}
+		}
+		ModelAndView mv = new ModelAndView("defaultJsonView");
+		mv.addObject(Const.HEAD, reqHeadMap);
+		mv.addObject(Const.BODY, responseBodyMap);
+
+		return mv;
+	}
+
+	// 결제잔액
+	@RequestMapping(method = RequestMethod.POST, value = "/api/foodPayment/restPayment")
+	public ModelAndView foodPrice(HttpSession session, HttpServletRequest request, HttpServletResponse response) {
 		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
 		Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
 		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
@@ -51,30 +101,35 @@ public class MenuCategoryController {
 			responseBodyMap.put("rsltCode", "1003");
 			responseBodyMap.put("rsltMsg", "Login required.");
 		} else {
-			int result = menuCategoryService.deleteCategory(reqBodyMap);
-			if (result > 0) {
+			
+			String storeNum = storeService.getStoreNumById(authInfo.getLoginId());
+			String orderPriceSum = storeOrderService.storeOrderPriceSum(storeNum);
+			String paymentPriceSum = foodPaymentService.foodPaymentPriceSum(storeNum);
+			
+			Integer restPriceSum = Integer.parseInt(orderPriceSum) -Integer.parseInt(paymentPriceSum) ;
+			if (!StringUtils.isEmpty(restPriceSum)) {
 				responseBodyMap.put("rsltCode", "0000");
 				responseBodyMap.put("rsltMsg", "Success");
+				responseBodyMap.put("restPayment", restPriceSum);
+
 			} else {
 				responseBodyMap.put("rsltCode", "2003");
 				responseBodyMap.put("rsltMsg", "Data not found.");
 			}
-
 		}
-
 		ModelAndView mv = new ModelAndView("defaultJsonView");
 		mv.addObject(Const.HEAD, reqHeadMap);
 		mv.addObject(Const.BODY, responseBodyMap);
 
 		return mv;
 	}
-	// 카테고리 update
-	@RequestMapping(method = RequestMethod.POST, value = "/api/menu/categoryUpdate")
-	public ModelAndView categoryUpdate(HttpSession session, HttpServletRequest request, HttpServletResponse response) {
 
-		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
-		Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
+	// 입금 (결제) 내역 read  selectFoodPaymentList
+	@RequestMapping(method = RequestMethod.POST, value = "/api/foodPayment/list")
+	public ModelAndView FoodPaymentList(HttpSession session, HttpServletRequest request) {
 		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
+		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
+		List<Map<String, Object>> foodPaymentList = new ArrayList<Map<String, Object>>();
 
 		if (reqHeadMap == null) {
 			reqHeadMap = new HashMap<String, Object>();
@@ -82,113 +137,39 @@ public class MenuCategoryController {
 
 		reqHeadMap.put(Const.RESULT_CODE, Const.OK);
 		reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
-
-		logger.info("======================= reqBodyMap : {}", reqBodyMap.toString());
-
 		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
+		String storeNum = storeService.getStoreNumById(authInfo.getLoginId());
 		if (StringUtils.isEmpty(authInfo)) {
 			responseBodyMap.put("rsltCode", "1003");
 			responseBodyMap.put("rsltMsg", "Login required.");
 		} else {
-			int result = menuCategoryService.updateCategory(reqBodyMap);
-			if (result > 0) {
+			List<FoodPaymentDTO> list = foodPaymentService.selectFoodPaymentList(storeNum);
+			logger.info("======================= responseBodyMap : {}", list.size());
+
+			for (int i = 0; i < list.size(); i++) {
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("foodPaymentNum", list.get(i).getFoodPaymentNum());
+				map.put("storeNum", list.get(i).getStoreNum());
+				map.put("foodPaymentPrice", list.get(i).getFoodPaymentPrice());
+				map.put("foodPaymentDate", list.get(i).getFoodPaymentDate());
+
+				foodPaymentList.add(map);
+			}
+			logger.info("======================= foodPaymentList : {}", foodPaymentList.toString());
+
+			if (!StringUtils.isEmpty(list)) {
 				responseBodyMap.put("rsltCode", "0000");
 				responseBodyMap.put("rsltMsg", "Success");
-			} else {
-				responseBodyMap.put("rsltCode", "2003");
-				responseBodyMap.put("rsltMsg", "Data not found.");
-			}
-
-		}
-
-		ModelAndView mv = new ModelAndView("defaultJsonView");
-		mv.addObject(Const.HEAD, reqHeadMap);
-		mv.addObject(Const.BODY, responseBodyMap);
-
-		return mv;
-	}
-
-	// 카테고리 read
-	@RequestMapping(method = RequestMethod.POST, value="/api/menu/categoryList")
-	public ModelAndView MenuCategoryList( HttpSession session, HttpServletRequest request) {
-		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
-		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
-		List<Map<String, Object>> categoryList = new ArrayList<Map<String, Object>>();
-
-	      if (reqHeadMap == null) {
-	          reqHeadMap = new HashMap<String, Object>();
-	       }
-
-	       reqHeadMap.put(Const.RESULT_CODE, Const.OK);
-	       reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
-	       
-		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
-		if (StringUtils.isEmpty(authInfo)) {
-			responseBodyMap.put("rsltCode", "1003");
-			responseBodyMap.put("rsltMsg", "Login required.");
-		} else {
-			List<MenuCategoryDTO> menuCategoryList = menuCategoryService.selectCategoryAll();
-			logger.info("======================= responseBodyMap : {}", menuCategoryList.size());
-
-			for (int i =0; i<menuCategoryList.size() ; i++) {
-				Map<String , Object> map = new HashMap<String, Object>();
-				map.put("categoryNum", menuCategoryList.get(i).getCategoryNum());
-				map.put("categoryName", menuCategoryList.get(i).getCategoryName());
-				map.put("categoryContent", menuCategoryList.get(i).getCategoryContent());
-
-				categoryList.add(map);
-			}
-			logger.info("======================= categoryList : {}" , categoryList.toString());
-						
-			if (!StringUtils.isEmpty(menuCategoryList)) {
-				responseBodyMap.put("rsltCode", "0000");
-				responseBodyMap.put("rsltMsg", "Success");
-				responseBodyMap.put("list",categoryList);
-			} else { 
-				responseBodyMap.put("rsltCode", "2003");
-				responseBodyMap.put("rsltMsg", "Data not found.");
-			}
-		}
-		ModelAndView mv = new ModelAndView("defaultJsonView");
-		mv.addObject(Const.BODY, responseBodyMap);
-		mv.addObject(Const.HEAD, reqHeadMap);
-		return mv;
-	}
-
-	// 카테고리 create
-	@RequestMapping(method = RequestMethod.POST, value = "/api/menu/categoryRegist")
-	public ModelAndView categoryRegist(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
-		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
-		Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
-		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
-
-		if (reqHeadMap == null) {
-			reqHeadMap = new HashMap<String, Object>();
-		}
-		reqHeadMap.put(Const.RESULT_CODE, Const.OK);
-		reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
-
-		logger.info("======================= reqBodyMap : {}", reqBodyMap.toString());
-
-		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
-		if (StringUtils.isEmpty(authInfo)) {
-			responseBodyMap.put("rsltCode", "1003");
-			responseBodyMap.put("rsltMsg", "Login required.");
-		} else {
-			int result = menuCategoryService.insertCategory(reqBodyMap);
-			if (result > 0) {
-				responseBodyMap.put("rsltCode", "0000");
-				responseBodyMap.put("rsltMsg", "Success");
+				responseBodyMap.put("list", foodPaymentList);
 			} else {
 				responseBodyMap.put("rsltCode", "2003");
 				responseBodyMap.put("rsltMsg", "Data not found.");
 			}
 		}
 		ModelAndView mv = new ModelAndView("defaultJsonView");
-		mv.addObject(Const.HEAD, reqHeadMap);
 		mv.addObject(Const.BODY, responseBodyMap);
-
+		mv.addObject(Const.HEAD, reqHeadMap);
 		return mv;
 	}
-
+	
 }

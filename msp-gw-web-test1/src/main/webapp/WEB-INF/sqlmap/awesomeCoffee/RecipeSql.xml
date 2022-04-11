@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE mapper
+                PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Recipe">
+
+
+	<!-- 레시피등록 -->
+	<insert id="insertRecipe">
+		INSERT INTO RECIPE
+		VALUES( #{foodNum}, #{goodsNum}, #{recipeFoodQty})
+
+	</insert>
+
+	<select id="recipeInfo" parameterType="map" resultType="awesomeCoffee.dto.RecipeDTO">
+		SELECT *
+		FROM RECIPE
+		WHERE GOODS_NUM = #{goodsNum}
+	</select>
+	<select id="recipeList" resultType="awesomeCoffee.dto.RecipeDTO">
+		SELECT *
+		FROM RECIPE
+	</select>
+	
+	<delete id="deleteRecipe" parameterType="map">
+		DELETE
+		FROM RECIPE
+		WHERE GOODS_NUM = #{goodsNum}
+	</delete>
+	
+	<update id="updateRecipe" parameterType="map">
+		UPDATE RECIPE
+		SET FOOD_NUM = #{foodNum}, RECIPE_FOOD_QTY = #{recipeFoodQty}
+		WHERE GOODS_NUM = #{goodsNum}
+	</update>
+	
+</mapper>

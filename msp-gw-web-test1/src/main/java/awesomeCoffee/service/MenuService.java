@@ -28,6 +28,11 @@ public class MenuService {
 	@Qualifier("transactionManager_sample")
 	private DataSourceTransactionManager transactionManager_sample;
 	
+	// 메뉴 검색
+	public List<MenuDTO> selectSearchMenu(Map<String, Object> goodsName){
+		return sqlSession.selectList("Menu.selectSearchMenu", goodsName);
+	}
+	
 	// 메뉴 삭제
 	public int deleteMenu(Map<String, Object> param) {
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
@@ -95,6 +100,10 @@ public class MenuService {
 	public List<MenuDTO> selectAllMenu() {
 		return sqlSession.selectList("Menu.selectAllMenu");
 	}
+	// 메뉴 리스트 (카테고리별)
+	public List<MenuDTO> selectCategoryMenu(Map<String, Object> categoryNum){
+		return sqlSession.selectList("Menu.selectCategoryMenu", categoryNum);
+	}
 	// 메뉴 등록
 	public int insertMenu(Map<String, Object> param) {
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
@@ -112,6 +121,13 @@ public class MenuService {
 			transactionManager_sample.rollback(status);
 		}
 		return result;
+	}
+	public MenuDTO getMenuInfo(Map<String, Object> param) {
+		return sqlSession.selectOne("Menu.getMenuInfo", param);
+	}
+
+	public MenuDTO getMenuInfoByNum(Map<String, Object> param) {
+		return sqlSession.selectOne("Menu.getMenuInfoByNum", param);
 	}
 	
 }

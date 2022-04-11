@@ -121,7 +121,11 @@ public class StoreService {
 		}
 		return result;
 	}
-
+	// 아이디로 매장 번호 갖고오기 (String)
+	public String getStoreNumById(String param) {
+		return sqlSession.selectOne("Store.getStoreNumById", param);
+	}
+	// 아이디로 매장 번호 갖고오기 (Map)
 	public StoreDTO getStoreInfoById(Map<String, Object> param) {
 		return sqlSession.selectOne("Store.getStoreInfoById", param);
 	}

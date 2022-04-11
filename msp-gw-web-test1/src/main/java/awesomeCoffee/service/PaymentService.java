@@ -23,8 +23,31 @@ public class PaymentService {
 	@Autowired(required = true)
 	@Qualifier("transactionManager_sample")
 	private DataSourceTransactionManager transactionManager_sample;
+	
+	// 결제 합계 (연도)
+	public String selectYearPayment (Map<String, Object> param) {
+		return sqlSession.selectOne("Payment.selectYearPayment", param);
+	}
+	// 바로 주문 결제 
+	public int directPaymentInsert (Map<String, Object> param) {
+		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+		TransactionStatus status = transactionManager_sample.getTransaction(def);
+		int result = 0;
+		try {
+			result = sqlSession.update("Payment.insertDirectPayment", param);
+			
+			transactionManager_sample.commit(status);
+			logger.info("========== 바로주문 결제 완료 : {}", result);
 
-	// 결제 insert
+		} catch (Exception e) {
+			logger.error("[ERROR] updateMember() Fail : e : {}", e.getMessage());
+			e.printStackTrace();
+			transactionManager_sample.rollback(status);
+		}
+		return result;
+	}
+	// 결제 insert 
 	public int paymentInsert (Map<String, Object> param) {
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
@@ -32,7 +55,7 @@ public class PaymentService {
 		int result = 0;
 		try {
 			result = sqlSession.update("Payment.insertPayment", param);
-
+			
 			transactionManager_sample.commit(status);
 			logger.info("========== 결제 완료 : {}", result);
 

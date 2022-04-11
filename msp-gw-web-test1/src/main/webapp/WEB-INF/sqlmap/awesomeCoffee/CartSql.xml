@@ -15,8 +15,19 @@
 <insert id="insertCart">
 	insert into cart (member_num , goods_num, qty )
 	values 
-	(#{memberNum} , #{goodsNum}, #{qty})
+	(#{memberNum} , #{goodsNum}, '1')
 </insert>
+
+<update id="updateCart">
+	merge into cart c
+	using (select goods_num from goods where goods_num = #{goodsNum}) g
+	on (c.goods_num = g.goods_num and c.member_num = #{memberNum})
+	when matched then
+	update set c.qty = c.qty+1
+	when not matched then
+	insert (c.member_num, c.goods_num, c.qty)
+	values (#{memberNum}, #{goodsNum}, 1)
+</update>
 
 <delete id="deleteCartOne">
 	delete 

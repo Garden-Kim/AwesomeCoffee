@@ -3,23 +3,48 @@
                 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="storeOrder">
+<mapper namespace="StoreOrder">
 
+	<select id="createStoreOrderNum" resultType="String">
+		select STOREORDER_NUM_SEQ.NEXTVAL from dual
+	</select>
+	
 	<!-- 발주 insert -->
 	<insert id="insertStoreOrder" parameterType="map">
 		INSERT INTO STORE_ORDER(STOREORDER_NUM, STORE_NUM, FOOD_NUM, 
 					STOREORDER_QTY, STOREORDER_DATE, STOREORDER_PRICE)
-		VALUES(STOREORDER_NUM_SEQ.NEXTVAL, #{storeNum}, #{foodNum}, 
+		VALUES(#{storeOrderNum}, #{storeNum}, #{foodNum}, 
 				#{storeOrderQty}, sysdate,
 				(SELECT (SELECT FOOD_PRICE 
 						FROM FOOD
 						where FOOD_NUM = #{foodNum}) * #{storeOrderQty}
 						FROM DUAL))
 	</insert>
-	
-	<select id="storeOrderList" resultType="awesomeCoffee.dto.StoreOrderDTO">
+
+	<select id="storeOrderList" resultType="awesomeCoffee.dto.StoreOrderDTO" parameterType="String">
 		SELECT *
 		FROM STORE_ORDER
-	
+		where store_num = #{storeNum}
 	</select>
+	
+	<!-- 발주내역 총합계 -->
+	<select id="storeOrderPriceSum" resultType="String" parameterType="String">
+		select sum(storeorder_price)
+		from store_order
+		where store_num = #{storeNum}
+	</select>
+	
+	<!-- 발주내역 상세페이지 총합계 -->
+	<select id="storeOrderPrice" resultType="String" parameterType="map"> 
+		select sum(storeorder_price)
+		from store_order
+		where storeorder_num = #{storeOrderNum}
+	</select>
+	
+	<select id="selectOrderDetail" parameterType="map" resultType="awesomeCoffee.dto.StoreOrderDTO">
+		select * 
+		from store_order
+		where storeorder_num = #{storeOrderNum}
+	</select>
+	
 </mapper>

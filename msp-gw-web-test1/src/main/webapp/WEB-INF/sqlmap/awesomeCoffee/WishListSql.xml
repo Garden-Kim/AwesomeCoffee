@@ -12,11 +12,17 @@
 	order by wishlist_date, goods_num
 </select>
 
-<insert id="insertWishlist">
-	insert into wishlist (member_num , goods_num, wishlist_date)
-	values 
-	(#{memberNum} , #{goodsNum}, sysdate)
-</insert>
+<update id="updateWishlist">
+	merge into wishlist w 
+	using (select goods_num from goods where goods_num = #{goodsNum}) g
+	on (w.goods_num = g.goods_num and w.member_num = #{memberNum})
+	when matched then 
+		update set wishlist_date = sysdate 
+		delete where w.goods_num = #{goodsNum} and w.member_num = #{memberNum}
+	when not matched then
+		insert (w.member_num, w.goods_num, w.wishlist_date)
+		values (#{memberNum}, #{goodsNum}, sysdate)
+</update>
 
 <delete id="deleteWishlist">
 	delete 

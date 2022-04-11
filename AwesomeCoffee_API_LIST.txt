@@ -1,0 +1,88 @@
+// 로그인
+LOGIN : "api/loginPro/login", //로그인
+LOGOUT : "api/loginPro/logout", //로그아웃
+
+// 회원
+JOIN : "/api/member/regist", //회원가입
+UPDATE : "/api/member/update", // 회원정보수정
+FIND_ID : "api/member/findId", //아이디 찾기
+INFO : "api/member/info", //회원 정보 조회
+OUT : "api/member/out", //회원 탈퇴
+PASSWORD : "api/member/password", //비밀번호 변경
+DUPLICATE : "api/member/duplicate", //아이디 중복 체크
+
+// 매장
+STORE_REGIST : "/api/store/regist", // 매장등록
+STORE_DELETE : "/api/store/delete", // 매장삭제
+STORE_UPDATE : "/api/store/update", // 매장정보 수정
+STORE_STATE : "/api/store/state", // 매장상태 변경
+STORE_INFO : "/api/store/info", // 매장상세정보(매장이름입력)
+STORE_LIST : "/api/store/storeList", // 매장 리스트
+
+// 레시피
+RECIPE_REGIST : "/api/recipe/regist", // 레시피 등록
+RECIPE_LIST : "/api/recipe/list", // 레시피 리스트
+RECIPE_DELETE : "/api/recipe/delete", // 레시피 삭제
+RECIPE_INFO : "/api/recipe/info", // 레시피 조회(goodsNum 입력)
+RECIPE_UPDEATE : "/api/recipe/update", // 레시피 수정
+
+// 식자재
+FOOD_REGIST : "/api/food/regist", // 식자재 등록
+FOOD_LIST : "/api/food/foodList", // 식자재 리스트
+FOOD_DELETE : "/api/food/delete", // 식자재 삭제
+FOOD_UPDATE : "/api/food/update", // 식자재 수정
+
+// 발주
+
+STORE_ORDER_REGI : "/api/storeOrder/regist", // 발주 등록
+STORE_ORDER_LIST : "/api/storeOrder/list", // 발주 리스트
+
+// 메뉴
+MENU_CATEGORY_REGIST : "/api/menu/categoryRegist", // 카테고리 등록
+MENU_CATEGORY_LIST : "/api/menu/categoryList", // 카테고리 리스트
+MENU_CATEGORY_UPDATE : "/api/menu/categoryUpdate", // 카테고리 수정
+MENU_CATEGORY_DELETE : "/api/menu/categoryDelete", // 카테고리 삭제
+MENU_REGIST : "/api/menu/regist", // 메뉴 등록
+MENU_UPDATE : "/api/menu/update", // 메뉴수정
+MENU_INFO : "/api/menu/info", // 메뉴 상세정보(메뉴이름)
+MENU_DELETE : "/api/menu/delete", // 메뉴 삭제
+MENU_UPDATE_FILE : "/api/menu/updateFile", 메뉴수정(이미지 포함)
+MENU_LIST : "/api/menu/list", // 메뉴 리스트
+MENU_CATEGORYLIST : "/api/category/menuList", // 카테고리별 메뉴리스트
+MENU_SEARCH : "/api/menu/search", // 메뉴 검색
+
+
+// 관심상품
+WISH_REGIST : "/api/wishlist/update", // 관심상품 등록/삭제
+WISH_LIST : "/api/wishlist/list", // 관심상품 목록
+
+// 장바구니
+
+CART_REGIST : "/api/cart/regist", // 장바구니 등록
+CART_LIST : "/api/cart/list", // 장바구니 리스트
+CART_DELETE_ONE : "/api/cart/deleteOne", // 장바구니 삭제(버튼클릭시 한개삭제)
+CARTE_DELETE : "/api/cart/delete", // 장바구니 삭제(결제완료시)
+
+// 주문
+
+ORDER_REGIST :  "/api/order/selectCartlist", // 주문 등록
+ORDER_DELETE : "/api/order/delete", // 주문 삭제
+ORDER_MEM_LIST : "/api/order/memList", // 주문리스트(회원이보는)
+ORDER_EMP_LIST : "/api/order/empList", // 주문리스트(매장이보는 전부)
+ORDER_EMP_LIST_N : "/api/order/empListN", // 주문리스트(매장이보는 조리상태N)
+ORDER_EMP_LIST_Y : "/api/order/empListY", // 주문리스트(매장이보는 조리상태Y)
+ORDER_UPDATE_TAKE : "/api/order/updateTakeout", // 주문수정(수령상태)
+ORDER_UPDATE_STATE : "/api/order/updateCookState", // 주문수정(조리상태)
+ORDER_DIRECTORDER : "/api/order/directOrder", // 바로주문 
+
+// 주문내역
+ORDER_LIST_REGIST : "/api/orderlist/regist", // 주문 상세 등록
+ORDER_LIST_LIST : "/api/orderlist/list", // 주문상세 리스트(회원)
+
+// 결제(회원)
+PAYMENT_MEM_REGIST : "/api/payment/regist", // 결제등록(회원)
+PAYMENT_DIRECTREGIST :  "/api/payment/directRegist", // 바로주문결제
+PAYMENT_MEM_LIST : "/api/payment/list", // 결제 목록 (회원)
+PAYMENT_YEARSUM : "/api/payment/yearSum", // 결제 합계 (년)
+
+

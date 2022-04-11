@@ -5,43 +5,48 @@
 
 <mapper namespace="Payment">
 
-<sql id="priceSum">
-	select sum(price_sum)
-		from
-		(
-		select c.qty * g.goods_price as price_sum
-		from cart c, goods g, member m
-		where m.member_num = #{memberNum} and c.goods_num = g.goods_num
-		)
-</sql>
+	<select id="selectYearPayment" resultType="String" parameterType="String">
+		select sum(case when payment_date like #{paymentDate}||'%' then payment_price end)
+		from payment
+		where payment_date like #{paymentDate}||'%'
+		group by to_char(payment_date,'yy')
+	</select>
+	
+	<select id="selectOnePayment" parameterType="map" resultType="awesomeCoffee.dto.PaymentDTO">
+		select *
+		from payment
+		where order_num = #{orderNum}
+	</select>
+	
+	<insert id="insertDirectPayment">
+		insert into payment (order_num, payment_kind, payment_date, payment_price)
+		values
+		(#{orderNum} , #{paymentKind}, SYSDATE,	#{paymentPrice})
+	</insert>
 
-<select id="asd" resultType="awesomeCoffee.dto.PaymentDTO">
-	select *
-	from payment
-	where member_num = #{memberNum}
-</select>
-
-<insert id="insertPayment">
-	insert into payment (order_num, payment_kind, payment_date, payment_price)
-	values 
-	(#{orderNum} , #{paymentKind}, SYSDATE, 
+	<insert id="insertPayment">
+		insert into payment (order_num, payment_kind, payment_date, payment_price)
+		values
+		(#{orderNum} , #{paymentKind}, SYSDATE,
 		(select sum(price_sum)
 		from
 		(
 		select c.qty * g.goods_price as price_sum
-		from cart c, goods g, member m
-		where m.member_num = c.member_num and c.goods_num = g.goods_num
+		from cart
+		c, goods g, member m
+		where m.member_num = c.member_num and c.goods_num
+		= g.goods_num
 		and m.member_num = #{memberNum}
 		)
 		)
-	)
-</insert>
+		)
+	</insert>
 
-<delete id="deletePayment">
-	delete 
-	from payment
-	where member_num = #{memberNum}
-</delete>
+	<delete id="deletePayment">
+		delete
+		from payment
+		where member_num = #{memberNum}
+	</delete>
 
 
 
