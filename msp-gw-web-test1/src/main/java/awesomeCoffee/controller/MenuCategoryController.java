@@ -110,10 +110,18 @@ public class MenuCategoryController {
 
 	// 카테고리 read
 	@RequestMapping(method = RequestMethod.POST, value="/api/menu/categoryList")
-	public ModelAndView MenuCategoryList( HttpSession session) {
+	public ModelAndView MenuCategoryList( HttpSession session, HttpServletRequest request) {
 		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
+		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
 		List<Map<String, Object>> categoryList = new ArrayList<Map<String, Object>>();
 
+	      if (reqHeadMap == null) {
+	          reqHeadMap = new HashMap<String, Object>();
+	       }
+
+	       reqHeadMap.put(Const.RESULT_CODE, Const.OK);
+	       reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
+	       
 		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
 		if (StringUtils.isEmpty(authInfo)) {
 			responseBodyMap.put("rsltCode", "1003");
@@ -143,7 +151,7 @@ public class MenuCategoryController {
 		}
 		ModelAndView mv = new ModelAndView("defaultJsonView");
 		mv.addObject(Const.BODY, responseBodyMap);
-
+		mv.addObject(Const.HEAD, reqHeadMap);
 		return mv;
 	}
 

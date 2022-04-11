@@ -34,52 +34,51 @@ public class RecipeController {
 	@Autowired
 	RecipeService recipeService;
 
-	
 	// 레시피수정
-		@RequestMapping(method = RequestMethod.POST, value = "/api/recipe/update")
-		public ModelAndView updateRecipe(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+	@RequestMapping(method = RequestMethod.POST, value = "/api/recipe/update")
+	public ModelAndView updateRecipe(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
 
-			Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
-			Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
-			Map<String, Object> responseBodyMap = new HashMap<String, Object>();
+		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
+		Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
+		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
 
-			if (reqHeadMap == null) {
-				reqHeadMap = new HashMap<String, Object>();
-			}
-
-			reqHeadMap.put(Const.RESULT_CODE, Const.OK);
-			reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
-
-			logger.info("======================= reqBodyMap : {}", reqBodyMap.toString());
-
-			
-			AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
-			if (StringUtils.isEmpty(authInfo)) {
-				responseBodyMap.put("rsltCode", "1003");
-				responseBodyMap.put("rsltMsg", "Login required.");
-			} else {
-				if (authInfo.getGrade().equals("store")) {
-					int result = recipeService.recipeUpdate(reqBodyMap);
-
-					if (result > 0) {
-						responseBodyMap.put("rsltCode", "0000");
-						responseBodyMap.put("rsltMsg", "Success");
-					} else {
-						responseBodyMap.put("rsltCode", "2003");
-						responseBodyMap.put("rsltMsg", "Data not found.");
-					}
-				} else {
-					responseBodyMap.put("rsltCode", "1011");
-					responseBodyMap.put("rsltMsg", "No permission.");
-				}
-			}
-
-			ModelAndView mv = new ModelAndView("defaultJsonView");
-			mv.addObject(Const.HEAD, reqHeadMap);
-			mv.addObject(Const.BODY, responseBodyMap);
-
-			return mv;
+		if (reqHeadMap == null) {
+			reqHeadMap = new HashMap<String, Object>();
 		}
+
+		reqHeadMap.put(Const.RESULT_CODE, Const.OK);
+		reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
+
+		logger.info("======================= reqBodyMap : {}", reqBodyMap.toString());
+
+		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
+		if (StringUtils.isEmpty(authInfo)) {
+			responseBodyMap.put("rsltCode", "1003");
+			responseBodyMap.put("rsltMsg", "Login required.");
+		} else {
+			if (authInfo.getGrade().equals("store")) {
+				int result = recipeService.recipeUpdate(reqBodyMap);
+
+				if (result > 0) {
+					responseBodyMap.put("rsltCode", "0000");
+					responseBodyMap.put("rsltMsg", "Success");
+				} else {
+					responseBodyMap.put("rsltCode", "2003");
+					responseBodyMap.put("rsltMsg", "Data not found.");
+				}
+			} else {
+				responseBodyMap.put("rsltCode", "1011");
+				responseBodyMap.put("rsltMsg", "No permission.");
+			}
+		}
+
+		ModelAndView mv = new ModelAndView("defaultJsonView");
+		mv.addObject(Const.HEAD, reqHeadMap);
+		mv.addObject(Const.BODY, responseBodyMap);
+
+		return mv;
+	}
+
 	// 레시피조회
 	@RequestMapping(method = RequestMethod.POST, value = "/api/recipe/info")
 	public ModelAndView recipeInfo(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
@@ -176,10 +175,17 @@ public class RecipeController {
 
 	// 레시피목록
 	@RequestMapping(method = RequestMethod.POST, value = "/api/recipe/list")
-	public ModelAndView recipeList(HttpSession session) {
+	public ModelAndView recipeList(HttpSession session, HttpServletRequest request) {
 		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
 		List<Map<String, Object>> recipeList = new ArrayList<Map<String, Object>>();
+		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
 
+		if (reqHeadMap == null) {
+			reqHeadMap = new HashMap<String, Object>();
+		}
+
+		reqHeadMap.put(Const.RESULT_CODE, Const.OK);
+		reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
 		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
 		if (StringUtils.isEmpty(authInfo)) {
 			responseBodyMap.put("rsltCode", "1003");
@@ -209,7 +215,7 @@ public class RecipeController {
 		}
 		ModelAndView mv = new ModelAndView("defaultJsonView");
 		mv.addObject(Const.BODY, responseBodyMap);
-
+		mv.addObject(Const.HEAD, reqHeadMap);
 		return mv;
 	}
 

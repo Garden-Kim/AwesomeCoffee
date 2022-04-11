@@ -35,11 +35,10 @@ public class MemberOrderController {
 	private MemberService memberService;
 	@Autowired
 	private CartService cartService;
-	
-	// 바로 주문시 상품 정보 select 
-	@RequestMapping(method = RequestMethod.POST, value="/api/order/directOrder")
-	public ModelAndView directOrder(HttpSession session, HttpServletRequest request,
-			HttpServletResponse response) {
+
+	// 바로 주문시 상품 정보 select
+	@RequestMapping(method = RequestMethod.POST, value = "/api/order/directOrder")
+	public ModelAndView directOrder(HttpSession session, HttpServletRequest request, HttpServletResponse response) {
 		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
 		Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
 		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
@@ -63,10 +62,10 @@ public class MemberOrderController {
 				responseBodyMap.put("rsltCode", "0000");
 				responseBodyMap.put("rsltMsg", "Success");
 				responseBodyMap.put("qty", 1);
-				responseBodyMap.put("goodsImage",dto.getGoodsImage());
-				responseBodyMap.put("goodsName",dto.getGoodsName());
-				responseBodyMap.put("goodsPrice",dto.getGoodsPrice());
-				
+				responseBodyMap.put("goodsImage", dto.getGoodsImage());
+				responseBodyMap.put("goodsName", dto.getGoodsName());
+				responseBodyMap.put("goodsPrice", dto.getGoodsPrice());
+
 			} else {
 				responseBodyMap.put("rsltCode", "2003");
 				responseBodyMap.put("rsltMsg", "Data not found.");
@@ -78,7 +77,7 @@ public class MemberOrderController {
 
 		return mv;
 	}
-	
+
 	// 주문 select (장바구니에서 주문하기 버튼 클릭시 )
 	@RequestMapping(method = RequestMethod.POST, value = "/api/order/selectCartlist")
 	public ModelAndView memberCartList(HttpSession session, HttpServletRequest request, HttpServletResponse response) {
@@ -89,7 +88,7 @@ public class MemberOrderController {
 
 		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
 		String memberNum = memberService.getMemberNum(authInfo.getLoginId());
-		reqBodyMap.put("memberNum",memberNum);
+		reqBodyMap.put("memberNum", memberNum);
 		if (StringUtils.isEmpty(authInfo)) {
 			responseBodyMap.put("rsltCode", "1003");
 			responseBodyMap.put("rsltMsg", "Login required.");
@@ -97,8 +96,8 @@ public class MemberOrderController {
 			List<MemberOrderDTO> list = memberOrderService.memberCartList(reqBodyMap);
 			logger.info("======================= CartListSize : {}", list.size());
 
-			for (int i =0; i<list.size() ; i++) {
-				Map<String , Object> map = new HashMap<String, Object>();
+			for (int i = 0; i < list.size(); i++) {
+				Map<String, Object> map = new HashMap<String, Object>();
 				map.put("goodsNum", list.get(i).getGoodsNum());
 				map.put("qty", list.get(i).getQty());
 				map.put("priceSum", list.get(i).getPriceSum());
@@ -107,13 +106,13 @@ public class MemberOrderController {
 
 				memberCartList.add(map);
 			}
-			logger.info("======================= categoryList : {}" , memberCartList.toString());
-						
+			logger.info("======================= categoryList : {}", memberCartList.toString());
+
 			if (!StringUtils.isEmpty(list)) {
 				responseBodyMap.put("rsltCode", "0000");
 				responseBodyMap.put("rsltMsg", "Success");
-				responseBodyMap.put("list",memberCartList);
-			} else { 
+				responseBodyMap.put("list", memberCartList);
+			} else {
 				responseBodyMap.put("rsltCode", "2003");
 				responseBodyMap.put("rsltMsg", "Data not found.");
 			}
@@ -126,10 +125,17 @@ public class MemberOrderController {
 
 	// 주문 read 회원
 	@RequestMapping(method = RequestMethod.POST, value = "/api/order/memList")
-	public ModelAndView orderMemList(HttpSession session) {
+	public ModelAndView orderMemList(HttpSession session, HttpServletRequest request) {
 		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
+		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
 		List<Map<String, Object>> orderList = new ArrayList<Map<String, Object>>();
 
+		if (reqHeadMap == null) {
+			reqHeadMap = new HashMap<String, Object>();
+		}
+
+		reqHeadMap.put(Const.RESULT_CODE, Const.OK);
+		reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
 		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
 		if (StringUtils.isEmpty(authInfo)) {
 			responseBodyMap.put("rsltCode", "1003");
@@ -163,16 +169,23 @@ public class MemberOrderController {
 		}
 		ModelAndView mv = new ModelAndView("defaultJsonView");
 		mv.addObject(Const.BODY, responseBodyMap);
-
+		mv.addObject(Const.HEAD, reqHeadMap);
 		return mv;
 	}
 
 	// 주문 read 직원 (조리상태가 N인 모든 것 )
 	@RequestMapping(method = RequestMethod.POST, value = "/api/order/empList")
-	public ModelAndView orderEmpList(HttpSession session) {
+	public ModelAndView orderEmpList(HttpSession session, HttpServletRequest request) {
 		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
+		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
 		List<Map<String, Object>> orderList = new ArrayList<Map<String, Object>>();
 
+	    if (reqHeadMap == null) {
+	         reqHeadMap = new HashMap<String, Object>();
+	      }
+
+	      reqHeadMap.put(Const.RESULT_CODE, Const.OK);
+	      reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
 		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
 		if (StringUtils.isEmpty(authInfo)) {
 			responseBodyMap.put("rsltCode", "1003");
@@ -205,7 +218,7 @@ public class MemberOrderController {
 		}
 		ModelAndView mv = new ModelAndView("defaultJsonView");
 		mv.addObject(Const.BODY, responseBodyMap);
-
+		mv.addObject(Const.HEAD, reqHeadMap);
 		return mv;
 	}
 

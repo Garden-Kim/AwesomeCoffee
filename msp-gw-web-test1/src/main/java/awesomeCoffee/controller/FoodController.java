@@ -143,10 +143,16 @@ public class FoodController {
 
 	// 식자재리스트_기맹ver
 	@RequestMapping(method = RequestMethod.POST, value = "/api/food/foodList")
-	public ModelAndView storeList() {
+	public ModelAndView foodList(HttpServletRequest request) {
 		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
 		List<Map<String, Object>> foodList = new ArrayList<Map<String, Object>>();
+		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
+		if (reqHeadMap == null) {
+			reqHeadMap = new HashMap<String, Object>();
+		}
 
+		reqHeadMap.put(Const.RESULT_CODE, Const.OK);
+		reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
 		List<FoodDTO> info = foodService.foodList();
 		if (StringUtils.isEmpty(info)) {
 			responseBodyMap.put("rsltCode", "1003");
@@ -176,7 +182,7 @@ public class FoodController {
 		}
 		ModelAndView mv = new ModelAndView("defaultJsonView");
 		mv.addObject(Const.BODY, responseBodyMap);
-
+		mv.addObject(Const.HEAD, reqHeadMap);
 		return mv;
 	}
 

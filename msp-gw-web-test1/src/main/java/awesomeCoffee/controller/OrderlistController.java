@@ -34,7 +34,7 @@ public class OrderlistController {
 	private MemberOrderService memberOrderService;
 	@Autowired
 	private MemberService memberService;
-	
+
 	// 주문내역 insert
 	@RequestMapping(method = RequestMethod.POST, value = "/api/orderlist/regist")
 	public ModelAndView orderlistInsert(HttpSession session, HttpServletRequest request, HttpServletResponse response) {
@@ -71,19 +71,28 @@ public class OrderlistController {
 
 		return mv;
 	}
-	// 주문내역 read 
+
+	// 주문내역 read
 	@RequestMapping(method = RequestMethod.POST, value = "/api/orderlist/list")
-	public ModelAndView orderlist(HttpServletRequest request,  HttpSession session) {
+	public ModelAndView orderlist(HttpServletRequest request, HttpSession session) {
 		Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
+		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
+
 		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
 		List<Map<String, Object>> orderList = new ArrayList<Map<String, Object>>();
+		if (reqHeadMap == null) {
+			reqHeadMap = new HashMap<String, Object>();
+		}
+
+		reqHeadMap.put(Const.RESULT_CODE, Const.OK);
+		reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
 
 		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
 		if (StringUtils.isEmpty(authInfo)) {
 			responseBodyMap.put("rsltCode", "1003");
 			responseBodyMap.put("rsltMsg", "Login required.");
 		} else {
-			
+
 			List<OrderlistDTO> list = orderlistService.selectOrderlist(reqBodyMap);
 			logger.info("======================= responseBodyMap : {}", list.size());
 
@@ -109,7 +118,7 @@ public class OrderlistController {
 		}
 		ModelAndView mv = new ModelAndView("defaultJsonView");
 		mv.addObject(Const.BODY, responseBodyMap);
-
+		mv.addObject(Const.HEAD, reqHeadMap);
 		return mv;
 	}
 
@@ -149,5 +158,5 @@ public class OrderlistController {
 
 		return mv;
 	}
-	
+
 }

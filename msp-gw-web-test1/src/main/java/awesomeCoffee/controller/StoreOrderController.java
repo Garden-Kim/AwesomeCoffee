@@ -41,9 +41,17 @@ public class StoreOrderController {
 
 	// 발주목록
 	@RequestMapping(method = RequestMethod.POST, value = "/api/storeOrder/list")
-	public ModelAndView storeOrderList() {
+	public ModelAndView storeOrderList(HttpServletRequest request) {
 		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
 		List<Map<String, Object>> storeOrderList = new ArrayList<Map<String, Object>>();
+		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
+		
+	      if (reqHeadMap == null) {
+	          reqHeadMap = new HashMap<String, Object>();
+	       }
+
+	       reqHeadMap.put(Const.RESULT_CODE, Const.OK);
+	       reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
 
 		List<StoreOrderDTO> info = storeOrderService.storeOrderList();
 		if (StringUtils.isEmpty(info)) {
@@ -77,6 +85,7 @@ public class StoreOrderController {
 		}
 		ModelAndView mv = new ModelAndView("defaultJsonView");
 		mv.addObject(Const.BODY, responseBodyMap);
+		mv.addObject(Const.HEAD, reqHeadMap);
 
 		return mv;
 	}

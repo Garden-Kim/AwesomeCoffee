@@ -71,9 +71,16 @@ public class WishlistController {
 	}
 	// 관심상품 read
 	@RequestMapping(method = RequestMethod.POST, value="/api/wishlist/list")
-	public ModelAndView WishList( HttpSession session) {
+	public ModelAndView WishList( HttpSession session, HttpServletRequest request) {
 		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
 		List<Map<String, Object>> wishlist = new ArrayList<Map<String, Object>>();
+		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
+		if (reqHeadMap == null) {
+	         reqHeadMap = new HashMap<String, Object>();
+	      }
+
+	      reqHeadMap.put(Const.RESULT_CODE, Const.OK);
+	      reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
 
 		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
 		if (StringUtils.isEmpty(authInfo)) {
@@ -105,7 +112,7 @@ public class WishlistController {
 		}
 		ModelAndView mv = new ModelAndView("defaultJsonView");
 		mv.addObject(Const.BODY, responseBodyMap);
-
+		mv.addObject(Const.HEAD, reqHeadMap);
 		return mv;
 	}
 	// 관심상품 delete

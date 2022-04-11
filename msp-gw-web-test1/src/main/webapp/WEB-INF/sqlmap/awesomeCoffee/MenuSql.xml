@@ -5,6 +5,12 @@
 
 <mapper namespace="Menu">
 
+<select id="getMenuInfo" parameterType="map" resultType="awesomeCoffee.dto.MenuDTO">
+	SELECT *
+	FROM GOODS
+	WHERE GOODS_NAME = #{goodsName}
+
+</select>
 <select id="selectOneMenu" parameterType="map" resultType="awesomeCoffee.dto.MenuDTO">
 	select *
 	from goods
