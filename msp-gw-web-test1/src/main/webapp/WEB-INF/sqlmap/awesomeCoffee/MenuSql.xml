@@ -11,6 +11,13 @@
 	where goods_name like '%'||#{goodsName}||'%'
 </select>
 
+<select id="getMenuInfoByNum" parameterType="map" resultType="awesomeCoffee.dto.MenuDTO">
+	SELECT *
+	FROM GOODS
+	WHERE GOODS_NUM = #{goodsNum}
+
+</select>
+
 <select id="getMenuInfo" parameterType="map" resultType="awesomeCoffee.dto.MenuDTO">
 	SELECT *
 	FROM GOODS

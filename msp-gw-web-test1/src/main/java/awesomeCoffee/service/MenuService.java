@@ -125,5 +125,9 @@ public class MenuService {
 	public MenuDTO getMenuInfo(Map<String, Object> param) {
 		return sqlSession.selectOne("Menu.getMenuInfo", param);
 	}
+
+	public MenuDTO getMenuInfoByNum(Map<String, Object> param) {
+		return sqlSession.selectOne("Menu.getMenuInfoByNum", param);
+	}
 	
 }
