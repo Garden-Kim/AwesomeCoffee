@@ -84,7 +84,15 @@ public class MemberOrderService {
 	public List<MemberOrderDTO> selectAllMemOrder(String memberNum) {
 		return sqlSession.selectList("Order.selectAllMemOrder", memberNum);
 	}
-	// 회원주문 read 직원
+	// 회원주문 read 직원 조리상태 N
+	public List<MemberOrderDTO> selectAllEmpOrderN(){
+		return sqlSession.selectList("Order.selectAllEmpOrderN");
+	}
+	// 회원주문 read 직원 조리상태 Y
+	public List<MemberOrderDTO> selectAllEmpOrderY(){
+		return sqlSession.selectList("Order.selectAllEmpOrderY");
+	}
+	// 회원주문 read 직원 조리상태 상관없이 전부
 	public List<MemberOrderDTO> selectAllEmpOrder(){
 		return sqlSession.selectList("Order.selectAllEmpOrder");
 	}
@@ -142,4 +150,8 @@ public class MemberOrderService {
 		}
 		return result;
 	}
+	public MemberOrderDTO selectOrderDetail(Map<String, Object> param) {
+		return sqlSession.selectOne("Order.selectOrderDetail", param);
+	}
+
 }
