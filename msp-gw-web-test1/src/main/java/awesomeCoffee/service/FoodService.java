@@ -52,6 +52,9 @@ public class FoodService {
 		return result;
 	}
 
+	public List<FoodDTO> foodOrderList(Map<String, Object> param){
+		return sqlSession.selectList("Food.foodOrderList");
+	}
 	public List<FoodDTO> foodList() {
 		return sqlSession.selectList("Food.foodList");
 	}
