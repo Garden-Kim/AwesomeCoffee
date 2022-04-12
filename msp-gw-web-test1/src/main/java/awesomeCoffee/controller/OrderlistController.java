@@ -20,9 +20,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import awesomeCoffee.dto.AuthInfo;
 import awesomeCoffee.dto.MemberOrderDTO;
+import awesomeCoffee.dto.MenuDTO;
 import awesomeCoffee.dto.OrderlistDTO;
 import awesomeCoffee.service.MemberOrderService;
 import awesomeCoffee.service.MemberService;
+import awesomeCoffee.service.MenuService;
 import awesomeCoffee.service.OrderlistService;
 import kr.msp.constant.Const;
 
@@ -35,6 +37,8 @@ public class OrderlistController {
 	private MemberOrderService memberOrderService;
 	@Autowired
 	private MemberService memberService;
+	@Autowired
+	private MenuService menuService;
 
 	// 주문내역 insert
 	@RequestMapping(method = RequestMethod.POST, value = "/api/orderlist/regist")
@@ -79,7 +83,7 @@ public class OrderlistController {
 			Map<String, Object> responseBodyMap = new HashMap<String, Object>();
 			Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
 			List<Map<String, Object>> orderList = new ArrayList<Map<String, Object>>();
-
+			List<MenuDTO> menulist = menuService.selectAllMenu();
 			if (reqHeadMap == null) {
 				reqHeadMap = new HashMap<String, Object>();
 			}
@@ -94,7 +98,11 @@ public class OrderlistController {
 				String memberNum = memberService.getMemberNum(authInfo.getLoginId());
 				List<MemberOrderDTO> list = memberOrderService.selectAllMemOrder(memberNum);
 				logger.info("======================= responseBodyMap : {}", list.size());
-
+				for (int a = 0; a < list.size(); a++) {
+					
+				}
+				
+				
 				for (int i = 0; i < list.size(); i++) {
 					Map<String, Object> map = new HashMap<String, Object>();
 					map.put("takeout", list.get(i).getTakeout());

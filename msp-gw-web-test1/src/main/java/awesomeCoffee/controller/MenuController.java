@@ -119,6 +119,7 @@ public class MenuController {
 				responseBodyMap.put("goodsPrice", info.getGoodsPrice());
 				responseBodyMap.put("goodsContent", info.getGoodsContent());
 				responseBodyMap.put("goodsKal", info.getGoodsKal());
+				responseBodyMap.put("goodsNum", info.getGoodsNum());
 				responseBodyMap.put("goodsImage", info.getGoodsImage());
 			} else {
 				responseBodyMap.put("rsltCode", "2003");
