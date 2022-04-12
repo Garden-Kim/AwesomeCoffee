@@ -1,6 +1,7 @@
 // 로그인
 LOGIN : "api/loginPro/login", //로그인
 LOGOUT : "api/loginPro/logout", //로그아웃
+PW_CHK : "api/loginPro/pwChk". // 비밀번호 확인
 
 // 회원
 JOIN : "/api/member/regist", //회원가입
@@ -18,6 +19,7 @@ STORE_UPDATE : "/api/store/update", // 매장정보 수정
 STORE_STATE : "/api/store/state", // 매장상태 변경
 STORE_INFO : "/api/store/info", // 매장상세정보(매장이름입력)
 STORE_LIST : "/api/store/storeList", // 매장 리스트
+STORE_MEM_LIST : "/api/store/memList", // 회원 리스트
 
 // 레시피
 RECIPE_REGIST : "/api/recipe/regist", // 레시피 등록
