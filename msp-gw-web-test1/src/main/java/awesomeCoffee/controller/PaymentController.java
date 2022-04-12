@@ -70,9 +70,6 @@ public class PaymentController {
 			reqBodyMap.put("paymentPrice", dto.getGoodsPrice());
 			reqBodyMap.put("orderPrice", dto.getGoodsPrice());
 			
-			
-			
-			
 			if (dto != null) {
 				int i = memberOrderService.insertDirectOrder(reqBodyMap);
 				// 회원 주문 내역 insert
