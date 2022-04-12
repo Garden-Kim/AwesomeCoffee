@@ -92,6 +92,7 @@
 		select *
 		from member_order
 		where to_char(order_time,'yy/mm/dd') = to_char(sysdate)
+		order by order_num desc
 	</select>
 	
 	<update id="updateOrderCookState">
