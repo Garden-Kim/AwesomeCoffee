@@ -17,6 +17,12 @@
 	WHERE GOODS_NUM = #{goodsNum}
 
 </select>
+<select id="getRecipeYn" parameterType="string" resultType="string">
+	SELECT *
+	FROM GOODS g, RECIPE r
+	WHERE g.GOODS_NUM = #{goodsNum}
+	AND g.GOODS_NUM = r.GOODS_NUM
+</select>
 
 <select id="getMenuInfo" parameterType="map" resultType="awesomeCoffee.dto.MenuDTO">
 	SELECT *

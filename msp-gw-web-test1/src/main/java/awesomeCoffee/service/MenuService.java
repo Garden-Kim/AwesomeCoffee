@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
+import org.springframework.util.StringUtils;
 
 import awesomeCoffee.dto.MenuDTO;
 
@@ -133,6 +134,16 @@ public class MenuService {
 
 	public MenuDTO getMenuInfoByNum(Map<String, Object> param) {
 		return sqlSession.selectOne("Menu.getMenuInfoByNum", param);
+	}
+
+	public String getRecipeYn(String string) {
+		List<String> s = sqlSession.selectList("Menu.getRecipeYn",string);
+		System.out.println(s);
+		if(s.size() < 1) {
+			return "N";
+		}else {
+			return "Y";
+		}
 	}
 	
 }
