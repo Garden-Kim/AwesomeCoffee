@@ -32,6 +32,31 @@ public class OrderlistService {
 	private CartService cartService;
 	
 
+	// 바로 주문 insert
+	public int insertDirectOrderlist(Map <String, Object> param) {
+		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+		TransactionStatus status = transactionManager_sample.getTransaction(def);
+		int result = 0;
+		try {
+			
+			System.out.println(param.toString());
+			
+			
+			result = sqlSession.insert("Orderlist.insertDirectOrderlist", param);
+			
+
+			transactionManager_sample.commit(status);
+			logger.info("========== 바로 주문 등록 완료 : {}", result);
+
+		} catch (Exception e) {
+			logger.error("[ERROR] updateMember() Fail : e : {}", e.getMessage());
+			e.printStackTrace();
+			transactionManager_sample.rollback(status);
+		}
+		return result;
+	}
+
 	// 주문 내역 insert
 	public int insertOrderlist(Map <String, Object> param) {
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();

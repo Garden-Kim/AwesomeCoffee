@@ -74,7 +74,7 @@ public class PaymentController {
 			if (dto != null) {
 				int i = memberOrderService.insertDirectOrder(reqBodyMap);
 				// 회원 주문 내역 insert
-				orderlistService.insertOrderlist(reqBodyMap);
+				orderlistService.insertDirectOrderlist(reqBodyMap);
 				if (i > 0) {
 					responseBodyMap.put("rsltCode", "0000");
 					responseBodyMap.put("rsltMsg", "Success");
