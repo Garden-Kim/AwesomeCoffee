@@ -61,7 +61,7 @@ public class MemberOrderController {
 			if (!StringUtils.isEmpty(dto)) {
 				responseBodyMap.put("rsltCode", "0000");
 				responseBodyMap.put("rsltMsg", "Success");
-				responseBodyMap.put("qty", 1);
+				responseBodyMap.put("qty", reqBodyMap.get("qty").toString());
 				responseBodyMap.put("goodsImage", dto.getGoodsImage());
 				responseBodyMap.put("goodsName", dto.getGoodsName());
 				responseBodyMap.put("goodsPrice", dto.getGoodsPrice());

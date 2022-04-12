@@ -20,6 +20,7 @@ STORE_STATE : "/api/store/state", // 매장상태 변경
 STORE_INFO : "/api/store/info", // 매장상세정보(매장이름입력)
 STORE_LIST : "/api/store/storeList", // 매장 리스트
 STORE_MEM_LIST : "/api/store/memList", // 회원 리스트
+STORE_SEARCH_LIST : "/api/store/searchList", // 매장검색
 
 // 레시피
 RECIPE_REGIST : "/api/recipe/regist", // 레시피 등록
@@ -76,6 +77,7 @@ ORDER_EMP_LIST_Y : "/api/order/empListY", // 주문리스트(매장이보는 조
 ORDER_UPDATE_TAKE : "/api/order/updateTakeout", // 주문수정(수령상태)
 ORDER_UPDATE_STATE : "/api/order/updateCookState", // 주문수정(조리상태)
 ORDER_DIRECTORDER : "/api/order/directOrder", // 바로주문 
+ORDER_TAKE_LIST : "/api/order/empListTake", // 주문리스트(조리Y 수령N)
 
 // 주문내역
 ORDER_LIST_REGIST : "/api/orderlist/regist", // 주문 상세 등록

@@ -156,4 +156,8 @@ public class StoreService {
 		return result;
 	}
 
+	public List<StoreDTO> storeSearchList(Map<String, Object> param) {
+		return sqlSession.selectList("Store.storeSearchList",param);
+	}
+
 }
