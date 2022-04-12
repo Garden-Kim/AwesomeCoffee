@@ -67,8 +67,9 @@ public class PaymentController {
 			String orderNum = memberOrderService.createOrderNum();
 			reqBodyMap.put("orderNum", orderNum);
 			MenuDTO dto = memberOrderService.directOrder(reqBodyMap);
-			reqBodyMap.put("paymentPrice", dto.getGoodsPrice());
-			reqBodyMap.put("orderPrice", dto.getGoodsPrice());
+			int price = Integer.parseInt(dto.getGoodsPrice()) * Integer.parseInt(reqBodyMap.get("qty").toString());
+			reqBodyMap.put("paymentPrice", price);
+			reqBodyMap.put("orderPrice", price);
 			
 			if (dto != null) {
 				int i = memberOrderService.insertDirectOrder(reqBodyMap);
