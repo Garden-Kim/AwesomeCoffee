@@ -14,6 +14,7 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
+import awesomeCoffee.dto.CartDTO;
 import awesomeCoffee.dto.OrderlistDTO;
 
 @Service
@@ -26,6 +27,9 @@ public class OrderlistService {
 	@Autowired(required = true)
 	@Qualifier("transactionManager_sample")
 	private DataSourceTransactionManager transactionManager_sample;
+	
+	@Autowired
+	private CartService cartService;
 
 	// 주문 내역 insert
 	public int insertOrderlist(Map <String, Object> param) {
@@ -34,7 +38,11 @@ public class OrderlistService {
 		TransactionStatus status = transactionManager_sample.getTransaction(def);
 		int result = 0;
 		try {
-			result = sqlSession.update("Orderlist.insertOrderlist", param);
+			List<CartDTO> list = cartService.selectAllCart(param.get("memberNum").toString());
+			for (int i=0 ; i<list.size(); i++) {
+				param.put("goodsNum", list.get(i).getGoodsNum());
+				result = sqlSession.update("Orderlist.insertOrderlist", param);
+			}
 
 			transactionManager_sample.commit(status);
 			logger.info("========== 주문 내역 등록 완료 : {}", result);

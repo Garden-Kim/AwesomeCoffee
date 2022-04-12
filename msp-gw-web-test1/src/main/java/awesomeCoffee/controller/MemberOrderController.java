@@ -123,7 +123,7 @@ public class MemberOrderController {
 		return mv;
 	}
 
-	// 주문 read 회원
+	// 주문내역 read 회원
 	@RequestMapping(method = RequestMethod.POST, value = "/api/order/memList")
 	public ModelAndView orderMemList(HttpSession session, HttpServletRequest request) {
 		Map<String, Object> responseBodyMap = new HashMap<String, Object>();

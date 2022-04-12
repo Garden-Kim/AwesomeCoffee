@@ -75,6 +75,7 @@ public class PaymentController {
 					responseBodyMap.put("rsltCode", "0000");
 					responseBodyMap.put("rsltMsg", "Success");
 					int result = paymentService.directPaymentInsert(reqBodyMap);
+
 					if (result > 0) {
 						responseBodyMap.put("rsltCode", "0000");
 						responseBodyMap.put("rsltMsg", "Success");
@@ -123,24 +124,29 @@ public class PaymentController {
 			reqBodyMap.put("memberNum", memberNum);
 			String orderNum = memberOrderService.createOrderNum();
 			reqBodyMap.put("orderNum", orderNum);
+			
 			List<CartDTO> list = cartService.selectAllCart(memberNum);
 			if (!list.isEmpty()) {
-				int i = memberOrderService.insertMemberOrder(reqBodyMap);
-				if (i > 0) {
+				int result = paymentService.paymentInsert(reqBodyMap);
+				if (result > 0) {
 					responseBodyMap.put("rsltCode", "0000");
 					responseBodyMap.put("rsltMsg", "Success");
-					int result = paymentService.paymentInsert(reqBodyMap);
-					if (result > 0) {
+					// 회원 주문 insert
+					int i = memberOrderService.insertMemberOrder(reqBodyMap);
+					if (i > 0) {
+						// 회원 주문 내역 insert
+						orderlistService.insertOrderlist(reqBodyMap);
+						// 회원 cart delete
 						cartService.deleteCart(reqBodyMap);
 						responseBodyMap.put("rsltCode", "0000");
 						responseBodyMap.put("rsltMsg", "Success & Delete CartList");
 					} else {
 						responseBodyMap.put("rsltCode", "2003");
-						responseBodyMap.put("rsltMsg", "Payment Fail");
+						responseBodyMap.put("rsltMsg", "Order Fail");
 					}
 				} else {
 					responseBodyMap.put("rsltCode", "2003");
-					responseBodyMap.put("rsltMsg", "Order Fail");
+					responseBodyMap.put("rsltMsg", "Payment Fail");
 				}
 			} else {
 				responseBodyMap.put("rsltCode", "2003");
