@@ -21,9 +21,11 @@ import org.springframework.web.servlet.ModelAndView;
 import awesomeCoffee.dto.AuthInfo;
 import awesomeCoffee.dto.MemberOrderDTO;
 import awesomeCoffee.dto.MenuDTO;
+import awesomeCoffee.dto.OrderlistDTO;
 import awesomeCoffee.service.CartService;
 import awesomeCoffee.service.MemberOrderService;
 import awesomeCoffee.service.MemberService;
+import awesomeCoffee.service.OrderlistService;
 import kr.msp.constant.Const;
 
 @Controller
@@ -35,6 +37,8 @@ public class MemberOrderController {
 	private MemberService memberService;
 	@Autowired
 	private CartService cartService;
+	@Autowired
+	private OrderlistService orderlistService;
 
 	// 바로 주문시 상품 정보 select
 	@RequestMapping(method = RequestMethod.POST, value = "/api/order/directOrder")
@@ -161,7 +165,28 @@ public class MemberOrderController {
 				map.put("orderTime", list.get(i).getOrderTime());
 				map.put("memberNum", list.get(i).getMemberNum());
 				map.put("orderNum", list.get(i).getOrderNum());
+				List<Map<String, Object>> list1 = new ArrayList<Map<String, Object>>();
+				List<OrderlistDTO> goodsList = orderlistService.selectGoodsNums(map);
+				for (int a = 0; a < goodsList.size(); a++) {
+					Map<String, Object> goodsMap = new HashMap<String, Object>();
+					goodsMap.put("goodsNum", goodsList.get(a).getGoodsNum());
+					goodsMap.put("orderPrice", goodsList.get(a).getOrderPrice());
+					goodsMap.put("goodsName", goodsList.get(a).getGoodsName());
 
+					list1.add(goodsMap);
+				}
+				map.put("list", list1);
+				// title goodsName
+				if (goodsList.size() == 0) {
+					String titleGoodsName = "";
+				}else if (goodsList.size() > 1) {
+					String titleGoodsName = goodsList.get(0).getGoodsName().toString() + " 외 " + (goodsList.size() - 1)
+							+ "개";
+					map.put("titleGoodsName", titleGoodsName);
+				} else {
+					String titleGoodsName = goodsList.get(0).getGoodsName().toString();
+					map.put("titleGoodsName", titleGoodsName);
+				}
 				orderList.add(map);
 			}
 			logger.info("======================= orderList : {}", orderList.toString());

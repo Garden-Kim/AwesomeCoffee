@@ -91,7 +91,7 @@
 	<select id="selectTodayOrder" resultType="awesomeCoffee.dto.MemberOrderDTO">
 		select *
 		from member_order
-		order by order_num
+		where to_char(order_time,'yy/mm/dd') = to_char(sysdate)
 	</select>
 	
 	<update id="updateOrderCookState">
