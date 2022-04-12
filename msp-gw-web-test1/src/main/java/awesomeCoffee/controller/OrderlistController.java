@@ -126,7 +126,9 @@ public class OrderlistController {
 				}
 				map.put("list", list1);
 				// title goodsName
-				if (goodsList.size() > 1) {
+				if (goodsList.size() == 0) {
+					String titleGoodsName = "";
+				}else if (goodsList.size() > 1) {
 					String titleGoodsName = goodsList.get(0).getGoodsName().toString() + " 외 " + (goodsList.size() - 1)
 							+ "개";
 					map.put("titleGoodsName", titleGoodsName);

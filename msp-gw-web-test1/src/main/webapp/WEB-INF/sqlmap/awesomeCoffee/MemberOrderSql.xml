@@ -87,8 +87,8 @@
 		where cook_state = 'Y'
 		order by order_num
 	</select>
-	<!-- 조리상태 상관없이 전부 출력 -->
-	<select id="selectAllEmpOrder" resultType="awesomeCoffee.dto.MemberOrderDTO">
+	<!-- 오늘의 주문 전부 출력 -->
+	<select id="selectTodayOrder" resultType="awesomeCoffee.dto.MemberOrderDTO">
 		select *
 		from member_order
 		order by order_num

@@ -80,23 +80,23 @@ public class MemberOrderService {
 	public List<MemberOrderDTO> memberCartList(Map<String, Object> param) {
 		return sqlSession.selectList("Order.memberCartList", param);
 	}
-	// 회원주문 read 회원 
+	// 주문 read 회원 
 	public List<MemberOrderDTO> selectAllMemOrder(String memberNum) {
 		return sqlSession.selectList("Order.selectAllMemOrder", memberNum);
 	}
-	// 회원주문 read 직원 조리상태 N
+	// 주문 read 직원 조리상태 N
 	public List<MemberOrderDTO> selectAllEmpOrderN(){
 		return sqlSession.selectList("Order.selectAllEmpOrderN");
 	}
-	// 회원주문 read 직원 조리상태 Y
+	// 주문 read 직원 조리상태 Y
 	public List<MemberOrderDTO> selectAllEmpOrderY(){
 		return sqlSession.selectList("Order.selectAllEmpOrderY");
 	}
-	// 회원주문 read 직원 조리상태 상관없이 전부
-	public List<MemberOrderDTO> selectAllEmpOrder(){
-		return sqlSession.selectList("Order.selectAllEmpOrder");
+	// 주문 read 직원 오늘의 주문
+	public List<MemberOrderDTO> selectTodayOrder(){
+		return sqlSession.selectList("Order.selectTodayOrder");
 	}
-	// 회원주문 update 수령여부
+	// 주문 update 수령여부
 	public int updateOrderTakeout(Map<String, Object> param) {
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
@@ -114,7 +114,7 @@ public class MemberOrderService {
 		}
 		return result;
 	}
-	// 회원주문 update 조리여부
+	// 주문 update 조리여부
 	public int updateOrderCookState(Map<String, Object> param) {
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
@@ -150,6 +150,7 @@ public class MemberOrderService {
 		}
 		return result;
 	}
+	// 직원이 보는 주문 상세
 	public MemberOrderDTO selectOrderDetail(Map<String, Object> param) {
 		return sqlSession.selectOne("Order.selectOrderDetail", param);
 	}

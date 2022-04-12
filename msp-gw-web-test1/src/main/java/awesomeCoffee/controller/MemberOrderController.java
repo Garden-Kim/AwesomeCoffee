@@ -132,7 +132,7 @@ public class MemberOrderController {
 		return mv;
 	}
 
-	// 주문 read 직원 (조리상태가 상관없이 모든 것 )
+	// 주문 read 오늘의 주문
 	@RequestMapping(method = RequestMethod.POST, value = "/api/order/empList")
 	public ModelAndView orderEmpList(HttpSession session, HttpServletRequest request) {
 		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
@@ -150,7 +150,7 @@ public class MemberOrderController {
 			responseBodyMap.put("rsltCode", "1003");
 			responseBodyMap.put("rsltMsg", "Login required.");
 		} else {
-			List<MemberOrderDTO> list = memberOrderService.selectAllEmpOrder();
+			List<MemberOrderDTO> list = memberOrderService.selectTodayOrder();
 			logger.info("======================= responseBodyMap : {}", list.size());
 
 			for (int i = 0; i < list.size(); i++) {

@@ -69,8 +69,14 @@ public class PaymentController {
 			MenuDTO dto = memberOrderService.directOrder(reqBodyMap);
 			reqBodyMap.put("paymentPrice", dto.getGoodsPrice());
 			reqBodyMap.put("orderPrice", dto.getGoodsPrice());
+			
+			
+			
+			
 			if (dto != null) {
 				int i = memberOrderService.insertDirectOrder(reqBodyMap);
+				// 회원 주문 내역 insert
+				orderlistService.insertOrderlist(reqBodyMap);
 				if (i > 0) {
 					responseBodyMap.put("rsltCode", "0000");
 					responseBodyMap.put("rsltMsg", "Success");
