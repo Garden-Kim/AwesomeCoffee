@@ -43,6 +43,12 @@
 	order by goods_num
 </select>
 
+<select id="selectWishMenu" parameterType="String" resultType="awesomeCoffee.dto.MenuDTO">
+	select g.goods_num, g.goods_name,g.goods_price, g.goods_image
+	from goods g, wishlist w
+	where w.member_num = #{memberNum} and g.goods_num = w.goods_num
+</select>
+
 <insert id="insertMenu">
 	insert into goods (GOODS_NUM, GOODS_NAME, GOODS_PRICE, GOODS_CONTENT, GOODS_IMAGE, 
 						GOODS_KAL, STORE_NUM, CATEGORY_NUM, original_file)

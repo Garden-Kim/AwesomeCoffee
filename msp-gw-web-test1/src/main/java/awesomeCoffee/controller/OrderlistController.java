@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import awesomeCoffee.dto.AuthInfo;
+import awesomeCoffee.dto.MemberOrderDTO;
 import awesomeCoffee.dto.OrderlistDTO;
 import awesomeCoffee.service.MemberOrderService;
 import awesomeCoffee.service.MemberService;
@@ -72,55 +73,105 @@ public class OrderlistController {
 		return mv;
 	}
 
-	// 주문내역 read
-	@RequestMapping(method = RequestMethod.POST, value = "/api/orderlist/list")
-	public ModelAndView orderlist(HttpServletRequest request, HttpSession session) {
-		Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
-		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
+	// 주문내역 read 회원
+		@RequestMapping(method = RequestMethod.POST, value = "/api/orderlist/list")
+		public ModelAndView orderlist(HttpSession session, HttpServletRequest request) {
+			Map<String, Object> responseBodyMap = new HashMap<String, Object>();
+			Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
+			List<Map<String, Object>> orderList = new ArrayList<Map<String, Object>>();
 
-		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
-		List<Map<String, Object>> orderList = new ArrayList<Map<String, Object>>();
-		if (reqHeadMap == null) {
-			reqHeadMap = new HashMap<String, Object>();
-		}
-
-		reqHeadMap.put(Const.RESULT_CODE, Const.OK);
-		reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
-
-		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
-		if (StringUtils.isEmpty(authInfo)) {
-			responseBodyMap.put("rsltCode", "1003");
-			responseBodyMap.put("rsltMsg", "Login required.");
-		} else {
-
-			List<OrderlistDTO> list = orderlistService.selectOrderlist(reqBodyMap);
-			logger.info("======================= responseBodyMap : {}", list.size());
-
-			for (int i = 0; i < list.size(); i++) {
-				Map<String, Object> map = new HashMap<String, Object>();
-				map.put("orderNum", list.get(i).getOrderNum());
-				map.put("goodsNum", list.get(i).getGoodsNum());
-				map.put("orderlistQty", list.get(i).getOrderlistQty());
-				map.put("orderlistSum", list.get(i).getOrderlistSum());
-
-				orderList.add(map);
+			if (reqHeadMap == null) {
+				reqHeadMap = new HashMap<String, Object>();
 			}
-			logger.info("======================= orderList : {}", orderList.toString());
 
-			if (!StringUtils.isEmpty(list)) {
-				responseBodyMap.put("rsltCode", "0000");
-				responseBodyMap.put("rsltMsg", "Success");
-				responseBodyMap.put("list", orderList);
+			reqHeadMap.put(Const.RESULT_CODE, Const.OK);
+			reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
+			AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
+			if (StringUtils.isEmpty(authInfo)) {
+				responseBodyMap.put("rsltCode", "1003");
+				responseBodyMap.put("rsltMsg", "Login required.");
 			} else {
-				responseBodyMap.put("rsltCode", "2003");
-				responseBodyMap.put("rsltMsg", "Data not found.");
+				String memberNum = memberService.getMemberNum(authInfo.getLoginId());
+				List<MemberOrderDTO> list = memberOrderService.selectAllMemOrder(memberNum);
+				logger.info("======================= responseBodyMap : {}", list.size());
+
+				for (int i = 0; i < list.size(); i++) {
+					Map<String, Object> map = new HashMap<String, Object>();
+					map.put("takeout", list.get(i).getTakeout());
+					map.put("cookState", list.get(i).getCookState());
+					map.put("orderPrice", list.get(i).getOrderPrice());
+					map.put("orderTime", list.get(i).getOrderTime());
+					map.put("memberNum", list.get(i).getMemberNum());
+					map.put("orderNum", list.get(i).getOrderNum());
+
+					orderList.add(map);
+				}
+				logger.info("======================= orderList : {}", orderList.toString());
+
+				if (!StringUtils.isEmpty(list)) {
+					responseBodyMap.put("rsltCode", "0000");
+					responseBodyMap.put("rsltMsg", "Success");
+					responseBodyMap.put("list", orderList);
+				} else {
+					responseBodyMap.put("rsltCode", "2003");
+					responseBodyMap.put("rsltMsg", "Data not found.");
+				}
 			}
+			ModelAndView mv = new ModelAndView("defaultJsonView");
+			mv.addObject(Const.BODY, responseBodyMap);
+			mv.addObject(Const.HEAD, reqHeadMap);
+			return mv;
 		}
-		ModelAndView mv = new ModelAndView("defaultJsonView");
-		mv.addObject(Const.BODY, responseBodyMap);
-		mv.addObject(Const.HEAD, reqHeadMap);
-		return mv;
-	}
+	
+//	// 주문내역 read
+//	@RequestMapping(method = RequestMethod.POST, value = "/api/orderlist/list")
+//	public ModelAndView orderlist(HttpServletRequest request, HttpSession session) {
+//		Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
+//		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
+//
+//		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
+//		List<Map<String, Object>> orderList = new ArrayList<Map<String, Object>>();
+//		if (reqHeadMap == null) {
+//			reqHeadMap = new HashMap<String, Object>();
+//		}
+//
+//		reqHeadMap.put(Const.RESULT_CODE, Const.OK);
+//		reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
+//
+//		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
+//		if (StringUtils.isEmpty(authInfo)) {
+//			responseBodyMap.put("rsltCode", "1003");
+//			responseBodyMap.put("rsltMsg", "Login required.");
+//		} else {
+//
+//			List<OrderlistDTO> list = orderlistService.selectOrderlist(reqBodyMap);
+//			logger.info("======================= responseBodyMap : {}", list.size());
+//
+//			for (int i = 0; i < list.size(); i++) {
+//				Map<String, Object> map = new HashMap<String, Object>();
+//				map.put("orderNum", list.get(i).getOrderNum());
+//				map.put("goodsNum", list.get(i).getGoodsNum());
+//				map.put("orderlistQty", list.get(i).getOrderlistQty());
+//				map.put("orderlistSum", list.get(i).getOrderlistSum());
+//
+//				orderList.add(map);
+//			}
+//			logger.info("======================= orderList : {}", orderList.toString());
+//
+//			if (!StringUtils.isEmpty(list)) {
+//				responseBodyMap.put("rsltCode", "0000");
+//				responseBodyMap.put("rsltMsg", "Success");
+//				responseBodyMap.put("list", orderList);
+//			} else {
+//				responseBodyMap.put("rsltCode", "2003");
+//				responseBodyMap.put("rsltMsg", "Data not found.");
+//			}
+//		}
+//		ModelAndView mv = new ModelAndView("defaultJsonView");
+//		mv.addObject(Const.BODY, responseBodyMap);
+//		mv.addObject(Const.HEAD, reqHeadMap);
+//		return mv;
+//	}
 
 	// 주문내역 delete
 	@RequestMapping(method = RequestMethod.POST, value = "/api/orderlist/delete")

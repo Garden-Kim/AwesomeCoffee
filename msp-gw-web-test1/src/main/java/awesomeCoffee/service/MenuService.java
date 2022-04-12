@@ -96,6 +96,11 @@ public class MenuService {
 		}
 		return result;
 	}
+	
+	// 메뉴 리스트 (관심상품)
+	public List<MenuDTO> selectWishMenu(String memberNum){
+		return sqlSession.selectList("Menu.selectWishMenu", memberNum);
+	}
 	// 메뉴 리스트
 	public List<MenuDTO> selectAllMenu() {
 		return sqlSession.selectList("Menu.selectAllMenu");
