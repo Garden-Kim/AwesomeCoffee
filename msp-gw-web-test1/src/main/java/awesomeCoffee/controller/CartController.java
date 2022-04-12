@@ -19,8 +19,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import awesomeCoffee.dto.AuthInfo;
 import awesomeCoffee.dto.CartDTO;
+import awesomeCoffee.dto.MenuDTO;
 import awesomeCoffee.service.CartService;
 import awesomeCoffee.service.MemberService;
+import awesomeCoffee.service.MenuService;
 import kr.msp.constant.Const;
 
 @Controller
@@ -30,6 +32,8 @@ public class CartController {
 	private CartService cartService;
 	@Autowired
 	private MemberService memberService;
+	@Autowired
+	private MenuService menuService;
 
 	// 장바구니 create
 	@RequestMapping(method = RequestMethod.POST, value = "/api/cart/regist")
@@ -111,9 +115,14 @@ public class CartController {
 
 			for (int i = 0; i < list.size(); i++) {
 				Map<String, Object> map = new HashMap<String, Object>();
+				
 				map.put("memberNum", list.get(i).getMemberNum());
 				map.put("goodsNum", list.get(i).getGoodsNum());
 				map.put("qty", list.get(i).getQty());
+				MenuDTO dto = menuService.getMenuInfoByNum(map);
+				map.put("goodsName", dto.getGoodsName());
+				map.put("goodsPrice", dto.getGoodsPrice());
+				map.put("goodsImage", dto.getGoodsImage());
 
 				cartList.add(map);
 			}
