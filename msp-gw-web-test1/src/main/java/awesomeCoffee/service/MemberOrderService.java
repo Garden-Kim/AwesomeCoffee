@@ -153,5 +153,8 @@ public class MemberOrderService {
 	public MemberOrderDTO selectOrderDetail(Map<String, Object> param) {
 		return sqlSession.selectOne("Order.selectOrderDetail", param);
 	}
+	public List<MemberOrderDTO> selectAllEmpOrderTake() {
+		return sqlSession.selectList("Order.selectAllEmpOrderTake");
+	}
 
 }

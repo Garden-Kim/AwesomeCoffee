@@ -16,6 +16,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import awesomeCoffee.dto.FoodDTO;
 import awesomeCoffee.dto.RecipeDTO;
+import awesomeCoffee.dto.StoreOrderDTO;
 
 @Service
 public class RecipeService {
@@ -30,82 +31,37 @@ public class RecipeService {
 	@Qualifier("transactionManager_sample")
 	private DataSourceTransactionManager transactionManager_sample;
 
-
-
-	public List<FoodDTO> foodList() {
-		return sqlSession.selectList("Food.foodList");
-	}
-
-	public FoodDTO foodInfo(Map<String, Object> param) {
-		return sqlSession.selectOne("Food.foodInfo", param);
-	}
-
-	public int updateFood(Map<String, Object> param) {
-
-		// 트렌젝션 구현
-		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-		TransactionStatus status = transactionManager_sample.getTransaction(def);
-
-		int result = 0;
-		try {
-
-			result = sqlSession.update("Food.updateFood", param);
-
-			transactionManager_sample.commit(status);
-			logger.info("========== 매장 등록 완료 : {}", result);
-
-		} catch (Exception e) {
-			logger.error("[ERROR] insertUser() Fail : e : {}", e.getMessage());
-			e.printStackTrace();
-			transactionManager_sample.rollback(status);
-		}
-		return result;
-	}
-
-	public int deleteFood(Map<String, Object> param) {
-		// 트렌젝션 구현
-		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-		TransactionStatus status = transactionManager_sample.getTransaction(def);
-
-		int result = 0;
-		try {
-
-			result = sqlSession.delete("Food.deleteFood", param);
-
-			transactionManager_sample.commit(status);
-			logger.info("========== 매장 등록 완료 : {}", result);
-
-		} catch (Exception e) {
-			logger.error("[ERROR] insertUser() Fail : e : {}", e.getMessage());
-			e.printStackTrace();
-			transactionManager_sample.rollback(status);
-		}
-		return result;
-	}
-
 	// 레시피 등록
-	public int insertRecipe(Map<String, Object> param) {
-		// 트렌젝션 구현
-				DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-				def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-				TransactionStatus status = transactionManager_sample.getTransaction(def);
+	public int insertRecipe(List<Map<String, Object>> param) {
+		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+		TransactionStatus status = transactionManager_sample.getTransaction(def);
+		
+		int result = 0;
+		try {
+			for(Map<String, Object> map : param) {
+				RecipeDTO dto = new RecipeDTO();
+				dto.setFoodNum(map.get("foodNum").toString());
+				dto.setGoodsNum(map.get("goodsNum").toString());
+				dto.setRecipeFoodQty(map.get("recipeFoodQty").toString());
+				
+				
+//				String storeOrderNum = sqlSession.selectOne("StoreOrder.createStoreOrderNum");
+//				dto.setStoreOrderNum(storeOrderNum);
+				
+				sqlSession.insert("Recipe.insertRecipe", dto);
+				result++;
+			}
+			transactionManager_sample.commit(status);
+			logger.info("========== 레시피등록 완료 : {}", result);
 
-				int result = 0;
-				try {
+		} catch (Exception e) {
+			logger.error("[ERROR] insertUser() Fail : e : {}", e.getMessage());
+			e.printStackTrace();
+			transactionManager_sample.rollback(status);
+		}
+		return result;
 
-					result = sqlSession.insert("Recipe.insertRecipe", param);
-
-					transactionManager_sample.commit(status);
-					logger.info("========== 레시피 등록 완료 : {}", result);
-
-				} catch (Exception e) {
-					logger.error("[ERROR] insertUser() Fail : e : {}", e.getMessage());
-					e.printStackTrace();
-					transactionManager_sample.rollback(status);
-				}
-				return result;
 	}
 
 	public List<RecipeDTO> recipeList() {
@@ -139,7 +95,7 @@ public class RecipeService {
 		return result;
 	}
 
-	public int recipeUpdate(Map<String, Object> param) {
+	public int recipeUpdate(List<Map<String, Object>> param) {
 		// 트렌젝션 구현
 				DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 				def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
@@ -147,11 +103,21 @@ public class RecipeService {
 
 				int result = 0;
 				try {
-
-					result = sqlSession.delete("Recipe.updateRecipe", param);
-
+					for(Map<String, Object> map : param) {
+						RecipeDTO dto = new RecipeDTO();
+						dto.setFoodNum(map.get("foodNum").toString());
+						dto.setGoodsNum(map.get("goodsNum").toString());
+						dto.setRecipeFoodQty(map.get("recipeFoodQty").toString());
+						
+						
+//						String storeOrderNum = sqlSession.selectOne("StoreOrder.createStoreOrderNum");
+//						dto.setStoreOrderNum(storeOrderNum);
+						
+						sqlSession.update("Recipe.updateRecipe", dto);
+						result++;
+					}
 					transactionManager_sample.commit(status);
-					logger.info("========== 레시피 수정 완료 : {}", result);
+					logger.info("========== 레시피수정 완료 : {}", result);
 
 				} catch (Exception e) {
 					logger.error("[ERROR] insertUser() Fail : e : {}", e.getMessage());

@@ -62,6 +62,16 @@
 		where member_num = #{memberNum}
 		order by order_num
 	</select>
+	
+	
+	<!-- 조리상태 'N' 전부 출력 -->
+	<select id="selectAllEmpOrderTake" resultType="awesomeCoffee.dto.MemberOrderDTO">
+		SELECT *
+		FROM member_order
+		WHERE cook_state = 'Y'
+		AND TAKEOUT = 'N'
+		ORDER BY order_num
+	</select>
 	<!-- 조리상태 'N' 전부 출력 -->
 	<select id="selectAllEmpOrderN"
 		resultType="awesomeCoffee.dto.MemberOrderDTO">

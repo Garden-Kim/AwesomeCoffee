@@ -86,3 +86,10 @@ PAYMENT_MEM_LIST : "/api/payment/list", // 결제 목록 (회원)
 PAYMENT_YEARSUM : "/api/payment/yearSum", // 결제 합계 (년)
 
 
+// 발주 
+STORE_ORDER_DETAIL : "/api/storeOrder/detail",  // 발주 상세페이지
+
+// 입금(매장결제)
+FOOD_PAYMENT_LIST: "/api/foodPayment/list", // 입금(결제)리스트
+FOOD_PAYMENT_PAYMENT : "/api/foodPayment/deposit",  // 입금(결제)
+FOOD_PAYMENT_PRICE : "/api/foodPayment/restPayment" , // 결제 잔액
