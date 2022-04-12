@@ -15,7 +15,7 @@
 <insert id="insertCart">
 	insert into cart (member_num , goods_num, qty )
 	values 
-	(#{memberNum} , #{goodsNum}, '1')
+	(#{memberNum} , #{goodsNum}, #{qty})
 </insert>
 <!-- 메뉴에서 장바구니에 추가할때 merge -->
 <update id="updateCart">

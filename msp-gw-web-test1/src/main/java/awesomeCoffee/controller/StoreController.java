@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import awesomeCoffee.dto.AuthInfo;
+import awesomeCoffee.dto.MemberDTO;
 import awesomeCoffee.dto.StoreDTO;
+import awesomeCoffee.service.MemberService;
 import awesomeCoffee.service.StoreService;
 import kr.msp.constant.Const;
 
@@ -30,6 +32,56 @@ public class StoreController {
 
 	@Autowired
 	StoreService storeService;
+	@Autowired
+	MemberService memberService;
+
+	// 매장이 보는 회원리스트
+	@RequestMapping(method = RequestMethod.POST, value = "/api/store/memList")
+	public ModelAndView storeMemList(HttpServletRequest request) {
+		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
+		List<Map<String, Object>> memberList = new ArrayList<Map<String, Object>>();
+		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
+		if (reqHeadMap == null) {
+			reqHeadMap = new HashMap<String, Object>();
+		}
+
+		reqHeadMap.put(Const.RESULT_CODE, Const.OK);
+		reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
+
+		List<StoreDTO> info = storeService.storeList();
+		if (StringUtils.isEmpty(info)) {
+			responseBodyMap.put("rsltCode", "1003");
+			responseBodyMap.put("rsltMsg", "Login required.");
+		} else {
+			List<MemberDTO> memberInfo = memberService.memberList();
+			logger.info("======================= responseBodyMap : {}", memberInfo.size());
+
+			for (int i = 0; i < memberInfo.size(); i++) {
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("memberNum", memberInfo.get(i).getMemberNum());
+				map.put("memberId", memberInfo.get(i).getMemberId());
+				map.put("memberName", memberInfo.get(i).getMemberName());
+				map.put("memberPhone", memberInfo.get(i).getMemberPhone());
+				map.put("memberEmail", memberInfo.get(i).getMemberEmail());
+
+				memberList.add(map);
+			}
+			logger.info("======================= categoryList : {}", memberInfo.toString());
+
+			if (!StringUtils.isEmpty(memberInfo)) {
+				responseBodyMap.put("rsltCode", "0000");
+				responseBodyMap.put("rsltMsg", "Success");
+				responseBodyMap.put("list", memberList);
+			} else {
+				responseBodyMap.put("rsltCode", "2003");
+				responseBodyMap.put("rsltMsg", "Data not found.");
+			}
+		}
+		ModelAndView mv = new ModelAndView("defaultJsonView");
+		mv.addObject(Const.BODY, responseBodyMap);
+		mv.addObject(Const.HEAD, reqHeadMap);
+		return mv;
+	}
 
 	// 매장상태 수정
 	@RequestMapping(method = RequestMethod.POST, value = "/api/store/state")
