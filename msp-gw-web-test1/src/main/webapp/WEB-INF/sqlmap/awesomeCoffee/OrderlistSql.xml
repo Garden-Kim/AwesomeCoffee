@@ -5,7 +5,6 @@
 
 <mapper namespace="Orderlist">
 
-	
 	<insert id="insertOrderlist" parameterType="String">
 		insert into orderlist (order_num, orderlist_qty, orderlist_sum, goods_num)
 		select #{orderNum}, c.qty, c.qty * g.goods_price as price_sum , g.goods_num 
@@ -15,6 +14,12 @@
 		
 	</insert>
 	
+	<select id="selectGoodsNums" parameterType="map" resultType="awesomeCoffee.dto.OrderlistDTO">
+		select  g.goods_num, g.goods_name, m.order_price
+		from goods g, member_order m, orderlist o
+		where m.order_num = #{orderNum} and  m.member_num = #{memberNum} and g.goods_num = o.goods_num and o.order_num = m.order_num
+		
+	</select>
 	
 	<select id="selectAllOrderlist" parameterType="map" resultType="awesomeCoffee.dto.OrderlistDTO">
 		select *

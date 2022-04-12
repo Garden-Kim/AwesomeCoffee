@@ -30,6 +30,7 @@ public class OrderlistService {
 	
 	@Autowired
 	private CartService cartService;
+	
 
 	// 주문 내역 insert
 	public int insertOrderlist(Map <String, Object> param) {
@@ -58,6 +59,13 @@ public class OrderlistService {
 	public List<OrderlistDTO> selectOrderlist (Map<String, Object> param) {
 		return sqlSession.selectList("Orderlist.selectAllOrderlist", param);
 	}
+	
+	// 회원 주문 리스트에 해당하는 상품list 
+	public List<OrderlistDTO> selectGoodsNums (Map<String, Object> param){
+		return sqlSession.selectList("Orderlist.selectGoodsNums", param);
+	}
+	
+	
 	// 주문 내역 delete 
 	public int deleteOrderlist(Map<String, Object> param) {
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
