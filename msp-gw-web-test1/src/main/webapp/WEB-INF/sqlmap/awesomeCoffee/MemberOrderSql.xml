@@ -89,10 +89,11 @@
 	</select>
 	<!-- 오늘의 주문 전부 출력 -->
 	<select id="selectTodayOrder" resultType="awesomeCoffee.dto.MemberOrderDTO">
-		select *
+		select ORDER_NUM, ORDER_PRICE, ORDER_TIME, TAKEOUT, MEMBER_NUM, COOK_STATE, to_number(ORDER_NUM) onum
 		from member_order
 		where to_char(order_time,'yy/mm/dd') = to_char(sysdate)
-		order by order_num desc
+		order by onum desc
+		
 	</select>
 	
 	<update id="updateOrderCookState">
