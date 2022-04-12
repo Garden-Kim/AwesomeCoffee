@@ -11,11 +11,6 @@
       $back: null,
       $detail: null,
       $btnTop: null,
-      $menu: null,
-      $menuOrderList: null,
-      $menuPickup: null,
-      $menuRecipeList: null,
-      $menuStoreInfo: null,
     },
     data: {
       requset: {
@@ -27,11 +22,6 @@
     init: function init() {
       this.els.$back = $('#back');
       this.els.$btnTop = $('#btnTop');
-      this.els.$menu = $('#menu');
-      this.els.$menuOrderList = $('#menu-order-list');
-      this.els.$menuPickup = $('#menu-pickup');
-      this.els.$menuRecipeList = $('#menu-recipe-list');
-      this.els.$menuStoreInfo = $('#menu-store-info');
 
     },
     initView: function initView() {
@@ -40,34 +30,51 @@
     drawNoticeList: function () {
       var self = this;
       MNet.sendHttp({
-        path: SERVER_PATH.ORDER_EMP_LIST_N,
+        path: SERVER_PATH.ORDER_MEM_LIST,
         data: self.data.requset,
         succ: function (data) {
           var items = "";
-          self.data.requset.lastSeqNo = data.lastSeqNo;
           $.each(data.list, function (index, item) {
-            items += "<ul >"
-            items += "<li data-seq='" + item.orderNum + "' class='empOrderDetail'>";
-            items += item.orderNum;
-            items += "</li>";
-            items += "<li data-seq='" + item.orderNum + "' class='empOrderDetail'>";
-            items += item.memberNum;
-            items += "</li>";
-            items += "<li data-seq='" + item.orderNum + "' class='empOrderDetail'>";
+            items += "<ul data='" + item.orderNum + "' class='orderOne bg-white' >";
+            items += "<li>";
             items += item.orderTime;
             items += "</li>";
-            items += "<li data-seq='" + item.orderNum + "' class='empOrderDetail'>";
-            items += item.orderPrice;
+            items += "<li class='img-wrap orderList'>";
+            items += "<div class='img'>";
+            items += "<img src='";
+            items += item.imgUrl;
+            items += "' alt=''/>";
+            items += "</div>";
+            items += "<span class='label-info none'>";
+            items += "<img src='";
+            items += item.imgUrl;
+            items += "' alt='50%'/>";
+            items += "</span>";
             items += "</li>";
-            items += "<li data-seq='" + item.orderNum + "' class='empOrderState'>";
+            items += "<li class='info-box'>";
+            items += "<div class='info-box-top' style='margin-top: 1rem;'>";
+            items += "조리상태 <strong >";
             items += item.cookState;
+            items += "</strong>";
+            items += "수령상태 <strong >";
+            items += item.takeout;
+            items += "</strong>";
+            items += "</div>";
+            items += "<div class='order-info'>";
+            items += "<strong>";
+            items += item.orderPrice + " 원";
+            items += "</strong>";
+            items += "<span>";
+            items += "/ 1개";
+            items += "</span>";
+            items += "</div>";
             items += "</li>";
-            items += "</ul>"
+            items += "</ul>";
           });
-          $(".empOrder").append(items);
+          $(".order-menu").append(items);
         },
         error: function (data) {
-          $(".btn-wrap").css("display", "none");
+          $(".order-menu").css("display", "none");
           alert("에러");
         }
       });
@@ -103,34 +110,32 @@
         $('.wrapper').fadeTo("fast", 1);
         $('.wrapper').attr('style', 'position:relative;height:100%;background-color:#fff;');
       });
-      // 사이드바 메뉴
-      this.els.$menuOrderList.on('click', function () {
-        M.page.replace("./empOrderList.html");
+      // 회원 사이드바
+      $('#m-orderList').on('click', function(){
+        M.page.html('./menuList.html');
       });
-      this.els.$menuPickup.on('click', function () {
-        M.page.html("./pickupList.html");
+      $('#m-storeList').on('click', function(){
+        M.page.html('./storeList.html');
       });
-      this.els.$menuRecipeList.on('click', function () {
-        M.page.html("./recipeList.html");
+      $('#m-userInfo').on('click', function(){
+        M.page.html('./userInfo.html');
       });
-      this.els.$menuStoreInfo.on('click', function () {
-        M.page.html("./storeInfo.html"); 
+      $('#m-cart').on('click', function(){
+        M.page.html('./cart.html');
       });
-      $('#menu-order-manage').on('click', function(){
-        M.page.html("./orderManage.html"); 
-      })
+      $('#m-payList').on('click', function(){
+        M.page.replace('./payList.html');
+      });
       
-      $('.empOrder').on('click', '.empOrderDetail', function () {
-        var seqNo = $(this).attr('data-seq');
-        M.data.global("seqNo", seqNo)
+      $(".order-menu").on('click', '.orderOne', function () {
+        var orderNum = $(this).attr('data');
         MNet.sendHttp({
-          path: SERVER_PATH.NOTICE_DETAIL,
+          path: SERVER_PATH.ORDER_LIST_LIST,
           data: {
-            loginId: M.data.global("id"),
-            seqNo: seqNo
+            orderNum : orderNum,
           },
           succ: function (data) {
-            M.page.html('./empOrderDetail.html');
+            M.page.html('./payDetail.html', {param : { orderNum : orderNum}});
           }
         });
       })

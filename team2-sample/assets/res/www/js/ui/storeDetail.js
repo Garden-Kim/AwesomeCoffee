@@ -35,7 +35,7 @@
         succ: function (data) {
           console.log(data);
           $('#title').text(data.title);
-          $('#address').html(data.regDate);
+          $('#address').html(data.content);
           $('#content').html(data.content);
           seqNoNext = data.seqNo;
           console.log(data.imgUrl);
@@ -59,15 +59,6 @@
       this.els.$storeOrder.on('click', function () {
        self.storeOrder();  
       })
-    },
-    updatePage :function(){
-      // 페이지 호출
-      M.page.html({
-        path: './write.html',
-        param: {
-          "seqNoNext": seqNoNext,
-        }
-      });
     },
     storeOrder : function(){
       M.page.html('./goodsList.html');

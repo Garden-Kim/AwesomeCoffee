@@ -78,6 +78,22 @@
         $('.wrapper').fadeTo("fast", 1);
         $('.wrapper').attr('style', 'position:relative;height:100%;background-color:#fff;');
       });
+// 회원 사이드바
+      $('#m-orderList').on('click', function(){
+        M.page.replace('./menuList.html');
+      });
+      $('#m-storeList').on('click', function(){
+        M.page.html('./storeList.html');
+      });
+      $('#m-userInfo').on('click', function(){
+        M.page.html('./userInfo.html');
+      });
+      $('#m-cart').on('click', function(){
+        M.page.html('./cart.html');
+      });
+      $('#m-payList').on('click', function(){
+        M.page.html('./payList.html');
+      });
     }  
 
   };

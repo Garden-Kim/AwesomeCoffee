@@ -39,7 +39,7 @@
       });
       $('#menu-order-food').on('click', function(){
         console.log('사이드바클릭');
-        M.page.html('./order.html');
+        M.page.html('./foodOrder.html');
       });
       $('#menu-payment-list').on('click', function(){
       //   발주내역   M.page.html('./.html');
@@ -62,7 +62,7 @@
       });
       
       this.els.$btnOrder.on('click', function(){
-        M.page.html('./order.html');
+        M.page.html('./foodOrder.html');
       });      
       this.els.$btnSales.on('click', function(){
         M.page.html('./sales.html');

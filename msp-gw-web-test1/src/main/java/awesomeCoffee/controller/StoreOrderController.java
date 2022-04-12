@@ -94,30 +94,34 @@ public class StoreOrderController {
 
 	// 발주 목록(총합포함)
 	@RequestMapping(method = RequestMethod.POST, value = "/api/storeOrder/list")
-	public ModelAndView storeOrderList(HttpServletRequest request) {
+	public ModelAndView storeOrderList(HttpServletRequest request, HttpSession session) {
 		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
 		List<Map<String, Object>> storeOrderList = new ArrayList<Map<String, Object>>();
 		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
 
 		if (reqHeadMap == null) {
 			reqHeadMap = new HashMap<String, Object>();
-		}
+		}	
 
 		reqHeadMap.put(Const.RESULT_CODE, Const.OK);
 		reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
-
-		List<StoreOrderDTO> info = storeOrderService.storeOrderList();
-		if (StringUtils.isEmpty(info)) {
+		
+		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
+		String storeNum = storeService.getStoreNumById(authInfo.getLoginId());
+		
+		List<StoreOrderDTO> info = storeOrderService.storeOrderList(storeNum);
+		
+		if (StringUtils.isEmpty(authInfo)) {
 			responseBodyMap.put("rsltCode", "1003");
 			responseBodyMap.put("rsltMsg", "Login required.");
 		} else {
-			List<StoreOrderDTO> storeOrderInfo = storeOrderService.storeOrderList();
+			List<StoreOrderDTO> storeOrderInfo = storeOrderService.storeOrderList(storeNum);
 			logger.info("======================= responseBodyMap : {}", storeOrderInfo.size());
 
 			for (int i = 0; i < storeOrderInfo.size(); i++) {
 				Map<String, Object> map = new HashMap<String, Object>();
 				map.put("storeOrderNum", storeOrderInfo.get(i).getStoreOrderNum());
-				map.put("storeNum", storeOrderInfo.get(i).getStoreNum());
+				map.put("storeNum", storeNum);
 				map.put("foodNum", storeOrderInfo.get(i).getFoodNum());
 				map.put("storeOrderQty", storeOrderInfo.get(i).getStoreOrderQty());
 				map.put("storeOrderDate", storeOrderInfo.get(i).getStoreOrderDate());
@@ -125,8 +129,7 @@ public class StoreOrderController {
 
 				storeOrderList.add(map);
 			}
-
-			String priceSum = storeOrderService.storeOrderPriceSum();
+			String priceSum = storeOrderService.storeOrderPriceSum(storeNum);
 
 			if (!StringUtils.isEmpty(storeOrderInfo)) {
 				responseBodyMap.put("rsltCode", "0000");
@@ -160,16 +163,14 @@ public class StoreOrderController {
 		reqHeadMap.put(Const.RESULT_CODE, Const.OK);
 		reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
 
-//		reqBodyMap.put("storeId", authInfo.getLoginId());
-//		StoreDTO dto = storeService.getStoreInfoById(reqBodyMap);
-//		reqBodyMap.put("storeNum",dto.getStoreNum());
-
 		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
+		String storeNum = storeService.getStoreNumById(authInfo.getLoginId());
+		
 		if (StringUtils.isEmpty(authInfo)) {
 			responseBodyMap.put("rsltCode", "1003");
 			responseBodyMap.put("rsltMsg", "Login required.");
 		} else {
-			int result = storeOrderService.insertStoreOrder(reqBodyMap);
+			int result = storeOrderService.insertStoreOrder(reqBodyMap,storeNum);
 			if (result > 0) {
 				responseBodyMap.put("rsltCode", "0000");
 				responseBodyMap.put("rsltMsg", "Success");

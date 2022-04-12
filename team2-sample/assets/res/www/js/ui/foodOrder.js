@@ -25,33 +25,29 @@
         M.page.html('./login.html');
       }
       MNet.sendHttp({
-        path: SERVER_PATH.NOTICE_LIST,
-        data: {
-          "loginId": M.data.global('id'),
-          "lastSeqNo": '0',
-          "cnt": '10000000',
-        },
+        path: SERVER_PATH.FOOD_LIST,
+        data: {},
         succ: function (data) {
           console.log(data);
           var items = "";
           $.each(data.list, function (index, item) {
-            items += "<ul id='"+ item.seqNo +"' class ='food-list bg-white'>";
+            items += "<ul id='"+ item.foodNum +"' class ='food-list bg-white'>";
             items += "<li>";
-            items += "<input type='checkbox' id='"+ item.seqNo +"' name='color' class='chk-03' />";
-            items += "</li><li>";
-            items += item.title;
-            items += "</li><li>";
-            items += "<button type='button' id='qtyPlus' class='qty'>";
+            items += "<input type='checkbox' id='"+ item.foodNum +"' name='color' class='chk-03' />";
+            items += "</li><li style='text-align:center;'>";
+            items += item.foodName;
+            items += "</li><li class='foodQty'>";
+            items += "<button type='button' class='qty qtyPlus'>";
             items += "<img src='../img/icon-plus.png'>";
             items += "</button>";
-            items += "<span id='goodsQty' class='qty'>";
+            items += "<span class='qty' data-q='1'>";
             items += "1";
             items += "</span>";
-            items += "<button type='button' id='qtyMinus' class='qty'>";
+            items += "<button type='button' class='qty qtyMinus'>";
             items += "<img src='../img/icon-minus.png'>";
             items += "</button>";
-            items += "</li><li>";
-            items += "2000원"
+            items += "</li><li class='foodPrice' data-p='"+item.foodPrice+"'>";
+            items += item.foodPrice;
             items += "</li></ul>";;
           });
           $("#noti-wrap").html(items);
@@ -81,7 +77,7 @@
         $('.wrapper').attr('style', 'position:relative;height:100%;background-color:#fff;');
       });
       $('#menu-order-food').on('click', function(){
-        M.page.replace('./order.html');
+        M.page.replace('./foodOrder.html');
       });      
       $('#menu-payment-list').on('click', function(){
       //   발주내역   M.page.html('./.html');
@@ -98,15 +94,63 @@
       $('#menu-store-info').on('click', function(){
         M.page.html('./storeList.html');
       });
-
+      
+      $("#noti-wrap").on("click", ".qtyPlus " , function(){
+        var qty = Number($(this).parent().children('span').text());
+        var ser = qty + 1;
+        var price = Number($(this).parent().siblings('.foodPrice').attr('data-p'));
+        $(this).parent().siblings('.foodPrice').html(price * ser);
+        $(this).parent().siblings('.foodPrice').attr('data-p', price * ser);
+        $(this).parent().children('span').html(ser);
+        $(this).parent().children('span').attr('data-q', ser);
+      });
+      $("#noti-wrap").on("click", ".qtyMinus " , function(){
+        var qty = Number($(this).parent().children('span').text());
+        if (qty != 1){
+          var ser = qty - 1;
+          console.log(qty);
+          console.log(ser);
+          var price = Number($(this).parent().siblings('.foodPrice').attr('data-p'));
+          console.log(price);
+          $(this).parent().siblings('.foodPrice').html(price * ser);
+          $(this).parent().siblings('.foodPrice').attr('data-p', price * ser);
+          $(this).parent().children('span').html(ser);
+          $(this).parent().children('span').attr('data-q', ser);
+        }
+      });
       this.els.$btnOrder.on('click', function(){
+        
+        
+        MNet.sendHttp({
+          path: SERVER_PATH.STORE_ORDER_REGI,
+          data: {
+            
+          },
+          succ: function (data) {
+            console.log(data);
+            $('#title').text(data.goodsName);
+            $('#content').html(data.goodsContent);
+            $('#goodsPrice').text(data.goodsPrice);
+            console.log(data.imgUrl);
+            if (data.goodsImage != null) {
+              $('#imgUrl').attr('src', data.goodsImage);
+            }
+          },
+          error: function (data) {
+            console.log(data);
+            alert("실패");
+          }
+        });
+        
         M.page.html('./fpayment.html');
+        
       });
       $('.btn-top').on('click', function () {
         $('.cont-wrap').scrollTop(0);
       });
       
-    }
+    },
+    
   };
   window.__page__ = page;
 })(jQuery, M, __util__, __mnet__, __serverPath__,__difinition__, window);

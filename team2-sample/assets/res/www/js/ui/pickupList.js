@@ -41,24 +41,24 @@
     drawNoticeList: function () {
       var self = this;
       MNet.sendHttp({
-        path: SERVER_PATH.NOTICE_LIST,
+        path: SERVER_PATH.ORDER_EMP_LIST_Y,
         data: self.data.requset,
         succ: function (data) {
           var items = "";
           self.data.requset.lastSeqNo = data.lastSeqNo;
           $.each(data.list, function (index, item) {
             items += "<ul>"
-            items += "<li data-seq='" + item.seqNo + "'>";
-            items += item.title;
+            items += "<li data-seq='" + item.orderNum + "'>";
+            items += item.orderNum;
             items += "</li>";
-            items += "<li data-seq='" + item.seqNo + "'>";
-            items += item.content;
+            items += "<li data-seq='" + item.orderNum + "'>";
+            items += item.memberNum;
             items += "</li>";
-            items += "<li data-seq='" + item.seqNo + "'>";
-            items += "핫초코 외3";
+            items += "<li data-seq='" + item.orderNum + "'>";
+            items += item.orderTime;
             items += "</li>";
-            items += "<li data-seq='" + item.seqNo + "' class='pickupState'>";
-            items += "N";
+            items += "<li data-seq='" + item.orderNum + "' class='pickupState'>";
+            items += item.takeout;
             items += "</li>";
             items += "</ul>"
           });
@@ -104,6 +104,9 @@
       })
       this.els.$menuStoreInfo.on('click', function () {
         M.page.html("./storeInfo.html"); 
+      })
+      $('#menu-order-manage').on('click', function(){
+        M.page.html("./orderManage.html"); 
       })
 
       // 픽업 완료 기능

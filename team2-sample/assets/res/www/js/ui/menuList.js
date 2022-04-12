@@ -33,40 +33,38 @@
         M.page.html('./login.html');
       }
       MNet.sendHttp({
-        path: SERVER_PATH.NOTICE_LIST,
+        path: SERVER_PATH.MENU_CATEGORYLIST,
         data: {
-          "loginId": M.data.global('id'),
-          "lastSeqNo": '1000000',
-          "cnt": '1000000',
+          "categoryNum" : "43 ",
         },
         succ: function (data) {
           console.log(data);
           var items = "";
-          self.data.lastSeqNum = data.lastSeqNo;
-          console.log(self.data.lastSeqNum);
           $.each(data.list, function (index, item) {
             console.log(item);
-            console.log(item.imgUrl);
-            items += "<li id='"+ item.seqNo +"' class ='menu'>";
-            items += "<div class='thumbnail-wrap'>";
+            console.log(item.goodsImage);
+            //http://211.241.199.241:28040/resources/img/1647853076507.jpg
+            items += "<li id='"+ item.goodsName +"' class ='menu'>";
+            items += "<div class='thumbnail-wrap click-d' id='"+ item.goodsName +"'>";
             items += "<div class='thumbnail'>";
-            items += "<img src='" +item.imgUrl +" ' alt=''/>";
+            items += "<img src='" +item.goodsImage +" ' alt=''/>";
             items += "</div>";
             items += "<span class='label-info none'>";
-            items += "<img src= '" + item.imgUrl + "' alt='50%'/>";
+            items += "<img src= '" + item.goodsImage + "' alt='50%'/>";
             items += "</span>";
             items += "</div>";
             items += "<div class='info-box'>";
             items += "<div class='info-box-top'>";
             items += "<strong class='ellipsis_1'>";
-            items += item.title;
+            items += item.goodsName;
             items += "</strong>";
-            items += "<div class='info-box-btm'>";
+            items += "</div>";
+            items += "<button type='button' id='"+ item.goodsNum +"' class='interest'></button>";
+            items += "<span class='info-box-btm'>";
             items += "<p style='text-align:right;' class='ellipsis_1'>";
-            items += item.content + '원';
+            items += item.goodsPrice + ' 원';
             items += "</p>";
-            items += "</div>";
-            items += "</div>";
+            items += "</span>";
             items += "</div>";
             items += "</li>";
           });
@@ -82,7 +80,6 @@
     initEvent : function initEvent(){
       var self = this;
       var id = M.data.global('id');
-      M.data.param({'cnt' : '0'});
       $('.l-fix').on('click', function(){
         M.page.back();
       });
@@ -93,10 +90,101 @@
           for(var j = 0; j < tabList.length; j++){
             tabList[j].classList.remove('on');
           }
+          var ctg = $(this).parent('li').attr('id');
           this.parentNode.classList.add('on');
-          // menu 목록 출력
+          console.log(ctg);
+          MNet.sendHttp({
+            path: SERVER_PATH.MENU_CATEGORYLIST,
+            data: {
+              "categoryNum" : ctg,
+            },
+            succ: function (data) {
+              console.log(data);
+              var items = "";
+              $.each(data.list, function (index, item) {
+                console.log(item);
+                console.log(item.goodsImage);
+                //http://211.241.199.241:28040/resources/img/1647853076507.jpg
+                items += "<li id='"+ item.goodsName +"' class ='menu'>";
+                items += "<div class='thumbnail-wrap click-d' id='"+ item.goodsName +"'>";
+                items += "<div class='thumbnail'>";
+                items += "<img src='" +item.goodsImage +" ' alt=''/>";
+                items += "</div>";
+                items += "<span class='label-info none'>";
+                items += "<img src= '" + item.goodsImage + "' alt='50%'/>";
+                items += "</span>";
+                items += "</div>";
+                items += "<div class='info-box'>";
+                items += "<div class='info-box-top'>";
+                items += "<strong class='ellipsis_1'>";
+                items += item.goodsName;
+                items += "</strong>";
+                items += "</div>";
+                items += "<button type='button' id='"+ item.goodsNum +"' class='interest'></button>";
+                items += "<span class='info-box-btm'>";
+                items += "<p style='text-align:right;' class='ellipsis_1'>";
+                items += item.goodsPrice + ' 원';
+                items += "</p>";
+                items += "</span>";
+                items += "</div>";
+                items += "</li>";
+              });
+              $("#card").html(items);
+            },
+            error: function (data) {
+              console.log(data);
+              alert("리스트를 가져오지 못했습니다.");
+            },
+          });
         });
-      }
+      };
+      // 관심상품 버튼
+      $('#card').on('click', '.interest', function( ) {
+        var goodsNum = $(this).attr('id' );
+        $(this).attr('class', 'hurt');
+        alert('관심상품에 등록하셨습니다.');
+/*        MNet.sendHttp({
+          path: SERVER_PATH.WISH_REGIST,
+          data: {
+            goodsNum : goodsNum,
+          },
+          succ: function (data) {
+            if (data.rsltCode == '0000') {
+              $(this).attr('class', 'hurt');
+              alert('관심상품에 등록하셨습니다.');
+            } else {
+              alert('등록에 실패하셨습니다.');
+            }
+          },
+          error: function (data) {
+            console.log(data);
+            alert('에러!');
+          }
+        });*/
+      });
+      $('#card').on('click', '.hurt', function() {
+        var goodsNum = $(this).attr('id' );
+        $(this).attr('class', 'interest');
+        alert('관심상품을 해제하셨습니다.');
+      });
+      
+/*      const tabList = document.querySelectorAll('.category li');
+              for(var i = 0; i < tabList.length; i++){
+                tabList[i].querySelector('.btn-category').addEventListener('click', function(){
+                  for(var j = 0; j < tabList.length; j++){
+                    tabList[j].classList.remove('on');
+                  }
+                  var ctg = $(this).parent('li').attr('id');
+                  this.parentNode.classList.add('on');
+                  
+        const intList = document.querySelectorAll('.metro-wrap li');
+        intList.querySelector('.interest').addEventListener('click', function(){
+          if(self.hasClass('hurt')){
+            self.parentNode.classList.remove('hurt');
+          }else{
+            self.parentNode.classList.add('hurt');
+          }
+        });*/
       // 사이드바 
       $('.btn-menu').on('click', function () {
         console.log('메뉴클릭');
@@ -124,11 +212,11 @@
         M.page.html('./cart.html');
       });
       $('#m-payList').on('click', function(){
-        // M.page.replace('./menuList.html');
+        M.page.html('./payList.html');
       });
 // 관리자 사이드바
       $('#menu-order-food').on('click', function(){
-        M.page.html('./order.html');
+        M.page.html('./foodOrder.html');
       });      
       $('#menu-payment-list').on('click', function(){
       //   발주내역   M.page.html('./.html');
@@ -152,17 +240,16 @@
       this.els.$btnTop.on('click', function () {
         $('.cont-wrap').scrollTop(0);
       });
-      $('#card').on('click', '.menu', function( ) {
-        var seqNo = $(this).attr('id' );
+      $('#card').on('click', '.click-d', function( ) {
+        var goodsName = $(this).attr('id' );
         MNet.sendHttp({
-          path: SERVER_PATH.NOTICE_DETAIL,
+          path: SERVER_PATH.MENU_INFO,
           data: {
-            loginId: id,
-            seqNo	: seqNo,
+            goodsName : goodsName,
           },
           succ: function (data) {
             if (data.rsltCode == '0000') {
-              M.page.html('./goodsDetail.html',{param : {seqNo	: seqNo}} );
+              M.page.html('./goodsDetail.html',{param : {goodsName	: goodsName}} );
             } else {
               alert('페이지를 열 수 없습니다.');
             }
@@ -179,7 +266,7 @@
           alert(seqNo);
         });
       */
-    }
+    },
   };
   window.__page__ = page;
 })(jQuery, M,__mnet__, __util__, __config__, __serverPath__,  window);

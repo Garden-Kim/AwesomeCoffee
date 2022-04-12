@@ -81,7 +81,7 @@ public class FoodPaymentController {
 	}
 
 	// 결제잔액
-	@RequestMapping(method = RequestMethod.POST, value = "/api/foodPayment/price")
+	@RequestMapping(method = RequestMethod.POST, value = "/api/foodPayment/restPayment")
 	public ModelAndView foodPrice(HttpSession session, HttpServletRequest request, HttpServletResponse response) {
 		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
 		Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
@@ -101,11 +101,16 @@ public class FoodPaymentController {
 			responseBodyMap.put("rsltCode", "1003");
 			responseBodyMap.put("rsltMsg", "Login required.");
 		} else {
-			String priceSum = storeOrderService.storeOrderPriceSum();
-			if (!StringUtils.isEmpty(priceSum)) {
+			
+			String storeNum = storeService.getStoreNumById(authInfo.getLoginId());
+			String orderPriceSum = storeOrderService.storeOrderPriceSum(storeNum);
+			String paymentPriceSum = foodPaymentService.foodPaymentPriceSum(storeNum);
+			
+			Integer restPriceSum = Integer.parseInt(orderPriceSum) -Integer.parseInt(paymentPriceSum) ;
+			if (!StringUtils.isEmpty(restPriceSum)) {
 				responseBodyMap.put("rsltCode", "0000");
 				responseBodyMap.put("rsltMsg", "Success");
-				responseBodyMap.put("priceSum", priceSum);
+				responseBodyMap.put("restPayment", restPriceSum);
 
 			} else {
 				responseBodyMap.put("rsltCode", "2003");
@@ -133,11 +138,12 @@ public class FoodPaymentController {
 		reqHeadMap.put(Const.RESULT_CODE, Const.OK);
 		reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
 		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
+		String storeNum = storeService.getStoreNumById(authInfo.getLoginId());
 		if (StringUtils.isEmpty(authInfo)) {
 			responseBodyMap.put("rsltCode", "1003");
 			responseBodyMap.put("rsltMsg", "Login required.");
 		} else {
-			List<FoodPaymentDTO> list = foodPaymentService.selectFoodPaymentList();
+			List<FoodPaymentDTO> list = foodPaymentService.selectFoodPaymentList(storeNum);
 			logger.info("======================= responseBodyMap : {}", list.size());
 
 			for (int i = 0; i < list.size(); i++) {

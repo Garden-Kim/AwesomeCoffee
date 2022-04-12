@@ -42,14 +42,13 @@
       MNet.sendHttp({
         path: SERVER_PATH.INFO,
         data: {
-          loginId : M.data.global('id'),
+          memberId : M.data.global('id'),
         },
         succ: function(data){
-          self.els.$userNmIpt.val(data.userNm);
+          self.els.$userNmIpt.val(data.memberName);
           self.els.$loginIdIpt.val(M.data.global('id'));
-          self.els.$birthDateIpt.val(data.birthDate);
-          self.els.$emailIpt.val(data.email);
-          self.els.$cellPhoneIpt.val(data.cellPhone);
+          self.els.$emailIpt.val(data.memberEmail);
+          self.els.$cellPhoneIpt.val(data.memberPhone);
         },
         error: function (data) {
           console.log(data);

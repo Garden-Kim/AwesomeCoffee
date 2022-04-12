@@ -69,7 +69,7 @@
       });
       $('#btn-order').on('click', function(){
         console.log('결제완료');
-        M.page.replace('./order.html');
+        M.page.replace('./foodOrder.html');
       });
     }
   };

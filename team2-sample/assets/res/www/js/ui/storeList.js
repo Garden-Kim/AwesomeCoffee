@@ -27,37 +27,29 @@
       //화면에서 세팅할 동적데이터
       var self = this;
       MNet.sendHttp({
-        path: SERVER_PATH.NOTICE_LIST,
-        data: {
-          "loginId": M.data.global('id'),
-          "lastSeqNo": seqNo,
-          "cnt": "5",
-        },
+        path: SERVER_PATH.STORE_LIST,
+        data: self.data.requset,
         succ: function (data) {
           var items = "";
           $.each(data.list, function (index, item) {
-            items += "<ul data='" + item.seqNo + "' class='numSend metro-wrap store bg-white' >";
+            items += "<ul data='" + item.storeName + "' class='numSend metro-wrap store bg-white' >";
             items += "<li class='img-wrap storeM'>";
             items += "<div class='img storeE'>";
-            items += "<img src='";
-            items += item.imgUrl;
-            items += "' alt=''/>";
+            items += "<img src='./img/ico-alarm.png' alt=''/>";
             items += "</div>";
             items += "<span class='label-info none'>";
-            items += "<img src='";
-            items += item.imgUrl;
-            items += "' alt='50%'/>";
+            items += "<img src='./img/ico-alarm.png' alt='50%'/>";
             items += "</span>";
             items += "</li>";
             items += "<li class='info-box storeList'>";
             items += "<div class='info-box-top'>";
             items += "<strong class='membOderList' >";
-            items += item.title;
+            items += item.storeName;
             items += "</strong>";
             items += "</div>";
             items += "<div class='info-box-btm storeS'>";
             items += "<strong style='text-align:left;' class='membOderList'>";
-            items += item.content;
+            items += item.storeAddr;
             items += "</strong>";
             items += "</div>";
             items += "<div class='info-box-btm storeA'>";
@@ -67,7 +59,6 @@
             items += "</div>";
             items += "</li>";
             items += "</ul>";
-            seqNo = item.seqNo;
           });
           $(".metro-wrap").append(items);
         },
@@ -118,17 +109,16 @@
 
       //  게시글 클릭시 게시글 상세보기 동작
       $('.metro-wrap').on('click', '.numSend', function () {
-        seqNum = $(this).attr("data");
+        storeName = $(this).attr("data");
 
         MNet.sendHttp({
-          path: SERVER_PATH.NOTICE_DETAIL,
+          path: SERVER_PATH.STORE_INFO,
           data: {
-            loginId: M.data.global('id'),
-            seqNo: seqNum
+            storeName : storeName,
           },
           succ: function (data) {
-            content = data.content;
-            title = data.title;
+            content = data.storeAddr;
+            title = data.storeName;
             self.addrSearch();
           },
         });

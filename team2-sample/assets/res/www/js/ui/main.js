@@ -44,8 +44,9 @@
         $('.wrapper').fadeTo("fast", 1);
         $('.wrapper').attr('style', 'position:relative;height:100%;background-color:#fff;');
       });
+// 회원 사이드바
       $('#m-orderList').on('click', function(){
-        M.page.html('./menuList.html');
+        M.page.replace('./menuList.html');
       });
       $('#m-storeList').on('click', function(){
         M.page.html('./storeList.html');
@@ -54,10 +55,10 @@
         M.page.html('./userInfo.html');
       });
       $('#m-cart').on('click', function(){
-        M.page.replace('./cart.html');
+        M.page.html('./cart.html');
       });
       $('#m-payList').on('click', function(){
-        // M.page.replace('./menuList.html');
+        M.page.html('./payList.html');
       });
       
       

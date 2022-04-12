@@ -30,9 +30,9 @@
       this.els.$cartBtn = $('#cartBtn');
       this.els.$payment = $('#payment');
       this.els.$goodsPrice = $('#goodsPrice').text();
+      
       this.els.$qtyPlus = $('#qtyPlus');
       this.els.$goodsQty = $('#goodsQty').text();
-
       this.els.$qtyMinus = $('#qtyMinus');
 
     },
@@ -41,23 +41,18 @@
       var seqNo = M.data.param("seqNo");
       var self = this;
       MNet.sendHttp({
-        path: SERVER_PATH.NOTICE_DETAIL,
+        path: SERVER_PATH.MENU_INFO,
         data: {
-          "loginId": M.data.global('id'),
-          "seqNo": seqNo
+          "goodsName": M.data.param("goodsName"),
         },
         succ: function (data) {
           console.log(data);
-          $('#title').text(data.title);
-          $('#regDate').html(data.regDate);
-          $('#content').html(data.content);
-          seqNoNext = data.seqNo;
+          $('#title').text(data.goodsName);
+          $('#content').html(data.goodsContent);
+          $('#goodsPrice').text(data.goodsPrice);
           console.log(data.imgUrl);
-          if (data.imgUrl != null) {
-            $('#imgUrl').attr('src', data.imgUrl);
-            $('#imgUrl1').attr('src', data.imgUrl);
-            $('#imgUrl2').attr('src', data.imgUrl);
-            $('#imgUrl3').attr('src', data.imgUrl);
+          if (data.goodsImage != null) {
+            $('#imgUrl').attr('src', data.goodsImage);
           }
         },
         error: function (data) {
@@ -99,11 +94,11 @@
         M.page.html('./cart.html');
       });
       $('#m-payList').on('click', function(){
-        // M.page.replace('./menuList.html');
+        M.page.html('./payList.html');
       });
 // 관리자 사이드바
       $('#menu-order-food').on('click', function(){
-        M.page.html('./order.html');
+        M.page.html('./foodOrder.html');
       });      
       $('#menu-payment-list').on('click', function(){
       //   발주내역   M.page.html('./.html');
@@ -148,6 +143,29 @@
       });
       this.els.$cartBtn.on('click', function () {
         if (confirm("장바구니로 이동하시겠습니까?") == true){
+          
+          MNet.sendHttp({
+            path: SERVER_PATH.CART_REGIST,
+            data: {
+              memberNum : memberNum,
+              goodsName : M.data.param("goodsName"),
+              qty : $('#goodsQty').val(),
+            },
+            succ: function (data) {
+              console.log(data);
+              $('#title').text(data.goodsName);
+              $('#content').html(data.goodsContent);
+              $('#goodsPrice').text(data.goodsPrice);
+              console.log(data.imgUrl);
+              if (data.goodsImage != null) {
+                $('#imgUrl').attr('src', data.goodsImage);
+              }
+            },
+            error: function (data) {
+              console.log(data);
+              alert("실패");
+            }
+          });
           M.page.replace('./cart.html');
         }else return;
       });

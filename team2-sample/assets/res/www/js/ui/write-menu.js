@@ -8,12 +8,13 @@
   var page = {
     els:  {
       $iptTitle : null,
+      $menuSelect: null,
       $iptContent : null,
       $iptPrice : null,
+      $iptKal : null,
       $iptImg : null,
       $btnLine : null,
       $btnPoint : null,
-      $seqNo : null,
     },
     data: {
       title : '',
@@ -22,8 +23,10 @@
     },
     init: function init(){
       this.els.$iptTitle = $('#ipt-title');
+      this.els.$menuSelect = $('.menu-select');
       this.els.$iptContent = $('#ipt-content');
-      this.els.$iptPrice = $('#ipt-price'); ///////////////////////////////////////////
+      this.els.$iptPrice = $('#ipt-price');
+      this.els.$iptKal = $('#ipt-Kal');
       this.els.$iptImg = $('#ipt-img');
       this.els.$btnLine = $('.btn-line');
       this.els.$btnPoint = $('.btn-point-color');
@@ -35,17 +38,16 @@
     initView : function initView(){
       var self = this;
       var id = M.data.global('id');
-      var sn = M.data.param('seqNo');
-      console.log(sn);
+      var gN = M.data.param('goodsNum');
       if(module.isEmpty(M.data.global('id'))){
         M.page.html('./login.html');
       }
-      if(!module.isEmpty(sn)){
+      if(!module.isEmpty(gN)){
         MNet.sendHttp({
           path: SERVER_PATH.NOTICE_DETAIL,
           data: {
-            loginId: id,
-            seqNo	: sn,
+            loginId : id,
+            goodsNum : gN,
           },
           succ: function (data) {
             self.els.$iptTitle.val(data.title);
@@ -87,12 +89,15 @@
       });
       this.els.$btnPoint.on('click', function(){
       // 작성버튼
-        var imgN = self.els.$iptImg.val().trim();
+        var gN = M.data.param('goodsNum');
+        var ctg = $('.menu-select').val();
         var title = self.els.$iptTitle.val().trim();
         var content = self.els.$iptContent.val().trim();
+        var price = self.els.$iptPrice.val().trim();
+        var kal = self.els.$iptKal.val().trim();
+        var imgN = self.els.$iptImg.val().trim();
         var imgPath = "/storage/emulated/0/Pictures/" + imgN;
-        var sn = M.data.param('seqNo');
-        if(!module.isEmpty(sn)){
+        if(!module.isEmpty(gN)){  // 수정
           if(module.isEmpty(title)){
             return alert('제목을 입력해주세요.');
           }
@@ -110,10 +115,9 @@
             }
           }else{
             MNet.sendHttp({
-              path : SERVER_PATH.NOTICE_UPDATE,
+              path : SERVER_PATH.MENU_UPDATE,
               data: {
                 loginId : M.data.global('id'),
-                seqNo : sn,
                 title : title,
                 content : content,
               },
@@ -131,61 +135,54 @@
           }
         
         }else{
-          self.writeOk();
+          self.writeWithUpload();
         }
       });
     },
-    writeOk : function(){
+    writeWithUpload: function writeWithUpload() {
       var self = this;
+      var ctg = $('.menu-select').val();
       var title = self.els.$iptTitle.val().trim();
       var content = self.els.$iptContent.val().trim();
+      var price = self.els.$iptPrice.val().trim();
+      var kal = self.els.$iptKal.val().trim();
       var imgN = self.els.$iptImg.val().trim();
+      var imgPath = "/storage/emulated/0/Pictures/" + imgN;
+      var goodsImg = self.data.imgPath;
       if(module.isEmpty(title)){
-        return alert('제목을 입력해주세요.');
+        return alert('제품명을 입력해주세요.');
+      }
+      if(ctg == ''){
+        return alert('카테고리를 선택해주세요.');
       }
       if(module.isEmpty(content)){
-        return alert('내용을 입력해주세요.');
+        return alert('설명을 입력해주세요.');
       }
-      if(!module.isEmpty(imgN)){
-        self.writeWithUpload(title, content, self.data.imgPath);
-      }else{
-        MNet.sendHttp({
-          path : SERVER_PATH.NOTICE_WRITE,
-          data: {
-            loginId : M.data.global('id'),
-            title : title,
-            content : content,
-          },
-          succ: function(data){
-            if(data.rsltCode == '0000'){
-              alert('등록 완료');
-              var pagelist = M.info.stack();
-              console.log(pagelist);
-              M.page.remove(pagelist[1].key);
-              M.page.replace('./list.html');
-            }else{
-              return alert('등록에 실패하셨습니다.');
-            }
-          }
-        });
+      if(module.isEmpty(price)){
+        return alert('가격을 설정해주세요.');
       }
-    },
-    writeWithUpload: function writeWithUpload(title, content, imgPath) {
+      if(module.isEmpty(kal)){
+        return alert('칼로리를 입력해주세요.');
+      }
       var body = [
-        { name: "file", content: imgPath, type: "FILE" },
-        { name: "content", content: content, type: "TEXT" },
-        { name: "title", content: title, type: "TEXT" },
-        { name: "loginId", content: M.data.global('id'), type: "TEXT" },
+        { name: "goodsImage", content: goodsImg, type: "FILE" },
+        { name: "goodsContent", content: content, type: "TEXT" },
+        { name: "goodsName", content: title, type: "TEXT" },
+        { name: "goodsPrice", content: price, type: "TEXT" },
+        { name: "goodsKal ", content: kal, type: "TEXT" },
+        { name: "categoryNum", content: ctg, type: "TEXT" },
       ]
       console.log(body);
       MNet.fileHttpSend({
-        path: SERVER_PATH.NOTICE_WRITE_IMG,
+        path: SERVER_PATH.MENU_REGIST,
         body: body,
         succ: function (head) {
-          alert('이미지를 포함한 게시글 등록이 완료되었습니다.');
-          M.page.replace('./list.html');
+          console.log(head);
+         
+          alert('이미지를 포함한 상품 등록이 완료되었습니다.');
+          /*M.page.replace('./menuList.html');
           var pagelist = M.info.stack();
-          M.page.remove(pagelist[1].key);          
+          M.page.remove(pagelist[1].key);*/
         },
         progress: function (head) {
           console.log(head);
@@ -197,9 +194,10 @@
         }
       })
     },  
+    // 이미지 포함 
     modifyWithUpload: function modifyWithUpload(title, content, imgPath) {
       var sn = M.data.param('seqNo');
-      var body = [
+      var body = [//////////////////////
         { name: "file", content: imgPath, type: "FILE" },
         { name: "content", content: content, type: "TEXT" },
         { name: "title", content: title, type: "TEXT" },
@@ -208,11 +206,11 @@
       ]
       console.log(body);
       MNet.fileHttpSend({
-        path: SERVER_PATH.NOTICE_UPDATE_IMG,
+        path: SERVER_PATH.MENU_UPDATE_FILE,
         body: body,
         succ: function () {
-          alert('이미지를 포함한 게시글 수정이 완료되었습니다.');
-          M.page.replace('./list.html');
+          alert('이미지를 포함한 상품 수정이 완료되었습니다.');
+          M.page.replace('./menulist.html');
           var pagelist = M.info.stack();
           M.page.remove(pagelist[1].key);       
         },
