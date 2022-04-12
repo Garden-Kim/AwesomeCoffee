@@ -17,7 +17,7 @@
 	values 
 	(#{memberNum} , #{goodsNum}, '1')
 </insert>
-
+<!-- 메뉴에서 장바구니에 추가할때 merge -->
 <update id="updateCart">
 	MERGE INTO CART c
 	USING (select goods_num from goods where goods_num = #{goodsNum}) g
@@ -28,6 +28,15 @@
 	insert (c.member_num, c.goods_num, c.qty)
 	values (#{memberNum}, #{goodsNum}, #{qty})
 </update>
+
+<!-- 장바구니에서 수량변경할때 업데이트 -->
+<update id="modifyCart">
+	UPDATE CART
+	SET QTY = #{qty}
+	WHERE MEMBER_NUM = #{memberNum}
+	AND GOODS_NUM = #{goodsNum}
+</update>
+
 
 <delete id="deleteCartOne">
 	delete 

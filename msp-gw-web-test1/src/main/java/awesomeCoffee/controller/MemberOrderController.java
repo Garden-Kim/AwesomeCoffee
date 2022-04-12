@@ -82,10 +82,17 @@ public class MemberOrderController {
 	@RequestMapping(method = RequestMethod.POST, value = "/api/order/selectCartlist")
 	public ModelAndView memberCartList(HttpSession session, HttpServletRequest request, HttpServletResponse response) {
 		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
-		Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
+		Map<String, Object> reqBodyMap = new HashMap<String, Object>();
 		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
 		List<Map<String, Object>> memberCartList = new ArrayList<Map<String, Object>>();
+		List<Map<String, Object>> ListReqBodyMap = (List<Map<String, Object>>) request.getAttribute(Const.BODY);
 
+		if (reqHeadMap == null) {
+			reqHeadMap = new HashMap<String, Object>();
+		}
+
+		reqHeadMap.put(Const.RESULT_CODE, Const.OK);
+		reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
 		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
 		String memberNum = memberService.getMemberNum(authInfo.getLoginId());
 		reqBodyMap.put("memberNum", memberNum);
@@ -93,6 +100,8 @@ public class MemberOrderController {
 			responseBodyMap.put("rsltCode", "1003");
 			responseBodyMap.put("rsltMsg", "Login required.");
 		} else {
+			cartService.modifyCart(ListReqBodyMap, memberNum);
+
 			List<MemberOrderDTO> list = memberOrderService.memberCartList(reqBodyMap);
 			logger.info("======================= CartListSize : {}", list.size());
 
@@ -119,7 +128,7 @@ public class MemberOrderController {
 		}
 		ModelAndView mv = new ModelAndView("defaultJsonView");
 		mv.addObject(Const.BODY, responseBodyMap);
-
+		mv.addObject(Const.HEAD, reqHeadMap);
 		return mv;
 	}
 

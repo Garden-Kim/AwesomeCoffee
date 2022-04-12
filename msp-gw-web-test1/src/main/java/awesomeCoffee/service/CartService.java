@@ -15,6 +15,8 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import awesomeCoffee.dto.CartDTO;
+import awesomeCoffee.dto.MemberDTO;
+import awesomeCoffee.dto.StoreOrderDTO;
 import awesomeCoffee.dto.WishlistDTO;
 
 @Service
@@ -103,5 +105,51 @@ public class CartService {
 			transactionManager_sample.rollback(status);
 		}
 		return result;
+	}
+	public int modifyCart(Map<String, Object> param) {
+		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+		TransactionStatus status = transactionManager_sample.getTransaction(def);
+		int result = 0;
+		try {
+			result = sqlSession.update("Cart.modifyCart", param);
+			transactionManager_sample.commit(status);
+			logger.info("========== 장바구니 수량 수정 완료 : {}", result);
+
+		} catch (Exception e) {
+			logger.error("[ERROR] insertUser() Fail : e : {}", e.getMessage());
+			e.printStackTrace();
+			transactionManager_sample.rollback(status);
+		}
+		return result;
+	}
+	public int modifyCart(List<Map<String, Object>> param, String memberNum) {
+		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+		TransactionStatus status = transactionManager_sample.getTransaction(def);
+		
+		int result = 0;
+		try {
+
+
+			for(Map<String, Object> map : param) {
+				CartDTO dto = new CartDTO();
+				dto.setGoodsNum(map.get("goodsNum").toString());	
+				dto.setMemberNum(memberNum);
+				dto.setQty(map.get("qty").toString());
+				
+				sqlSession.update("Cart.modifyCart", dto);
+				result++;
+			}
+			transactionManager_sample.commit(status);
+			logger.info("========== 수정 완료 : {}", result);
+
+		} catch (Exception e) {
+			logger.error("[ERROR] insertUser() Fail : e : {}", e.getMessage());
+			e.printStackTrace();
+			transactionManager_sample.rollback(status);
+		}
+		return result;
+
 	}
 }
