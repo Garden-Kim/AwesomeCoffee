@@ -25,6 +25,7 @@ import awesomeCoffee.dto.OrderlistDTO;
 import awesomeCoffee.service.CartService;
 import awesomeCoffee.service.MemberOrderService;
 import awesomeCoffee.service.MemberService;
+import awesomeCoffee.service.MenuService;
 import awesomeCoffee.service.OrderlistService;
 import kr.msp.constant.Const;
 
@@ -39,6 +40,8 @@ public class MemberOrderController {
 	private CartService cartService;
 	@Autowired
 	private OrderlistService orderlistService;
+	@Autowired
+	private MenuService menuService;
 
 	// 바로 주문시 상품 정보 select
 	@RequestMapping(method = RequestMethod.POST, value = "/api/order/directOrder")
@@ -353,13 +356,14 @@ public class MemberOrderController {
 		return mv;
 	}
 
-	// 주문 detail
+	// 주문 detail 직원주문 상세페이지 
 	@RequestMapping(method = RequestMethod.POST, value = "/api/order/empDetail")
 	public ModelAndView orderEmpDetail(HttpServletRequest request, HttpSession session) {
 		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
 		Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
 		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
-
+		List<Map<String, Object>> orderList = new ArrayList<Map<String, Object>>();
+		
 		if (reqHeadMap == null) {
 			reqHeadMap = new HashMap<String, Object>();
 		}
@@ -367,13 +371,22 @@ public class MemberOrderController {
 		reqHeadMap.put(Const.RESULT_CODE, Const.OK);
 		reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
 
-		logger.info("======================= reqBodyMap : {}", reqBodyMap.toString());
-
 		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
 		if (StringUtils.isEmpty(authInfo)) {
 			responseBodyMap.put("rsltCode", "1003");
 			responseBodyMap.put("rsltMsg", "Login required.");
 		} else {
+			List<MenuDTO> menuList = menuService.selectOrderMenu(reqBodyMap);
+			logger.info("======================= responseBodyMap : {}", menuList.size());
+
+			for (int i = 0; i < menuList.size(); i++) {
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("goodsNum", menuList.get(i).getGoodsNum());
+				map.put("goodsName", menuList.get(i).getGoodsName());
+				map.put("orderlistQty", menuList.get(i).getOrderlistQty());
+
+				orderList.add(map);
+			}
 			MemberOrderDTO dto = memberOrderService.selectOrderDetail(reqBodyMap);
 			if (!StringUtils.isEmpty(dto)) {
 				responseBodyMap.put("rsltCode", "0000");
@@ -384,6 +397,7 @@ public class MemberOrderController {
 				responseBodyMap.put("orderTime", dto.getOrderTime());
 				responseBodyMap.put("memberNum", dto.getMemberNum());
 				responseBodyMap.put("orderNum", dto.getOrderNum());
+				responseBodyMap.put("list", orderList);
 
 			} else {
 				responseBodyMap.put("rsltCode", "2003");

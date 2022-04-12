@@ -29,6 +29,11 @@ public class MenuService {
 	@Qualifier("transactionManager_sample")
 	private DataSourceTransactionManager transactionManager_sample;
 	
+	
+	// 주문 번호에 해당하는 메뉴 select
+	public List<MenuDTO> selectOrderMenu(Map<String, Object> param){
+		return sqlSession.selectList("Menu.selectOrderMenu", param);
+	}
 	// 메뉴 검색
 	public List<MenuDTO> selectSearchMenu(Map<String, Object> goodsName){
 		return sqlSession.selectList("Menu.selectSearchMenu", goodsName);
