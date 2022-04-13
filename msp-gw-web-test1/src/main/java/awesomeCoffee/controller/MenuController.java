@@ -27,7 +27,10 @@ import awesomeCoffee.dto.AuthInfo;
 import awesomeCoffee.dto.MemberDTO;
 import awesomeCoffee.dto.MenuCategoryDTO;
 import awesomeCoffee.dto.MenuDTO;
+import awesomeCoffee.dto.WishlistDTO;
+import awesomeCoffee.service.MemberService;
 import awesomeCoffee.service.MenuService;
+import awesomeCoffee.service.WishlistService;
 import kr.msp.constant.Const;
 
 @Controller
@@ -36,6 +39,10 @@ public class MenuController {
 
 	@Autowired(required = true)
 	private MenuService menuService;
+	@Autowired
+	private WishlistService wishlistService;
+	@Autowired
+	private MemberService memberService;
 
 	// 메뉴검색
 	@RequestMapping(method = RequestMethod.POST, value = "/api/menu/search")
@@ -328,9 +335,18 @@ public class MenuController {
 		} else {
 			List<MenuDTO> dto = menuService.selectCategoryMenu(reqBodyMap);
 			String recipeYn;
-			
+			String memberNum = memberService.getMemberNum(authInfo.getLoginId());
+			List<WishlistDTO> wishlist = wishlistService.selectAllWishlist(memberNum);
+			System.out.println(wishlist.size());
 			for (int i = 0; i < dto.size(); i++) {
 				Map<String, Object> map = new HashMap<String, Object>();
+				if (wishlist!=null) {
+					for(int j=0; j < wishlist.size(); j++) {
+						if (wishlist.get(j).getGoodsNum().equals(dto.get(i).getGoodsNum())) {
+							map.put("wishlist", "Exist goods in wishlist");
+						}
+					}
+				}
 				map.put("goodsNum", dto.get(i).getGoodsNum());
 				map.put("goodsName", dto.get(i).getGoodsName());
 				map.put("goodsPrice", dto.get(i).getGoodsPrice());
