@@ -155,6 +155,226 @@ public class OrderlistController {
 		mv.addObject(Const.HEAD, reqHeadMap);
 		return mv;
 	}
+	
+	
+	// 주문내역 read 회원 (조리상태가 N 수령상태 N)
+		@RequestMapping(method = RequestMethod.POST, value = "/api/orderlist/listNN")
+		public ModelAndView orderlistNN(HttpSession session, HttpServletRequest request) {
+			Map<String, Object> responseBodyMap = new HashMap<String, Object>();
+			Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
+			List<Map<String, Object>> orderList = new ArrayList<Map<String, Object>>();
+			if (reqHeadMap == null) {
+				reqHeadMap = new HashMap<String, Object>();
+			}
+
+			reqHeadMap.put(Const.RESULT_CODE, Const.OK);
+			reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
+			AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
+			if (StringUtils.isEmpty(authInfo)) {
+				responseBodyMap.put("rsltCode", "1003");
+				responseBodyMap.put("rsltMsg", "Login required.");
+			} else {
+				String memberNum = memberService.getMemberNum(authInfo.getLoginId());
+				List<MemberOrderDTO> list = memberOrderService.selectMemOrderNN(memberNum);
+				logger.info("======================= responseBodyMap : {}", list.size());
+
+				for (int i = 0; i < list.size(); i++) {
+					Map<String, Object> map = new HashMap<String, Object>();
+					map.put("takeout", list.get(i).getTakeout());
+					map.put("cookState", list.get(i).getCookState());
+					map.put("orderPrice", list.get(i).getOrderPrice());
+					map.put("orderTime", list.get(i).getOrderTime());
+					map.put("memberNum", list.get(i).getMemberNum());
+					map.put("orderNum", list.get(i).getOrderNum());
+					List<Map<String, Object>> list1 = new ArrayList<Map<String, Object>>();
+					List<OrderlistDTO> goodsList = orderlistService.selectGoodsNums(map);
+					for (int a = 0; a < goodsList.size(); a++) {
+						Map<String, Object> goodsMap = new HashMap<String, Object>();
+						goodsMap.put("goodsNum", goodsList.get(a).getGoodsNum());
+						goodsMap.put("orderPrice", goodsList.get(a).getOrderPrice());
+						goodsMap.put("goodsName", goodsList.get(a).getGoodsName());
+
+						list1.add(goodsMap);
+					}
+					map.put("list", list1);
+					// title goodsName
+					if (goodsList.size() == 0) {
+						String titleGoodsName = "";
+					}else if (goodsList.size() > 1) {
+						String titleGoodsName = goodsList.get(0).getGoodsName().toString() + " 외 " + (goodsList.size() - 1)
+								+ "개";
+						map.put("titleGoodsName", titleGoodsName);
+					} else {
+						String titleGoodsName = goodsList.get(0).getGoodsName().toString();
+						map.put("titleGoodsName", titleGoodsName);
+					}
+
+					orderList.add(map);
+				}
+				logger.info("======================= orderList : {}", orderList.toString());
+
+				if (!StringUtils.isEmpty(list)) {
+					responseBodyMap.put("rsltCode", "0000");
+					responseBodyMap.put("rsltMsg", "Success");
+					responseBodyMap.put("list", orderList);
+				} else {
+					responseBodyMap.put("rsltCode", "2003");
+					responseBodyMap.put("rsltMsg", "Data not found.");
+				}
+			}
+			ModelAndView mv = new ModelAndView("defaultJsonView");
+			mv.addObject(Const.BODY, responseBodyMap);
+			mv.addObject(Const.HEAD, reqHeadMap);
+			return mv;
+		}
+
+		
+		// 주문내역 read 회원 (조리상태가 Y 수령상태 N)
+		@RequestMapping(method = RequestMethod.POST, value = "/api/orderlist/listYN")
+		public ModelAndView orderlistYN(HttpSession session, HttpServletRequest request) {
+			Map<String, Object> responseBodyMap = new HashMap<String, Object>();
+			Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
+			List<Map<String, Object>> orderList = new ArrayList<Map<String, Object>>();
+			if (reqHeadMap == null) {
+				reqHeadMap = new HashMap<String, Object>();
+			}
+
+			reqHeadMap.put(Const.RESULT_CODE, Const.OK);
+			reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
+			AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
+			if (StringUtils.isEmpty(authInfo)) {
+				responseBodyMap.put("rsltCode", "1003");
+				responseBodyMap.put("rsltMsg", "Login required.");
+			} else {
+				String memberNum = memberService.getMemberNum(authInfo.getLoginId());
+				List<MemberOrderDTO> list = memberOrderService.selectMemOrderYN(memberNum);
+				logger.info("======================= responseBodyMap : {}", list.size());
+
+				for (int i = 0; i < list.size(); i++) {
+					Map<String, Object> map = new HashMap<String, Object>();
+					map.put("takeout", list.get(i).getTakeout());
+					map.put("cookState", list.get(i).getCookState());
+					map.put("orderPrice", list.get(i).getOrderPrice());
+					map.put("orderTime", list.get(i).getOrderTime());
+					map.put("memberNum", list.get(i).getMemberNum());
+					map.put("orderNum", list.get(i).getOrderNum());
+					List<Map<String, Object>> list1 = new ArrayList<Map<String, Object>>();
+					List<OrderlistDTO> goodsList = orderlistService.selectGoodsNums(map);
+					for (int a = 0; a < goodsList.size(); a++) {
+						Map<String, Object> goodsMap = new HashMap<String, Object>();
+						goodsMap.put("goodsNum", goodsList.get(a).getGoodsNum());
+						goodsMap.put("orderPrice", goodsList.get(a).getOrderPrice());
+						goodsMap.put("goodsName", goodsList.get(a).getGoodsName());
+
+						list1.add(goodsMap);
+					}
+					map.put("list", list1);
+					// title goodsName
+					if (goodsList.size() == 0) {
+						String titleGoodsName = "";
+					}else if (goodsList.size() > 1) {
+						String titleGoodsName = goodsList.get(0).getGoodsName().toString() + " 외 " + (goodsList.size() - 1)
+								+ "개";
+						map.put("titleGoodsName", titleGoodsName);
+					} else {
+						String titleGoodsName = goodsList.get(0).getGoodsName().toString();
+						map.put("titleGoodsName", titleGoodsName);
+					}
+
+					orderList.add(map);
+				}
+				logger.info("======================= orderList : {}", orderList.toString());
+
+				if (!StringUtils.isEmpty(list)) {
+					responseBodyMap.put("rsltCode", "0000");
+					responseBodyMap.put("rsltMsg", "Success");
+					responseBodyMap.put("list", orderList);
+				} else {
+					responseBodyMap.put("rsltCode", "2003");
+					responseBodyMap.put("rsltMsg", "Data not found.");
+				}
+			}
+			ModelAndView mv = new ModelAndView("defaultJsonView");
+			mv.addObject(Const.BODY, responseBodyMap);
+			mv.addObject(Const.HEAD, reqHeadMap);
+			return mv;
+		}
+
+		
+		// 주문내역 read 회원 (조리상태가 Y 수령상태 Y)
+		@RequestMapping(method = RequestMethod.POST, value = "/api/orderlist/listYY")
+		public ModelAndView orderlistYY(HttpSession session, HttpServletRequest request) {
+			Map<String, Object> responseBodyMap = new HashMap<String, Object>();
+			Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
+			List<Map<String, Object>> orderList = new ArrayList<Map<String, Object>>();
+			if (reqHeadMap == null) {
+				reqHeadMap = new HashMap<String, Object>();
+			}
+
+			reqHeadMap.put(Const.RESULT_CODE, Const.OK);
+			reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
+			AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
+			if (StringUtils.isEmpty(authInfo)) {
+				responseBodyMap.put("rsltCode", "1003");
+				responseBodyMap.put("rsltMsg", "Login required.");
+			} else {
+				String memberNum = memberService.getMemberNum(authInfo.getLoginId());
+				List<MemberOrderDTO> list = memberOrderService.selectMemOrderYY(memberNum);
+				logger.info("======================= responseBodyMap : {}", list.size());
+
+				for (int i = 0; i < list.size(); i++) {
+					Map<String, Object> map = new HashMap<String, Object>();
+					map.put("takeout", list.get(i).getTakeout());
+					map.put("cookState", list.get(i).getCookState());
+					map.put("orderPrice", list.get(i).getOrderPrice());
+					map.put("orderTime", list.get(i).getOrderTime());
+					map.put("memberNum", list.get(i).getMemberNum());
+					map.put("orderNum", list.get(i).getOrderNum());
+					List<Map<String, Object>> list1 = new ArrayList<Map<String, Object>>();
+					List<OrderlistDTO> goodsList = orderlistService.selectGoodsNums(map);
+					for (int a = 0; a < goodsList.size(); a++) {
+						Map<String, Object> goodsMap = new HashMap<String, Object>();
+						goodsMap.put("goodsNum", goodsList.get(a).getGoodsNum());
+						goodsMap.put("orderPrice", goodsList.get(a).getOrderPrice());
+						goodsMap.put("goodsName", goodsList.get(a).getGoodsName());
+
+						list1.add(goodsMap);
+					}
+					map.put("list", list1);
+					// title goodsName
+					if (goodsList.size() == 0) {
+						String titleGoodsName = "";
+					}else if (goodsList.size() > 1) {
+						String titleGoodsName = goodsList.get(0).getGoodsName().toString() + " 외 " + (goodsList.size() - 1)
+								+ "개";
+						map.put("titleGoodsName", titleGoodsName);
+					} else {
+						String titleGoodsName = goodsList.get(0).getGoodsName().toString();
+						map.put("titleGoodsName", titleGoodsName);
+					}
+
+					orderList.add(map);
+				}
+				logger.info("======================= orderList : {}", orderList.toString());
+
+				if (!StringUtils.isEmpty(list)) {
+					responseBodyMap.put("rsltCode", "0000");
+					responseBodyMap.put("rsltMsg", "Success");
+					responseBodyMap.put("list", orderList);
+				} else {
+					responseBodyMap.put("rsltCode", "2003");
+					responseBodyMap.put("rsltMsg", "Data not found.");
+				}
+			}
+			ModelAndView mv = new ModelAndView("defaultJsonView");
+			mv.addObject(Const.BODY, responseBodyMap);
+			mv.addObject(Const.HEAD, reqHeadMap);
+			return mv;
+		}
+
+		
+		
+	
 
 	// 주문내역 상세페이지
 	@RequestMapping(method = RequestMethod.POST, value = "/api/orderlist/detail")

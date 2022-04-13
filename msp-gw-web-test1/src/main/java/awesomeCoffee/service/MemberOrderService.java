@@ -80,10 +80,27 @@ public class MemberOrderService {
 	public List<MemberOrderDTO> memberCartList(Map<String, Object> param) {
 		return sqlSession.selectList("Order.memberCartList", param);
 	}
-	// 주문 read 회원 
+	// 주문 read 회원 NN
+	public List<MemberOrderDTO> selectMemOrderNN(String memberNum) {
+		return sqlSession.selectList("Order.selectMemOrderNN", memberNum);
+	}
+	// 주문 read 회원 YN
+	public List<MemberOrderDTO> selectMemOrderYN(String memberNum) {
+		return sqlSession.selectList("Order.selectMemOrderYN", memberNum);
+	}
+	// 주문 read 회원 YY
+	public List<MemberOrderDTO> selectMemOrderYY(String memberNum) {
+		return sqlSession.selectList("Order.selectMemOrderYY", memberNum);
+	}
+	// 주문 read 회원 전체 리스트
 	public List<MemberOrderDTO> selectAllMemOrder(String memberNum) {
 		return sqlSession.selectList("Order.selectAllMemOrder", memberNum);
 	}
+	
+	
+	
+	
+	
 	// 주문 read 직원 조리상태 N
 	public List<MemberOrderDTO> selectAllEmpOrderN(){
 		return sqlSession.selectList("Order.selectAllEmpOrderN");

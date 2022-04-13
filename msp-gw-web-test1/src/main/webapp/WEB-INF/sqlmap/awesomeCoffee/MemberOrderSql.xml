@@ -55,37 +55,63 @@
 		where order_num = #{orderNum}
 	</delete>
 
+	<!-- 회원 주문 전체 리스트 -->
 	<select id="selectAllMemOrder"
 		resultType="awesomeCoffee.dto.MemberOrderDTO">
-		select *
+		select ORDER_NUM, ORDER_PRICE, ORDER_TIME, TAKEOUT, MEMBER_NUM, COOK_STATE, to_number(ORDER_NUM) onum
 		from member_order
 		where member_num = #{memberNum}
-		order by order_num
+		order by onum desc
 	</select>
+	<!-- 회원 주문 조리 N 수령 N  -->
+	<select id="selectMemOrderNN"
+		resultType="awesomeCoffee.dto.MemberOrderDTO">
+		select ORDER_NUM, ORDER_PRICE, ORDER_TIME, TAKEOUT, MEMBER_NUM, COOK_STATE, to_number(ORDER_NUM) onum
+		from member_order
+		where member_num = #{memberNum} and cook_state = 'N' and takeout = 'N'
+		order by onum desc
+	</select>
+	<!-- 회원 주문 조리 Y 수령 N -->
+	<select id="selectMemOrderYN"
+		resultType="awesomeCoffee.dto.MemberOrderDTO">
+		select ORDER_NUM, ORDER_PRICE, ORDER_TIME, TAKEOUT, MEMBER_NUM, COOK_STATE, to_number(ORDER_NUM) onum
+		from member_order
+		where member_num = #{memberNum} and cook_state = 'Y' and takeout = 'N'
+		order by onum desc
+	</select>
+	<!-- 회원 주문 조리 Y 수령 Y  -->
+	<select id="selectMemOrderYY"
+		resultType="awesomeCoffee.dto.MemberOrderDTO">
+		select ORDER_NUM, ORDER_PRICE, ORDER_TIME, TAKEOUT, MEMBER_NUM, COOK_STATE, to_number(ORDER_NUM) onum
+		from member_order
+		where member_num = #{memberNum} and cook_state = 'Y' and takeout = 'Y'
+		order by onum desc
+	</select>
+	
 	
 	
 	<!-- 조리상태 'N' 전부 출력 -->
 	<select id="selectAllEmpOrderTake" resultType="awesomeCoffee.dto.MemberOrderDTO">
-		SELECT *
+		SELECT ORDER_NUM, ORDER_PRICE, ORDER_TIME, TAKEOUT, MEMBER_NUM, COOK_STATE, to_number(ORDER_NUM) onum
 		FROM member_order
 		WHERE cook_state = 'Y'
 		AND TAKEOUT = 'N'
-		ORDER BY order_num
+		ORDER BY onum desc
 	</select>
 	<!-- 조리상태 'N' 전부 출력 -->
 	<select id="selectAllEmpOrderN"
 		resultType="awesomeCoffee.dto.MemberOrderDTO">
-		select *
+		select ORDER_NUM, ORDER_PRICE, ORDER_TIME, TAKEOUT, MEMBER_NUM, COOK_STATE, to_number(ORDER_NUM) onum
 		from member_order
 		where cook_state = 'N'
-		order by order_num
+		order by onum desc
 	</select>
 	<!-- 조리상태 'Y' 전부 출력 -->
 	<select id="selectAllEmpOrderY" resultType="awesomeCoffee.dto.MemberOrderDTO">
-		select *
+		select ORDER_NUM, ORDER_PRICE, ORDER_TIME, TAKEOUT, MEMBER_NUM, COOK_STATE, to_number(ORDER_NUM) onum
 		from member_order
 		where cook_state = 'Y'
-		order by order_num
+		order by onum desc
 	</select>
 	<!-- 오늘의 주문 전부 출력 -->
 	<select id="selectTodayOrder" resultType="awesomeCoffee.dto.MemberOrderDTO">

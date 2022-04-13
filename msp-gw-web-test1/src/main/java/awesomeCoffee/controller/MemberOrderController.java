@@ -140,7 +140,7 @@ public class MemberOrderController {
 	}
 
 	// 주문 read 오늘의 주문
-	@RequestMapping(method = RequestMethod.POST, value = "/api/order/empList")
+	@RequestMapping(method = RequestMethod.POST, value = "/api/order/empTodayList")
 	public ModelAndView orderEmpList(HttpSession session, HttpServletRequest request) {
 		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
 		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
