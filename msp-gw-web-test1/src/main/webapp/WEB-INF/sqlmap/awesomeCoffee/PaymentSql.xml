@@ -6,10 +6,28 @@
 <mapper namespace="Payment">
 
 	<select id="selectYearPayment" resultType="String" parameterType="String">
-		select sum(case when payment_date like #{paymentDate}||'%' then payment_price end)
+		select sum(case when payment_date like #{year}||'%' then payment_price end)
+		from payment
+		where payment_date like #{year}||'%'
+		group by to_char(payment_date,'yy')
+	</select>
+	
+	<!-- 년 year 월 month 입력 -->
+	<select id = "selectMonthPayment" resultType="String" parameterType="String">
+		select sum(case when month like #{month}||'%' then payment_price end) AS SUM
+		from (
+    		select substr(payment_date,4,2) AS month, payment_price, payment_date
+    		from payment
+    		where payment_date like #{year}||'%'
+   			 )
+		where month like #{month}||'%'
+	</select>
+	
+	<!-- 날짜 한번에 입력 -->
+	<select id="selectDayPayment" resultType="String" parameterType="String">
+		select sum(case when payment_date like #{paymentDate}||'%' then payment_price end) 
 		from payment
 		where payment_date like #{paymentDate}||'%'
-		group by to_char(payment_date,'yy')
 	</select>
 	
 	<select id="selectOnePayment" parameterType="map" resultType="awesomeCoffee.dto.PaymentDTO">

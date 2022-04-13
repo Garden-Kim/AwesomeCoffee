@@ -90,6 +90,8 @@ PAYMENT_MEM_REGIST : "/api/payment/regist", // 결제등록(회원)
 PAYMENT_DIRECTREGIST :  "/api/payment/directRegist", // 바로주문결제
 PAYMENT_MEM_LIST : "/api/payment/list", // 결제 목록 (회원)
 PAYMENT_YEARSUM : "/api/payment/yearSum", // 결제 합계 (년)
+PAYMENT_MONTHSUM : "/api/payment/monthSum", // 결제 합계 (월)
+PAYMENT_DAYSUM : "/api/payment/daySum", // 결제 합계 (일)
 
 
 // 발주 
