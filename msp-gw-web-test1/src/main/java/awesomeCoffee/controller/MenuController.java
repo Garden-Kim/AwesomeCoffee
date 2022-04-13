@@ -138,6 +138,7 @@ public class MenuController {
 				responseBodyMap.put("goodsKal", info.getGoodsKal());
 				responseBodyMap.put("goodsNum", info.getGoodsNum());
 				responseBodyMap.put("goodsImage", info.getGoodsImage());
+				responseBodyMap.put("categoryNum", info.getCategoryNum());
 				responseBodyMap.put("recipeYn", recipeYn);
 			} else {
 				responseBodyMap.put("rsltCode", "2003");
