@@ -1,5 +1,6 @@
 package awesomeCoffee.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
@@ -26,6 +27,10 @@ public class PaymentService {
 	@Qualifier("transactionManager_sample")
 	private DataSourceTransactionManager transactionManager_sample;
 	
+	// 결제 리스트 (특정날짜)
+	public List<PaymentDTO> selectDayPaymentList(Map<String, Object> param) {
+		return sqlSession.selectList("Payment.selectDayPaymentList", param);
+	}
 	// 결제 합계 (연도)
 	public String selectYearPayment (Map<String, Object> param) {
 		return sqlSession.selectOne("Payment.selectYearPayment", param);

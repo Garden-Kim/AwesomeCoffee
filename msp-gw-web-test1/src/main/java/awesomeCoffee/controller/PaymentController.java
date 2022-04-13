@@ -1,5 +1,6 @@
 package awesomeCoffee.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,12 +20,15 @@ import org.springframework.web.servlet.ModelAndView;
 
 import awesomeCoffee.dto.AuthInfo;
 import awesomeCoffee.dto.CartDTO;
+import awesomeCoffee.dto.FoodPaymentDTO;
 import awesomeCoffee.dto.MenuDTO;
+import awesomeCoffee.dto.PaymentDTO;
 import awesomeCoffee.service.CartService;
 import awesomeCoffee.service.MemberOrderService;
 import awesomeCoffee.service.MemberService;
 import awesomeCoffee.service.OrderlistService;
 import awesomeCoffee.service.PaymentService;
+import awesomeCoffee.service.StoreService;
 import kr.msp.constant.Const;
 
 @Controller
@@ -40,6 +44,8 @@ public class PaymentController {
 	private OrderlistService orderlistService;
 	@Autowired
 	private MemberOrderService memberOrderService;
+	@Autowired
+	private StoreService storeService;
 
 	// 결제 insert 주문 insert 바로주문
 	@RequestMapping(method = RequestMethod.POST, value = "/api/payment/directRegist")
@@ -266,6 +272,55 @@ public class PaymentController {
 		mv.addObject(Const.HEAD, reqHeadMap);
 		mv.addObject(Const.BODY, responseBodyMap);
 
+		return mv;
+	}
+	
+	// 결제 리스트 (특정날짜)
+	@RequestMapping(method = RequestMethod.POST, value="/api/payment/dateList")
+	public ModelAndView paymentList(HttpSession session, HttpServletRequest request) {
+		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
+		Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
+		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
+		List<Map<String, Object>> paymentList = new ArrayList<Map<String, Object>>();
+
+		if (reqHeadMap == null) {
+			reqHeadMap = new HashMap<String, Object>();
+		}
+
+		reqHeadMap.put(Const.RESULT_CODE, Const.OK);
+		reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
+		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
+		String storeNum = storeService.getStoreNumById(authInfo.getLoginId());
+		reqBodyMap.put("storeNum", storeNum);
+		if (StringUtils.isEmpty(authInfo)) {
+			responseBodyMap.put("rsltCode", "1003");
+			responseBodyMap.put("rsltMsg", "Login required.");
+		} else {
+			List<PaymentDTO> list = paymentService.selectDayPaymentList(reqBodyMap);
+			logger.info("======================= responseBodyMap : {}", list.size());
+			for (int i = 0; i < list.size(); i++) {
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("orderNum", list.get(i).getOrderNum());
+				map.put("paymentDate", list.get(i).getPaymentDate());
+				map.put("paymentKind", list.get(i).getPaymentKind());
+				map.put("paymentPrice", list.get(i).getPaymentPrice());
+				
+				paymentList.add(map);
+			}
+			logger.info("======================= paymentList : {}", paymentList.toString());
+
+			if (!StringUtils.isEmpty(list)) {
+				responseBodyMap.put("rsltCode", "0000");
+				responseBodyMap.put("rsltMsg", "Success");
+				responseBodyMap.put("list", paymentList);
+			} else {
+				responseBodyMap.put("rsltCode", "2003");
+				responseBodyMap.put("rsltMsg", "Data not found.");
+			}
+		}
+		ModelAndView mv = new ModelAndView("defaultJsonView");
+		mv.addObject(Const.BODY, responseBodyMap);
+		mv.addObject(Const.HEAD, reqHeadMap);
 		return mv;
 	}
 }

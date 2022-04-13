@@ -30,6 +30,13 @@
 		where payment_date like #{paymentDate}||'%'
 	</select>
 	
+	<!-- 특정날짜 결제리스트 -->
+	<select id="selectDayPaymentList" parameterType="map" resultType="awesomeCoffee.dto.PaymentDTO">
+		select *
+		from payment
+		where payment_date like #{paymentDate}||'%'
+	</select>
+	
 	<select id="selectOnePayment" parameterType="map" resultType="awesomeCoffee.dto.PaymentDTO">
 		select *
 		from payment
