@@ -325,12 +325,12 @@ public class StoreController {
 		reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
 
 		logger.info("======================= reqBodyMap : {}", reqBodyMap.toString());
-		StoreDTO info = storeService.getStoreInfoByName(reqBodyMap);
+		StoreDTO info = storeService.getStoreInfoById(reqBodyMap);
 
 		if (!StringUtils.isEmpty(info)) {
 			responseBodyMap.put("rsltCode", "0000");
 			responseBodyMap.put("rsltMsg", "Success");
-			responseBodyMap.put("storeNm", info.getStoreName());
+			responseBodyMap.put("storeName", info.getStoreName());
 			responseBodyMap.put("storeAddr", info.getStoreAddr());
 			responseBodyMap.put("storePhone", info.getStorePhone());
 			responseBodyMap.put("state", info.getState());
