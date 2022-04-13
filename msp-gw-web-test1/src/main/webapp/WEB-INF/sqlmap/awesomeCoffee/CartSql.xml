@@ -15,19 +15,28 @@
 <insert id="insertCart">
 	insert into cart (member_num , goods_num, qty )
 	values 
-	(#{memberNum} , #{goodsNum}, '1')
+	(#{memberNum} , #{goodsNum}, #{qty})
 </insert>
-
+<!-- 메뉴에서 장바구니에 추가할때 merge -->
 <update id="updateCart">
-	merge into cart c
-	using (select goods_num from goods where goods_num = #{goodsNum}) g
+	MERGE INTO CART c
+	USING (select goods_num from goods where goods_num = #{goodsNum}) g
 	on (c.goods_num = g.goods_num and c.member_num = #{memberNum})
 	when matched then
-	update set c.qty = c.qty+1
+	update set c.qty = c.qty + #{qty}
 	when not matched then
 	insert (c.member_num, c.goods_num, c.qty)
-	values (#{memberNum}, #{goodsNum}, 1)
+	values (#{memberNum}, #{goodsNum}, #{qty})
 </update>
+
+<!-- 장바구니에서 수량변경할때 업데이트 -->
+<update id="modifyCart">
+	UPDATE CART
+	SET QTY = #{qty}
+	WHERE MEMBER_NUM = #{memberNum}
+	AND GOODS_NUM = #{goodsNum}
+</update>
+
 
 <delete id="deleteCartOne">
 	delete 

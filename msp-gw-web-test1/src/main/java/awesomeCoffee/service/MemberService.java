@@ -1,5 +1,6 @@
 package awesomeCoffee.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
@@ -155,6 +156,10 @@ public class MemberService {
 			transactionManager_sample.rollback(status);
 		}
 		return result;
+	}
+
+	public List<MemberDTO> memberList() {
+		return sqlSession.selectList("Member.memberList");
 	}
 
 

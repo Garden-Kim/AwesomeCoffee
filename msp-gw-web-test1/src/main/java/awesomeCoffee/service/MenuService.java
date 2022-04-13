@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
+import org.springframework.util.StringUtils;
 
 import awesomeCoffee.dto.MenuDTO;
 
@@ -28,6 +29,11 @@ public class MenuService {
 	@Qualifier("transactionManager_sample")
 	private DataSourceTransactionManager transactionManager_sample;
 	
+	
+	// 주문 번호에 해당하는 메뉴 select
+	public List<MenuDTO> selectOrderMenu(Map<String, Object> param){
+		return sqlSession.selectList("Menu.selectOrderMenu", param);
+	}
 	// 메뉴 검색
 	public List<MenuDTO> selectSearchMenu(Map<String, Object> goodsName){
 		return sqlSession.selectList("Menu.selectSearchMenu", goodsName);
@@ -96,6 +102,11 @@ public class MenuService {
 		}
 		return result;
 	}
+	
+	// 메뉴 리스트 (관심상품)
+	public List<MenuDTO> selectWishMenu(String memberNum){
+		return sqlSession.selectList("Menu.selectWishMenu", memberNum);
+	}
 	// 메뉴 리스트
 	public List<MenuDTO> selectAllMenu() {
 		return sqlSession.selectList("Menu.selectAllMenu");
@@ -128,6 +139,16 @@ public class MenuService {
 
 	public MenuDTO getMenuInfoByNum(Map<String, Object> param) {
 		return sqlSession.selectOne("Menu.getMenuInfoByNum", param);
+	}
+
+	public String getRecipeYn(String string) {
+		List<String> s = sqlSession.selectList("Menu.getRecipeYn",string);
+		System.out.println(s);
+		if(s.size() < 1) {
+			return "N";
+		}else {
+			return "Y";
+		}
 	}
 	
 }

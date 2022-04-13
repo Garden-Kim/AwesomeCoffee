@@ -5,6 +5,12 @@
 
 <mapper namespace="Menu">
 
+<select id="selectOrderMenu" parameterType="map" resultType="awesomeCoffee.dto.MenuDTO">
+	select g.goods_num, g.goods_name, o.orderlist_qty
+	from goods g, member_order m , orderlist o
+	where m.order_num = #{orderNum} and o.order_num = m.order_num and o.goods_num = g.goods_num
+</select>
+
 <select id="selectSearchMenu" parameterType="map" resultType="awesomeCoffee.dto.MenuDTO">
 	select *
 	from goods
@@ -16,6 +22,12 @@
 	FROM GOODS
 	WHERE GOODS_NUM = #{goodsNum}
 
+</select>
+<select id="getRecipeYn" parameterType="string" resultType="string">
+	SELECT *
+	FROM GOODS g, RECIPE r
+	WHERE g.GOODS_NUM = #{goodsNum}
+	AND g.GOODS_NUM = r.GOODS_NUM
 </select>
 
 <select id="getMenuInfo" parameterType="map" resultType="awesomeCoffee.dto.MenuDTO">
@@ -41,6 +53,12 @@
 	select *
 	from goods
 	order by goods_num
+</select>
+
+<select id="selectWishMenu" parameterType="String" resultType="awesomeCoffee.dto.MenuDTO">
+	select g.goods_num, g.goods_name,g.goods_price, g.goods_image
+	from goods g, wishlist w
+	where w.member_num = #{memberNum} and g.goods_num = w.goods_num
 </select>
 
 <insert id="insertMenu">

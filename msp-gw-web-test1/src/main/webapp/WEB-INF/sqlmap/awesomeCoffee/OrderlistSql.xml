@@ -4,12 +4,29 @@
                 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="Orderlist">
-	<insert id="insertOrderlist">
-		insert into orderlist (order_num, orderlist_qty, orderlist_sum, goods_num)
-		values
-		(#{orderNum}, #{orderlistQty},
-		 #{orderlistSum}, #{goodsNum})
+
+
+
+	<insert id="insertDirectOrderlist" parameterType="map">
+		INSERT INTO ORDERLIST (ORDER_NUM, ORDERLIST_QTY, ORDERLIST_SUM, GOODS_NUM)
+		VALUES(#{orderNum}, #{qty}, #{orderPrice}, #{goodsNum})
 	</insert>
+	
+	<insert id="insertOrderlist" parameterType="String">
+		insert into orderlist (order_num, orderlist_qty, orderlist_sum, goods_num)
+		select #{orderNum}, c.qty, c.qty * g.goods_price as price_sum , g.goods_num 
+		from cart c, goods g, member m
+		where m.member_num = c.member_num and c.goods_num = g.goods_num
+		and m.member_num = #{memberNum} and g.goods_num = #{goodsNum}
+		
+	</insert>
+	
+	<select id="selectGoodsNums" parameterType="map" resultType="awesomeCoffee.dto.OrderlistDTO">
+		select  g.goods_num, g.goods_name, m.order_price, m.order_num, g.goods_price, o.orderlist_qty, o.orderlist_qty * g.goods_price AS price
+		from goods g, member_order m, orderlist o
+		where m.order_num = #{orderNum} and  m.member_num = #{memberNum} and g.goods_num = o.goods_num and o.order_num = m.order_num
+		
+	</select>
 	
 	<select id="selectAllOrderlist" parameterType="map" resultType="awesomeCoffee.dto.OrderlistDTO">
 		select *

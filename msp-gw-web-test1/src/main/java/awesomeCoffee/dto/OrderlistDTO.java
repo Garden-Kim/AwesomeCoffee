@@ -5,12 +5,18 @@ public class OrderlistDTO {
 	private String goodsNum;
 	private String orderlistQty;
 	private String orderlistSum;
+
+	private String orderPrice;
+	private String goodsName;
+	private String goodsPrice;
+	private String price;
+	
 	
 	@Override
 	public String toString() {
 		return "OrderlistDTO [orderNum=" + orderNum + ", goodsNum=" + goodsNum + ", orderlistQty=" + orderlistQty
-				+ ", orderlistSum=" + orderlistSum + ", getClass()=" + getClass() + ", hashCode()=" + hashCode()
-				+ ", toString()=" + super.toString() + "]";
+				+ ", orderlistSum=" + orderlistSum + ", orderPrice=" + orderPrice + ", goodsName=" + goodsName
+				+ ", goodsPrice=" + goodsPrice + ", price=" + price + "]";
 	}
 	public String getOrderNum() {
 		return orderNum;
@@ -36,6 +42,32 @@ public class OrderlistDTO {
 	public void setOrderlistSum(String orderlistSum) {
 		this.orderlistSum = orderlistSum;
 	}
+	public String getOrderPrice() {
+		return orderPrice;
+	}
+	public void setOrderPrice(String orderPrice) {
+		this.orderPrice = orderPrice;
+	}
+	public String getGoodsName() {
+		return goodsName;
+	}
+	public void setGoodsName(String goodsName) {
+		this.goodsName = goodsName;
+	}
+	public String getGoodsPrice() {
+		return goodsPrice;
+	}
+	public void setGoodsPrice(String goodsPrice) {
+		this.goodsPrice = goodsPrice;
+	}
+	public String getPrice() {
+		return price;
+	}
+	public void setPrice(String price) {
+		this.price = price;
+	}
+	
+	
 	
 	
 	

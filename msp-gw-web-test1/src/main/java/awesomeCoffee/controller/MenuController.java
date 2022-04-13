@@ -112,6 +112,7 @@ public class MenuController {
 		} else {
 
 			MenuDTO info = menuService.getMenuInfo(reqBodyMap);
+			String recipeYn= menuService.getRecipeYn(info.getGoodsNum());
 			if (!StringUtils.isEmpty(info)) {
 				responseBodyMap.put("rsltCode", "0000");
 				responseBodyMap.put("rsltMsg", "Success");
@@ -119,7 +120,9 @@ public class MenuController {
 				responseBodyMap.put("goodsPrice", info.getGoodsPrice());
 				responseBodyMap.put("goodsContent", info.getGoodsContent());
 				responseBodyMap.put("goodsKal", info.getGoodsKal());
+				responseBodyMap.put("goodsNum", info.getGoodsNum());
 				responseBodyMap.put("goodsImage", info.getGoodsImage());
+				responseBodyMap.put("recipeYn", recipeYn);
 			} else {
 				responseBodyMap.put("rsltCode", "2003");
 				responseBodyMap.put("rsltMsg", "Data not found.");
@@ -324,6 +327,8 @@ public class MenuController {
 			responseBodyMap.put("rsltMsg", "Login required.");
 		} else {
 			List<MenuDTO> dto = menuService.selectCategoryMenu(reqBodyMap);
+			String recipeYn;
+			
 			for (int i = 0; i < dto.size(); i++) {
 				Map<String, Object> map = new HashMap<String, Object>();
 				map.put("goodsNum", dto.get(i).getGoodsNum());
@@ -334,7 +339,8 @@ public class MenuController {
 				map.put("goodsKal ", dto.get(i).getGoodsKal());
 				map.put("categoryNum", dto.get(i).getCategoryNum());
 				map.put("storeNum", dto.get(i).getStoreNum());
-
+				recipeYn = menuService.getRecipeYn(dto.get(i).getGoodsNum());
+				map.put("recipeYn", recipeYn);
 				menuList.add(map);
 			}
 			logger.info("======================= categoryList : {}", dto.toString());
@@ -375,7 +381,8 @@ public class MenuController {
 			responseBodyMap.put("rsltMsg", "Login required.");
 		} else {
 			List<MenuDTO> dto = menuService.selectAllMenu();
-
+			String recipeYn;
+			
 			for (int i = 0; i < dto.size(); i++) {
 				Map<String, Object> map = new HashMap<String, Object>();
 				map.put("goodsNum", dto.get(i).getGoodsNum());
@@ -386,7 +393,9 @@ public class MenuController {
 				map.put("goodsKal ", dto.get(i).getGoodsKal());
 				map.put("categoryNum", dto.get(i).getCategoryNum());
 				map.put("storeNum", dto.get(i).getStoreNum());
-
+				recipeYn = menuService.getRecipeYn(dto.get(i).getGoodsNum());
+				map.put("recipeYn", recipeYn);
+				
 				menuList.add(map);
 			}
 			logger.info("======================= categoryList : {}", dto.toString());

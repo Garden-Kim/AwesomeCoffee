@@ -29,10 +29,17 @@
 		WHERE GOODS_NUM = #{goodsNum}
 	</delete>
 	
-	<update id="updateRecipe" parameterType="map">
-		UPDATE RECIPE
-		SET FOOD_NUM = #{foodNum}, RECIPE_FOOD_QTY = #{recipeFoodQty}
-		WHERE GOODS_NUM = #{goodsNum}
+	<update id="updateRecipe" parameterType="awesomeCoffee.dto.RecipeDTO">
+		MERGE
+		INTO RECIPE a
+		USING dual
+		ON (a.GOODS_NUM = #{goodsNum} AND a.FOOD_NUM = #{foodNum})
+		WHEN MATCHED THEN
+		UPDATE
+		SET a.RECIPE_FOOD_QTY = #{recipeFoodQty}
+		WHEN NOT MATCHED THEN
+		INSERT (a.GOODS_NUM, a.FOOD_NUM, a.RECIPE_FOOD_QTY)
+		VALUES (#{goodsNum}, #{foodNum}, #{recipeFoodQty})
 	</update>
 	
 </mapper>

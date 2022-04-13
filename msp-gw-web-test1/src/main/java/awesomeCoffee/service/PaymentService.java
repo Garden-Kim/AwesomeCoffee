@@ -13,6 +13,8 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
+import awesomeCoffee.dto.PaymentDTO;
+
 @Service
 public class PaymentService {
 	private Logger logger = LoggerFactory.getLogger(PaymentService.class);
@@ -65,6 +67,10 @@ public class PaymentService {
 			transactionManager_sample.rollback(status);
 		}
 		return result;
+	}
+	// 결제 정보(주문 정보)
+	public PaymentDTO selectOnePayment (String orderNum) {
+		return sqlSession.selectOne("Payment.selectOnePayment", orderNum);
 	}
 	
 }

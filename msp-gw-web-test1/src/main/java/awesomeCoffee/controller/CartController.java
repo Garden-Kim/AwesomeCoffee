@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -19,8 +20,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import awesomeCoffee.dto.AuthInfo;
 import awesomeCoffee.dto.CartDTO;
+import awesomeCoffee.dto.MenuDTO;
 import awesomeCoffee.service.CartService;
 import awesomeCoffee.service.MemberService;
+import awesomeCoffee.service.MenuService;
 import kr.msp.constant.Const;
 
 @Controller
@@ -30,6 +33,46 @@ public class CartController {
 	private CartService cartService;
 	@Autowired
 	private MemberService memberService;
+	@Autowired
+	private MenuService menuService;
+
+	// 장바구니 modify
+		@RequestMapping(method = RequestMethod.POST, value = "/api/cart/modify")
+		public ModelAndView cartModify(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+			Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
+			List<Map<String, Object>> reqBodyMap = (List<Map<String, Object>>) request.getAttribute(Const.BODY);
+
+			System.out.println(request.getAttribute(Const.BODY).toString());
+			Map<String, Object> responseBodyMap = new HashMap<String, Object>();
+
+			if (reqHeadMap == null) {
+				reqHeadMap = new HashMap<String, Object>();
+			}
+			reqHeadMap.put(Const.RESULT_CODE, Const.OK);
+			reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
+
+			AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
+			String memberNum = memberService.getMemberNum(authInfo.getLoginId());
+			
+			if (StringUtils.isEmpty(authInfo)) {
+				responseBodyMap.put("rsltCode", "1003");
+				responseBodyMap.put("rsltMsg", "Login required.");
+			} else {
+				int result = cartService.modifyCart(reqBodyMap,memberNum);
+				if (result > 0) {
+					responseBodyMap.put("rsltCode", "0000");
+					responseBodyMap.put("rsltMsg", "Success");
+				} else {
+					responseBodyMap.put("rsltCode", "2003");
+					responseBodyMap.put("rsltMsg", "Data not found.");
+				}
+			}
+			ModelAndView mv = new ModelAndView("defaultJsonView");
+			mv.addObject(Const.HEAD, reqHeadMap);
+			mv.addObject(Const.BODY, responseBodyMap);
+
+			return mv;
+		}
 
 	// 장바구니 create
 	@RequestMapping(method = RequestMethod.POST, value = "/api/cart/regist")
@@ -111,13 +154,18 @@ public class CartController {
 
 			for (int i = 0; i < list.size(); i++) {
 				Map<String, Object> map = new HashMap<String, Object>();
+
 				map.put("memberNum", list.get(i).getMemberNum());
 				map.put("goodsNum", list.get(i).getGoodsNum());
 				map.put("qty", list.get(i).getQty());
+				MenuDTO dto = menuService.getMenuInfoByNum(map);
+				map.put("goodsName", dto.getGoodsName());
+				map.put("goodsPrice", dto.getGoodsPrice());
+				map.put("goodsImage", dto.getGoodsImage());
 
 				cartList.add(map);
 			}
-			logger.info("======================= wishlist : {}", cartList.toString());
+			logger.info("======================= cartlist : {}", cartList.toString());
 
 			if (!StringUtils.isEmpty(list)) {
 				responseBodyMap.put("rsltCode", "0000");

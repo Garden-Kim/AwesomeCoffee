@@ -39,7 +39,7 @@ public class RecipeController {
 	public ModelAndView updateRecipe(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
 
 		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
-		Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
+		List<Map<String, Object>> reqBodyMap = (List<Map<String, Object>>) request.getAttribute(Const.BODY);
 		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
 
 		if (reqHeadMap == null) {
@@ -221,38 +221,35 @@ public class RecipeController {
 
 	// 레시피 등록
 	@RequestMapping(method = RequestMethod.POST, value = "/api/recipe/regist")
-	public ModelAndView registRecipe(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
-
+	public ModelAndView recipeRegist(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
 		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
-		Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
+		List<Map<String, Object>> reqBodyMap = (List<Map<String, Object>>) request.getAttribute(Const.BODY);
+
+		System.out.println(request.getAttribute(Const.BODY).toString());
 		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
 
 		if (reqHeadMap == null) {
 			reqHeadMap = new HashMap<String, Object>();
 		}
-
 		reqHeadMap.put(Const.RESULT_CODE, Const.OK);
 		reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
 
-		logger.info("======================= reqBodyMap : {}", reqBodyMap.toString());
+//			reqBodyMap.put("storeId", authInfo.getLoginId());
+//			StoreDTO dto = storeService.getStoreInfoById(reqBodyMap);
+//			reqBodyMap.put("storeNum",dto.getStoreNum());
 
 		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
-		if (authInfo == null) {
+		if (StringUtils.isEmpty(authInfo)) {
 			responseBodyMap.put("rsltCode", "1003");
 			responseBodyMap.put("rsltMsg", "Login required.");
 		} else {
-			if (authInfo.getGrade().equals("store")) {
-				int result = recipeService.insertRecipe(reqBodyMap);
-				if (result > 0) {
-					responseBodyMap.put("rsltCode", "0000");
-					responseBodyMap.put("rsltMsg", "Success");
-				} else {
-					responseBodyMap.put("rsltCode", "2003");
-					responseBodyMap.put("rsltMsg", "Data not found.");
-				}
+			int result = recipeService.insertRecipe(reqBodyMap);
+			if (result > 0) {
+				responseBodyMap.put("rsltCode", "0000");
+				responseBodyMap.put("rsltMsg", "Success");
 			} else {
-				responseBodyMap.put("rsltCode", "1011");
-				responseBodyMap.put("rsltMsg", "No permisson.");
+				responseBodyMap.put("rsltCode", "2003");
+				responseBodyMap.put("rsltMsg", "Data not found.");
 			}
 		}
 		ModelAndView mv = new ModelAndView("defaultJsonView");
@@ -261,5 +258,4 @@ public class RecipeController {
 
 		return mv;
 	}
-
 }

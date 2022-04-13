@@ -50,7 +50,10 @@
 		WHERE member_id = #{memberId}
 	</select>
 	
-
+	<select id="memberList" resultType="awesomeCoffee.dto.MemberDTO">
+		SELECT *
+		FROM MEMBER
+	</select>
 
 	
 	<update id="updateMember">
