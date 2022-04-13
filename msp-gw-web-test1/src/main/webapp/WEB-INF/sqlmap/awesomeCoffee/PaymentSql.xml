@@ -32,9 +32,10 @@
 	
 	<!-- 특정날짜 결제리스트 -->
 	<select id="selectDayPaymentList" parameterType="map" resultType="awesomeCoffee.dto.PaymentDTO">
-		select *
-		from payment
-		where payment_date like #{paymentDate}||'%'
+		select
+		* from payment
+		where to_date(payment_date,'yy/mm/dd') = #{paymentDate}
+		
 	</select>
 	
 	<select id="selectOnePayment" parameterType="map" resultType="awesomeCoffee.dto.PaymentDTO">

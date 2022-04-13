@@ -1,6 +1,9 @@
 package awesomeCoffee.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +23,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import awesomeCoffee.dto.AuthInfo;
 import awesomeCoffee.dto.CartDTO;
-import awesomeCoffee.dto.FoodPaymentDTO;
 import awesomeCoffee.dto.MenuDTO;
 import awesomeCoffee.dto.PaymentDTO;
 import awesomeCoffee.service.CartService;
@@ -286,7 +288,7 @@ public class PaymentController {
 		if (reqHeadMap == null) {
 			reqHeadMap = new HashMap<String, Object>();
 		}
-
+		
 		reqHeadMap.put(Const.RESULT_CODE, Const.OK);
 		reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
 		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
