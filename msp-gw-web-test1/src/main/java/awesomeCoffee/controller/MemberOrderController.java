@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
+
 import awesomeCoffee.dto.AuthInfo;
 import awesomeCoffee.dto.MemberOrderDTO;
 import awesomeCoffee.dto.MenuDTO;
@@ -28,6 +30,7 @@ import awesomeCoffee.service.MemberService;
 import awesomeCoffee.service.MenuService;
 import awesomeCoffee.service.OrderlistService;
 import kr.msp.constant.Const;
+import net.sf.json.JSONArray;
 
 @Controller
 public class MemberOrderController {
@@ -92,11 +95,38 @@ public class MemberOrderController {
 		Map<String, Object> reqBodyMap = new HashMap<String, Object>();
 		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
 		List<Map<String, Object>> memberCartList = new ArrayList<Map<String, Object>>();
-		List<Map<String, Object>> ListReqBodyMap = (List<Map<String, Object>>) request.getAttribute(Const.BODY);
 
-		if (reqHeadMap == null) {
-			reqHeadMap = new HashMap<String, Object>();
-		}
+		Map<String, Object> ListReqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
+		String str = (String)ListReqBodyMap.get("body").toString();
+		System.out.println("str = " + str);
+		Gson gson = new Gson();
+		List<Map<String, Object>> list1 = new ArrayList<Map<String, Object>>();
+		list1 = gson.fromJson(str, List.class);
+		System.out.println("list1 : " + list1);
+		System.out.println(list1.size());
+//		System.out.println(ListReqBodyMap.get("body"));
+//		String str = ListReqBodyMap.get("body").toString();
+//		str = str.replace("[{", "");
+//		str = str.replace("}]", "");
+//		String[] strArray = str.split("},");
+//		List<Map<String, Object>> list1 = new ArrayList<Map<String, Object>>();
+//		for (String s : strArray) {
+//			String s1 = s.replace("{", "");
+//			String[] sss = s1.split(",");
+//			Map<String, Object> m = new HashMap<String, Object>();
+//			for (String ss2 : sss) {
+//				String sss2[] = ss2.split(":");
+//				m.put(sss2[0], (Object) sss2[1]);
+//			}
+//			list1.add(m);
+//		}
+//		for (int ii = 0; ii < list1.size(); ii++) {
+//			System.out.println(list1);
+//		}
+//
+//		if (reqHeadMap == null) {
+//			reqHeadMap = new HashMap<String, Object>();
+//		}
 
 		reqHeadMap.put(Const.RESULT_CODE, Const.OK);
 		reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
@@ -107,7 +137,7 @@ public class MemberOrderController {
 			responseBodyMap.put("rsltCode", "1003");
 			responseBodyMap.put("rsltMsg", "Login required.");
 		} else {
-			cartService.modifyCart(ListReqBodyMap, memberNum);
+			cartService.modifyCart(list1, memberNum);
 
 			List<MemberOrderDTO> list = memberOrderService.memberCartList(reqBodyMap);
 			logger.info("======================= CartListSize : {}", list.size());
@@ -182,7 +212,7 @@ public class MemberOrderController {
 				// title goodsName
 				if (goodsList.size() == 0) {
 					String titleGoodsName = "";
-				}else if (goodsList.size() > 1) {
+				} else if (goodsList.size() > 1) {
 					String titleGoodsName = goodsList.get(0).getGoodsName().toString() + " 외 " + (goodsList.size() - 1)
 							+ "개";
 					map.put("titleGoodsName", titleGoodsName);
@@ -356,14 +386,14 @@ public class MemberOrderController {
 		return mv;
 	}
 
-	// 주문 detail 직원주문 상세페이지 
+	// 주문 detail 직원주문 상세페이지
 	@RequestMapping(method = RequestMethod.POST, value = "/api/order/empDetail")
 	public ModelAndView orderEmpDetail(HttpServletRequest request, HttpSession session) {
 		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
 		Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
 		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
 		List<Map<String, Object>> orderList = new ArrayList<Map<String, Object>>();
-		
+
 		if (reqHeadMap == null) {
 			reqHeadMap = new HashMap<String, Object>();
 		}

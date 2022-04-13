@@ -127,7 +127,7 @@ public class CartService {
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 		TransactionStatus status = transactionManager_sample.getTransaction(def);
-		
+		System.out.println(param);
 		int result = 0;
 		try {
 
