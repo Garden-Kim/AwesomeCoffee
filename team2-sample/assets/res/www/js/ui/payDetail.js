@@ -32,38 +32,34 @@
       console.log(M.data.param('orderNum'));
       MNet.sendHttp({
         path: SERVER_PATH.ORDER_LIST_DETAIL,
-        data: M.data.param('orderNum'),
+        data: {
+          orderNum : M.data.param('orderNum')
+        },
         succ: function (data) {
           console.log(data);
           var items = "";
           $.each(data.list, function (index, item) {
-            items += "<ul data='" + item.goodsNum + "' class='orderOne bg-white' >";
+            items += "<ul data='" + item.goodsNum + "' class='order-detail bg-white' >";
             items += "<li>";
             items += item.goodsName;
             items += "</li>";
             items += "<li class='info-box'>";
-            items += "<div class='order-info'>";
-            items += "<strong>";
             items += item.goodsPrice + " 원";
-            items += "</strong>";
-            items += "<span>";
-            items += "/"+ item.orderlistQty + " 개";
-            items += "</span>";
-            items += "</div>";
+            items += " / "+ item.orderlistQty + " 개";
             items += "</li>";
             items += "<li>";
             items += "합계 : " + item.price + " 원";
             items += "</li>";
             items += "</ul>";
           });
-          $(".order-menu").append(items);
+          $(".empOrderlist").append(items);
           $('#orderNum').html(M.data.param('orderNum'));
           $('#orderDate').html(data.orderDate);
           $('#payMethod').html(data.paymentKind);
           $('#paymentPrice').html(data.paymentPrice);
         },
         error: function (data) {
-          $(".order-menu").css("display", "none");
+          $(".empOrderlist").css("display", "none");
           alert("에러");
         }
       });

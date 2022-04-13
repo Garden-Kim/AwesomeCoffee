@@ -67,6 +67,10 @@
             items += "</span>";
             items += "</div>";
             items += "</li>";
+            console.log(item.wishlist);
+            if(item.wishlist != ''){
+              $('button').attr('class','hurt');
+            }
           });
           $("#card").append(items);
         },
@@ -146,6 +150,9 @@
                 items += "</span>";
                 items += "</div>";
                 items += "</li>";
+                if(item.wishlist != ''){
+                  $('.interest').attr('class','hurt');
+                }
               });
               $("#card").html(items);
             },

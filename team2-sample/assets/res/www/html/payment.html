@@ -28,17 +28,7 @@
   <div class="container">
     <div class="cont-wrap">
       <div class="commonLine"></div>
-      <div class="paymeyContent">
-        <div class="imga">
-          <img alt="서버 점검중입니다." id="imgUrl5" src=""/>
-        </div>
-        <div class="asdf">
-          <span class="paymentTitle" id="title"></span>
-          <div style="font-size:1.3em;margin-top:1rem;">
-            <span id="qty"></span>
-            <span >개</span>
-          </div>
-        </div>
+      <div class="metro-wrap bg-gray">
       </div>
 
       <div class="commonLine"></div>
@@ -47,16 +37,16 @@
         <div class="paymentChoice">
           <span class="paymentMethod">결제방식</span>
           <div class="paymentMethod2">
-            <input id="kakaoPay" name="payment" type="radio" value="kakaoPay"/>
-            <label class="paymentChoiceKakao" for="kakaoPay">
+            <input type="radio"  id="kakaoPay" name="payment" value="kakaoPay"/>
+            <label class="payment" for="kakaoPay">
               카카오페이
             </label>
-            <input id="creditCard" name="payment" type="radio" value="creditCard"/>
-            <label class="paymentChoiceCard" for="creditCard">
+            <input type="radio"  id="creditCard" name="payment" value="creditCard"/>
+            <label class="payment" for="creditCard">
               신용카드
             </label>
-            <input id="accountTransfer" name="payment" type="radio" value="accountTransfer"/>
-            <label class="paymentChoiceCard" for="accountTransfer">
+            <input type="radio"  id="accountTransfer" name="payment" value="accountTransfer"/>
+            <label class="payment" for="accountTransfer">
               계좌이체
             </label>
           </div>
@@ -66,7 +56,7 @@
       <div class="paymetTotal">
 
         <span class="paymentAmount">결제금액 </span>
-        <span class="paymentAmount1" >원 </span><span class="paymentAmount1" id="goodsPrice">5000</span>
+        <span class="paymentAmount1" >원 </span><span class="paymentAmount1" id="totalPrice">5000</span>
       </div>
       <div class="commonLine"></div>
       <div class="btn-wrap   btm-fix">

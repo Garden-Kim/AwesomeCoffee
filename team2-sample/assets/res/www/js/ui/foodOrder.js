@@ -124,36 +124,30 @@
         }
       });
       this.els.$btnOrder.on('click', function(){
-        var chkList;
+        var body = [];
         $("input[name=color]:checked").each(function(){
+          var foodNum = $(this).val();
           var qty = $(this).parent().siblings('.foodQty').children('span').text();
+          console.log(foodNum); 
           console.log(qty); 
-          console.log($(this).val());
-          // data 넣으면 됨.
-          chkList = { foodNum : $(this).val(),
-                      storeOrderQty : qty}
-           console.log("체크된 값 : " + chkList);
+          var _body = { "foodNum": foodNum, "storeOrderQty" : qty };
+          console.log(_body);
+          body.push(_body);
         });
-/*        MNet.sendHttp({
+        console.log(body);
+        MNet.sendHttp({
           path: SERVER_PATH.STORE_ORDER_REGI,
-          data: {
-
-          },
+          data: body,
           succ: function (data) {
-            console.log(data);
-            $('#title').text(data.goodsName);
-            $('#content').html(data.goodsContent);
-            $('#goodsPrice').text(data.goodsPrice);
-            console.log(data.imgUrl);
-            if (data.goodsImage != null) {
-              $('#imgUrl').attr('src', data.goodsImage);
+            if(data.rsltCode == '0000'){
+              console.log(data);
+              M.page.html('./fpayment.html', {param : body});
+            }else{
+              console.log(data);
+              alert('에러!');
             }
-          },
-          error: function (data) {
-            console.log(data);
-            alert("실패");
           }
-        });*/
+        });
         
         // M.page.html('./fpayment.html');
         

@@ -80,6 +80,8 @@
             $(".order-menu").append(items);
             $('.cookState:contains(N)').css('color', 'red');
             $('.takeout:contains(N)').css('color', 'red');
+            $('.cookState:contains(Y)').css('color', 'blue');
+            $('.takeout:contains(Y)').css('color', 'blue');
           }
         },
         error: function (data) {

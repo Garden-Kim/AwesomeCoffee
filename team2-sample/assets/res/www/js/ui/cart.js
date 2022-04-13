@@ -20,10 +20,6 @@
       $sideBar: null,
     },
     data: {
-      cartList: {
-        goodsNum: "",
-        qty: 0
-      },
     },
     init: function init() {
       this.els.$back = $('#back');
@@ -63,8 +59,8 @@
               //items += "<img id='imgUrl' src='" + data.imgUrl + "'/>";
               items += "<img src='../img/coffee_exam.png'>";
               items += "</div>";
-              items += "<ul>";
-              items += "<li data-seq='" + item.goodsNum + "' class='menuName' >";
+              items += "<ul data='" + item.goodsNum + "' class='cartList'>";
+              items += "<li class='menuName' >";
               items += "<span>";
               items += item.goodsName;
               items += "</span>";
@@ -189,18 +185,38 @@
         M.page.back();
       });
       this.els.$orderBtn.on('click', function () {
-        ////////////////////// qty, goodsNum 가져오기
+        var body = [];
+        var tbody = null;
+        $('.cartList').each(function(){
+          var goodsNum = $(this).attr('data');
+          var qty = $(this).find('.goodsQty').text();
+          console.log(goodsNum); 
+          console.log(qty); 
+          var _body = { "goodsNum": goodsNum, "qty" : qty };
+          console.log(_body);
+          body.push(_body);
+        });
+        console.log(body);
+        try {
+          tbody = JSON.parse(body);
+          console.log(tbody);
+        } catch(e) {
+          tbody = body;
+          console.log(tbody);
+        }
+        console.log(tbody);
         MNet.sendHttp({
           path: SERVER_PATH.ORDER_REGIST,
-          data: self.data.cartList,
+          data: tbody,
           succ: function (data) {
-            console.log(data);
-            M.page.html('./payment.html');
+            if(data.rsltCode == '0000'){
+              console.log(data);
+              M.page.html('./payment.html');
+            }else{
+              console.log(data);
+              alert('에러!');
+            }
           },
-          error: function (data) {
-            console.log(data);
-            alert('에러!');
-          }
         });
       })
 
