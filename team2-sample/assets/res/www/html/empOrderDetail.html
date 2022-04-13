@@ -23,27 +23,22 @@
       메뉴
     </button>
   </header>
+  <div class="orderInfo bg-white" id="orderInfo">
+    <h1 style="font-size:2rem;font-weight:bold;padding:1rem;"> 주문번호 : <span id="orderNum"></span></h1>
+    <div id="orderTime" class="orderInfo">날짜</div>
+    <div class="orderInfo" >
+      회원번호 : <span id="memberNum"></span>
+      <span style="float:right; margin-right:7rem;"> 조리상태 : <span id="cookState" style="font-weight:bold;">o</span></span>
+    </div>
+  </div>
   <div class="container">
-    <div class="cont-wrap">
-      <div class="detail-tit">
-        <p id="title">
-          주문 번호 :
-          <span>
-              141번
-            </span>
-        </p>
-        <span id="regDate">
-            회원 이름 : 기맹
-          </span>
-      </div>
+    <div class="container bg-gray" style="padding: .1rem .5rem .7rem .5rem;">
+      <div class="cont-wraps" >
+        <div class="empOrderlist">
 
-      <div class="mg-b10">
-        <ul class="empMenu">
-          <div class="empOrderlist"></div>
-        </ul>
+        </div>
       </div>
     </div>
-
     <div class="btn-wrap count2 btm-fix">
       <button class="btn-point-color" id="finish" type="button">
         조리 완료
@@ -57,7 +52,7 @@
   <ul class="menu-side-bar">
     <li id="menu-order-list">주문리스트</li>
     <li id="menu-pickup">픽업현황</li>
-    <li id="menu-order-manage">주문관리</li>
+    <li id="menu-order-manage">오늘의 주문</li>
     <li id="menu-recipe-list">레시피리스트</li>
     <li id="menu-store-info">매장정보</li>
   </ul>

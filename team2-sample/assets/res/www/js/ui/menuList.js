@@ -83,6 +83,24 @@
       $('.l-fix').on('click', function(){
         M.page.back();
       });
+      $('.btn-search').on('click', function(){
+        var search = "";
+        search = $('#value').val();
+        MNet.sendHttp({
+          path: SERVER_PATH.MENU_SEARCH,
+          data: {
+            goodsName : search,
+          },
+          succ: function (data) {
+            M.page.html('./menuSearch.html',{param : {search	: search}});
+          },
+          error: function (data) {
+            console.log(data);
+            alert('에러!');
+          }
+        });
+        
+      });  
       // 카테고리
       const tabList = document.querySelectorAll('.category li');
       for(var i = 0; i < tabList.length; i++){
@@ -141,50 +159,38 @@
       // 관심상품 버튼
       $('#card').on('click', '.interest', function( ) {
         var goodsNum = $(this).attr('id' );
-        $(this).attr('class', 'hurt');
-        alert('관심상품에 등록하셨습니다.');
-/*        MNet.sendHttp({
+        MNet.sendHttp({
           path: SERVER_PATH.WISH_REGIST,
           data: {
             goodsNum : goodsNum,
           },
           succ: function (data) {
-            if (data.rsltCode == '0000') {
-              $(this).attr('class', 'hurt');
-              alert('관심상품에 등록하셨습니다.');
-            } else {
-              alert('등록에 실패하셨습니다.');
-            }
+            alert('관심상품에 등록하셨습니다.');
           },
           error: function (data) {
             console.log(data);
             alert('에러!');
           }
-        });*/
+        });
+        $(this).attr('class', 'hurt');
       });
       $('#card').on('click', '.hurt', function() {
         var goodsNum = $(this).attr('id' );
-        $(this).attr('class', 'interest');
-        alert('관심상품을 해제하셨습니다.');
-      });
-      
-/*      const tabList = document.querySelectorAll('.category li');
-              for(var i = 0; i < tabList.length; i++){
-                tabList[i].querySelector('.btn-category').addEventListener('click', function(){
-                  for(var j = 0; j < tabList.length; j++){
-                    tabList[j].classList.remove('on');
-                  }
-                  var ctg = $(this).parent('li').attr('id');
-                  this.parentNode.classList.add('on');
-                  
-        const intList = document.querySelectorAll('.metro-wrap li');
-        intList.querySelector('.interest').addEventListener('click', function(){
-          if(self.hasClass('hurt')){
-            self.parentNode.classList.remove('hurt');
-          }else{
-            self.parentNode.classList.add('hurt');
+        MNet.sendHttp({
+          path: SERVER_PATH.WISH_REGIST,
+          data: {
+            goodsNum : goodsNum,
+          },
+          succ: function (data) {
+            alert('관심상품을 해제하셨습니다.');
+          },
+          error: function (data) {
+            console.log(data);
+            alert('에러!');
           }
-        });*/
+        });
+        $(this).attr('class', 'interest');
+      });
       // 사이드바 
       $('.btn-menu').on('click', function () {
         console.log('메뉴클릭');
@@ -210,6 +216,9 @@
       });
       $('#m-cart').on('click', function(){
         M.page.html('./cart.html');
+      });
+      $('#m-interest').on('click', function(){
+        M.page.html('./wishList.html');
       });
       $('#m-payList').on('click', function(){
         M.page.html('./payList.html');

@@ -42,6 +42,7 @@
       if(module.isEmpty(M.data.global('id'))){
         M.page.html('./login.html');
       }
+      self.els.$iptTitle.val(M.data.param("goodsName"));
       if(!module.isEmpty(gN)){
         MNet.sendHttp({
           path: SERVER_PATH.NOTICE_DETAIL,

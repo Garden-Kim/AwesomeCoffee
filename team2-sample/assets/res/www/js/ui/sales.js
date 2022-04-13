@@ -22,7 +22,7 @@
       if(module.isEmpty(M.data.global('id'))){
         M.page.html('./login.html');
       }
-      MNet.sendHttp({
+/*      MNet.sendHttp({
         path: SERVER_PATH.NOTICE_LIST,
         data: {
           "loginId": M.data.global('id'),
@@ -45,7 +45,7 @@
           console.log(data);
           alert("리스트를 가져오지 못했습니다.");
         },
-      });
+      });*/
     },
     initEvent : function initEvent(){
       $('.l-fix').on('click', function(){

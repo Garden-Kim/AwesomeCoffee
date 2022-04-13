@@ -29,46 +29,38 @@
     },
     drawNoticeList: function () {
       var self = this;
+      console.log(M.data.param('orderNum'));
       MNet.sendHttp({
-        path: SERVER_PATH.ORDER_LIST_LIST,
-        data: data.param('orderNum'),
+        path: SERVER_PATH.ORDER_LIST_DETAIL,
+        data: M.data.param('orderNum'),
         succ: function (data) {
+          console.log(data);
           var items = "";
           $.each(data.list, function (index, item) {
-            items += "<ul data='" + item.orderNum + "' class='orderOne bg-white' >";
+            items += "<ul data='" + item.goodsNum + "' class='orderOne bg-white' >";
             items += "<li>";
-            items += item.orderTime;
-            items += "</li>";
-            items += "<li class='img-wrap orderList'>";
-            items += "<div class='img'>";
-            items += "<img src='";
-            items += item.goodsImage;
-            items += "' alt=''/>";
-            items += "</div>";
-            items += "<span class='label-info none'>";
-            items += "<img src='";
-            items += item.goodsImage;
-            items += "' alt='50%'/>";
-            items += "</span>";
+            items += item.goodsName;
             items += "</li>";
             items += "<li class='info-box'>";
-            items += "<div class='info-box-top'>";
-            items += "<strong >";
-            items += item.goodsName;
-            items += "</strong>";
-            items += "</div>";
             items += "<div class='order-info'>";
             items += "<strong>";
-            items += item.orderPrice + " 원";
+            items += item.goodsPrice + " 원";
             items += "</strong>";
             items += "<span>";
-            items += "/ 1개";
+            items += "/"+ item.orderlistQty + " 개";
             items += "</span>";
             items += "</div>";
+            items += "</li>";
+            items += "<li>";
+            items += "합계 : " + item.price + " 원";
             items += "</li>";
             items += "</ul>";
           });
           $(".order-menu").append(items);
+          $('#orderNum').html(M.data.param('orderNum'));
+          $('#orderDate').html(data.orderDate);
+          $('#payMethod').html(data.paymentKind);
+          $('#paymentPrice').html(data.paymentPrice);
         },
         error: function (data) {
           $(".order-menu").css("display", "none");
@@ -107,7 +99,8 @@
         $('.wrapper').fadeTo("fast", 1);
         $('.wrapper').attr('style', 'position:relative;height:100%;background-color:#fff;');
       });
-      // 회원 사이드바
+      
+// 회원 사이드바
       $('#m-orderList').on('click', function(){
         M.page.html('./menuList.html');
       });
@@ -120,8 +113,11 @@
       $('#m-cart').on('click', function(){
         M.page.html('./cart.html');
       });
+      $('#m-interest').on('click', function(){
+        M.page.html('./wishList.html');
+      });
       $('#m-payList').on('click', function(){
-        M.page.replace('./payList.html');
+        M.page.html('./payList.html');
       });
       
       $(".order-menu").on('click', '.orderOne', function () {

@@ -198,7 +198,7 @@ li.txt-btn .btn-txt{position:absolute;right:1.5rem;display:inline-block;color:#9
 .main-menu-box.type05 li:last-child{border-right:0;}
 /* type04 */
 .main-menu-box.type04,
-.main-menu-box.type06{position:fixed;bottom:0; width:100%;border:1px solid #e0e0e0;border-bottom:0;background-color:#fff;text-align:center;}
+.main-menu-box.type06{position:absolute;bottom:0; width:100%;border:1px solid #e0e0e0;border-bottom:0;background-color:#fff;text-align:center;}
 .main-menu-box.type04 li,
 .main-menu-box.type06 li{padding:5.4rem 0 1.5rem;background-color:#fff;color:#333;font-size:1.4rem;font-weight:400;border-right:1px solid #e0e0e0;border-bottom:1px solid #e0e0e0;}
 .main-menu-box.type04 li:nth-child(3n),
@@ -292,7 +292,7 @@ html, body {max-width: 100%;overflow-x: hidden;max-height: 100%;}
 .order-menu li:nth-child(2){position:relative;float:left;width:30%;height:10rem;}
 .order-menu li:nth-child(3){position:relative;float:left;width:70%;height:10rem;}
 .order-menu li div{position:relative;padding:.5rem;}
-.order-menu li strong{position:relative;font-size:1.5rem; font-weight:bold;padding:1rem;}
+.order-menu li strong{position:relative;font-size:1.4rem; font-weight:bold;padding:1rem;}
 .order-menu li span{position:relative;font-size:1.5rem;padding-top:1rem;color:#aaa;text-align:bottom;}
 .order-info{position:relative;height:4rem;}
 /*회원 상세쪽*/
@@ -303,7 +303,14 @@ html, body {max-width: 100%;overflow-x: hidden;max-height: 100%;}
 .select-box.recipe-select{width:66.3333%; height:4rem;}
 .food-button{margin-top:3.4rem;}
 /*레시피 등록페이지*/
-
+/* 회원 주문상세페이지*/
+.orderInfo{font-size:1.5rem;padding:.5rem;padding-left:1rem; }
+/* 회원 주문상세페이지*/
+/* 직원 주문상세페이지*/
+.emp-Detail{position:relative;font-size:1.5rem;weight:100%; height:4rem; padding:.5rem;padding-left:1rem; margin:.5rem;}
+.emp-Detail:nth-child(1){margin-top:1rem;}
+.emp-Detail li{position:relative; float:left; padding:.5rem 2rem;width:50%}
+/* 직원 주문상세페이지*/
 /*식자재목록*/
 .food-list{position:relative;width:100%;overflow-x:auto;white-space:nowrap;list-style:none;height:4.5rem;}
 .food-list li{position:relative;float:left;text-align:center;height:100%;width:25%;line-height:4rem;color:#666;font-size:1.4rem;font-weight:400;border-top:1px solid #e0e0e0;border-bottom:1px solid #e0e0e0;}
@@ -507,7 +514,7 @@ strong.ellipsis{position:relative;display:inline-block;width:100%;}
 .list-wrap-03 .btn-wrap:last-child{margin-bottom:1rem;}
 
 /** Order_detail **/
-.swiper-container img{width:100%;/*height: 570px;*/}
+.swiper-container img{position: relative;width:100%;/*height: 570px;*/}
 .swiper-container.type02 .swiper-pagination-bullet{background-color:#fff;}
 .swiper-container.type02 .swiper-pagination-bullet-active{background:#fff;}
 .info-wrap.type03{padding:1.5rem;font-size:1.2rem;text-align:left;}
@@ -732,7 +739,7 @@ strong.ellipsis{position:relative;display:inline-block;width:100%;}
 .emp-metro-wrap li:nth-child(2n){margin-left:2%;}
 
 /* 장바구니 */
-.cartMenu {height: 110px; width: 100%;padding: 1.5rem;border-bottom: 1px solid rgb(223, 221, 221);}
+.cartMenu {height: 110px; width: 100%;padding: 1.5rem;margin:.7rem 0;}
 .cartMenu div {float: left; width : 20%; font-size: 15px; font-weight: bold;} 
 .cartMenu ul {float: left; width : 20%; font-size: 15px; font-weight: bold;} 
 .cartMenu ul li {border: solid 1px white; float: left; width: 100%; height: 30px; width: 30rem; padding: 1.8rem; }

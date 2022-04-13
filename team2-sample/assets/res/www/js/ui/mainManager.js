@@ -8,15 +8,9 @@
 
   var page = {
     els:  {
-      $btnOrder : null,
-      $btnSales : null,
-      $btnProduct : null,
     },
     data: {},
     init: function init(){
-      this.els.$btnOrder = $('#btn-order');
-      this.els.$btnSales = $('#btn-sales');
-      this.els.$btnProduct = $('#btn-product');
     },
     /*
       진행도를 표시한다.
@@ -26,50 +20,24 @@
     },
     initEvent : function initEvent(){
       var self = this;
-      // 사이드바 
-      $('.btn-menu').on('click', function () {
-        console.log('메뉴클릭');
-        $('.position').attr('style', 'position: absolute; top:0;right:0px;bottom:0;transition:1s ease;');
-        $('.wrapper').fadeTo("fast", 0.3);
-      });
-      $('.btn-menu').on('blur', function () {
-        console.log('취소');
-        $('.position').attr('style', 'position: absolute; top:0;right:-130px;bottom:0;transition:1s ease;');
-        $('.wrapper').fadeTo("fast", 1);
-      });
-      $('#menu-order-food').on('click', function(){
-        console.log('사이드바클릭');
+      $('#btn-order').on('click', function(){
         M.page.html('./foodOrder.html');
       });
-      $('#menu-payment-list').on('click', function(){
+      $('#btn-foodPayList').on('click', function(){
       //   발주내역   M.page.html('./.html');
       });       
-      $('#menu-sales').on('click', function(){
-        console.log('사이드바클릭');
+      $('#btn-sales').on('click', function(){
         M.page.html('./sales.html');
       });      
-      $('#menu-menu').on('click', function(){
-        console.log('사이드바클릭');
+      $('#btn-product').on('click', function(){
         M.page.html('./menuList.html');
       });          
-      $('#menu-member-info').on('click', function(){
-        console.log('사이드바클릭');
+      $('#btn-memberInfo').on('click', function(){
       //    회원정보  M.page.html('./.html');
       });
-      $('#menu-store-info').on('click', function(){
-        console.log('사이드바클릭');
-        M.page.html('./storeList.html');
+      $('#btn-storeInfo').on('click', function(){
+        M.page.html('./storeInfo.html');
       });
-      
-      this.els.$btnOrder.on('click', function(){
-        M.page.html('./foodOrder.html');
-      });      
-      this.els.$btnSales.on('click', function(){
-        M.page.html('./sales.html');
-      });      
-      this.els.$btnProduct.on('click', function(){
-        M.page.html('./menuList.html');
-      });      
     }
   };
   window.__page__ = page;

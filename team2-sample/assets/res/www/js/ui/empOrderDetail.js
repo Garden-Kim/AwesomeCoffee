@@ -8,28 +8,16 @@
 
   var page = {
     els: {
-      $title: null,
-      $regDate: null,
-      $menu: null,
       $finish: null,
       $back: null,
-      $menu : null,
       $menuOrderList: null,
       $menuPickup: null,
       $menuRecipeList: null,
       $menuStoreInfo: null,
     },
     data: {
-      requset: {
-        loginId: M.data.global('id'),
-        lastSeqNo: '0',
-        cnt: '100000'
-      },
     },
     init: function init() {
-      this.els.$title = $('#title');
-      this.els.$regDate = $('#regDate');
-      this.els.$menu = $('#menu');
       this.els.$back = $("#back");
       this.els.$finish = $("#finish");
       this.els.$menuOrderList = $('#menu-order-list');
@@ -40,49 +28,32 @@
     initView: function initView() {
       var self = this;
       MNet.sendHttp({
-        path: SERVER_PATH.NOTICE_DETAIL,
+        path: SERVER_PATH.ORDER_EMP_DETAIL,
         data: {
-          loginId: M.data.global("id"),
-          seqNo: M.data.global("seqNo")
+          orderNum : M.data.param('orderNum')
         },
         succ: function (data) {
           var items = "";
-          items += "<div class='detail-tit'>";
-          items += "<p id='title'>";
-          items += data.title;
-          items += "</p>";
-          items += "<span id='regDate'>";
-          items += data.regDate;
-          items += "</span>";
-          items += "</div>";
-          self.els.$title.html("주문번호 : " + data.title);
-          self.els.$regDate.html("회원이름 : " + data.regDate);
-          //self.els.$menu.html("메뉴리스트 : " + data.content);
-        },
-        error: function () {
-          alert("데이터를 불러오지 못했습니다.");
-        }
-      });
-      MNet.sendHttp({
-        path: SERVER_PATH.NOTICE_LIST,
-        data: self.data.requset,
-        succ: function (data) {
-          var items = "";
-          self.data.requset.lastSeqNo = data.lastSeqNo;
+          console.log(data);
+          console.log(data.list);
           $.each(data.list, function (index, item) {
-            items += "<div class='empOrderList'>"
-            items += "<li data-seq='" + item.seqNo + "'>";
-            items += "메뉴 : " + item.content;
+            items += "<ul class='emp-Detail bg-white'>"
+            items += "<li>";
+            items += item.goodsName;
             items += "</li>";
-            items += "<li data-seq='" + item.seqNo + "'>";
-            items += "수량 : 1개";
+            items += "<li>";
+            items += "수량 : "+ item.orderlistQty +"개";
             items += "</li>";
-            items += "</div>"
+            items += "</ul>"
           });
-          $(".empMenu").append(items);
+          $(".empOrderlist").append(items);
+          $('#orderTime').html(data.orderTime);
+          $('#orderNum').html(data.orderNum);
+          $('#memberNum').html(data.memberNum);
+          $('#cookState').html(data.cookState);
         },
         error: function (data) {
-          $(".btn-wrap").css("display", "none");
+          $(".empOrderlist").css("display", "none");
           alert("에러");
         }
       });
@@ -90,9 +61,6 @@
     initEvent: function initEvent() {
       // Dom Event 바인딩
       var self = this;
-      var title = M.data.global('title');
-      var content = M.data.global('content');
-      
       this.els.$back.on('click', function () {
         M.page.back();
       })
@@ -136,27 +104,20 @@
               return false;
             }
             if (index == 0) {
-              console.log(M.data.global('seqNo'))
-              M.page.html({
-                // seqNo 을 리스트로 넘겨서 해당 조리여부를 Y 로 바꿈
-                url : './empOrderList.html',
-                param : M.data.global("seqNo")
+              MNet.sendHttp({
+                path: SERVER_PATH.ORDER_UPDATE_STATE,
+                data: {
+                  "cookState" : "Y",
+                  orderNum : M.data.param('orderNum')
+                },
+                succ: function (data) {
+                  alert('주문이 조리완료되었습니다.');
+                  M.page.replace('./empOrderList.html');
+                },
+                error: function (data) {
+                  alert('에러.');
+                }
               });
-              return false;
-              // $.sendHttp({
-              //   path: SERVER_PATH.NOTICE_DELETE,
-              //   data: {
-              //     loginId: M.data.global("userId"),
-              //     seqNo: M.data.global("seqNo")
-              //   },
-              //   succ: function () {
-              //     alert("게시글이 삭제되었습니다.");
-              //     M.page.html("./list.html");
-              //   },
-              //   error: function () {
-              //     alert("삭제 실패");
-              //   }
-              // });
             }
           }
         });

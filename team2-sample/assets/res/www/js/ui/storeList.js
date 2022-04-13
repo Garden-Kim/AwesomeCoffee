@@ -90,6 +90,7 @@
         $('.wrapper').fadeTo("fast", 1);
         $('.wrapper').attr('style', 'position:relative;height:100%;background-color:#fff;');
       });
+
 // 회원 사이드바
       $('#m-orderList').on('click', function(){
         M.page.html('./menuList.html');
@@ -103,8 +104,11 @@
       $('#m-cart').on('click', function(){
         M.page.html('./cart.html');
       });
+      $('#m-interest').on('click', function(){
+        M.page.html('./wishList.html');
+      });
       $('#m-payList').on('click', function(){
-        // M.page.replace('./menuList.html');
+        M.page.html('./payList.html');
       });
 
       //  게시글 클릭시 게시글 상세보기 동작

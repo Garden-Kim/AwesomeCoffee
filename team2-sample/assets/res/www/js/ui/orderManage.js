@@ -54,7 +54,7 @@
             items += item.memberNum;
             items += "</li>";
             items += "<li data-seq='" + item.orderNum + "' class='empOrderDetail'>";
-            items += item.orderTime;
+            items += item.titleGoodsName;
             items += "</li>";
             items += "<li data-seq='" + item.orderNum + "' class='empOrderState'>";
             items += item.cookState;

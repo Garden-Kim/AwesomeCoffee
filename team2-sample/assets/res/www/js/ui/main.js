@@ -30,38 +30,6 @@
     initEvent: function initEvent() {
       // Dom Event 바인딩
       
-      
-      // 사이드바 
-      $('.btn-menu').on('click', function () {
-        console.log('메뉴클릭');
-        $('.position').attr('style', 'position: absolute; top:0;right:0px;bottom:0;transition:1s ease;');
-        $('.wrapper').fadeTo("fast", 0.3);
-        $('.wrapper').attr('style', 'position:relative;height:100%;background-color:#fff;pointer-events: none;cursor: default;');
-      });
-      $('.btn-menu').on('blur', function () {
-        console.log('취소');
-        $('.position').attr('style', 'position: absolute; top:0;right:-130px;bottom:0;transition:1s ease;');
-        $('.wrapper').fadeTo("fast", 1);
-        $('.wrapper').attr('style', 'position:relative;height:100%;background-color:#fff;');
-      });
-// 회원 사이드바
-      $('#m-orderList').on('click', function(){
-        M.page.replace('./menuList.html');
-      });
-      $('#m-storeList').on('click', function(){
-        M.page.html('./storeList.html');
-      });
-      $('#m-userInfo').on('click', function(){
-        M.page.html('./userInfo.html');
-      });
-      $('#m-cart').on('click', function(){
-        M.page.html('./cart.html');
-      });
-      $('#m-payList').on('click', function(){
-        M.page.html('./payList.html');
-      });
-      
-      
       $('.announcementFour').on('click', '.ellipsis', function () {
         var seqNo = $(this).attr('data');
         console.log(seqNo);
@@ -85,6 +53,12 @@
       });
       $('#cart').on('click', function(){
         M.page.html('./cart.html');
+      });
+      $('#interest').on('click', function(){
+        M.page.html('./wishList.html');
+      });
+      $('#payList').on('click', function(){
+        M.page.html('./payList.html');
       });
 
 

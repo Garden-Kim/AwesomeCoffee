@@ -20,45 +20,68 @@
     },
     data: {},
     init: function init() {
-
-      this.els.$imgUrl = $('#imgUrl');
-      this.els.$title = $('#title');
-      this.els.$content = $('#content');
-      this.els.$payment = $('#payment');
+      console.log(M.data.param('goodsNum'));
     },
     initView: function initView() {
       //화면에서 세팅할 동적데이터
-
       var self = this;
-      MNet.sendHttp({
-        path: SERVER_PATH.NOTICE_DETAIL,
-        data: {
-          "loginId": M.data.global('id'),
-          "seqNo": M.data.param('seqNo')
-        },
-        succ: function (data) {
-          console.log(data);
-          $('#title').text(data.title);
-          $('#regDate').html(data.regDate);
-          $('#content').html(data.content);
-          seqNoNext = data.seqNo;
-          console.log(data.imgUrl);
-          if (data.imgUrl != null) {
-            $('#imgUrl5').attr('src', data.imgUrl);
+      if(M.data.param('direct') == 'Y'){
+        MNet.sendHttp({
+          path: SERVER_PATH.ORDER_DIRECTORDER,
+          data: {
+            "goodsNum": M.data.param('goodsNum'),
+            "qty" :  M.data.param('qty')
+          },
+          succ: function (data) {
+            console.log(data);
+            $('#title').text(data.goodsName);
+            $('#qty').html(data.qty);
+            $('#goodsPrice').html(Number(data.goodsPrice) * Number(data.qty));
+            seqNoNext = data.seqNo;
+            console.log(data.imgUrl);
+            if (data.imgUrl != null) {
+              $('#imgUrl5').attr('src', data.goodsImage);
+            }
+          },
+          error: function (data) {
+            console.log(data);
+            alert("실패");
+            M.page.html({url: "./main.html",
+                         actionType: 'CLEAR_TOP'});
           }
-        },
-        error: function (data) {
-          console.log(data);
-          alert("실패");
-        }
-      });
+        });
+      }else{
+        // 장바구니에서 넘어온 주문리스트
+      }
     },
     initEvent: function initEvent() {
       var self = this;
+      var payment = $("input:radio[name='payment']:checked").val();
+      console.log(payment);
+      if(module.isEmpty(payment)){
+        return alert('결제 방법을 선택해주세요.');
+      }
       $('#payBtn').on('click', function(){
-        
-        alert('결제 완료되었습니다.');
-        M.page.html('./main.html');
+        if(M.data.param('direct') == 'Y'){
+          MNet.sendHttp({
+            path: SERVER_PATH.PAYMENT_DIRECTREGIST,
+            data: {
+              paymentKind : payment,
+              "goodsNum" : M.data.param('goodsNum')
+            },
+            succ: function (data) {
+              console.log(data);            
+              alert('결제 완료되었습니다.');
+              M.page.replace('./main.html');
+            },
+            error: function (data) {
+              console.log(data);
+              alert("실패");
+            }
+          });
+        }else{
+          // 장바구니에서 넘어온 결제
+        }
       });
       
       // Dom Event 바인딩
@@ -80,7 +103,7 @@
       });
 // 회원 사이드바
       $('#m-orderList').on('click', function(){
-        M.page.replace('./menuList.html');
+        M.page.html('./menuList.html');
       });
       $('#m-storeList').on('click', function(){
         M.page.html('./storeList.html');
@@ -90,6 +113,9 @@
       });
       $('#m-cart').on('click', function(){
         M.page.html('./cart.html');
+      });
+      $('#m-interest').on('click', function(){
+        M.page.html('./wishList.html');
       });
       $('#m-payList').on('click', function(){
         M.page.html('./payList.html');

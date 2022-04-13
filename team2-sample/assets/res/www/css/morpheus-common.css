@@ -92,7 +92,7 @@ p.divider::after{content:'';position:absolute;top:50%;right:0;width:40%;height:1
 .shadow-t{box-shadow:0px -2px 15px rgba(0,0,0,.1);}
 /*====== Layout ======*/
 .wrapper,
-.full-pop{position:relative;height:100%;background-color:#fff;}
+.full-pop{position:relative;overflow: hidden;height:100%;background-color:#fff;}
 .cont-wrap.pd{padding:0 1.5rem;}
 .btn-fix{background-position:0 -2.2rem;}
 .btm-fix{position:absolute;right:0;left:0;bottom:0;}

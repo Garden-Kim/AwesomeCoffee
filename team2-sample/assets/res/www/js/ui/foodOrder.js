@@ -10,7 +10,12 @@
     els:  {
       $btnOrder : null,
     },
-    data: {},
+    data: {
+/*      chkFood: {
+        foodNum : null,
+        storeOrderQty : null,
+      },*/
+    },
     init: function init(){
       this.els.$btnOrder = $('#btn-order');
     },
@@ -33,7 +38,7 @@
           $.each(data.list, function (index, item) {
             items += "<ul id='"+ item.foodNum +"' class ='food-list bg-white'>";
             items += "<li>";
-            items += "<input type='checkbox' id='"+ item.foodNum +"' name='color' class='chk-03' />";
+            items += "<input type='checkbox' value='"+ item.foodNum +"' name='color' class='chk-03' />";
             items += "</li><li style='text-align:center;'>";
             items += item.foodName;
             items += "</li><li class='foodQty'>";
@@ -46,7 +51,7 @@
             items += "<button type='button' class='qty qtyMinus'>";
             items += "<img src='../img/icon-minus.png'>";
             items += "</button>";
-            items += "</li><li class='foodPrice' data-p='"+item.foodPrice+"'>";
+            items += "</li><li class='foodPrice' data-p='"+item.foodPrice+"' id='" +item.foodPrice+"'>";
             items += item.foodPrice;
             items += "</li></ul>";;
           });
@@ -98,7 +103,7 @@
       $("#noti-wrap").on("click", ".qtyPlus " , function(){
         var qty = Number($(this).parent().children('span').text());
         var ser = qty + 1;
-        var price = Number($(this).parent().siblings('.foodPrice').attr('data-p'));
+        var price = Number($(this).parent().siblings('.foodPrice').attr('id'));
         $(this).parent().siblings('.foodPrice').html(price * ser);
         $(this).parent().siblings('.foodPrice').attr('data-p', price * ser);
         $(this).parent().children('span').html(ser);
@@ -110,7 +115,7 @@
           var ser = qty - 1;
           console.log(qty);
           console.log(ser);
-          var price = Number($(this).parent().siblings('.foodPrice').attr('data-p'));
+          var price = Number($(this).parent().siblings('.foodPrice').attr('id'));
           console.log(price);
           $(this).parent().siblings('.foodPrice').html(price * ser);
           $(this).parent().siblings('.foodPrice').attr('data-p', price * ser);
@@ -119,12 +124,20 @@
         }
       });
       this.els.$btnOrder.on('click', function(){
-        
-        
-        MNet.sendHttp({
+        var chkList;
+        $("input[name=color]:checked").each(function(){
+          var qty = $(this).parent().siblings('.foodQty').children('span').text();
+          console.log(qty); 
+          console.log($(this).val());
+          // data 넣으면 됨.
+          chkList = { foodNum : $(this).val(),
+                      storeOrderQty : qty}
+           console.log("체크된 값 : " + chkList);
+        });
+/*        MNet.sendHttp({
           path: SERVER_PATH.STORE_ORDER_REGI,
           data: {
-            
+
           },
           succ: function (data) {
             console.log(data);
@@ -140,9 +153,9 @@
             console.log(data);
             alert("실패");
           }
-        });
+        });*/
         
-        M.page.html('./fpayment.html');
+        // M.page.html('./fpayment.html');
         
       });
       $('.btn-top').on('click', function () {

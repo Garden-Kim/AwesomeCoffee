@@ -30,48 +30,57 @@
     drawNoticeList: function () {
       var self = this;
       MNet.sendHttp({
-        path: SERVER_PATH.ORDER_MEM_LIST,
+        path: SERVER_PATH.ORDER_LIST_LIST,
         data: self.data.requset,
         succ: function (data) {
           var items = "";
-          $.each(data.list, function (index, item) {
-            items += "<ul data='" + item.orderNum + "' class='orderOne bg-white' >";
-            items += "<li>";
-            items += item.orderTime;
-            items += "</li>";
-            items += "<li class='img-wrap orderList'>";
-            items += "<div class='img'>";
-            items += "<img src='";
-            items += item.imgUrl;
-            items += "' alt=''/>";
-            items += "</div>";
-            items += "<span class='label-info none'>";
-            items += "<img src='";
-            items += item.imgUrl;
-            items += "' alt='50%'/>";
-            items += "</span>";
-            items += "</li>";
-            items += "<li class='info-box'>";
-            items += "<div class='info-box-top' style='margin-top: 1rem;'>";
-            items += "조리상태 <strong >";
-            items += item.cookState;
-            items += "</strong>";
-            items += "수령상태 <strong >";
-            items += item.takeout;
-            items += "</strong>";
-            items += "</div>";
-            items += "<div class='order-info'>";
-            items += "<strong>";
-            items += item.orderPrice + " 원";
-            items += "</strong>";
-            items += "<span>";
-            items += "/ 1개";
-            items += "</span>";
-            items += "</div>";
-            items += "</li>";
-            items += "</ul>";
-          });
-          $(".order-menu").append(items);
+          if(data.list === ''){
+            items += "<h1 style='font-size:2rem;color:#888;text-align:center;margin-top:5rem;'>"
+            items += "주문 내역이 없습니다.</h1>"
+            $(".order-menu").append(items);
+          }else{
+            $.each(data.list, function (index, item) {
+              items += "<ul data='" + item.orderNum + "' class='orderOne bg-white' >";
+              items += "<li>";
+              items += item.orderTime;
+              items += "<span>";
+              items += " / 주문번호 : "+ item.orderNum;
+              items += "</span>";
+              items += "</li>";
+              items += "<li class='img-wrap orderList'>";
+              items += "<div class='img'>";
+              items += "<img src='";
+              items += item.imgUrl;
+              items += "' alt=''/>";
+              items += "</div>";
+              items += "<span class='label-info none'>";
+              items += "<img src='";
+              items += item.imgUrl;
+              items += "' alt='50%'/>";
+              items += "</span>";
+              items += "</li>";
+              items += "<li class='info-box'>";
+              items += "<div class='info-box-top' style='margin-top: 1rem;' id='" + item.orderNum + "'>";
+              items += "조리상태 <strong class='cookState'>";
+              items += item.cookState;
+              items += "</strong>";
+              items += "수령상태 <strong class='takeout' >";
+              items += item.takeout;
+              items += "</strong>";
+              items += "</div>";
+              items += "<div class='order-info' style='font-size: 1.6rem;'>";
+              items += item.titleGoodsName;
+              items += "<strong>";
+              items += "/ "+ item.orderPrice + " 원";
+              items += "</strong>";
+              items += "</div>";
+              items += "</li>";
+              items += "</ul>";
+            });
+            $(".order-menu").append(items);
+            $('.cookState:contains(N)').css('color', 'red');
+            $('.takeout:contains(N)').css('color', 'red');
+          }
         },
         error: function (data) {
           $(".order-menu").css("display", "none");
@@ -88,15 +97,28 @@
       this.els.$btnTop.on('click', function () {
         $('.cont-wrap').scrollTop(0);
       })
-      /*
-      $(".empOrder").on('click', '.empOrderItem', function(){
-        if($(this).text() == 'N'){
-          $(this).text('Y');
-        }else{
-          $(this).text('N');
-        }
+      
+      $('.order-menu').on('click', '.orderOne', function( ) {
+        var orderNum = $(this).attr('data' );
+        MNet.sendHttp({
+          path: SERVER_PATH.ORDER_LIST_DETAIL,
+          data: {
+            orderNum : orderNum,
+          },
+          succ: function (data) {
+            if (data.rsltCode == '0000') {
+              M.page.html('./payDetail.html',{param : {orderNum	: orderNum}} );
+            } else {
+              alert('페이지를 열 수 없습니다.');
+            }
+          },
+          error: function (data) {
+            console.log(data);
+            alert('에러!');
+          }
+        });
       });
-      */
+      
       // 사이드바 
       $('.btn-menu').on('click', function () {
         console.log('메뉴클릭');
@@ -123,23 +145,12 @@
       $('#m-cart').on('click', function(){
         M.page.html('./cart.html');
       });
+      $('#m-interest').on('click', function(){
+        M.page.html('./wishList.html');
+      });
       $('#m-payList').on('click', function(){
         M.page.replace('./payList.html');
       });
-      
-      $(".order-menu").on('click', '.orderOne', function () {
-        var orderNum = $(this).attr('data');
-        MNet.sendHttp({
-          path: SERVER_PATH.ORDER_LIST_LIST,
-          data: {
-            orderNum : orderNum,
-          },
-          succ: function (data) {
-            M.page.html('./payDetail.html', {param : { orderNum : orderNum}});
-          }
-        });
-      })
-
     },
   };
 

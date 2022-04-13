@@ -34,8 +34,10 @@
         </div>
         <div class="asdf">
           <span class="paymentTitle" id="title"></span>
-          <p class="paymentContent" id="regDate"></p>
-          <span class="paymentContent2"></span>
+          <div style="font-size:1.3em;margin-top:1rem;">
+            <span id="qty"></span>
+            <span >개</span>
+          </div>
         </div>
       </div>
 
@@ -61,15 +63,10 @@
         </div>
       </div>
       <div class="commonLine"></div>
-      <div class="paymentAjax1" id="paymentAjax1">
-        156156156
-        156156156156
-      </div>
-      <div class="commonLine"></div>
       <div class="paymetTotal">
 
-        <span class="paymentAmount">결제금액 </span> <span class="paymentAmount1">5000 원</span>
-        </table>
+        <span class="paymentAmount">결제금액 </span>
+        <span class="paymentAmount1" >원 </span><span class="paymentAmount1" id="goodsPrice">5000</span>
       </div>
       <div class="commonLine"></div>
       <div class="btn-wrap   btm-fix">
@@ -87,6 +84,7 @@
     <li id="m-storeList">주변매장</li>
     <li id="m-userInfo">내정보</li>
     <li id="m-cart">장바구니</li>
+    <li id="m-interest">관심상품</li>
     <li id="m-payList">주문내역</li>
   </ul>
 </section>

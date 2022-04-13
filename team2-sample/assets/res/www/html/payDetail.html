@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0, user-scalable=no" name="viewport"/>
-  <title>주문리스트(직원)</title>
+  <title>주문 상세페이지(회원)</title>
   <link href="../css/morpheus-style.css" rel="stylesheet"/>
   <link href="../css/swiper.min.css" rel="stylesheet"/>
   <link href="../css/muikit.css" rel="stylesheet"/>
@@ -14,7 +14,7 @@
 <div class="wrapper">
   <header class="header bg-white">
     <h1>
-      주문 내역
+      주문 상세페이지
     </h1>
     <button class="btn-back l-fix" id="back" type="button">
       뒤로가기
@@ -23,35 +23,14 @@
       메뉴
     </button>
   </header>
-  <div class="tab-menu-wrap  bg-yellow">
-    <!-- 헤더 입력 영역 (헤더 디자인에 따라 바꿔치기 가능) -->
-    <ul class="tab-menu table orderStatus">
-      <!-- 메뉴글자수가 동일하지 않은경우,tab갯수 상관없음 class="table" -->
-      <!-- 메뉴글자수가 동일한경우, tab갯수에 따른 class추가 2개:count2, 3개:count3 ,count4, count5, count6, 6개이상: more -->
-      <li class="on" id="all">
-        <!-- 해당 tab시 class="on" 추가 -->
-        <span class="btn-status">
-						전체
-					</span>
-      </li>
-      <li id="preparing">
-					<span class="btn-status">
-						준비중
-					</span>
-      </li>
-      <li id="waiting">
-					<span class="btn-status">
-						수령대기중
-					</span>
-      </li>
-      <li id="over">
-					<span class="btn-status">
-						수령완료
-					</span>
-      </li>
-    </ul>
+  <div class="orderInfo bg-white" id="orderInfo">
+    <h1 style="font-size:2rem;font-weight:bold;padding:1rem;"> 주문번호 : <span id="orderNum"></span></h1>
+    <div id="orderDate" class="orderInfo">날짜</div>
+    <div class="orderInfo" >
+      결제방식 : <span id="payMethod"></span>
+      <span style="float:right; margin-right:7rem;">총액 : <span id="paymentPrice" style="font-weight:bold;">10000</span> 원</span>
+    </div>
   </div>
-
   <div class="container bg-gray">
     <div class="cont-wrap">
       <div class="order-menu">

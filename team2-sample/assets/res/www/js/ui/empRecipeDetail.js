@@ -108,6 +108,9 @@
       $('#menu-store-info').on('click', function () {
         M.page.html("./storeInfo.html");
       })      
+      $('#menu-order-manage').on('click', function(){
+        M.page.html("./orderManage.html"); 
+      })
       
     },
   };

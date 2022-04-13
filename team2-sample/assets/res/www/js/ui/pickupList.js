@@ -41,23 +41,23 @@
     drawNoticeList: function () {
       var self = this;
       MNet.sendHttp({
-        path: SERVER_PATH.ORDER_EMP_LIST_Y,
+        path: SERVER_PATH.ORDER_TAKE_LIST,
         data: self.data.requset,
         succ: function (data) {
           var items = "";
           self.data.requset.lastSeqNo = data.lastSeqNo;
           $.each(data.list, function (index, item) {
-            items += "<ul>"
-            items += "<li data-seq='" + item.orderNum + "'>";
+            items += "<ul class='pickupState' data-seq='" + item.orderNum + "'>"
+            items += "<li >";
             items += item.orderNum;
             items += "</li>";
-            items += "<li data-seq='" + item.orderNum + "'>";
+            items += "<li>";
             items += item.memberNum;
             items += "</li>";
-            items += "<li data-seq='" + item.orderNum + "'>";
+            items += "<li>";
             items += item.orderTime;
             items += "</li>";
-            items += "<li data-seq='" + item.orderNum + "' class='pickupState'>";
+            items += "<li>";
             items += item.takeout;
             items += "</li>";
             items += "</ul>"
@@ -65,7 +65,7 @@
           $(".pickup").append(items);
         },
         error: function (data) {
-          $(".btn-wrap").css("display", "none");
+          $(".pickup").css("display", "none");
           alert("에러");
         }
       });
@@ -78,7 +78,6 @@
       this.els.$btnTop.on('click', function () {
         $('.cont-wrap').scrollTop(0);
       })
-
       // 사이드바 
       $('.btn-menu').on('click', function () {
         console.log('메뉴클릭');
@@ -111,14 +110,7 @@
 
       // 픽업 완료 기능
       $('.pickup').on('click', '.pickupState', function () {
-        if ($(this).text() == 'N') {
-          $(this).text('Y');
-          $(this).toggleClass('pickupStateY');
-        } else {
-          $(this).text('N');
-          $(this).toggleClass('pickupStateN');
-
-        }
+        var orderNum = $(this).attr('data-seq');
         M.pop.alert({
           title: '알림',
           message: '픽업 완료 상태로 넘어가겠습니까?',
@@ -128,8 +120,20 @@
               return false;
             }
             if (index == 0) {
-              console.log(this)
-              //M.page.html('./pickupList.html');
+              MNet.sendHttp({
+                path: SERVER_PATH.ORDER_UPDATE_TAKE,
+                data: {
+                  "takeout" : "Y",
+                  orderNum: orderNum
+                },
+                succ: function (data) {
+                  alert('완료되었습니다.');
+                  M.page.replace('./pickupList.html');
+                },
+                error: function (data) {
+                  alert("에러");
+                }
+              });
             }
           }
         })

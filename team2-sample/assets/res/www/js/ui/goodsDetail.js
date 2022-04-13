@@ -16,12 +16,10 @@
 
       $cartBtn: null,
       $payment: null,
-      $goodsPrice: null,
       $qtyPlus: null,
-      $goodsQty: null,
       $qtyMinus: null,
     },
-    data: {},
+    data: { goodsNum : ''},
     init: function init() {
       this.els.$imgUrl = $('#imgUrl');
       this.els.$title = $('#title');
@@ -29,10 +27,8 @@
 
       this.els.$cartBtn = $('#cartBtn');
       this.els.$payment = $('#payment');
-      this.els.$goodsPrice = $('#goodsPrice').text();
       
       this.els.$qtyPlus = $('#qtyPlus');
-      this.els.$goodsQty = $('#goodsQty').text();
       this.els.$qtyMinus = $('#qtyMinus');
 
     },
@@ -49,8 +45,11 @@
           console.log(data);
           $('#title').text(data.goodsName);
           $('#content').html(data.goodsContent);
-          $('#goodsPrice').text(data.goodsPrice);
-          console.log(data.imgUrl);
+          $('.goodsPrice').text(data.goodsPrice);
+          $('.goodsPrice').attr('id', data.goodsPrice);
+          console.log(data.goodsNum);
+          goodsNum = data.goodsNum;
+          console.log(goodsNum);
           if (data.goodsImage != null) {
             $('#imgUrl').attr('src', data.goodsImage);
           }
@@ -80,9 +79,10 @@
         $('.wrapper').fadeTo("fast", 1);
         $('.wrapper').attr('style', 'position:relative;height:100%;background-color:#fff;');
       });
+
 // 회원 사이드바
       $('#m-orderList').on('click', function(){
-        M.page.replace('./menuList.html');
+        M.page.html('./menuList.html');
       });
       $('#m-storeList').on('click', function(){
         M.page.html('./storeList.html');
@@ -91,7 +91,10 @@
         M.page.html('./userInfo.html');
       });
       $('#m-cart').on('click', function(){
-        M.page.html('./cart.html');
+        M.page.replace('./cart.html');
+      });
+      $('#m-interest').on('click', function(){
+        M.page.html('./wishList.html');
       });
       $('#m-payList').on('click', function(){
         M.page.html('./payList.html');
@@ -118,7 +121,8 @@
       
       
       $('#recipe-write').on('click', function(){
-        M.page.html('./write-recipe.html');
+        M.page.html('./write-recipe.html',{param : { goodsName : M.data.param("goodsName"),
+                                                      goodsNum : goodsNum }});
       });
       $('#modiBtn').on('click', function(){
         M.page.html('./write-menu.html',{param : { seqNo : M.data.param('seqNo')}});
@@ -142,48 +146,46 @@
         }
       });
       this.els.$cartBtn.on('click', function () {
-        if (confirm("장바구니로 이동하시겠습니까?") == true){
-          
-          MNet.sendHttp({
-            path: SERVER_PATH.CART_REGIST,
-            data: {
-              memberNum : memberNum,
-              goodsName : M.data.param("goodsName"),
-              qty : $('#goodsQty').val(),
-            },
-            succ: function (data) {
-              console.log(data);
-              $('#title').text(data.goodsName);
-              $('#content').html(data.goodsContent);
-              $('#goodsPrice').text(data.goodsPrice);
-              console.log(data.imgUrl);
-              if (data.goodsImage != null) {
-                $('#imgUrl').attr('src', data.goodsImage);
-              }
-            },
-            error: function (data) {
-              console.log(data);
-              alert("실패");
-            }
-          });
+        console.log($('#goodsQty').html());
+        MNet.sendHttp({
+          path: SERVER_PATH.CART_REGIST,
+          data: {
+            "goodsNum": goodsNum,
+            "qty" : $('#goodsQty').html()
+          },
+          succ: function (data) {
+            console.log($('#goodsQty').html());
+            console.log(data);
+          },
+          error: function (data) {
+            console.log(data);
+            alert("실패");
+          }
+        });
+        if (confirm("장바구니에 등록되셨습니다. 이동하시겠습니까?") == true){
           M.page.replace('./cart.html');
         }else return;
       });
       this.els.$payment.on('click', function () {
-        M.page.html('./payment.html', {param : {seqNo	: M.data.param("seqNo")}});
+        console.log($('#goodsQty').html());
+        M.page.html('./payment.html', {param : {
+                                          "goodsNum": goodsNum,
+                                          "qty" : $('#goodsQty').html(),
+                                          'direct' : 'Y'}});
       });
     },
     qtyMinus: function () {
       var self = this;
+      var price = Number($('.goodsPrice').attr('id'));
       var ser = Number($('#goodsQty').html()) - 1;
-      $('#goodsPrice').html(5000 * ser);
-
+      $('.goodsPrice').html(price * ser);
       $('#goodsQty').html(ser);
     },
     qtyPlus: function () {
       var self = this;
+      var price = Number($('.goodsPrice').attr('id'));
       var ser = Number($('#goodsQty').html()) + 1;
-      $('#goodsPrice').html(5000 * ser);
+      $('.goodsPrice').html(price * ser);
       $('#goodsQty').html(ser);
 
     },

@@ -46,7 +46,7 @@
           var items = "";
           self.data.requset.lastSeqNo = data.lastSeqNo;
           $.each(data.list, function (index, item) {
-            items += "<ul >"
+            items += "<ul class='empOrderItem' data-seq='" + item.orderNum + "'>"
             items += "<li data-seq='" + item.orderNum + "' class='empOrderDetail'>";
             items += item.orderNum;
             items += "</li>";
@@ -81,15 +81,6 @@
       this.els.$btnTop.on('click', function () {
         $('.cont-wrap').scrollTop(0);
       })
-      /*
-      $(".empOrder").on('click', '.empOrderItem', function(){
-        if($(this).text() == 'N'){
-          $(this).text('Y');
-        }else{
-          $(this).text('N');
-        }
-      });
-      */
       // 사이드바 
       $('.btn-menu').on('click', function () {
         console.log('메뉴클릭');
@@ -120,17 +111,15 @@
         M.page.html("./orderManage.html"); 
       })
       
-      $('.empOrder').on('click', '.empOrderDetail', function () {
-        var seqNo = $(this).attr('data-seq');
-        M.data.global("seqNo", seqNo)
+      $('.empOrder').on('click', '.empOrderItem', function () {
+        var orderNum = $(this).attr('data-seq');
         MNet.sendHttp({
-          path: SERVER_PATH.NOTICE_DETAIL,
+          path: SERVER_PATH.ORDER_EMP_DETAIL,
           data: {
-            loginId: M.data.global("id"),
-            seqNo: seqNo
+            orderNum : orderNum
           },
           succ: function (data) {
-            M.page.html('./empOrderDetail.html');
+            M.page.html('./empOrderDetail.html', {param : { orderNum : orderNum}});
           }
         });
       })
