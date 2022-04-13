@@ -47,7 +47,7 @@
 									매장명
 								</th>
 								<td>
-									<input type="text" disabled id="storeNm" class="full"/>
+									<input type="text" disabled id="storeName" class="full"/>
 								</td>
 							</tr>
 							<tr>
@@ -69,15 +69,6 @@
 							</tr>
 							<tr>
 								<th class="required">
-									주소
-									<img src="../img/ico-required.png" alt="필수"/>
-								</th>
-								<td>
-									<input type="text" id="addr" placeholder="이메일 입력" class="full"/>
-								</td>
-							</tr>
-							<tr>
-								<th class="required">
 									연락처
 									<img src="../img/ico-required.png" alt="필수"/>
 								</th>
@@ -85,21 +76,40 @@
 									<input type="text" id="cellPhone" placeholder="연락처 입력" class="full"/>
 								</td>
 							</tr>
+							<tr>
+								<th class="required">
+									주소
+									<img src="../img/ico-required.png" alt="필수"/>
+								</th>
+								<td>
+									<input type="text" id="addr" placeholder="주소 입력" class="full3" style="width: 60%;"/>
+									<button type="button" id="addrSearch"class="btn-line">
+										찾기
+									</button>
+									<input type="hidden" id="state">
+									
+								</td>
+							</tr>
 							
 						</tbody>
 					</table>
 				</div>
-			</div>
-			<div class="btn-wrap count2 pd">
-				<button type="button" id="saveBtn" class="btn-point-color">
-					수정
-				</button>
-				<button type="button" id="outBtn" class="btn-line">
-					영업 종료
-				</button>
+				<div class="btn-wrap count2 pd" style="margin-top: 15rem;">
+					<button type="button" id="saveBtn" class="btn-point-color">
+						수정
+					</button>
+					<button type="button" id="outBtn" class="btn-line">
+						영업 종료
+					</button>
+				</div>
 			</div>
 		</div>
+		<div id="layer" style="display:none;position:fixed;overflow:hidden;z-index:1;-webkit-overflow-scrolling:touch;margin-top: 3rems;">
+			<img src="" id="btnCloseLayer" style="cursor:pointer;position:absolute;right:-3px;top:-3px;z-index:1" alt="닫기 버튼">
+			</div>
 	</div>
+
+		<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </body>
 
 <script type="text/javascript" src="../js/mcore.min.js"></script>

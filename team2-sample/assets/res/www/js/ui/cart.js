@@ -185,8 +185,7 @@
         M.page.back();
       });
       this.els.$orderBtn.on('click', function () {
-        var body = [];
-        var tbody = null;
+        var bodyData = [];
         $('.cartList').each(function(){
           var goodsNum = $(this).attr('data');
           var qty = $(this).find('.goodsQty').text();
@@ -194,23 +193,17 @@
           console.log(qty); 
           var _body = { "goodsNum": goodsNum, "qty" : qty };
           console.log(_body);
-          body.push(_body);
+          bodyData.push(_body);
         });
-        console.log(body);
-        try {
-          tbody = JSON.parse(body);
-          console.log(tbody);
-        } catch(e) {
-          tbody = body;
-          console.log(tbody);
-        }
-        console.log(tbody);
+        console.log(bodyData);
+        var body = JSON.stringify(bodyData);
         MNet.sendHttp({
           path: SERVER_PATH.ORDER_REGIST,
-          data: tbody,
+          data: {"body":body},
           succ: function (data) {
             if(data.rsltCode == '0000'){
               console.log(data);
+              
               M.page.html('./payment.html');
             }else{
               console.log(data);
