@@ -22,32 +22,52 @@
       if(module.isEmpty(M.data.global('id'))){
         M.page.html('./login.html');
       }
-/*      MNet.sendHttp({
-        path: SERVER_PATH.NOTICE_LIST,
-        data: {
-          "loginId": M.data.global('id'),
-          "lastSeqNo": '0',
-          "cnt": '10000000',
-        },
-        succ: function (data) {
-          console.log(data);
-          var items = "";
-          $.each(data.list, function (index, item) {
-            items += "<li id='"+ item.seqNo +"' class ='test'>";
-            items += "<strong class='ellipsis_1'>";
-            items += item.title;
-            items += "</strong>";
-            items += "</li>";
-          });
-          $("#noti-wrap").html(items);
-        },
-        error: function (data) {
-          console.log(data);
-          alert("리스트를 가져오지 못했습니다.");
-        },
-      });*/
     },
     initEvent : function initEvent(){
+      $('.btn-search').on('click', function(){
+        var year = "";
+        var month = "";
+        var date = "";
+        var paymentDate = "";
+        year = $('#year').val();
+        month = $('#month').val();
+        date = $('#date').val();
+        paymentDate = year.val() + '/' + month.val() + '/' + date.val();
+        console.log(paymentDate)
+        MNet.sendHttp({
+          path: SERVER_PATH.PAYMENT_DATELIST,
+          data: {
+            "paymentDate" : paymentDate
+          },
+          succ: function (data) {
+            var items = "";
+            self.data.requset.lastSeqNo = data.lastSeqNo;
+            $.each(data.list, function (index, item) {
+              items += "<ul class='empOrderItem' data-seq='" + item.orderNum + "'>"
+              items += "<li data-seq='" + item.orderNum + "' class='empOrderDetail'>";
+              items += item.orderNum;
+              items += "</li>";
+              items += "<li data-seq='" + item.orderNum + "' class='empOrderDetail'>";
+              items += item.memberNum;
+              items += "</li>";
+              items += "<li data-seq='" + item.orderNum + "' class='empOrderDetail'>";
+              items += item.orderTime;
+              items += "</li>";
+              items += "<li data-seq='" + item.orderNum + "' class='empOrderDetail'>";
+              items += item.orderPrice;
+              items += "</li>";
+              items += "<li data-seq='" + item.orderNum + "' class='empOrderState'>";
+              items += item.cookState;
+              items += "</li>";
+              items += "</ul>"
+            });
+            $(".empOrder").append(items);
+          },
+          error: function (data) {
+            console.log(data);
+            alert(" 리스트를 가져오지 못했습니다. ");
+          },
+        });
       $('.l-fix').on('click', function(){
         M.page.back();
       });
@@ -83,6 +103,7 @@
         M.page.html('./storeList.html');
       });
     }
+      )}
   };
   window.__page__ = page;
 })(jQuery, M, __util__, __mnet__, __serverPath__,__difinition__, window);
