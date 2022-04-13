@@ -65,8 +65,17 @@ public class MenuController {
 			responseBodyMap.put("rsltMsg", "Login required.");
 		} else {
 			List<MenuDTO> dto = menuService.selectSearchMenu(reqBodyMap);
+			String memberNum = memberService.getMemberNum(authInfo.getLoginId());
+			List<WishlistDTO> wishlist = wishlistService.selectAllWishlist(memberNum);
 			for (int i = 0; i < dto.size(); i++) {
 				Map<String, Object> map = new HashMap<String, Object>();
+				if (wishlist!=null) {
+					for(int j=0; j < wishlist.size(); j++) {
+						if (wishlist.get(j).getGoodsNum().equals(dto.get(i).getGoodsNum())) {
+							map.put("wishlist", "Exist goods in wishlist");
+						}
+					}
+				}
 				map.put("goodsNum", dto.get(i).getGoodsNum());
 				map.put("goodsName", dto.get(i).getGoodsName());
 				map.put("goodsPrice", dto.get(i).getGoodsPrice());
@@ -398,9 +407,17 @@ public class MenuController {
 		} else {
 			List<MenuDTO> dto = menuService.selectAllMenu();
 			String recipeYn;
-			
+			String memberNum = memberService.getMemberNum(authInfo.getLoginId());
+			List<WishlistDTO> wishlist = wishlistService.selectAllWishlist(memberNum);
 			for (int i = 0; i < dto.size(); i++) {
 				Map<String, Object> map = new HashMap<String, Object>();
+				if (wishlist!=null) {
+					for(int j=0; j < wishlist.size(); j++) {
+						if (wishlist.get(j).getGoodsNum().equals(dto.get(i).getGoodsNum())) {
+							map.put("wishlist", "Exist goods in wishlist");
+						}
+					}
+				}
 				map.put("goodsNum", dto.get(i).getGoodsNum());
 				map.put("goodsName", dto.get(i).getGoodsName());
 				map.put("goodsPrice", dto.get(i).getGoodsPrice());
