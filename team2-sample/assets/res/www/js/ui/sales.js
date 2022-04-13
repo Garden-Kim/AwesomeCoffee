@@ -9,7 +9,13 @@
   var page = {
     els:  {
     },
-    data: {},
+    data: {
+      requset: {
+        loginId: M.data.global('id'),
+        lastSeqNo: '0',
+        cnt: '100000'
+      },
+    },
     init: function init(){
     },
     /*
@@ -32,7 +38,7 @@
         year = $('#year').val();
         month = $('#month').val();
         date = $('#date').val();
-        paymentDate = year.val() + '/' + month.val() + '/' + date.val();
+        paymentDate = year + '/' + month + '/' + date;
         console.log(paymentDate)
         MNet.sendHttp({
           path: SERVER_PATH.PAYMENT_DATELIST,
@@ -41,23 +47,20 @@
           },
           succ: function (data) {
             var items = "";
-            self.data.requset.lastSeqNo = data.lastSeqNo;
+         //   self.data.requset.lastSeqNo = data.lastSeqNo;
             $.each(data.list, function (index, item) {
               items += "<ul class='empOrderItem' data-seq='" + item.orderNum + "'>"
+              items += "<li data-seq='" + item.paymentKind + "' class='empOrderDetail'>";
+              items += item.paymentKind;
+              items += "</li>";
               items += "<li data-seq='" + item.orderNum + "' class='empOrderDetail'>";
               items += item.orderNum;
               items += "</li>";
-              items += "<li data-seq='" + item.orderNum + "' class='empOrderDetail'>";
-              items += item.memberNum;
+              items += "<li data-seq='" + item.paymentDate + "' class='empOrderDetail'>";
+              items += item.paymentDate;
               items += "</li>";
-              items += "<li data-seq='" + item.orderNum + "' class='empOrderDetail'>";
-              items += item.orderTime;
-              items += "</li>";
-              items += "<li data-seq='" + item.orderNum + "' class='empOrderDetail'>";
-              items += item.orderPrice;
-              items += "</li>";
-              items += "<li data-seq='" + item.orderNum + "' class='empOrderState'>";
-              items += item.cookState;
+              items += "<li data-seq='" + item.paymentPrice + "' class='empOrderDetail'>";
+              items += item.paymentPrice;
               items += "</li>";
               items += "</ul>"
             });
