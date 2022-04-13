@@ -27,7 +27,7 @@
 	<select id="selectDayPayment" resultType="String" parameterType="String">
 		select sum(case when payment_date like #{paymentDate}||'%' then payment_price end) 
 		from payment
-		where payment_date like #{paymentDate}||'%'
+		where to_date(payment_date,'yy/mm/dd') = #{paymentDate}
 	</select>
 	
 	<!-- 특정날짜 결제리스트 -->
