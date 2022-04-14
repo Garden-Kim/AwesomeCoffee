@@ -20,7 +20,6 @@
       $month10: null,
       $month11: null,
       $month12: null,
-
     },
     data: {
       requset: {
@@ -30,43 +29,13 @@
       },
     },
     init: function init() {},
-    /*
-      진행도를 표시한다.
-      @param {function} succCallback 완료 후 호출될 함수
-    */
     initView: function initView() {
       console.log(M.data.global('id'));
       console.log(M.data.storage('AUTO_LOGIN_AUTH'));
       if (module.isEmpty(M.data.global('id'))) {
         M.page.html('./login.html');
       }
-      // 매출 그래프 데이터 갖고오기
-      var self = this;
-      var year = 22;
-      MNet.sendHttp({
-        path: SERVER_PATH.PAYMENT_MONTHSUM,
-        data: {
-          "year": year
-        },
-        succ: function (data) {
-          console.log(data);
-          var items = "";
-          list = []
-          $.each(data.monthList, function (index, item) {
-            list.push({
-              "month": item.month,
-              "monthSum": item.monthSum
-            });
-          });
-          list.forEach(function (item) {
-            console.log(item.month + ", " + item.monthSum);
-          });
-        },
-        error: function () {
-          console.log(data);
-          alert("리스트를 가져오지 못했습니다.");
-        }
-      });
+      // 초기 그래프 
       var chart = new Chart(document.getElementById("myChart"), {
         type: 'line',
         data: {
@@ -75,10 +44,6 @@
               label: [],
               data: [],
             },
-            {
-              label: [],
-              data: [],
-            }
           ],
           borderWidth: 1
         },
