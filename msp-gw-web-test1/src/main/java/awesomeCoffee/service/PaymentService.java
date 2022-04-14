@@ -35,9 +35,9 @@ public class PaymentService {
 	public String selectYearPayment (Map<String, Object> param) {
 		return sqlSession.selectOne("Payment.selectYearPayment", param);
 	}
-	// 결제 합계 (월)
-	public String selectMonthSum (Map<String, Object> param) {
-		return sqlSession.selectOne("Payment.selectMonthPayment", param);
+	// 결제 합계 (월별) 매출 그래프 
+	public List<PaymentDTO> selectMonthSum (Map<String, Object> param) {
+		return sqlSession.selectList("Payment.selectMonthPayment", param);
 	}
 	// 결제 합계 (일)
 	public String selectDaySum (Map<String, Object> param) {

@@ -12,16 +12,18 @@
 		group by to_char(payment_date,'yy')
 	</select>
 	
-	<!-- 년 year 월 month 입력 -->
-	<select id = "selectMonthPayment" resultType="String" parameterType="String">
-		select sum(case when month like #{month}||'%' then payment_price end) AS SUM
+	<!-- year 만 입력 결제 합계 (월별) 매출 그래프 -->
+	<select id = "selectMonthPayment" parameterType="map" resultType="awesomeCoffee.dto.PaymentDTO">
+		select month, sum(payment_price) AS monthSum, to_number(month) onum
 		from (
-    		select substr(payment_date,4,2) AS month, payment_price, payment_date
-    		from payment
-    		where payment_date like #{year}||'%'
+    			select substr(payment_date,4,2) AS month, payment_price, payment_date
+    			from payment
+    			where payment_date like #{year}||'%'
    			 )
-		where month like #{month}||'%'
+		group by month
+		order by onum
 	</select>
+
 	
 	<!-- 날짜 한번에 입력 -->
 	<select id="selectDayPayment" resultType="String" parameterType="String">
@@ -32,8 +34,8 @@
 	
 	<!-- 특정날짜 결제리스트 -->
 	<select id="selectDayPaymentList" parameterType="map" resultType="awesomeCoffee.dto.PaymentDTO">
-		select
-		* from payment
+		select *
+		from payment
 		where to_date(payment_date,'yy/mm/dd') = #{paymentDate}
 		
 	</select>

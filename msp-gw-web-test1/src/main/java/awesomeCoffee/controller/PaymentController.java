@@ -78,7 +78,7 @@ public class PaymentController {
 			int price = Integer.parseInt(dto.getGoodsPrice()) * Integer.parseInt(reqBodyMap.get("qty").toString());
 			reqBodyMap.put("paymentPrice", price);
 			reqBodyMap.put("orderPrice", price);
-			
+
 			if (dto != null) {
 				int i = memberOrderService.insertDirectOrder(reqBodyMap);
 				// 회원 주문 내역 insert
@@ -136,7 +136,7 @@ public class PaymentController {
 			reqBodyMap.put("memberNum", memberNum);
 			String orderNum = memberOrderService.createOrderNum();
 			reqBodyMap.put("orderNum", orderNum);
-			
+
 			List<CartDTO> list = cartService.selectAllCart(memberNum);
 			if (!list.isEmpty()) {
 				int result = paymentService.paymentInsert(reqBodyMap);
@@ -184,7 +184,7 @@ public class PaymentController {
 		reqHeadMap.put(Const.RESULT_CODE, Const.OK);
 		reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
 		logger.info("======================= reqBodyMap : {}", reqBodyMap.toString());
-		
+
 		String sum = paymentService.selectYearPayment(reqBodyMap);
 		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
 		if (StringUtils.isEmpty(authInfo)) {
@@ -207,7 +207,7 @@ public class PaymentController {
 		return mv;
 	}
 
-	// 결제 합계 (월)
+	// 결제 합계 (월별) 매출 그래프 
 	@RequestMapping(method = RequestMethod.POST, value = "/api/payment/monthSum")
 	public ModelAndView paymentMonthSum(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
 		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
@@ -219,17 +219,26 @@ public class PaymentController {
 		reqHeadMap.put(Const.RESULT_CODE, Const.OK);
 		reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
 		logger.info("======================= reqBodyMap : {}", reqBodyMap.toString());
-		// String year = reqBodyMap.get("paymentDate").toString();
-		String sum = paymentService.selectMonthSum(reqBodyMap);
+
+		List<Map<String, Object>> paymentList = new ArrayList<Map<String, Object>>();
+		List<PaymentDTO> monthList = paymentService.selectMonthSum(reqBodyMap);
+		for (int i = 0; i < monthList.size(); i++) {
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("month", monthList.get(i).getMonth());
+			map.put("monthSum", monthList.get(i).getMonthSum());
+
+			paymentList.add(map);
+		}
+
 		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
 		if (StringUtils.isEmpty(authInfo)) {
 			responseBodyMap.put("rsltCode", "1003");
 			responseBodyMap.put("rsltMsg", "Login required.");
 		} else {
-			if (!StringUtils.isEmpty(sum)) {
+			if (!StringUtils.isEmpty(paymentList)) {
 				responseBodyMap.put("rsltCode", "0000");
 				responseBodyMap.put("rsltMsg", "Success");
-				responseBodyMap.put("monthPaymentSum", sum);
+				responseBodyMap.put("monthList", paymentList);
 			} else {
 				responseBodyMap.put("rsltCode", "2003");
 				responseBodyMap.put("rsltMsg", "Data not found.");
@@ -241,7 +250,7 @@ public class PaymentController {
 
 		return mv;
 	}
-	
+
 	// 결제 합계 (일)
 	@RequestMapping(method = RequestMethod.POST, value = "/api/payment/daySum")
 	public ModelAndView paymentDaySum(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
@@ -276,9 +285,9 @@ public class PaymentController {
 
 		return mv;
 	}
-	
+
 	// 결제 리스트 (특정날짜)
-	@RequestMapping(method = RequestMethod.POST, value="/api/payment/dateList")
+	@RequestMapping(method = RequestMethod.POST, value = "/api/payment/dateList")
 	public ModelAndView paymentList(HttpSession session, HttpServletRequest request) {
 		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
 		Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
@@ -288,7 +297,7 @@ public class PaymentController {
 		if (reqHeadMap == null) {
 			reqHeadMap = new HashMap<String, Object>();
 		}
-		
+
 		reqHeadMap.put(Const.RESULT_CODE, Const.OK);
 		reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
 		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
@@ -306,7 +315,7 @@ public class PaymentController {
 				map.put("paymentDate", list.get(i).getPaymentDate());
 				map.put("paymentKind", list.get(i).getPaymentKind());
 				map.put("paymentPrice", list.get(i).getPaymentPrice());
-				
+
 				paymentList.add(map);
 			}
 			logger.info("======================= paymentList : {}", paymentList.toString());
