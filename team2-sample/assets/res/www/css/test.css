@@ -1,0 +1,22 @@
+@charset "utf-8";
+@import "morpheus-reset.css";
+@import "morpheus-common.css";
+
+/* 매출현황 리스트 */
+.date {width: 90px; font-size: 13px;}
+.paymentList {width: 100%; text-align:center; font-size: 15px; display: table; padding: 0 0.5rem; height: 2.5rem;}
+
+.paymentListbox {background-color:#fff;}
+.paymentList ul {width:100%;}
+.paymentList li {float:left; width: 25%; text-align: center;position: relative; overflow:hidden; font-size: 15px; padding:2rem 0rem; }
+.paymentList li:nth-child(3){width:25%;}
+.paymentList { margin-bottom:0.1rem;}
+
+
+.selectDate {
+    margin: 1.7rem;
+    font-size: 18px;
+    padding: 1px;
+    border: 1px solid #e0e0e0;
+}
+.paymentBox {margin:1rem;padding:1rem;background-color:#fff; padding-top: 5rem;}

@@ -4,10 +4,23 @@
  * @date : 
  */
 
-(function ($, M, module, MNet, SERVER_PATH,CONFIG, window){
+(function ($, M, module, MNet, SERVER_PATH, CONFIG, window) {
 
   var page = {
-    els:  {
+    els: {
+      $month01: null,
+      $month02: null,
+      $month03: null,
+      $month04: null,
+      $month05: null,
+      $month06: null,
+      $month07: null,
+      $month08: null,
+      $month09: null,
+      $month10: null,
+      $month11: null,
+      $month12: null,
+
     },
     data: {
       requset: {
@@ -16,108 +29,252 @@
         cnt: '100000'
       },
     },
-    init: function init(){
-    },
+    init: function init() {},
     /*
       진행도를 표시한다.
       @param {function} succCallback 완료 후 호출될 함수
     */
-    initView : function initView(){
+    initView: function initView() {
       console.log(M.data.global('id'));
       console.log(M.data.storage('AUTO_LOGIN_AUTH'));
-      if(module.isEmpty(M.data.global('id'))){
+      if (module.isEmpty(M.data.global('id'))) {
         M.page.html('./login.html');
       }
+      // 매출 그래프 데이터 갖고오기
+      var self = this;
+      var year = 22;
+      MNet.sendHttp({
+        path: SERVER_PATH.PAYMENT_MONTHSUM,
+        data: {
+          "year": year
+        },
+        succ: function (data) {
+          console.log(data);
+          var items = "";
+          list = []
+          $.each(data.monthList, function (index, item) {
+            list.push({
+              "month": item.month,
+              "monthSum": item.monthSum
+            });
+          });
+          list.forEach(function (item) {
+            console.log(item.month + ", " + item.monthSum);
+          });
+        },
+        error: function () {
+          console.log(data);
+          alert("리스트를 가져오지 못했습니다.");
+        }
+      });
+      var chart = new Chart(document.getElementById("myChart"), {
+        type: 'line',
+        data: {
+          labels: [],
+          datasets: [{
+              label: [],
+              data: [],
+            },
+            {
+              label: [],
+              data: [],
+            }
+          ],
+          borderWidth: 1
+        },
+      });
+
     },
-    initEvent : function initEvent(){
-      $('.btn-search').on('click', function(){
-        var year = "";
-        var month = "";
-        var date = "";
+    initEvent: function initEvent() {
+      // 매출 그래프 데이터 갖고오기 
+      const tabList = document.querySelectorAll('.category li');
+      for (var i = 0; i < tabList.length; i++) {
+        tabList[i].querySelector('.btn-category').addEventListener('click', function () {
+          for (var j = 0; j < tabList.length; j++) {
+            tabList[j].classList.remove('on');
+          }
+          var ctg = $(this).parent('li').attr('id');
+          this.parentNode.classList.add('on');
+          console.log(ctg);
+          MNet.sendHttp({
+            path: SERVER_PATH.PAYMENT_MONTHSUM,
+            data: {
+              "year": ctg,
+            },
+            succ: function (data) {
+              console.log(data);
+              list = []
+              $.each(data.monthList, function (index, item) {
+                list.push({
+                  "monthSum": item.monthSum
+                });
+              });
+              
+              console.log(list);
+              var month1 = list[0].monthSum;
+              var month2 =  list[1].monthSum;
+              var month3 =  list[2].monthSum;
+              var month4 = list[3].monthSum;
+              var month5 = list[4].monthSum;
+              var month6 =  list[5].monthSum;
+              var month7 =  list[6].monthSum;
+              var month8 = list[7].monthSum;
+              var month9 =  list[8].monthSum;
+              var month10 =  list[9].monthSum;
+              var month11 =  list[10].monthSum;
+              var month12 =  list[11].monthSum;
+              
+              for (j= 0;  list.length < j; j++){
+
+                var i = list[j].month;
+              }
+              var i = 0;
+              myChart = new Chart(document.getElementById('myChart'), {
+                type: 'bar',
+                data: {
+                  labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+                  datasets: [{
+                    label: '월 매출',
+                    data: [ month1, month2, month3, month4, month5
+                     , month6, month7, month8, month9, month10, month11, month12 
+                    ]
+                  
+                    ,
+                    backgroundColor: [
+                      'rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)',
+                      'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)',
+                      'rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)',
+                      'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                      'rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)',
+                      'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)',
+                      'rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)',
+                      'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                  }]
+                },
+                options: {
+                  scales: {
+                    yAxes: [{
+                      ticks: {
+                        beginAtZero: true
+                      }
+                    }]
+                  }
+                }
+              });
+
+            },
+            error: function (data) {
+              console.log(data);
+              alert(" fail ");
+            },
+          });
+        });
+      };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      $('.btn-search').on('click', function () {
         var paymentDate = "";
-        year = $('#year').val();
-        month = $('#month').val();
-        date = $('#date').val();
-        paymentDate = year + '/' + month + '/' + date;
-        console.log(paymentDate)
+        paymentDate = document.getElementById('inputDate').value;
+        console.log(paymentDate);
         MNet.sendHttp({
           path: SERVER_PATH.PAYMENT_DATELIST,
           data: {
-            "paymentDate" : paymentDate
+            "paymentDate": paymentDate
           },
           succ: function (data) {
-            var items = "";
-         //   self.data.requset.lastSeqNo = data.lastSeqNo;
-            $.each(data.list, function (index, item) {
-              items += "<ul class='empOrderItem' data-seq='" + item.orderNum + "'>"
-              items += "<li data-seq='" + item.paymentKind + "' class='empOrderDetail'>";
-              items += item.paymentKind;
-              items += "</li>";
-              items += "<li data-seq='" + item.orderNum + "' class='empOrderDetail'>";
-              items += item.orderNum;
-              items += "</li>";
-              items += "<li data-seq='" + item.paymentDate + "' class='empOrderDetail'>";
-              items += item.paymentDate;
-              items += "</li>";
-              items += "<li data-seq='" + item.paymentPrice + "' class='empOrderDetail'>";
-              items += item.paymentPrice;
-              items += "</li>";
-              items += "</ul>"
+            M.page.replace('./saleSearch.html', {
+              param: {
+                paymentDate: paymentDate
+              }
             });
-            $(".empOrder").append(items);
           },
           error: function (data) {
             console.log(data);
-            alert(" 리스트를 가져오지 못했습니다. ");
+            alert(" 데이터를 가져오지 못했습니다. ");
           },
         });
-      $('.l-fix').on('click', function(){
-        M.page.back();
-      });
-      // 사이드바 
-      $('.btn-menu').on('click', function () {
-        console.log('메뉴클릭');
-        $('.position').attr('style', 'position: absolute; top:0;right:0px;bottom:0;transition:1s ease;');
-        $('.wrapper').fadeTo("fast", 0.3);
-        $('.wrapper').attr('style', 'position:relative;height:100%;background-color:#fff;pointer-events: none;cursor: default;');
-      });
-      $('.btn-menu').on('blur', function () {
-        console.log('취소');
-        $('.position').attr('style', 'position: absolute; top:0;right:-130px;bottom:0;transition:1s ease;');
-        $('.wrapper').fadeTo("fast", 1);
-        $('.wrapper').attr('style', 'position:relative;height:100%;background-color:#fff;');
-      });
-      $('#menu-order-food').on('click', function(){
-        M.page.html('./foodOrder.html');
-      });      
-      $('#menu-payment-list').on('click', function(){
-  //   발주내역   M.page.html('./.html');
-      });       
-      $('#menu-sales').on('click', function(){
-        M.page.replace('./sales.html');
-      });      
-      $('#menu-menu').on('click', function(){
-        M.page.html('./menuList.html');
-      });          
-      $('#menu-member-info').on('click', function(){
-  //    회원정보  M.page.html('./.html');
-      });   
-      $('#menu-store-info').on('click', function(){
-        M.page.html('./storeList.html');
-      });
+
+        $('.l-fix').on('click', function () {
+          M.page.back();
+        });
+
+        // 사이드바 
+        $('.btn-menu').on('click', function () {
+          console.log('메뉴클릭');
+          $('.position').attr('style', 'position: absolute; top:0;right:0px;bottom:0;transition:1s ease;');
+          $('.wrapper').fadeTo("fast", 0.3);
+          $('.wrapper').attr('style', 'position:relative;height:100%;background-color:#fff;pointer-events: none;cursor: default;');
+        });
+        $('.btn-menu').on('blur', function () {
+          console.log('취소');
+          $('.position').attr('style', 'position: absolute; top:0;right:-130px;bottom:0;transition:1s ease;');
+          $('.wrapper').fadeTo("fast", 1);
+          $('.wrapper').attr('style', 'position:relative;height:100%;background-color:#fff;');
+        });
+        $('#menu-order-food').on('click', function () {
+          M.page.html('./foodOrder.html');
+        });
+        $('#menu-payment-list').on('click', function () {
+          //   발주내역   M.page.html('./.html');
+        });
+        $('#menu-sales').on('click', function () {
+          M.page.replace('./sales.html');
+        });
+        $('#menu-menu').on('click', function () {
+          M.page.html('./menuList.html');
+        });
+        $('#menu-member-info').on('click', function () {
+          //    회원정보  M.page.html('./.html');
+        });
+        $('#menu-store-info').on('click', function () {
+          M.page.html('./storeList.html');
+        });
+      })
     }
-      )}
   };
   window.__page__ = page;
-})(jQuery, M, __util__, __mnet__, __serverPath__,__difinition__, window);
+})(jQuery, M, __util__, __mnet__, __serverPath__, __difinition__, window);
 
 // 해당 페이지에서 실제 호출
-(function($,M,pageFunc,window){
+(function ($, M, pageFunc, window) {
 
-  M.onReady(function(){
+  M.onReady(function () {
     pageFunc.init(); // 최초 화면 초기화
     pageFunc.initView();
     pageFunc.initEvent();
   });
-  
-})(jQuery,M,__page__,window);
+
+})(jQuery, M, __page__, window);

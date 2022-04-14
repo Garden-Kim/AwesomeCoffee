@@ -21,7 +21,6 @@ STORE_INFO : "api/store/info", // 매장상세정보(매장이름입력)
 STORE_LIST : "api/store/storeList", // 매장 리스트
 STORE_MEM_LIST : "api/store/memList", // 회원 리스트
 STORE_SEARCH_LIST : "api/store/searchList", // 매장검색
-MENU_CATEGORYEMPLIST : "api/category/menuEmpList", //카테고리별 메뉴리스트(관리자)
 
 // 레시피
 RECIPE_REGIST : "api/recipe/regist", // 레시피 등록
@@ -55,6 +54,7 @@ MENU_LIST : "api/menu/list", // 메뉴 리스트
 MENU_CATEGORYLIST : "api/category/menuList", // 카테고리별 메뉴리스트
 MENU_SEARCH : "api/menu/search", // 메뉴 검색
 MENU_EMPLIST : "api/menu/empList" , //메뉴 리스트(관리자)
+MENU_CATEGORYEMPLIST : "api/category/menuEmpList", //카테고리별 메뉴리스트(관리자)
 
 
 // 관심상품
@@ -80,11 +80,15 @@ ORDER_UPDATE_TAKE : "api/order/updateTakeout", // 주문수정(수령상태)
 ORDER_UPDATE_STATE : "api/order/updateCookState", // 주문수정(조리상태)
 ORDER_DIRECTORDER : "api/order/directOrder", // 바로주문 
 ORDER_TAKE_LIST : "api/order/empListTake", // 주문리스트(조리Y 수령N)
+ORDER_TODAYORDER : "api/order/empTodayList", // 오늘의 주문 
 
 // 주문내역
 ORDER_LIST_REGIST : "api/orderlist/regist", // 주문 상세 등록
 ORDER_LIST_LIST : "api/orderlist/list", // 주문상세 리스트(회원)
 ORDER_LIST_DETAIL : "api/orderlist/detail", // 회원 주문 상세 
+ORDER_LIST_LISTNN : "api/orderlist/listNN", // 회원 조리N수령N
+ORDER_LIST_LISTYN : "api/orderlist/listYN", // 회원 조리Y수령N
+ORDER_LIST_LISTYY : "api/orderlist/listYY", // 회원 조리Y수령Y
 
 
 // 결제(회원)
@@ -92,10 +96,15 @@ PAYMENT_MEM_REGIST : "api/payment/regist", // 결제등록(회원)
 PAYMENT_DIRECTREGIST :  "api/payment/directRegist", // 바로주문결제
 PAYMENT_MEM_LIST : "api/payment/list", // 결제 목록 (회원)
 PAYMENT_YEARSUM : "api/payment/yearSum", // 결제 합계 (년)
+PAYMENT_MONTHSUM : "api/payment/monthSum" , // 결제 합계 (월) 매출
+PAYMENT_DAYSUM : "api/payment/daySum", // 결제 합계 (일) 매출합계
+PAYMENT_DATELIST : "api/payment/dateList", // 특정날짜 결제 리스트 
 
 
 // 발주 
 STORE_ORDER_DETAIL : "api/storeOrder/detail",  // 발주 상세페이지
+STORE_ORDER_LIST : "api/storeOrder/list", // 발주 리스트
+STORE_ORDER_REGIST : "api/storeOrder/regist", // 발주 등록
 
 // 입금(매장결제)
 FOOD_PAYMENT_LIST: "api/foodPayment/list", // 입금(결제)리스트

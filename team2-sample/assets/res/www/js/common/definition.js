@@ -128,6 +128,7 @@
     ORDER_UPDATE_STATE : "api/order/updateCookState", // 주문수정(조리상태)
     ORDER_DIRECTORDER : "api/order/directOrder", // 바로주문 
     ORDER_TAKE_LIST : "api/order/empListTake", // 주문리스트(조리Y 수령N)
+    ORDER_TODAYORDER : "api/order/empTodayList", // 오늘의 주문 
     
     // 주문내역
     ORDER_LIST_REGIST : "api/orderlist/regist", // 주문 상세 등록
@@ -143,10 +144,13 @@
     PAYMENT_DIRECTREGIST :  "api/payment/directRegist", // 바로주문결제
     PAYMENT_MEM_LIST : "api/payment/list", // 결제 목록 (회원)
     PAYMENT_YEARSUM : "api/payment/yearSum", // 결제 합계 (년)
+    PAYMENT_MONTHSUM : "api/payment/monthSum" , // 결제 합계 (월) 매출
     
     
     // 발주 
     STORE_ORDER_DETAIL : "api/storeOrder/detail",  // 발주 상세페이지
+    STORE_ORDER_LIST : "api/storeOrder/list", // 발주 리스트
+    STORE_ORDER_REGIST : "api/storeOrder/regist", // 발주 등록
     
     // 입금(매장결제)
     FOOD_PAYMENT_LIST: "api/foodPayment/list", // 입금(결제)리스트
