@@ -9,6 +9,7 @@ public class OrderlistDTO {
 	private String orderPrice;
 	private String goodsName;
 	private String goodsPrice;
+	private String goodsImage;
 	private String price;
 	
 	
@@ -16,7 +17,7 @@ public class OrderlistDTO {
 	public String toString() {
 		return "OrderlistDTO [orderNum=" + orderNum + ", goodsNum=" + goodsNum + ", orderlistQty=" + orderlistQty
 				+ ", orderlistSum=" + orderlistSum + ", orderPrice=" + orderPrice + ", goodsName=" + goodsName
-				+ ", goodsPrice=" + goodsPrice + ", price=" + price + "]";
+				+ ", goodsPrice=" + goodsPrice + ", goodsImage=" + goodsImage + ", price=" + price + "]";
 	}
 	public String getOrderNum() {
 		return orderNum;
@@ -59,6 +60,12 @@ public class OrderlistDTO {
 	}
 	public void setGoodsPrice(String goodsPrice) {
 		this.goodsPrice = goodsPrice;
+	}
+	public String getGoodsImage() {
+		return goodsImage;
+	}
+	public void setGoodsImage(String goodsImage) {
+		this.goodsImage = goodsImage;
 	}
 	public String getPrice() {
 		return price;
