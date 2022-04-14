@@ -11,6 +11,7 @@ public class PaymentDTO {
 	
 	private String monthSum;
 	private String month;
+	
 	public String getOrderNum() {
 		return orderNum;
 	}
