@@ -29,19 +29,18 @@
     initView: function initView() {
       var self = this;
       MNet.sendHttp({
-        path: SERVER_PATH.NOTICE_DETAIL,
+        path: SERVER_PATH.RECIPE_INFO,
         data: {
-          loginId: M.data.global('id'),
-          seqNo: M.data.param('seqNo')
+          goodsNum : M.data.param('goodsNum')
         }, 
         succ: function (data) {
           var items = "";
           items += "<div class='recipe-detail-tit'>";
           items += "<p id='title'>";
-          items += "아인슈페너";
+          items += M.data.param('goodsName');
           items += "</p>";
           items += "<span id='regDate'>";
-          items += "RecipeNumber : 11";
+          items += "상품번호 : " + M.data.param('goodsNum');
           items += "</span><br/>";
           items += "<span> ";
           items += "Category : coffee";

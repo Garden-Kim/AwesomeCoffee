@@ -64,6 +64,9 @@
       $('.l-fix').on('click', function(){
         M.page.back();
       });
+      $('#btnTop').on('click', function () {
+        $('.cont-wrap').scrollTop(0);
+      });
       // 입금버튼
       $('#btn-payment').on('click', function(){
         var pay = $('#foodPaymentPrice').val().trim();

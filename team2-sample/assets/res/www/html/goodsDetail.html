@@ -27,26 +27,27 @@
   <div class="container">
     <div class="cont-wrap">
 
-      <div class="detail-conts">
+      <div class="detail-conts" style="height:auto;">
         <div class="img-wraps">
           <img alt="서버 점검중입니다." id="imgUrl" src=""/>
         </div>
 
-        <span id="title"></span>
-        <p id="regDate">
-        </p>
-
+        <div id="title" style="width:100%;font-size:2rem;font-weight:bold;"></div>
+        <div style="padding:1rem;">
+          <div id="content" style="font-size: 1.5rem;"></div>
+          <span id="kal" style="position:relative;float:right;"></span>
+        </div>
       </div>
       <div class="commonLine"></div>
       <div class="orderQty" class="orderQty">
-        <span class="goodsPrice" id="goodsPrice">5000</span>원
+        <span class="goodsPrice" id="goodsPrice" style="padding-left: 10rem;">5000</span> 원
         <span class="goodsCnt">
-            <button id="qtyMinus" type="button"><img src='../img/icon-minus.png'></button> &nbsp;&nbsp;<span
-          id="goodsQty">1</span>&nbsp;&nbsp; <button id="qtyPlus" type="button"><img
-          src='../img/icon-plus.png'></button>
-          </span>
+            <button id="qtyMinus" type="button"><img src='../img/icon-minus.png'></button>
+            <span id="goodsQty"> 1</span>&nbsp;&nbsp; 
+            <button id="qtyPlus" type="button"><img src='../img/icon-plus.png'></button>
+        </span>
         <div class="recipe-exist">
-          <span id="recipe-exist"> 등록된 레시피가 없습니다. </span>
+          <span id="recipe-exist" style="padding: 1.5rem;"> 등록된 레시피가 없습니다. </span>
           <button class='btn-line' id='recipe-write' type='button'>
             레시피 등록
           </button>
@@ -54,10 +55,10 @@
 
       </div>
       <div class="commonLine"></div>
-      <div class="recommandationMenu bg-gray">
+      <div class="recommandationMenu">
         <div style="width:100%;text-align:center;font-size:1.7rem; font-weight:bold;">회원님을 위한 추천메뉴</div>
-        <ul class="metro-wrap pd" id="">
-          <li class='menu bg-white' id='menu1'>
+        <ul class="metro-wrap pd" id="best">
+          <li class='menu bg-white' id='menu1' data='' style="bolder:3px;solid;rgb(223, 221, 221);">
             <div class='thumbnail-wrap'>
               <div class='thumbnail'>
                 <img alt='' id="imgUrl1" src=''/>
@@ -76,7 +77,7 @@
               </div>
             </div>
           </li>
-          <li class='menu bg-white' id='menu2'>
+          <li class='menu bg-white' id='menu2' data=''>
             <div class='thumbnail-wrap'>
               <div class='thumbnail'>
                 <img alt='' id="imgUrl2" src=''/>
@@ -95,7 +96,7 @@
               </div>
             </div>
           </li>
-          <li class='menu bg-white' id='menu3'>
+          <li class='menu bg-white' id='menu3' data=''>
             <div class='thumbnail-wrap'>
               <div class='thumbnail'>
                 <img alt='' id="imgUrl3" src=''/>

@@ -22,34 +22,73 @@
       if(module.isEmpty(M.data.global('id'))){
         M.page.html('./login.html');
       }
-/*      MNet.sendHttp({
+      MNet.sendHttp({
         path: SERVER_PATH.STORE_ORDER_LIST,
         data: {},
         succ: function (data) {
-          console.log(data);
           var items = "";
-          $.each(data.list, function (index, item) {
-            items += "<tr id='"+ item.seqNo +"' class ='test'>";
-            items += "<th>";
-            items += item.title;
-            items += "</th><th>";
-            items += item.title;
-            items += "</th><th>";
-            items += item.title;
-            items += "</th></tr>";;
-          });
-          $("#noti-wrap").html(items);
+          if(data.list === ''){
+            items += "<h1 style='font-size:2rem;color:#888;text-align:center;margin-top:5rem;'>"
+            items += "발주내역이 없습니다.</h1>"
+            $(".foodPayList").append(items);
+          }else{
+            $.each(data.list, function (index, item) {
+              items += "<ul data='" + item.storeOrderNum + "' class='memberOne bg-white' >";
+              items += "<li>";
+              items += "<div style='font-size:1.5rem;padding:.7rem;'>";
+              items += "발주번호 : "+ item.storeOrderNum;
+              items += "<span style='color:#aaa'>";
+              items += " / 날짜 : "+ item.storeOrderDate;
+              items += "</span>";
+              items += "<span style='float:right;margin-right:1rem;'>";
+              items += "총액 : "+ item.listPrice + " 원 ";
+              items += "</span>";
+              items += "</div>";
+              items += "</li>";
+              
+              items += "<li>";
+              items += "<ul>";
+              items += '식자재명';
+              items += "</ul>";
+              items += "<ul>";
+              items += '갯수';
+              items += "</ul>";
+              items += "<ul>";
+              items += '금액';
+              items += "</ul>";
+              items += "</li>";
+              //// each 문 돌리기
+              $.each(item.list, function (index, a) {
+                items += "<li>";
+                items += "<ul>";
+                items += a.foodName;
+                items += "</ul>";
+                items += "<ul>";
+                items += a.storeOrderQty + ' 개';
+                items += "</ul>";
+                items += "<ul>";
+                items += a.foodPrice + ' 원';
+                items += "</ul>";
+                items += "</li>";
+              });
+              items += "</ul>";
+            });
+            $(".foodPayList").append(items);
+          }
         },
         error: function (data) {
-          console.log(data);
-          alert("리스트를 가져오지 못했습니다.");
-        },
-      });*/
+          $(".foodPayList").css("display", "none");
+          alert("에러");
+        }
+      });
     },
     initEvent : function initEvent(){
       $('.l-fix').on('click', function(){
         M.page.back();
       });
+      $('#btnTop').on('click', function () {
+        $('.cont-wrap').scrollTop(0);
+      })
       // 사이드바 
       $('.btn-menu').on('click', function () {
         console.log('메뉴클릭');
