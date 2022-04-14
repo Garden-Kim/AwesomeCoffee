@@ -34,8 +34,8 @@
     },
     initView: function initView() {
       //화면에서 세팅할 동적데이터
-      var seqNo = M.data.param("seqNo");
       var self = this;
+      console.log(M.data.param("goodsName"));
       MNet.sendHttp({
         path: SERVER_PATH.MENU_INFO,
         data: {
@@ -44,28 +44,70 @@
         succ: function (data) {
           console.log(data);
           $('#title').text(data.goodsName);
-          $('#content').html(data.goodsContent);
+          $('#content').html(data.goodsContent );
+          $('#kal').text(data.goodsKal + ' Kal');
           $('.goodsPrice').text(data.goodsPrice);
           $('.goodsPrice').attr('id', data.goodsPrice);
+          $('#imgUrl').attr('src', 'http://192.168.0.31:8080/view/goods/upload/'+ data.goodsImage);
           console.log(data.goodsNum);
           goodsNum = data.goodsNum;
           console.log(goodsNum);
-          if(data.categoryNum != '45'){
+          if(data.recipeYn == 'Y'){
+            $('#recipe-exist').text('레시피가 존재합니다.')
+            $('#recipe-write').text('레시피 상세');
+          }
+          if(data.categoryNum != '45 '){
             MNet.sendHttp({
               path: SERVER_PATH.MENU_CATEGORYLIST,
               data: {
-                "categoryNum" : "45",
+                "categoryNum" : "45 ",
               },
               succ: function (data) {
-//                console.log(data.list.index[0].goodsName);
                 console.log(data);
                 console.log(data.list[0]);
                 console.log(data.list[0].goodsName);
+                $('#imgUrl1').attr('src','http://192.168.0.31:8080/view/goods/upload/' + data.list[0].goodsImage);
+                $('#goodsName1').text(data.list[0].goodsName);
+                $('#goodsPrice1').text(data.list[0].goodsPrice + ' 원');
+                $('#menu1').attr('data',data.list[0].goodsName);
+                
+                $('#imgUrl2').attr('src','http://192.168.0.31:8080/view/goods/upload/' + data.list[1].goodsImage);
+                $('#goodsName2').text(data.list[1].goodsName);
+                $('#goodsPrice2').text(data.list[1].goodsPrice + ' 원');
+                $('#menu2').attr('data',data.list[1].goodsName);
+                
+                $('#imgUrl3').attr('src','http://192.168.0.31:8080/view/goods/upload/' + data.list[2].goodsImage);
+                $('#goodsName3').text(data.list[2].goodsName);
+                $('#goodsPrice3').text(data.list[2].goodsPrice + ' 원');
+                $('#menu3').attr('data',data.list[2].goodsName);
               }
             });
-          }
-          if (data.goodsImage != null) {
-            $('#imgUrl').attr('src', 'http://192.168.0.31:8080/view/goods/upload/'+ data.goodsImage);
+          }else{
+            MNet.sendHttp({
+              path: SERVER_PATH.MENU_CATEGORYLIST,
+              data: {
+                "categoryNum" : "42",
+              },
+              succ: function (data) {
+                console.log(data);
+                console.log(data.list[0]);
+                console.log(data.list[0].goodsName);
+                $('#imgUrl1').attr('src','http://192.168.0.31:8080/view/goods/upload/' + data.list[0].goodsImage);
+                $('#goodsName1').text(data.list[0].goodsName);
+                $('#goodsPrice1').text(data.list[0].goodsPrice + ' 원');
+                $('#menu1').attr('data',data.list[0].goodsName);
+                
+                $('#imgUrl2').attr('src','http://192.168.0.31:8080/view/goods/upload/' + data.list[1].goodsImage);
+                $('#goodsName2').text(data.list[1].goodsName);
+                $('#goodsPrice2').text(data.list[1].goodsPrice + ' 원');
+                $('#menu2').attr('data',data.list[1].goodsName);
+                
+                $('#imgUrl3').attr('src','http://192.168.0.31:8080/view/goods/upload/' + data.list[2].goodsImage);
+                $('#goodsName3').text(data.list[2].goodsName);
+                $('#goodsPrice3').text(data.list[2].goodsPrice + ' 원');
+                $('#menu3').attr('data',data.list[2].goodsName);
+              }
+            });
           }
         },
         error: function (data) {
@@ -76,6 +118,18 @@
     },
     initEvent: function initEvent() {
       var self = this;
+      $('#menu1').on('click', function(){
+        var goodsName = $(this).attr('data');
+        M.page.html('./goodsDetail.html',{param : {goodsName	: goodsName}} );
+      });
+      $('#menu2').on('click', function(){
+        var goodsName = $(this).attr('data');
+        M.page.html('./goodsDetail.html',{param : {goodsName	: goodsName}} );
+      });
+      $('#menu3').on('click', function(){
+        var goodsName = $(this).attr('data');
+        M.page.html('./goodsDetail.html',{param : {goodsName	: goodsName}} );
+      });
       // Dom Event 바인딩
       $('.btn-back').on('click', function () {
         M.page.back();
@@ -135,8 +189,13 @@
       
       
       $('#recipe-write').on('click', function(){
-        M.page.html('./write-recipe.html',{param : { goodsName : M.data.param("goodsName"),
+        if($('#recipe-write').text() == '레시피 상세'){
+          M.page.html('./recipeDetail.html',{param : { goodsName : M.data.param("goodsName"),
                                                       goodsNum : goodsNum }});
+        }else{
+          M.page.html('./write-recipe.html',{param : { goodsName : M.data.param("goodsName"),
+                                                      goodsNum : goodsNum }});
+        }
       });
       $('#modiBtn').on('click', function(){
         M.page.html('./write-menu.html',{param : { seqNo : M.data.param('seqNo')}});

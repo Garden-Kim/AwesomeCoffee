@@ -266,7 +266,7 @@ html, body {max-width: 100%;overflow-x: hidden;max-height: 100%;}
 .side-bar li{padding-top:2rem;}
 /*사이드바*/
 /*상품메뉴*/
-.metro-wrap li.menu{position:relative;border-radius: 12%;overflow: hidden;background-color:#fff;float:left;margin-top:1rem;margin-left:2%;width:31%;height:20rem;}
+.metro-wrap li.menu{position:relative;border-radius: 5%;overflow: hidden;background-color:#fff;float:left;margin-top:1rem;margin-left:2%;width:31%;height:20rem;}
 .metro-wrap li.menu:nth-child(1),
 .metro-wrap li.menu:nth-child(2),
 .metro-wrap li.menu:nth-child(3){margin-top:1%;}
@@ -330,7 +330,10 @@ html, body {max-width: 100%;overflow-x: hidden;max-height: 100%;}
 .total-price{position:fixed;background-color:rgb(223, 221, 221);bottom:4.5rem;padding:.4rem;padding-left:2rem;font-size:2rem;font-weight:bold;width:100%;height:3.5rem;}
 .total-price span{float:right; padding-right:1.5rem;color:#B45252;}
 /*식자재목록*/
-
+/*발주내역*/
+.foodPayList ul li ul{float:left;font-size:1.5rem;width:33.3%;padding:1rem;}
+.foodPayList ul li:nth-child(2) ul{background-color: #eee;}
+/*발주내역*/
 /*발주주문 수정*/
 .tbl-ipt tfoot td{padding:1.5rem 1.5rem;font-size:2rem;font-weight:bold;text-align:right;background-color:#eee; }
 /*발주주문 수정*/

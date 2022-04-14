@@ -29,7 +29,7 @@
     initView: function initView() {
       var self = this;
       MNet.sendHttp({
-        path: SERVER_PATH.NOTICE_DETAIL,
+        path: SERVER_PATH.RECIPE_INFO,
         data: {
           goodsNum: M.data.param('goodsNum')
         }, 
@@ -37,10 +37,10 @@
           var items = "";
           items += "<div class='recipe-detail-tit'>";
           items += "<p id='title'>";
-          items += item.goodsName;
+          items += M.data.param('goodsName');
           items += "</p>";
           items += "<span id='regDate'>";
-          items += "RecipeNumber : 11";
+          items += "RecipeNumber : " + data.goodsNum;
           items += "</span><br/>";
           items += "<span> ";
           items += "Category : coffee";

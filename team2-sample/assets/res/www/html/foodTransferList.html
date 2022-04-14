@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0, user-scalable=no" name="viewport"/>
-  <title>Hello! Mobile!</title>
+  <title>발주 잔액 및 내역</title>
   <link href="../css/morpheus-style.css" rel="stylesheet"/>
   <link href="../css/swiper.min.css" rel="stylesheet"/>
   <link href="../css/muikit.css" rel="stylesheet"/>
@@ -13,7 +13,7 @@
 <div class="wrapper">
   <header class="header line">
     <h1>
-      발주
+      발주 잔액 및 내역
     </h1>
     <button class="btn-back l-fix" type="button">
       뒤로가기
@@ -25,44 +25,46 @@
   <div class="container">
     <div class="cont-wrap">
       <!-- 태블릿에서 볼때 왼쪽에 정렬될 내용 -->
+
       <div>
-        <table class="tbl-ipt" >
-          <colgroup>
-            <col style="width:30%"/>
-            <col style="width:70%"/>
-          </colgroup>
-          
-          <thead>
-          <tr>
-            <th>
-              결제 잔액
-            </th>
-            <td id="restPayment" style="font-size:2rem;font-weight:bold;">
-              0 원 
-            </td>
-          </tr>
-          </thead>
-          <tbody>
-          <tr style="font-size:1.5rem;font-weight:bold;">
-            <th>
-              입금액
-            </th>
-            <td>
-              <input type="text" id="foodPaymentPrice" class="full"/>
-            </td>
-          </tr>
-          </tbody>
-        </table>
+        <div>
+          <table class="tbl-ipt" >
+            <colgroup>
+              <col style="width:30%"/>
+              <col style="width:70%"/>
+            </colgroup>
+            <thead>
+            <tr>
+              <th>
+                결제 잔액
+              </th>
+              <td id="restPayment" style="font-size:2rem;font-weight:bold;">
+                0 원
+              </td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr style="font-size:1.5rem;font-weight:bold;">
+              <th>
+                입금액
+              </th>
+              <td>
+                <input type="text" id="foodPaymentPrice" class="full"/>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="btn-wrap count2 pd" style="margin-top: 1rem;">
+          <button type="button" id="btn-order" class="btn-point-color">
+            발주내역 확인
+          </button>
+          <button type="button" id="btn-payment" class="btn-line">
+            입금 완료
+          </button>
+        </div>
       </div>
-      <div class="btn-wrap count2 pd" style="margin-top: 1rem;">
-        <button type="button" id="btn-order" class="btn-point-color">
-          발주내역 확인
-        </button>
-        <button type="button" id="btn-payment" class="btn-line">
-          입금 완료
-        </button>
-      </div>
-      <div>
+      <div style="height:auto;">
         
         <table class="tbl-ipt" style="border-collapse: separate; border-spacing: 0 1rem;">
           <colgroup>
@@ -73,12 +75,12 @@
           <thead>
           <tr>
             <th colspan="3">
-              입금내역 내역
+              입금 내역
             </th>
           </tr>
           <tr>
             <th>
-              발주번호
+              입금번호
             </th>
             <th>
               날짜
@@ -95,6 +97,9 @@
       </div>
     </div>
   </div>
+  <button class="btn-top" id="btnTop" type="button">
+    top
+  </button>
 </div>
 <section class="side-bar position">
   <h1>메뉴</h1>

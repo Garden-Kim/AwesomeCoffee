@@ -92,7 +92,10 @@
       $('.metro-wrap').on('click', '.menu', function () {
         var goodsNum = $(this).attr('id');
         var recipeYn = $(this).attr('data');
+        var goodsName = $(this).attr('data-n');
+        console.log(goodsName);
         console.log(recipeYn);
+        console.log(goodsName);
         if(recipeYn == 'Y'){
           MNet.sendHttp({
             path: SERVER_PATH.RECIPE_INFO,
@@ -101,9 +104,10 @@
             },
             succ: function (data) {
               if (data.rsltCode == '0000') {
-                M.page.html('./empRecipeDetail.html', {param: {goodsNum: goodsNum}});
+                M.page.html('./empRecipeDetail.html',{param : { goodsName : goodsName,
+                                                                goodsNum : goodsNum }});
               } else {
-                alert('페이지를 열 수 없습니다.');
+                alert('매장정보로 로그인하세요.');
               }
             }
           });
@@ -124,7 +128,7 @@
           var items = "";
           $.each(data.list, function (index, item) {
             console.log(item);
-            items += "<li id='" + item.goodsNum + "' class ='menu' data='"+ item.recipeYn +"'>";
+            items += "<li id='" + item.goodsNum + "' class ='menu' data='"+ item.recipeYn +"' data-n='"+ item.goodsName +"'>";
             items += "<div class='thumbnail-wrap'>";
             items += "<div class='thumbnail'>";
             items += "<img src='http://192.168.0.31:8080/view/goods/upload/" + item.goodsImage + " ' alt=''/>";

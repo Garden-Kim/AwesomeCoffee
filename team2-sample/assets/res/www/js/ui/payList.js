@@ -50,12 +50,12 @@
               items += "<li class='img-wrap orderList'>";
               items += "<div class='img'>";
               items += "<img src='http://192.168.0.31:8080/view/goods/upload/";
-              items += item.imgUrl; /// 대표이미지
+              items += item.titleGoodsImage; /// 대표이미지
               items += "' alt=''/>";
               items += "</div>";
               items += "<span class='label-info none'>";
               items += "<img src='http://192.168.0.31:8080/view/goods/upload/";
-              items += item.imgUrl;
+              items += item.titleGoodsImage;
               items += "' alt='50%'/>";
               items += "</span>";
               items += "</li>";
