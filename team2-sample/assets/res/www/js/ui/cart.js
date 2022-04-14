@@ -199,7 +199,7 @@
         var body = JSON.stringify(bodyData);
         MNet.sendHttp({
           path: SERVER_PATH.ORDER_REGIST,
-          data: {"body":body},
+          data: {"list":body},
           succ: function (data) {
             if(data.rsltCode == '0000'){
               console.log(data);

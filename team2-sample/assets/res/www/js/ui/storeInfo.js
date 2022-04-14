@@ -16,6 +16,7 @@
       $cellPhoneIpt : null,
       $saveBtn : null,
       $outBtn : null,
+      $state : null,
     },
     data: {},
     init: function init(){
@@ -27,6 +28,7 @@
       this.els.$cellPhoneIpt = $('#cellPhone');
       this.els.$saveBtn = $('#saveBtn');
       this.els.$outBtn = $('#outBtn');
+      this.els.$state = $('#state');
     },
     /*
       진행도를 표시한다.
@@ -47,6 +49,11 @@
           self.els.$loginIdIpt.val(M.data.global('id'));
           self.els.$addrIpt.val(data.storeAddr);
           self.els.$cellPhoneIpt.val(data.storePhone);
+          if(data.state == 'Y'){
+            self.els.$state.val('영업중');
+          }else{
+            self.els.$state.val('영업종료');
+          }
           
         },
         error: function (data) {
@@ -55,6 +62,9 @@
         }
       });
       $('#saveBtn').attr("disabled", true);
+      if(self.els.$state.val() == 'N'){
+        $('#outBtn').html('OPEN');
+      }
     },
     initEvent : function initEvent(){
       var self = this;
@@ -153,6 +163,12 @@
       });
       self.els.$outBtn.on('click', function(){
         var pw = self.els.$passwordIpt.val().trim();
+        var state;
+        if($('#state').val() == '영업중'){
+          state = 'N';
+        }else{
+          state = 'Y';
+        }
         console.log(id);
         console.log(pw);
         MNet.sendHttp({
@@ -163,24 +179,23 @@
           },
           succ: function (data) {
             if (data.rsltCode == '0000') {
-               if (confirm("정말 탈퇴하시겠습니까?") == true){
+               if (confirm("매장상태를 변경하시겠습니까? \n현재상태 : " +  $('#state').val()) == true){
+
                   MNet.sendHttp({
-                    path: SERVER_PATH.OUT,
+                    path: SERVER_PATH.STORE_STATE,
                     data: {
-                      loginId: id,
+                      storeId: id,
+                      state : state,
                     },
                     succ: function (data) {
                       if (data.rsltCode == '0000') {
-                        M.data.removeGlobal('id');
-                        M.data.removeStorage('AUTO_LOGIN_AUTH');
-                        alert("탈퇴완료되었습니다."); 
-                        M.page.html({
-                          url: './login.html',
-                          actionType: 'CLEAR_TOP',
-                        });
-                      } else {
                         console.log(data);
-                        alert('탈퇴에 실패하셨습니다.');
+                        if(data.state == 'N'){
+                          $('#state').val('영업종료');
+                        }else{
+                          $('#state').val('영업중');
+                        }
+                       
                       }
                     },
                     error: function (data) {
@@ -193,7 +208,7 @@
                }
             } else {
               console.log(data);
-              alert('비밀번호가 일치해야 탈퇴하실 수 있습니다.');
+              alert('비밀번호가 일치해야 변경하실 수 있습니다.');
             }
           },
           error: function (data) {

@@ -97,7 +97,7 @@ public class MemberOrderController {
 		List<Map<String, Object>> memberCartList = new ArrayList<Map<String, Object>>();
 
 		Map<String, Object> ListReqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
-		String str = (String)ListReqBodyMap.get("body").toString();
+		String str = (String)ListReqBodyMap.get("list").toString();
 		System.out.println("str = " + str);
 		Gson gson = new Gson();
 		List<Map<String, Object>> list1 = new ArrayList<Map<String, Object>>();

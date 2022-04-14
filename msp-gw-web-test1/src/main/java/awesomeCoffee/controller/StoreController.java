@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.ibm.db2.jcc.am.ne;
+
 import awesomeCoffee.dto.AuthInfo;
 import awesomeCoffee.dto.MemberDTO;
 import awesomeCoffee.dto.StoreDTO;
@@ -150,15 +152,18 @@ public class StoreController {
 
 		logger.info("======================= reqBodyMap : {}", reqBodyMap.toString());
 		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
+		
 		if (!StringUtils.isEmpty(authInfo.getLoginId())) {
 			if (!authInfo.getLoginId().equals(reqBodyMap.get("storeId"))) {
 				responseBodyMap.put("rsltCode", "1011");
 				responseBodyMap.put("rsltMsg", "No permisson.");
 			} else {
 				int result = storeService.updateState(reqBodyMap);
+				StoreDTO dto = storeService.getStoreInfoById(reqBodyMap);
 				if (result > 0) {
 					responseBodyMap.put("rsltCode", "0000");
 					responseBodyMap.put("rsltMsg", "Success");
+					responseBodyMap.put("state", dto.getState());
 				} else {
 					responseBodyMap.put("rsltCode", "2003");
 					responseBodyMap.put("rsltMsg", "Data not found.");
@@ -262,7 +267,7 @@ public class StoreController {
 	}
 
 	// 매장리스트_기맹ver
-	@RequestMapping(method = RequestMethod.POST, value = "/api/store/list")
+	@RequestMapping(method = RequestMethod.POST, value = "/api/store/storeList")
 	public ModelAndView storeList(HttpServletRequest request) {
 		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
 		List<Map<String, Object>> storeList = new ArrayList<Map<String, Object>>();
@@ -320,13 +325,17 @@ public class StoreController {
 		if (reqHeadMap == null) {
 			reqHeadMap = new HashMap<String, Object>();
 		}
-
+		
 		reqHeadMap.put(Const.RESULT_CODE, Const.OK);
 		reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
-
+		System.out.println(reqBodyMap.toString());
 		logger.info("======================= reqBodyMap : {}", reqBodyMap.toString());
-		StoreDTO info = storeService.getStoreInfoById(reqBodyMap);
-
+		StoreDTO info = new StoreDTO();
+		if(reqBodyMap.containsKey("storeName")) {
+			info = storeService.getStoreInfoByName(reqBodyMap);
+		}else if(reqBodyMap.containsKey("storeId")) {
+			info = storeService.getStoreInfoById(reqBodyMap);
+		}
 		if (!StringUtils.isEmpty(info)) {
 			responseBodyMap.put("rsltCode", "0000");
 			responseBodyMap.put("rsltMsg", "Success");

@@ -5,7 +5,9 @@
  */
 
 (function ($, M, module, MNet, SERVER_PATH,CONFIG, window){
-  var seqNo = '0';
+  var storeName;
+  var storeAddr;
+
   var page = {
     els: {
       $back: null,
@@ -121,8 +123,8 @@
             storeName : storeName,
           },
           succ: function (data) {
-            content = data.storeAddr;
-            title = data.storeName;
+            storeAddr = data.storeAddr;
+            storeName = data.storeName;
             self.addrSearch();
           },
         });
@@ -147,23 +149,18 @@
       // 지도를 생성합니다    
     
       // 주소로 좌표를 검색합니다
-      geocoder.addressSearch(content, function (result, status) {
+      geocoder.addressSearch(storeAddr, function (result, status) {
         // 정상적으로 검색이 완료됐으면 
         if (status === kakao.maps.services.Status.OK) {
           M.page.html("./storeDetail.html", {
             'param':{
-              'seqNum':seqNum,
-              'title': title,
-              'content':content
+              'storeAddr':storeAddr,
+              'storeName': storeName,
+            
             }
           });
         }else{
           alert("지도를 불러오지 못했습니다.");
-          M.page.html("./goodsDetail.html", {
-            'param':{
-              'seqNum':seqNum
-            }
-          });
         }
       });
     },

@@ -150,7 +150,7 @@ public class MenuService {
 			return "Y";
 		}
 	}
-	public int updateRecipeContent(List<Map<String, Object>> param) {
+	public int updateRecipeContent(Map<String, Object> param) {
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 		TransactionStatus status = transactionManager_sample.getTransaction(def);
@@ -159,7 +159,7 @@ public class MenuService {
 		try {
 			result = sqlSession.update("Menu.updateRecipeContent", param);
 			transactionManager_sample.commit(status);
-			logger.info("========== 메뉴 수정 완료 : {}", result);
+			logger.info("========== 메뉴 레시피수정 완료 : {}", result);
 
 		} catch (Exception e) {
 			logger.error("[ERROR] insertUser() Fail : e : {}", e.getMessage());
