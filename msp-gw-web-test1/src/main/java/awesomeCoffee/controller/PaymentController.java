@@ -238,10 +238,8 @@ public class PaymentController {
 				}
 			}
 			Map<String, Object> map = new HashMap<String, Object>();
-			//map.put("month", monthList.get(i).getMonth());
 			map.put("monthSum", monthSum);
 			paymentList.add(map);
-			
 		}
 
 		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");

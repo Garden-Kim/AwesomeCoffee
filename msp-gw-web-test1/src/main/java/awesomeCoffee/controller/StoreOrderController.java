@@ -122,6 +122,7 @@ public class StoreOrderController {
 				map.put("storeOrderNum", storeOrderInfo.get(i).getStoreOrderNum());
 				map.put("storeNum", storeNum);
 				map.put("storeOrderDate", storeOrderInfo.get(i).getStoreOrderDate());
+				map.put("listPrice", storeOrderInfo.get(i).getListPrice());
 
 				storeOrderList.add(map);
 			}

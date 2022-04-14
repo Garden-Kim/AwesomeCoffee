@@ -1,8 +1,6 @@
 package awesomeCoffee.dto;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.sql.Date;
 
 public class StoreOrderDTO {
 	
@@ -12,12 +10,8 @@ public class StoreOrderDTO {
 	int storeOrderQty;
 	Date storeOrderDate;
 	int storeOrderPrice;
-	@Override
-	public String toString() {
-		return "StoreOrderDTO [storeOrderNum=" + storeOrderNum + ", storeNum=" + storeNum + ", foodNum=" + foodNum
-				+ ", storeOrderQty=" + storeOrderQty + ", storeOrderDate=" + storeOrderDate + ", storeOrderPrice="
-				+ storeOrderPrice + "]";
-	}
+	String listPrice;
+	
 	public String getStoreOrderNum() {
 		return storeOrderNum;
 	}
@@ -42,10 +36,8 @@ public class StoreOrderDTO {
 	public void setStoreOrderQty(int storeOrderQty) {
 		this.storeOrderQty = storeOrderQty;
 	}
-	public String getStoreOrderDate() {
-		DateFormat date = new SimpleDateFormat("yyyy-MM-dd");
-		String strDate = date.format(storeOrderDate);
-		return strDate;
+	public Date getStoreOrderDate() {
+		return storeOrderDate;
 	}
 	public void setStoreOrderDate(Date storeOrderDate) {
 		this.storeOrderDate = storeOrderDate;
@@ -56,8 +48,18 @@ public class StoreOrderDTO {
 	public void setStoreOrderPrice(int storeOrderPrice) {
 		this.storeOrderPrice = storeOrderPrice;
 	}
-	
-	
+	public String getListPrice() {
+		return listPrice;
+	}
+	public void setListPrice(String listPrice) {
+		this.listPrice = listPrice;
+	}
+	@Override
+	public String toString() {
+		return "StoreOrderDTO [storeOrderNum=" + storeOrderNum + ", storeNum=" + storeNum + ", foodNum=" + foodNum
+				+ ", storeOrderQty=" + storeOrderQty + ", storeOrderDate=" + storeOrderDate + ", storeOrderPrice="
+				+ storeOrderPrice + ", listPrice=" + listPrice + "]";
+	}
 	
 	
 	

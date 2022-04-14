@@ -22,7 +22,7 @@
 	</insert>
 
 	<select id="storeOrderList" resultType="awesomeCoffee.dto.StoreOrderDTO" parameterType="String">
-		select storeorder_num, store_num, storeorder_date
+		select storeorder_num, store_num, storeorder_date, sum(storeorder_price) AS listPrice
 		from store_order
 		where store_num = #{storeNum}
 		group by storeorder_num, store_num, storeorder_date
