@@ -35,7 +35,7 @@
       this.els.$menuStoreInfo = $('#menu-store-info');
     },
     initView: function initView() {
-      var ctg = '43 ';
+      var ctg = '2';
       this.drawNoticeList(ctg);
     },
     initEvent: function initEvent() {

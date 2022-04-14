@@ -149,6 +149,9 @@
       var ctg = $('.catergory').val();
       var fbody = [];
         console.log(ctg);
+      if($('#first').val() == ''){
+        return alert('식자재를 첫번째칸부터 선택해주세요.');
+      }
       $(".catergory").each(function(){
         var foodNum = $(this).val();
         console.log(foodNum);
@@ -166,9 +169,12 @@
       if(module.isEmpty(content)){
         return alert('내용을 입력해주세요.');
       }
-/*      MNet.sendHttp({
-        path : SERVER_PATH.NOTICE_WRITE,
+      MNet.sendHttp({
+        path : SERVER_PATH.RECIPE_REGIST,
         data: {
+          "recipeContent": content,
+          "goodsNum":M.data.param("goodsNum"),
+          "list": fbody
         },
         succ: function(data){
           if(data.rsltCode == '0000'){
@@ -181,7 +187,7 @@
             return alert('등록에 실패하셨습니다.');
           }
         }
-      });*/
+      });
     },
   };
   window.__page__ = page;
