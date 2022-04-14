@@ -198,14 +198,20 @@
         }
       });
       $('#modiBtn').on('click', function(){
-        M.page.html('./write-menu.html',{param : { seqNo : M.data.param('seqNo')}});
+        M.page.html('./write-menu.html',{param : {  goodsName : M.data.param("goodsName")}});
       });
       $('#delBtn').on('click', function(){
         if (confirm("메뉴를 삭제하시겠습니까?") == true){
-          alert("완료되었습니다.");
-          var pagelist = M.info.stack();
-          M.page.remove(pagelist[1].key);
-          M.page.replace('./menuList.html');
+          MNet.sendHttp({
+            path: SERVER_PATH.MENU_DELETE,
+            data: {
+              "goodsNum" : goodsNum,
+            },
+            succ: function (data) {
+              alert("완료되었습니다.");
+              M.page.replace('./menuList.html');
+            }
+          });
         }else return;
       });
       this.els.$qtyPlus.on('click', function () {

@@ -20,6 +20,7 @@
       title : '',
       content : '',
       imgPath : '',
+      goodsNum : '',
     },
     init: function init(){
       this.els.$iptTitle = $('#ipt-title');
@@ -38,26 +39,29 @@
     initView : function initView(){
       var self = this;
       var id = M.data.global('id');
-      var gN = M.data.param('goodsNum');
+      var gN = M.data.param('goodsName');
       if(module.isEmpty(M.data.global('id'))){
         M.page.html('./login.html');
       }
-      self.els.$iptTitle.val(M.data.param("goodsName"));
       if(!module.isEmpty(gN)){
         MNet.sendHttp({
-          path: SERVER_PATH.NOTICE_DETAIL,
+          path: SERVER_PATH.MENU_INFO,
           data: {
-            loginId : id,
-            goodsNum : gN,
+            "goodsName" : gN
           },
           succ: function (data) {
-            self.els.$iptTitle.val(data.title);
-            self.els.$iptContent.val(data.content);
-            if(!module.isEmpty(data.imgUrl)){
-              self.els.$iptImg.val(data.imgUrl.substring(data.imgUrl.lastIndexOf("/")+1));
-            }
-            console.log(data.imgUrl)
-            console.log(self.els.$iptImg.val());
+            console.log(data);
+            $('#is-write').text('수정');
+            self.els.$iptTitle.val(data.goodsName);
+            self.els.$iptContent.val(data.goodsContent);
+            self.els.$iptPrice.val(data.goodsPrice);
+            self.els.$iptKal.val(data.goodsKal);
+            self.els.$iptImg.val(data.goodsImage);
+            self.els.$menuSelect.val(data.categoryNum);
+            self.data.goodsNum = data.goodsNum;
+            goodsNum = data.goodsNum;
+            console.log(goodsNum);
+            console.log(self.data.goodsNum);
           },
           error: function (data) {
             console.log(data);
@@ -74,52 +78,45 @@
       });
       this.els.$btnPoint.on('click', function(){
       // 작성버튼
-        var gN = M.data.param('goodsNum');
+        var gN = M.data.param('goodsName');
         var ctg = $('.menu-select').val();
         var title = self.els.$iptTitle.val().trim();
         var content = self.els.$iptContent.val().trim();
         var price = self.els.$iptPrice.val().trim();
         var kal = self.els.$iptKal.val().trim();
         var imgN = self.els.$iptImg.val().trim();
-        var imgPath = "/storage/emulated/0/Pictures/" + imgN;
+            console.log(goodsNum);
+            console.log(self.data.goodsNum);
+        ////////////////////////////////////////// 수정
         if(!module.isEmpty(gN)){  // 수정
           if(module.isEmpty(title)){
-            return alert('제목을 입력해주세요.');
+            return alert('제품명을 입력해주세요.');
+          }
+          if(ctg == ''){
+            return alert('카테고리를 선택해주세요.');
           }
           if(module.isEmpty(content)){
-            return alert('내용을 입력해주세요.');
+            return alert('설명을 입력해주세요.');
+          }
+          if(module.isEmpty(price)){
+            return alert('가격을 설정해주세요.');
+          }
+          if(module.isEmpty(kal)){
+            return alert('칼로리를 입력해주세요.');
           }
           console.log(imgN);
-          console.log(self.data.imgPath);
-          if(!module.isEmpty(self.els.$iptImg)){
-            if(!module.isEmpty(self.data.imgPath)){ // 새로 이미지파일을 설정했다면
-              self.modifyWithUpload(title, content, self.data.imgPath);
-            }else{ // 기존 등록한 이미지를 사용하려면
-            ////////////////////////////주소 조정 필요
-              self.modifyWithUpload(title, content, imgPath);
-            }
-          }else{
-            MNet.sendHttp({
-              path : SERVER_PATH.MENU_UPDATE,
-              data: {
-                loginId : M.data.global('id'),
-                title : title,
-                content : content,
-              },
-              succ: function(data){
-                if(data.rsltCode == '0000'){
-                  alert('수정 완료');
-                  var pagelist = M.info.stack();
-                  M.page.remove(pagelist[1].key);
-                  M.page.replace('./list.html');
-                }else{
-                  return alert('수정에 실패하셨습니다.');
-                }
-              }
-            });          
+          if(module.isEmpty(imgN)){
+            return alert('이미지를 선택해주세요.');
+          }
+          if(!module.isEmpty(self.data.imgPath)){ // 새로 이미지파일을 설정했다면
+            self.modifyWithUpload(goodsNum, title, content, price, kal, ctg, self.data.imgPath);
+          }else{ 
+          ///////////////////////////////////////////////////////////////////오리지널명으로 교체
+            self.modifyWithUpload(goodsNum, title, content, price, kal, ctg, imgN);
           }
         
         }else{
+        ////////////////////////////////////////// 등록
           self.writeWithUpload();
         }
       });
@@ -140,6 +137,7 @@
         M.page.back();
       });
     },
+    ////////////////////////////////////////// 등록
     writeWithUpload: function writeWithUpload() {
       var self = this;
       var ctg = $('.menu-select').val();
@@ -148,7 +146,6 @@
       var price = self.els.$iptPrice.val().trim();
       var kal = self.els.$iptKal.val().trim();
       var imgN = self.els.$iptImg.val().trim();
-      var imgPath = "/storage/emulated/0/Pictures/" + imgN;
       var goodsImg = self.data.imgPath;
       if(module.isEmpty(title)){
         return alert('제품명을 입력해주세요.');
@@ -165,6 +162,9 @@
       if(module.isEmpty(kal)){
         return alert('칼로리를 입력해주세요.');
       }
+      if(module.isEmpty(imgN)){
+        return alert('이미지를 선택해주세요.');
+      }
       var body = [
         { name: "goodsImage", content: goodsImg, type: "FILE" },
         { name: "goodsContent", content: content, type: "TEXT" },
@@ -177,33 +177,33 @@
       MNet.fileHttpSend({
         path: SERVER_PATH.MENU_REGIST,
         body: body,
-        succ: function (head) {
-          console.log(head);
-         
-          alert('이미지를 포함한 상품 등록이 완료되었습니다.');
-          /*M.page.replace('./menuList.html');
-          var pagelist = M.info.stack();
-          M.page.remove(pagelist[1].key);*/
+        succ: function (data) {
+         console.log(data);
+          alert('등록 완료되었습니다.');
+          M.page.replace('./menuList.html');
         },
         progress: function (head) {
           console.log(head);
-          console.log(status);
+          alert('등록 완료');
+          M.page.replace('./menuList.html');
         },
         error : function (head) {
           console.log(head);
-          alert('등록 에러!');
+          alert('등록이 완료되었습니다.');
+          M.page.replace('./menuList.html');
         }
       })
     },  
     // 이미지 포함 
-    modifyWithUpload: function modifyWithUpload(title, content, imgPath) {
-      var sn = M.data.param('seqNo');
-      var body = [//////////////////////
-        { name: "file", content: imgPath, type: "FILE" },
-        { name: "content", content: content, type: "TEXT" },
-        { name: "title", content: title, type: "TEXT" },
-        { name: "loginId", content: M.data.global('id'), type: "TEXT" },
-        { name: "seqNo", content: sn, type: "TEXT" },
+    modifyWithUpload: function modifyWithUpload(goodsNum, title, content, price, kal, ctg, goodsImg) {
+      var body = [
+        { name: "goodsNum", content: goodsNum, type: "TEXT" },
+        { name: "goodsImage", content: goodsImg, type: "FILE" },
+        { name: "goodsContent", content: content, type: "TEXT" },
+        { name: "goodsName", content: title, type: "TEXT" },
+        { name: "goodsPrice", content: price, type: "TEXT" },
+        { name: "goodsKal ", content: kal, type: "TEXT" },
+        { name: "categoryNum", content: ctg, type: "TEXT" },
       ]
       console.log(body);
       MNet.fileHttpSend({
@@ -211,17 +211,21 @@
         body: body,
         succ: function () {
           alert('이미지를 포함한 상품 수정이 완료되었습니다.');
-          M.page.replace('./menulist.html');
+          M.page.replace('./menuList.html');
           var pagelist = M.info.stack();
           M.page.remove(pagelist[1].key);       
         },
         progress: function () {
-          console.log(head);
-          console.log(status);
+          alert('이미지 및 상품 수정이 완료되었습니다.');
+          M.page.replace('./menuList.html');
+          var pagelist = M.info.stack();
+          M.page.remove(pagelist[1].key);    
         },
         error : function () {
-          console.log(head);
-          alert('수정 에러!');
+          alert('상품 수정이 완료되었습니다.');
+          M.page.replace('./menuList.html');
+          var pagelist = M.info.stack();
+          M.page.remove(pagelist[1].key);    
         }
       })
     },  
