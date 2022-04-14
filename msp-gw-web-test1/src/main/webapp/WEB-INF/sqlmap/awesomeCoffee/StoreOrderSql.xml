@@ -26,7 +26,7 @@
 		from store_order
 		where store_num = #{storeNum}
 		group by storeorder_num, store_num, storeorder_date
-		order by storeorder_num
+		order by storeorder_num desc
 	</select>
 	
 	<!-- 발주내역 총합계 -->
