@@ -222,22 +222,24 @@ public class PaymentController {
 
 		List<Map<String, Object>> paymentList = new ArrayList<Map<String, Object>>();
 		List<PaymentDTO> monthList = paymentService.selectMonthSum(reqBodyMap);
-		Map<String, Object> map = new HashMap<String, Object>();
-		for (int i = 0; i < monthList.size(); i++) {
+		String monthSum = "0";
+		for (int i = 1; i <= 12; i++) {
 			String j = null;
-			if(i + 1 < 10){
-				j = "0"+ Integer.toString(i+1);
-			}
-			if(j.equals(monthList.get(i).getMonth())) {
-				map.put("monthSum", monthList.get(i).getMonthSum());
+			if(i < 10){
+				j = "0"+ Integer.toString(i);
 			}else {
-				map.put("monthSum", "0");
+				j = Integer.toString(i);
 			}
-			/*
+			for( PaymentDTO dto : monthList ) {
+				System.out.println(i);
+				if(dto.getMonth() != null && j.equals(dto.getMonth())) {
+					monthSum = dto.getMonthSum();
+					break;
+				}
+			}
 			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("month", monthList.get(i).getMonth());
-			map.put("monthSum", monthList.get(i).getMonthSum());
-*/
+			//map.put("month", monthList.get(i).getMonth());
+			map.put("monthSum", monthSum);
 			paymentList.add(map);
 			
 		}
