@@ -16,8 +16,6 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import awesomeCoffee.dto.StoreDTO;
 
-
-
 @Service
 public class StoreService {
 
@@ -31,7 +29,7 @@ public class StoreService {
 	@Qualifier("transactionManager_sample")
 	private DataSourceTransactionManager transactionManager_sample;
 
-	//매장 등록
+	// 매장 등록
 	public int insertStore(Map<String, Object> param) {
 
 		// 트렌젝션 구현
@@ -54,22 +52,23 @@ public class StoreService {
 		}
 		return result;
 	}
-	
+
 	// 매장 정보 이름으로
 	public StoreDTO getStoreInfoByName(Map<String, Object> param) {
 		return sqlSession.selectOne("Store.getStoreInfoByName", param);
 	}
-	
+
 	// 매장 로그인
 	public StoreDTO login(Map<String, Object> param) {
 		return sqlSession.selectOne("Store.login", param);
 	}
-	//매장 리스트 조회
+
+	// 매장 리스트 조회
 	public List<StoreDTO> storeList() {
 		return sqlSession.selectList("Store.storeList");
 	}
-	
-	//삭제
+
+	// 삭제
 	public int deleteStore(Map<String, Object> param) {
 		// 트렌젝션 구현
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
@@ -121,10 +120,12 @@ public class StoreService {
 		}
 		return result;
 	}
+
 	// 아이디로 매장 번호 갖고오기 (String)
 	public String getStoreNumById(String param) {
 		return sqlSession.selectOne("Store.getStoreNumById", param);
 	}
+
 	// 아이디로 매장 번호 갖고오기 (Map)
 	public StoreDTO getStoreInfoById(Map<String, Object> param) {
 		return sqlSession.selectOne("Store.getStoreInfoById", param);
@@ -157,7 +158,7 @@ public class StoreService {
 	}
 
 	public List<StoreDTO> storeSearchList(Map<String, Object> param) {
-		return sqlSession.selectList("Store.storeSearchList",param);
+		return sqlSession.selectList("Store.storeSearchList", param);
 	}
 
 }

@@ -37,42 +37,42 @@ public class CartController {
 	private MenuService menuService;
 
 	// 장바구니 modify
-		@RequestMapping(method = RequestMethod.POST, value = "/api/cart/modify")
-		public ModelAndView cartModify(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
-			Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
-			List<Map<String, Object>> reqBodyMap = (List<Map<String, Object>>) request.getAttribute(Const.BODY);
+	@RequestMapping(method = RequestMethod.POST, value = "/api/cart/modify")
+	public ModelAndView cartModify(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
+		List<Map<String, Object>> reqBodyMap = (List<Map<String, Object>>) request.getAttribute(Const.BODY);
 
-			System.out.println(request.getAttribute(Const.BODY).toString());
-			Map<String, Object> responseBodyMap = new HashMap<String, Object>();
+		System.out.println(request.getAttribute(Const.BODY).toString());
+		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
 
-			if (reqHeadMap == null) {
-				reqHeadMap = new HashMap<String, Object>();
-			}
-			reqHeadMap.put(Const.RESULT_CODE, Const.OK);
-			reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
-
-			AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
-			String memberNum = memberService.getMemberNum(authInfo.getLoginId());
-			
-			if (StringUtils.isEmpty(authInfo)) {
-				responseBodyMap.put("rsltCode", "1003");
-				responseBodyMap.put("rsltMsg", "Login required.");
-			} else {
-				int result = cartService.modifyCart(reqBodyMap,memberNum);
-				if (result > 0) {
-					responseBodyMap.put("rsltCode", "0000");
-					responseBodyMap.put("rsltMsg", "Success");
-				} else {
-					responseBodyMap.put("rsltCode", "2003");
-					responseBodyMap.put("rsltMsg", "Data not found.");
-				}
-			}
-			ModelAndView mv = new ModelAndView("defaultJsonView");
-			mv.addObject(Const.HEAD, reqHeadMap);
-			mv.addObject(Const.BODY, responseBodyMap);
-
-			return mv;
+		if (reqHeadMap == null) {
+			reqHeadMap = new HashMap<String, Object>();
 		}
+		reqHeadMap.put(Const.RESULT_CODE, Const.OK);
+		reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
+
+		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
+		String memberNum = memberService.getMemberNum(authInfo.getLoginId());
+
+		if (StringUtils.isEmpty(authInfo)) {
+			responseBodyMap.put("rsltCode", "1003");
+			responseBodyMap.put("rsltMsg", "Login required.");
+		} else {
+			int result = cartService.modifyCart(reqBodyMap, memberNum);
+			if (result > 0) {
+				responseBodyMap.put("rsltCode", "0000");
+				responseBodyMap.put("rsltMsg", "Success");
+			} else {
+				responseBodyMap.put("rsltCode", "2003");
+				responseBodyMap.put("rsltMsg", "Data not found.");
+			}
+		}
+		ModelAndView mv = new ModelAndView("defaultJsonView");
+		mv.addObject(Const.HEAD, reqHeadMap);
+		mv.addObject(Const.BODY, responseBodyMap);
+
+		return mv;
+	}
 
 	// 장바구니 create
 	@RequestMapping(method = RequestMethod.POST, value = "/api/cart/regist")

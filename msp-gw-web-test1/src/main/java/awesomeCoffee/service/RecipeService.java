@@ -36,19 +36,18 @@ public class RecipeService {
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 		TransactionStatus status = transactionManager_sample.getTransaction(def);
-		
+
 		int result = 0;
 		try {
-			for(Map<String, Object> map : param) {
+			for (Map<String, Object> map : param) {
 				RecipeDTO dto = new RecipeDTO();
 				dto.setFoodNum(map.get("foodNum").toString());
 				dto.setGoodsNum(map.get("goodsNum").toString());
 				dto.setRecipeFoodQty(map.get("recipeFoodQty").toString());
-				
-				
+
 //				String storeOrderNum = sqlSession.selectOne("StoreOrder.createStoreOrderNum");
 //				dto.setStoreOrderNum(storeOrderNum);
-				
+
 				sqlSession.insert("Recipe.insertRecipe", dto);
 				result++;
 			}
@@ -96,33 +95,32 @@ public class RecipeService {
 
 	public int recipeUpdate(List<Map<String, Object>> param) {
 		// 트렌젝션 구현
-				DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-				def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-				TransactionStatus status = transactionManager_sample.getTransaction(def);
+		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+		TransactionStatus status = transactionManager_sample.getTransaction(def);
 
-				int result = 0;
-				try {
-					for(Map<String, Object> map : param) {
-						RecipeDTO dto = new RecipeDTO();
-						dto.setFoodNum(map.get("foodNum").toString());
-						dto.setGoodsNum(map.get("goodsNum").toString());
-						dto.setRecipeFoodQty(map.get("recipeFoodQty").toString());
-						
-						
+		int result = 0;
+		try {
+			for (Map<String, Object> map : param) {
+				RecipeDTO dto = new RecipeDTO();
+				dto.setFoodNum(map.get("foodNum").toString());
+				dto.setGoodsNum(map.get("goodsNum").toString());
+				dto.setRecipeFoodQty(map.get("recipeFoodQty").toString());
+
 //						String storeOrderNum = sqlSession.selectOne("StoreOrder.createStoreOrderNum");
 //						dto.setStoreOrderNum(storeOrderNum);
-						
-						sqlSession.update("Recipe.updateRecipe", dto);
-						result++;
-					}
-					transactionManager_sample.commit(status);
-					logger.info("========== 레시피수정 완료 : {}", result);
 
-				} catch (Exception e) {
-					logger.error("[ERROR] insertUser() Fail : e : {}", e.getMessage());
-					e.printStackTrace();
-					transactionManager_sample.rollback(status);
-				}
-				return result;
+				sqlSession.update("Recipe.updateRecipe", dto);
+				result++;
+			}
+			transactionManager_sample.commit(status);
+			logger.info("========== 레시피수정 완료 : {}", result);
+
+		} catch (Exception e) {
+			logger.error("[ERROR] insertUser() Fail : e : {}", e.getMessage());
+			e.printStackTrace();
+			transactionManager_sample.rollback(status);
+		}
+		return result;
 	}
 }

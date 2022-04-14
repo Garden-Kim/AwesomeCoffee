@@ -37,55 +37,55 @@ public class StoreController {
 	@Autowired
 	MemberService memberService;
 
-	
 	// 매장검색
-		@RequestMapping(method = RequestMethod.POST, value = "/api/store/searchList")
-		public ModelAndView storeSearchList(HttpServletRequest request) {
-			Map<String, Object> responseBodyMap = new HashMap<String, Object>();
-			List<Map<String, Object>> storeList = new ArrayList<Map<String, Object>>();
-			Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
-			Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
-			if (reqHeadMap == null) {
-				reqHeadMap = new HashMap<String, Object>();
-			}
-
-			reqHeadMap.put(Const.RESULT_CODE, Const.OK);
-			reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
-
-			List<StoreDTO> info = storeService.storeSearchList(reqBodyMap);
-			if (StringUtils.isEmpty(info)) {
-				responseBodyMap.put("rsltCode", "1003");
-				responseBodyMap.put("rsltMsg", "Login required.");
-			} else {
-				List<StoreDTO> storeInfo = storeService.storeSearchList(reqBodyMap);
-				logger.info("======================= responseBodyMap : {}", storeInfo.size());
-
-				for (int i = 0; i < storeInfo.size(); i++) {
-					Map<String, Object> map = new HashMap<String, Object>();
-					map.put("storeNum", storeInfo.get(i).getStoreNum());
-					map.put("storeName", storeInfo.get(i).getStoreName());
-					map.put("storeAddr", storeInfo.get(i).getStoreAddr());
-					map.put("storePhone", storeInfo.get(i).getStorePhone());
-					map.put("state", storeInfo.get(i).getState());
-
-					storeList.add(map);
-				}
-				logger.info("======================= categoryList : {}", storeInfo.toString());
-
-				if (!StringUtils.isEmpty(storeInfo)) {
-					responseBodyMap.put("rsltCode", "0000");
-					responseBodyMap.put("rsltMsg", "Success");
-					responseBodyMap.put("list", storeList);
-				} else {
-					responseBodyMap.put("rsltCode", "2003");
-					responseBodyMap.put("rsltMsg", "Data not found.");
-				}
-			}
-			ModelAndView mv = new ModelAndView("defaultJsonView");
-			mv.addObject(Const.BODY, responseBodyMap);
-			mv.addObject(Const.HEAD, reqHeadMap);
-			return mv;
+	@RequestMapping(method = RequestMethod.POST, value = "/api/store/searchList")
+	public ModelAndView storeSearchList(HttpServletRequest request) {
+		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
+		List<Map<String, Object>> storeList = new ArrayList<Map<String, Object>>();
+		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
+		Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
+		if (reqHeadMap == null) {
+			reqHeadMap = new HashMap<String, Object>();
 		}
+
+		reqHeadMap.put(Const.RESULT_CODE, Const.OK);
+		reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
+
+		List<StoreDTO> info = storeService.storeSearchList(reqBodyMap);
+		if (StringUtils.isEmpty(info)) {
+			responseBodyMap.put("rsltCode", "1003");
+			responseBodyMap.put("rsltMsg", "Login required.");
+		} else {
+			List<StoreDTO> storeInfo = storeService.storeSearchList(reqBodyMap);
+			logger.info("======================= responseBodyMap : {}", storeInfo.size());
+
+			for (int i = 0; i < storeInfo.size(); i++) {
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("storeNum", storeInfo.get(i).getStoreNum());
+				map.put("storeName", storeInfo.get(i).getStoreName());
+				map.put("storeAddr", storeInfo.get(i).getStoreAddr());
+				map.put("storePhone", storeInfo.get(i).getStorePhone());
+				map.put("state", storeInfo.get(i).getState());
+
+				storeList.add(map);
+			}
+			logger.info("======================= categoryList : {}", storeInfo.toString());
+
+			if (!StringUtils.isEmpty(storeInfo)) {
+				responseBodyMap.put("rsltCode", "0000");
+				responseBodyMap.put("rsltMsg", "Success");
+				responseBodyMap.put("list", storeList);
+			} else {
+				responseBodyMap.put("rsltCode", "2003");
+				responseBodyMap.put("rsltMsg", "Data not found.");
+			}
+		}
+		ModelAndView mv = new ModelAndView("defaultJsonView");
+		mv.addObject(Const.BODY, responseBodyMap);
+		mv.addObject(Const.HEAD, reqHeadMap);
+		return mv;
+	}
+
 	// 매장이 보는 회원리스트
 	@RequestMapping(method = RequestMethod.POST, value = "/api/store/memList")
 	public ModelAndView storeMemList(HttpServletRequest request) {
@@ -152,7 +152,7 @@ public class StoreController {
 
 		logger.info("======================= reqBodyMap : {}", reqBodyMap.toString());
 		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
-		
+
 		if (!StringUtils.isEmpty(authInfo.getLoginId())) {
 			if (!authInfo.getLoginId().equals(reqBodyMap.get("storeId"))) {
 				responseBodyMap.put("rsltCode", "1011");
@@ -325,15 +325,15 @@ public class StoreController {
 		if (reqHeadMap == null) {
 			reqHeadMap = new HashMap<String, Object>();
 		}
-		
+
 		reqHeadMap.put(Const.RESULT_CODE, Const.OK);
 		reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
 		System.out.println(reqBodyMap.toString());
 		logger.info("======================= reqBodyMap : {}", reqBodyMap.toString());
 		StoreDTO info = new StoreDTO();
-		if(reqBodyMap.containsKey("storeName")) {
+		if (reqBodyMap.containsKey("storeName")) {
 			info = storeService.getStoreInfoByName(reqBodyMap);
-		}else if(reqBodyMap.containsKey("storeId")) {
+		} else if (reqBodyMap.containsKey("storeId")) {
 			info = storeService.getStoreInfoById(reqBodyMap);
 		}
 		if (!StringUtils.isEmpty(info)) {
