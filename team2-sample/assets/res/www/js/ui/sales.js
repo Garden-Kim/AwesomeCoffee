@@ -48,7 +48,6 @@
           borderWidth: 1
         },
       });
-
     },
     initEvent: function initEvent() {
       // 매출 그래프 데이터 갖고오기 

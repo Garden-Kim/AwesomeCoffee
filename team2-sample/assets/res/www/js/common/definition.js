@@ -145,6 +145,7 @@
     PAYMENT_MEM_LIST : "api/payment/list", // 결제 목록 (회원)
     PAYMENT_YEARSUM : "api/payment/yearSum", // 결제 합계 (년)
     PAYMENT_MONTHSUM : "api/payment/monthSum" , // 결제 합계 (월) 매출
+    PAYMENT_DAYSUM : "api/payment/daySum", // 결제 합계 (일)  
     PAYMENT_DATELIST : "api/payment/dateList", // 특정날짜 결제 리스트 
     
     // 발주 
