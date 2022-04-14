@@ -8,7 +8,7 @@
 	<insert id="insertMember">
 		INSERT INTO MEMBER
 		VALUES
-	    	( #{memberNum}, #{memberName}, #{memberPhone}, #{memberId}, #{memberPw}
+	    	( member_num_seq.nextval, #{memberName}, #{memberPhone}, #{memberId}, #{memberPw}
 	    	, #{memberEmail})
 	</insert>
 	
