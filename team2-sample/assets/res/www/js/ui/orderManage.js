@@ -65,6 +65,10 @@
             items += "</ul>"
           });
           $(".empOrder").append(items);
+          $('.empOrderState:contains(N)').css('color', 'red');
+          $('.pickupState:contains(N)').css('color', 'red');
+          $('.empOrderState:contains(Y)').css('color', 'blue');
+          $('.pickupState:contains(Y)').css('color', 'blue');
         },
         error: function (data) {
           $(".btn-wrap").css("display", "none");

@@ -51,12 +51,12 @@
           // 이미지 url
           if (data.imgUrl != null) {
             items += "<div class='img-wrap'>";
-            items += "<img id='imgUrl' src='" + data.imgUrl + "'/>";
+            items += "<img id='imgUrl' src='http://192.168.0.31:8080/view/goods/upload/" + data.goodsImage + "'/>";
             items += "</div>";
-            M.data.global("imgUrl", data.imgUrl);
+/*            M.data.global("imgUrl", data.goodsImage);
             var split = data.imgUrl.lastIndexOf('/');
             var imgName = data.imgUrl.toString().substring(split + 1, );
-            M.data.global("imgName", imgName);
+            M.data.global("imgName", imgName);*/
           }
           items += "<p id='content'>";
           items += "물 : 100ml <br/> 에스프레소2샷 <br/> 휘핑크림200ml <br/> 설탕20g <br/> 얼음<br/>  ";

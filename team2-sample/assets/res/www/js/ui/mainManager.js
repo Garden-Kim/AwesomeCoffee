@@ -24,7 +24,7 @@
         M.page.html('./foodOrder.html');
       });
       $('#btn-foodPayList').on('click', function(){
-      //   발주내역   M.page.html('./.html');
+        M.page.html('./foodTransferList.html');
       });       
       $('#btn-sales').on('click', function(){
         M.page.html('./sales.html');
@@ -33,7 +33,7 @@
         M.page.html('./menuList.html');
       });          
       $('#btn-memberInfo').on('click', function(){
-      //    회원정보  M.page.html('./.html');
+        M.page.html('./memberList.html');
       });
       $('#btn-storeInfo').on('click', function(){
         M.page.html('./storeInfo.html');

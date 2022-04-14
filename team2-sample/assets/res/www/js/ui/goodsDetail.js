@@ -50,8 +50,22 @@
           console.log(data.goodsNum);
           goodsNum = data.goodsNum;
           console.log(goodsNum);
+          if(data.categoryNum != '45'){
+            MNet.sendHttp({
+              path: SERVER_PATH.MENU_CATEGORYLIST,
+              data: {
+                "categoryNum" : "45",
+              },
+              succ: function (data) {
+//                console.log(data.list.index[0].goodsName);
+                console.log(data);
+                console.log(data.list[0]);
+                console.log(data.list[0].goodsName);
+              }
+            });
+          }
           if (data.goodsImage != null) {
-            $('#imgUrl').attr('src', data.goodsImage);
+            $('#imgUrl').attr('src', 'http://192.168.0.31:8080/view/goods/upload/'+ data.goodsImage);
           }
         },
         error: function (data) {

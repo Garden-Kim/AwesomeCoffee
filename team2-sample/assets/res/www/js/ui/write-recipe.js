@@ -18,7 +18,6 @@
     data: {
       title : '',
       content : '',
-      imgPath : '',
     },
     init: function init(){
       this.els.$iptTitle = $('#ipt-title');
@@ -35,27 +34,19 @@
     initView : function initView(){
       var self = this;
       var id = M.data.global('id');
-      var sn = M.data.param('seqNo');
-      console.log(sn);
+      var recipeYn = M.data.param('recipeYn');
       if(module.isEmpty(M.data.global('id'))){
         M.page.html('./login.html');
       }
-      self.els.$iptTitle.val(data.title);
-      if(!module.isEmpty(sn)){
+      self.els.$iptTitle.val(M.data.param('goodsName'));
+      if(!module.isEmpty(recipeYn)){
         MNet.sendHttp({
           path: SERVER_PATH.NOTICE_DETAIL,
-          data: {
-            loginId: id,
-            seqNo	: sn,
+          data: { ///////나중에
           },
           succ: function (data) {
-            self.els.$iptTitle.val(data.title);
+            self.els.$iptTitle.val(data.goodsName);
             self.els.$iptContent.val(data.content);
-            if(!module.isEmpty(data.imgUrl)){
-              self.els.$iptImg.val(data.imgUrl.substring(data.imgUrl.lastIndexOf("/")+1));
-            }
-            console.log(data.imgUrl)
-            console.log(self.els.$iptImg.val());
           },
           error: function (data) {
             console.log(data);
@@ -111,43 +102,15 @@
       // 작성버튼
         var title = self.els.$iptTitle.val().trim();
         var content = self.els.$iptContent.val().trim();
-        var sn = M.data.param('seqNo');
-        if(!module.isEmpty(sn)){
+        var recipeYn = M.data.param('recipeYn');
+        if(recipeYn == 'Y'){
           if(module.isEmpty(title)){
             return alert('제목을 입력해주세요.');
           }
           if(module.isEmpty(content)){
             return alert('내용을 입력해주세요.');
           }
-          console.log(self.data.imgPath);
-          if(!module.isEmpty(self.els.$iptImg)){
-            if(!module.isEmpty(self.data.imgPath)){ // 새로 이미지파일을 설정했다면
-              self.modifyWithUpload(title, content, self.data.imgPath);
-            }else{ // 기존 등록한 이미지를 사용하려면
-            ////////////////////////////주소 조정 필요
-              self.modifyWithUpload(title, content, imgPath);
-            }
-          }else{
-            MNet.sendHttp({
-              path : SERVER_PATH.NOTICE_UPDATE,
-              data: {
-                loginId : M.data.global('id'),
-                seqNo : sn,
-                title : title,
-                content : content,
-              },
-              succ: function(data){
-                if(data.rsltCode == '0000'){
-                  alert('수정 완료');
-                  var pagelist = M.info.stack();
-                  M.page.remove(pagelist[1].key);
-                  M.page.replace('./list.html');
-                }else{
-                  return alert('수정에 실패하셨습니다.');
-                }
-              }
-            });          
-          }
+             
         
         }else{
           self.writeOk();
@@ -158,36 +121,28 @@
       var self = this;
       var title = self.els.$iptTitle.val().trim();
       var content = self.els.$iptContent.val().trim();
-      var imgN = self.els.$iptImg.val().trim();
       if(module.isEmpty(title)){
         return alert('제목을 입력해주세요.');
       }
       if(module.isEmpty(content)){
         return alert('내용을 입력해주세요.');
       }
-      if(!module.isEmpty(imgN)){
-        return alert('레시피관련 미완성');
-      }else{
-        MNet.sendHttp({
-          path : SERVER_PATH.NOTICE_WRITE,
-          data: {
-            loginId : M.data.global('id'),
-            title : title,
-            content : content,
-          },
-          succ: function(data){
-            if(data.rsltCode == '0000'){
-              alert('등록 완료');
-              var pagelist = M.info.stack();
-              console.log(pagelist);
-              M.page.remove(pagelist[1].key);
-              M.page.replace('./list.html');
-            }else{
-              return alert('등록에 실패하셨습니다.');
-            }
+      MNet.sendHttp({
+        path : SERVER_PATH.NOTICE_WRITE,
+        data: {
+        },
+        succ: function(data){
+          if(data.rsltCode == '0000'){
+            alert('등록 완료');
+            var pagelist = M.info.stack();
+            console.log(pagelist);
+            M.page.remove(pagelist[1].key);
+            M.page.replace('./menuList.html');
+          }else{
+            return alert('등록에 실패하셨습니다.');
           }
-        });
-      }
+        }
+      });
     },
   };
   window.__page__ = page;

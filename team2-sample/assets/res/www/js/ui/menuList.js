@@ -59,7 +59,7 @@
             items += item.goodsName;
             items += "</strong>";
             items += "</div>";
-            items += "<button type='button' id='"+ item.goodsNum +"' class='interest'></button>";
+            items += "<button type='button' id='"+ item.goodsNum +"' class='interest' data='"+ item.wishlist +"'></button>";
             items += "<span class='info-box-btm'>";
             items += "<p style='text-align:right;' class='ellipsis_1'>";
             items += item.goodsPrice + ' 원';
@@ -68,11 +68,9 @@
             items += "</div>";
             items += "</li>";
             console.log(item.wishlist);
-            if(item.wishlist != ''){
-              $('button').attr('class','hurt');
-            }
           });
           $("#card").append(items);
+          $('button[data="Exist goods in wishlist"]').attr('class', 'hurt');
         },
         error: function (data) {
           console.log(data);
@@ -126,11 +124,12 @@
               $.each(data.list, function (index, item) {
                 console.log(item);
                 console.log(item.goodsImage);
+                //http://192.168.0.31:8080/view/goods/upload/{goodsImage}
                 //http://211.241.199.241:28040/resources/img/1647853076507.jpg
                 items += "<li id='"+ item.goodsName +"' class ='menu'>";
                 items += "<div class='thumbnail-wrap click-d' id='"+ item.goodsName +"'>";
                 items += "<div class='thumbnail'>";
-                items += "<img src='" +item.goodsImage +" ' alt=''/>";
+                items += "<img src='http://192.168.0.31:8080/view/goods/upload/" +item.goodsImage +" ' alt=''/>";
                 items += "</div>";
                 items += "<span class='label-info none'>";
                 items += "<img src= '" + item.goodsImage + "' alt='50%'/>";
@@ -142,7 +141,7 @@
                 items += item.goodsName;
                 items += "</strong>";
                 items += "</div>";
-                items += "<button type='button' id='"+ item.goodsNum +"' class='interest'></button>";
+                items += "<button type='button' id='"+ item.goodsNum +"' class='interest' data='"+ item.wishlist +"'></button>";
                 items += "<span class='info-box-btm'>";
                 items += "<p style='text-align:right;' class='ellipsis_1'>";
                 items += item.goodsPrice + ' 원';
@@ -150,11 +149,9 @@
                 items += "</span>";
                 items += "</div>";
                 items += "</li>";
-                if(item.wishlist != ''){
-                  $('.interest').attr('class','hurt');
-                }
               });
               $("#card").html(items);
+              $('button[data="Exist goods in wishlist"]').attr('class', 'hurt');
             },
             error: function (data) {
               console.log(data);
@@ -244,7 +241,7 @@
         M.page.replace('./menuList.html');
       });          
       $('#menu-member-info').on('click', function(){
-      //    회원정보  M.page.html('./.html');
+        M.page.html('./memberList.html');
       });   
       $('#menu-store-info').on('click', function(){
         M.page.html('./storeList.html');
