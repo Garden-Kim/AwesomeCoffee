@@ -305,10 +305,11 @@ html, body {max-width: 100%;overflow-x: hidden;max-height: 100%;}
 
 /*회원목록*/
 /*상품 등록페이지*/
-.select-box select{font-size:1.5rem; padding-top:.6rem;}
+.select-box select{font-size:1.5rem; padding-top:1rem;}
 /*상품 등록페이지*/
 /*레시피 등록페이지*/
-.select-box.recipe-select{width:66.3333%; height:4rem;}
+.select-box.recipe-select{width:45%; height:4rem; margin-right:.5%;}
+.select-box.recipe-select:nth-child(2){width:20%;}
 .food-button{margin-top:3.4rem;}
 /*레시피 등록페이지*/
 /* 회원 주문상세페이지*/

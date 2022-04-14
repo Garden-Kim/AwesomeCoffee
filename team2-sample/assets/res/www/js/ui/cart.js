@@ -49,7 +49,7 @@
             items += "<h1 style='font-size:2rem;color:#888;text-align:center;margin-top:5rem;'>"
             items += "장바구니가 비었습니다.</h1>"
             $(".metro-wrap").append(items);
-            $("#tp").html('0 원');
+            $("#tp").html('0');
           }else{
             var totalP = 0;
             $.each(data.list, function (index, item) {
