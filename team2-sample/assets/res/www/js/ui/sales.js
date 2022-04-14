@@ -41,10 +41,9 @@
         data: {
           labels: [],
           datasets: [{
-              label: [],
-              data: [],
-            },
-          ],
+            label: [],
+            data: [],
+          }, ],
           borderWidth: 1
         },
       });
@@ -57,38 +56,38 @@
           for (var j = 0; j < tabList.length; j++) {
             tabList[j].classList.remove('on');
           }
-          var ctg = $(this).parent('li').attr('id');
+          var year = $(this).parent('li').attr('id');
           this.parentNode.classList.add('on');
-          console.log(ctg);
           MNet.sendHttp({
             path: SERVER_PATH.PAYMENT_MONTHSUM,
             data: {
-              "year": ctg,
+              "year": year,
             },
             succ: function (data) {
               console.log(data);
               list = []
+              M.data.param('year', year);
               $.each(data.monthList, function (index, item) {
                 list.push({
                   "monthSum": item.monthSum
                 });
               });
-              
+
               console.log(list);
               var month1 = list[0].monthSum;
-              var month2 =  list[1].monthSum;
-              var month3 =  list[2].monthSum;
+              var month2 = list[1].monthSum;
+              var month3 = list[2].monthSum;
               var month4 = list[3].monthSum;
               var month5 = list[4].monthSum;
-              var month6 =  list[5].monthSum;
-              var month7 =  list[6].monthSum;
+              var month6 = list[5].monthSum;
+              var month7 = list[6].monthSum;
               var month8 = list[7].monthSum;
-              var month9 =  list[8].monthSum;
-              var month10 =  list[9].monthSum;
-              var month11 =  list[10].monthSum;
-              var month12 =  list[11].monthSum;
-              
-              for (j= 0;  list.length < j; j++){
+              var month9 = list[8].monthSum;
+              var month10 = list[9].monthSum;
+              var month11 = list[10].monthSum;
+              var month12 = list[11].monthSum;
+
+              for (j = 0; list.length < j; j++) {
 
                 var i = list[j].month;
               }
@@ -99,11 +98,9 @@
                   labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
                   datasets: [{
                     label: '월 매출',
-                    data: [ month1, month2, month3, month4, month5
-                     , month6, month7, month8, month9, month10, month11, month12 
-                    ]
-                  
-                    ,
+                    data: [month1, month2, month3, month4, month5, month6, month7, month8, month9, month10, month11, month12]
+
+                      ,
                     backgroundColor: [
                       'rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)',
                       'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)',
@@ -139,36 +136,6 @@
         });
       };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
       $('.btn-search').on('click', function () {
         var paymentDate = "";
         paymentDate = document.getElementById('inputDate').value;
@@ -181,7 +148,7 @@
           succ: function (data) {
             M.page.replace('./saleSearch.html', {
               param: {
-                paymentDate: paymentDate
+                paymentDate: paymentDate,
               }
             });
           },
