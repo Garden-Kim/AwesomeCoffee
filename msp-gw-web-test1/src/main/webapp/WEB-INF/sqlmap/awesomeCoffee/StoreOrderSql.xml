@@ -44,9 +44,9 @@
 	</select>
 	
 	<select id="selectOrderDetail" parameterType="map" resultType="awesomeCoffee.dto.StoreOrderDTO">
-		select * 
-		from store_order
-		where storeorder_num = #{storeOrderNum}
+		select s.storeorder_num, s.storeorder_price, s.storeorder_date, s.storeorder_qty, f.food_name 
+		from store_order s, food f
+		where storeorder_num = #{storeOrderNum} and f.food_num = s.food_num
 	</select>
 	
 </mapper>

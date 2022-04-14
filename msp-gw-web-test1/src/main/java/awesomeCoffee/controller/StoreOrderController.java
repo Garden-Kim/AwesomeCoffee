@@ -68,7 +68,7 @@ public class StoreOrderController {
 			for (int i = 0; i < list.size(); i++) {
 				Map<String, Object> map = new HashMap<String, Object>();
 				map.put("storeOrderNum", list.get(i).getStoreOrderNum());
-				map.put("foodNum", list.get(i).getFoodNum());
+				map.put("foodName", list.get(i).getFoodName());
 				map.put("storeOrderPrice", list.get(i).getStoreOrderPrice());
 				map.put("storeOrderQty", list.get(i).getStoreOrderQty());
 

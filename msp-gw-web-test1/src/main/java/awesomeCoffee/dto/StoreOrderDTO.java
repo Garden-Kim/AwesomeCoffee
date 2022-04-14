@@ -7,11 +7,11 @@ public class StoreOrderDTO {
 	String storeOrderNum;
 	String storeNum;
 	String foodNum;
+	String foodName;
 	int storeOrderQty;
 	Date storeOrderDate;
 	int storeOrderPrice;
 	String listPrice;
-	
 	public String getStoreOrderNum() {
 		return storeOrderNum;
 	}
@@ -29,6 +29,12 @@ public class StoreOrderDTO {
 	}
 	public void setFoodNum(String foodNum) {
 		this.foodNum = foodNum;
+	}
+	public String getFoodName() {
+		return foodName;
+	}
+	public void setFoodName(String foodName) {
+		this.foodName = foodName;
 	}
 	public int getStoreOrderQty() {
 		return storeOrderQty;
@@ -57,10 +63,10 @@ public class StoreOrderDTO {
 	@Override
 	public String toString() {
 		return "StoreOrderDTO [storeOrderNum=" + storeOrderNum + ", storeNum=" + storeNum + ", foodNum=" + foodNum
-				+ ", storeOrderQty=" + storeOrderQty + ", storeOrderDate=" + storeOrderDate + ", storeOrderPrice="
-				+ storeOrderPrice + ", listPrice=" + listPrice + "]";
+				+ ", foodName=" + foodName + ", storeOrderQty=" + storeOrderQty + ", storeOrderDate=" + storeOrderDate
+				+ ", storeOrderPrice=" + storeOrderPrice + ", listPrice=" + listPrice + "]";
 	}
 	
-	
+
 	
 }
