@@ -140,6 +140,7 @@ public class MenuController {
 				responseBodyMap.put("goodsImage", info.getGoodsImage());
 				responseBodyMap.put("categoryNum", info.getCategoryNum());
 				responseBodyMap.put("recipeYn", recipeYn);
+				responseBodyMap.put("originalFile", info.getOriginalFile());
 			} else {
 				responseBodyMap.put("rsltCode", "2003");
 				responseBodyMap.put("rsltMsg", "Data not found.");

@@ -41,55 +41,6 @@ public class StoreOrderController {
 	FoodService foodService;
 	@Autowired
 	StoreOrderService storeOrderService;
-	
-	// 발주 상세페이지
-//	@RequestMapping(method = RequestMethod.POST, value = "/api/storeOrder/detail")
-//	public ModelAndView storeOrderDetail(HttpServletRequest request, HttpSession session) {
-//		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
-//		Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
-//		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
-//		List<Map<String, Object>> foodlistDetail = new ArrayList<Map<String, Object>>();
-//
-//		if (reqHeadMap == null) {
-//			reqHeadMap = new HashMap<String, Object>();
-//		}
-//		reqHeadMap.put(Const.RESULT_CODE, Const.OK);
-//		reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
-//
-//		logger.info("======================= reqBodyMap : {}", reqBodyMap.toString());
-//
-//		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
-//		if (StringUtils.isEmpty(authInfo)) {
-//			responseBodyMap.put("rsltCode", "1003");
-//			responseBodyMap.put("rsltMsg", "Login required.");
-//		} else {
-//			String orderPrice = storeOrderService.storeOrderPrice(reqBodyMap);
-//			List<StoreOrderDTO> list = storeOrderService.selectOrderDetail(reqBodyMap);
-//			for (int i = 0; i < list.size(); i++) {
-//				Map<String, Object> map = new HashMap<String, Object>();
-//				map.put("storeOrderNum", list.get(i).getStoreOrderNum());
-//				map.put("foodName", list.get(i).getFoodName());
-//				map.put("storeOrderPrice", list.get(i).getStoreOrderPrice());
-//				map.put("storeOrderQty", list.get(i).getStoreOrderQty());
-//
-//				foodlistDetail.add(map);
-//			}
-//			if (!StringUtils.isEmpty(list)) {
-//				responseBodyMap.put("rsltCode", "0000");
-//				responseBodyMap.put("rsltMsg", "Success");
-//				responseBodyMap.put("list", foodlistDetail);
-//				responseBodyMap.put("orderPrice", orderPrice);
-//			} else {
-//				responseBodyMap.put("rsltCode", "2003");
-//				responseBodyMap.put("rsltMsg", "Data not found.");
-//			}
-//		}
-//		ModelAndView mv = new ModelAndView("defaultJsonView");
-//		mv.addObject(Const.HEAD, reqHeadMap);
-//		mv.addObject(Const.BODY, responseBodyMap);
-//
-//		return mv;
-//	}
 
 	// 발주 목록(총합포함)
 	@RequestMapping(method = RequestMethod.POST, value = "/api/storeOrder/list")
@@ -192,5 +143,55 @@ public class StoreOrderController {
 
 		return mv;
 	}
+
+	
+	// 발주 상세페이지
+//	@RequestMapping(method = RequestMethod.POST, value = "/api/storeOrder/detail")
+//	public ModelAndView storeOrderDetail(HttpServletRequest request, HttpSession session) {
+//		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
+//		Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
+//		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
+//		List<Map<String, Object>> foodlistDetail = new ArrayList<Map<String, Object>>();
+//
+//		if (reqHeadMap == null) {
+//			reqHeadMap = new HashMap<String, Object>();
+//		}
+//		reqHeadMap.put(Const.RESULT_CODE, Const.OK);
+//		reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
+//
+//		logger.info("======================= reqBodyMap : {}", reqBodyMap.toString());
+//
+//		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
+//		if (StringUtils.isEmpty(authInfo)) {
+//			responseBodyMap.put("rsltCode", "1003");
+//			responseBodyMap.put("rsltMsg", "Login required.");
+//		} else {
+//			String orderPrice = storeOrderService.storeOrderPrice(reqBodyMap);
+//			List<StoreOrderDTO> list = storeOrderService.selectOrderDetail(reqBodyMap);
+//			for (int i = 0; i < list.size(); i++) {
+//				Map<String, Object> map = new HashMap<String, Object>();
+//				map.put("storeOrderNum", list.get(i).getStoreOrderNum());
+//				map.put("foodName", list.get(i).getFoodName());
+//				map.put("storeOrderPrice", list.get(i).getStoreOrderPrice());
+//				map.put("storeOrderQty", list.get(i).getStoreOrderQty());
+//
+//				foodlistDetail.add(map);
+//			}
+//			if (!StringUtils.isEmpty(list)) {
+//				responseBodyMap.put("rsltCode", "0000");
+//				responseBodyMap.put("rsltMsg", "Success");
+//				responseBodyMap.put("list", foodlistDetail);
+//				responseBodyMap.put("orderPrice", orderPrice);
+//			} else {
+//				responseBodyMap.put("rsltCode", "2003");
+//				responseBodyMap.put("rsltMsg", "Data not found.");
+//			}
+//		}
+//		ModelAndView mv = new ModelAndView("defaultJsonView");
+//		mv.addObject(Const.HEAD, reqHeadMap);
+//		mv.addObject(Const.BODY, responseBodyMap);
+//
+//		return mv;
+//	}
 
 }
