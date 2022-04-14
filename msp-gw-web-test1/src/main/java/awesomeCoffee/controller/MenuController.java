@@ -369,7 +369,7 @@ public class MenuController {
 				map.put("recipeYn", recipeYn);
 				menuList.add(map);
 			}
-			logger.info("======================= categoryList : {}", dto.toString());
+			logger.info("======================= menuList : {}", dto.toString());
 
 			if (!StringUtils.isEmpty(dto)) {
 				responseBodyMap.put("rsltCode", "0000");
@@ -432,7 +432,7 @@ public class MenuController {
 				
 				menuList.add(map);
 			}
-			logger.info("======================= categoryList : {}", dto.toString());
+			logger.info("======================= menuList : {}", dto.toString());
 
 			if (!StringUtils.isEmpty(dto)) {
 				responseBodyMap.put("rsltCode", "0000");
@@ -450,6 +450,116 @@ public class MenuController {
 		return mv;
 	}
 
+
+	// 메뉴 리스트 (카테고리별) (관리자)
+	@RequestMapping(method = RequestMethod.POST, value = "/api/category/menuEmpList")
+	public ModelAndView menuEmpCategoryList(HttpServletRequest request, HttpSession session) {
+		Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
+		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
+		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
+		List<Map<String, Object>> menuList = new ArrayList<Map<String, Object>>();
+
+		if (reqHeadMap == null) {
+			reqHeadMap = new HashMap<String, Object>();
+		}
+
+		reqHeadMap.put(Const.RESULT_CODE, Const.OK);
+		reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
+
+		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
+		if (StringUtils.isEmpty(authInfo)) {
+			responseBodyMap.put("rsltCode", "1003");
+			responseBodyMap.put("rsltMsg", "Login required.");
+		} else {
+			List<MenuDTO> dto = menuService.selectCategoryMenu(reqBodyMap);
+			String recipeYn;
+			for (int i = 0; i < dto.size(); i++) {
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("goodsNum", dto.get(i).getGoodsNum());
+				map.put("goodsName", dto.get(i).getGoodsName());
+				map.put("goodsPrice", dto.get(i).getGoodsPrice());
+				map.put("goodsContent", dto.get(i).getGoodsContent());
+				map.put("goodsImage", dto.get(i).getGoodsImage());
+				map.put("goodsKal ", dto.get(i).getGoodsKal());
+				map.put("categoryNum", dto.get(i).getCategoryNum());
+				map.put("storeNum", dto.get(i).getStoreNum());
+				recipeYn = menuService.getRecipeYn(dto.get(i).getGoodsNum());
+				map.put("recipeYn", recipeYn);
+				menuList.add(map);
+			}
+			logger.info("======================= menuList : {}", dto.toString());
+
+			if (!StringUtils.isEmpty(dto)) {
+				responseBodyMap.put("rsltCode", "0000");
+				responseBodyMap.put("rsltMsg", "Success");
+				responseBodyMap.put("list", menuList);
+			} else {
+				responseBodyMap.put("rsltCode", "2003");
+				responseBodyMap.put("rsltMsg", "Data not found.");
+			}
+		}
+		ModelAndView mv = new ModelAndView("defaultJsonView");
+		mv.addObject(Const.BODY, responseBodyMap);
+		mv.addObject(Const.HEAD, reqHeadMap);
+
+		return mv;
+	}
+
+	// 메뉴 리스트 (관리자)
+	@RequestMapping(method = RequestMethod.POST, value = "/api/menu/empList")
+	public ModelAndView empMenuList(HttpSession session, HttpServletRequest request) {
+		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
+		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
+		List<Map<String, Object>> menuList = new ArrayList<Map<String, Object>>();
+
+		if (reqHeadMap == null) {
+			reqHeadMap = new HashMap<String, Object>();
+		}
+
+		reqHeadMap.put(Const.RESULT_CODE, Const.OK);
+		reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
+
+		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
+		if (StringUtils.isEmpty(authInfo)) {
+			responseBodyMap.put("rsltCode", "1003");
+			responseBodyMap.put("rsltMsg", "Login required.");
+		} else {
+			List<MenuDTO> dto = menuService.selectAllMenu();
+			String recipeYn;
+			for (int i = 0; i < dto.size(); i++) {
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("goodsNum", dto.get(i).getGoodsNum());
+				map.put("goodsName", dto.get(i).getGoodsName());
+				map.put("goodsPrice", dto.get(i).getGoodsPrice());
+				map.put("goodsContent", dto.get(i).getGoodsContent());
+				map.put("goodsImage", dto.get(i).getGoodsImage());
+				map.put("goodsKal ", dto.get(i).getGoodsKal());
+				map.put("categoryNum", dto.get(i).getCategoryNum());
+				map.put("storeNum", dto.get(i).getStoreNum());
+				recipeYn = menuService.getRecipeYn(dto.get(i).getGoodsNum());
+				map.put("recipeYn", recipeYn);
+				
+				menuList.add(map);
+			}
+			logger.info("======================= menuList : {}", dto.toString());
+
+			if (!StringUtils.isEmpty(dto)) {
+				responseBodyMap.put("rsltCode", "0000");
+				responseBodyMap.put("rsltMsg", "Success");
+				responseBodyMap.put("list", menuList);
+			} else {
+				responseBodyMap.put("rsltCode", "2003");
+				responseBodyMap.put("rsltMsg", "Data not found.");
+			}
+		}
+		ModelAndView mv = new ModelAndView("defaultJsonView");
+		mv.addObject(Const.BODY, responseBodyMap);
+		mv.addObject(Const.HEAD, reqHeadMap);
+
+		return mv;
+	}
+
+	
 	// 메뉴 등록
 	@RequestMapping(method = RequestMethod.POST, value = "/api/menu/regist")
 	public @ResponseBody Map<String, Object> menuRegist(MultipartHttpServletRequest request, HttpSession session) {
