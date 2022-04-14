@@ -35,7 +35,7 @@
       MNet.sendHttp({
         path: SERVER_PATH.MENU_CATEGORYLIST,
         data: {
-          "categoryNum" : "43 ",
+          "categoryNum" : "2",
         },
         succ: function (data) {
           console.log(data);

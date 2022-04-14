@@ -187,6 +187,9 @@
       })
     }
   };
+    
+    
+  
   window.__page__ = page;
 })(jQuery, M, __util__, __mnet__, __serverPath__, __difinition__, window);
 
