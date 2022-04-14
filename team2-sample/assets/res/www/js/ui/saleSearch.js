@@ -7,7 +7,8 @@
 (function ($, M, MNet, module, config, SERVER_PATH, window) {
 
   var page = {
-    els: {},
+    els: {
+    },
     data: {
       requset: {
         loginId: M.data.global('id'),
@@ -22,6 +23,13 @@
         M.page.html('./login.html');
       }
       // 초기 그래프 
+      // var year = M.data.param("year");
+      // console.log(year);
+      // console.log(M.data.param('year'));
+      // if (year ==  '19'){
+      //   console.log("nnnnnn");
+      //   $('#19').add('on');
+      // }
       MNet.sendHttp({
         path: SERVER_PATH.PAYMENT_MONTHSUM,
         data: {
@@ -147,6 +155,42 @@
       });
     },
     initEvent: function initEvent() {
+
+      var self = this;
+      $('.l-fix').on('click', function () {
+        M.page.back();
+      });
+      // 사이드바 
+      $('.btn-menu').on('click', function () {
+        console.log('메뉴클릭');
+        $('.position').attr('style', 'position: absolute; top:0;right:0px;bottom:0;transition:1s ease;');
+        $('.wrapper').fadeTo("fast", 0.3);
+        $('.wrapper').attr('style', 'position:relative;height:100%;background-color:#fff;pointer-events: none;cursor: default;');
+      });
+      $('.btn-menu').on('blur', function () {
+        console.log('취소');
+        $('.position').attr('style', 'position: absolute; top:0;right:-130px;bottom:0;transition:1s ease;');
+        $('.wrapper').fadeTo("fast", 1);
+        $('.wrapper').attr('style', 'position:relative;height:100%;background-color:#fff;');
+      });
+      $('#menu-order-food').on('click', function () {
+        M.page.replace('./foodOrder.html');
+      });
+      $('#menu-payment-list').on('click', function () {
+        //   발주내역   M.page.html('./.html');
+      });
+      $('#menu-sales').on('click', function () {
+        M.page.html('./sales.html');
+      });
+      $('#menu-menu').on('click', function () {
+        M.page.html('./menuList.html');
+      });
+      $('#menu-member-info').on('click', function () {
+        //    회원정보  M.page.html('./.html');
+      });
+      $('#menu-store-info').on('click', function () {
+        M.page.html('./storeList.html');
+      });
       // 매출 그래프 데이터 갖고오기 
       const tabList = document.querySelectorAll('.category li');
       for (var i = 0; i < tabList.length; i++) {
@@ -258,11 +302,6 @@
         });
 
       });
-
-      $('.l-fix').on('click', function () {
-        M.page.back();
-      });
-
     },
   };
   window.__page__ = page;

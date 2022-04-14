@@ -8,7 +8,7 @@
 
 .paymentListbox {background-color:#fff;}
 .paymentList ul {width:100%;}
-.paymentList li {float:left; width: 25%; text-align: center;position: relative; overflow:hidden; font-size: 15px; padding:2rem 0rem; }
+.paymentList li {float:left; width: 25%; text-align: center;position: relative; overflow:hidden; font-size: 15px; }
 .paymentList li:nth-child(3){width:25%;}
 .paymentList { margin-bottom:0.1rem;}
 
@@ -19,4 +19,4 @@
     padding: 1px;
     border: 1px solid #e0e0e0;
 }
-.paymentBox {margin:1rem;padding:1rem;background-color:#fff; padding-top: 5rem;}
+.paymentBox {padding:1rem;background-color:#fff; padding-top: 5rem;}
