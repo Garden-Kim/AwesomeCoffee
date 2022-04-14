@@ -20,9 +20,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import awesomeCoffee.dto.AuthInfo;
 import awesomeCoffee.dto.FoodDTO;
+import awesomeCoffee.dto.MenuDTO;
 import awesomeCoffee.dto.RecipeDTO;
 import awesomeCoffee.dto.StoreOrderDTO;
 import awesomeCoffee.service.FoodService;
+import awesomeCoffee.service.MenuService;
 import awesomeCoffee.service.RecipeService;
 import kr.msp.constant.Const;
 
@@ -33,6 +35,8 @@ public class RecipeController {
 
 	@Autowired
 	RecipeService recipeService;
+	@Autowired
+	MenuService menuService;
 
 	// 레시피수정
 	@RequestMapping(method = RequestMethod.POST, value = "/api/recipe/update")
@@ -57,9 +61,10 @@ public class RecipeController {
 			responseBodyMap.put("rsltMsg", "Login required.");
 		} else {
 			if (authInfo.getGrade().equals("store")) {
+				int result1 = menuService.updateRecipeContent(reqBodyMap);
 				int result = recipeService.recipeUpdate(reqBodyMap);
 
-				if (result > 0) {
+				if (result > 0 && result1 > 0) {
 					responseBodyMap.put("rsltCode", "0000");
 					responseBodyMap.put("rsltMsg", "Success");
 				} else {
@@ -86,7 +91,7 @@ public class RecipeController {
 		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
 		Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
 		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
-
+		List<Map<String, Object>> recipeList = new ArrayList<Map<String, Object>>();
 		if (reqHeadMap == null) {
 			reqHeadMap = new HashMap<String, Object>();
 		}
@@ -96,7 +101,8 @@ public class RecipeController {
 
 		logger.info("======================= reqBodyMap : {}", reqBodyMap.toString());
 
-		RecipeDTO info = recipeService.recipeInfo(reqBodyMap);
+		List<RecipeDTO> info = recipeService.recipeInfo(reqBodyMap);
+		MenuDTO mDto = menuService.getMenuInfoByNum(reqBodyMap);
 		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
 		if (StringUtils.isEmpty(authInfo)) {
 			responseBodyMap.put("rsltCode", "1003");
@@ -104,12 +110,19 @@ public class RecipeController {
 		} else {
 			if (authInfo.getGrade().equals("store")) {
 
+				for (int i = 0; i < info.size(); i++) {
+					Map<String, Object> map = new HashMap<String, Object>();
+					map.put("goodsNum", info.get(i).getGoodsNum());
+					map.put("recipeFoodQty", info.get(i).getRecipeFoodQty());
+					map.put("foodNum", info.get(i).getFoodNum());
+
+					recipeList.add(map);
+				}
 				if (!StringUtils.isEmpty(info)) {
 					responseBodyMap.put("rsltCode", "0000");
 					responseBodyMap.put("rsltMsg", "Success");
-					responseBodyMap.put("goodsNum", info.getGoodsNum());
-					responseBodyMap.put("foodNum", info.getFoodNum());
-					responseBodyMap.put("recipeFoodQty", info.getRecipeFoodQty());
+					responseBodyMap.put("list", recipeList);
+					responseBodyMap.put("recipeContent", mDto.getRecipeContent());
 				} else {
 					responseBodyMap.put("rsltCode", "2003");
 					responseBodyMap.put("rsltMsg", "Data not found.");
@@ -144,7 +157,7 @@ public class RecipeController {
 
 		logger.info("======================= reqBodyMap : {}", reqBodyMap.toString());
 
-		RecipeDTO info = recipeService.recipeInfo(reqBodyMap);
+		
 		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
 		if (StringUtils.isEmpty(authInfo)) {
 			responseBodyMap.put("rsltCode", "1003");

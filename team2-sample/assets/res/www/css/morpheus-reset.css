@@ -45,7 +45,7 @@ figure{margin:0;}
 button{cursor:pointer;}
 button, input, select, textarea{border:0 none;outline:0 none;background-color:#fff;}
 /* button, select{text-transform:none;} */
-textarea{vertical-align:top;border:solid 1px #ccc;}
+textarea{vertical-align:top;padding: 1rem;border:solid 1px #ccc;}
 
 /* =====  Table ===== */
 table{border-collapse:collapse;empty-cells:show;border-spacing:0;table-layout:fixed;}

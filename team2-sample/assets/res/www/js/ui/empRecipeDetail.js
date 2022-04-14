@@ -50,7 +50,7 @@
           // 이미지 url
           if (data.goodsImage != null) {
             items += "<div class='img-wrap'>";
-            items += "<img id='imgUrl' src='" + data.goodsImage + "'/>";
+            items += "<img id='imgUrl' src='http://192.168.0.31:8080/view/goods/upload/" + data.goodsImage + "'/>";
             items += "</div>";
             M.data.global("imgUrl", data.goodsImage);
             var split = data.goodsImage.lastIndexOf('/');

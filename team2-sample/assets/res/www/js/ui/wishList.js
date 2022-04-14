@@ -35,8 +35,7 @@
       this.els.$menuStoreInfo = $('#menu-store-info');
     },
     initView: function initView() {
-      var ctg = '43 ';
-      this.drawNoticeList(ctg);
+      this.drawNoticeList();
     },
     initEvent: function initEvent() {
       var self = this;
@@ -80,7 +79,29 @@
       this.els.$btnTop.on('click', function () {
         $('.cont-wrap').scrollTop(0);
       });
-      $('.metro-wrap').on('click', '.menu', function () {
+      // 관심버튼
+      $('#card').on('click', '.hurt', function() {
+        var goodsNum = $(this).attr('id' );
+        if (confirm("관심상품에서 삭제하시겠습니까?") == true){
+          MNet.sendHttp({
+            path: SERVER_PATH.WISH_REGIST,
+            data: {
+              goodsNum : goodsNum,
+            },
+            succ: function (data) {
+              alert('관심상품을 해제하셨습니다.');
+              M.page.replace('./wishList.html');
+            },
+            error: function (data) {
+              console.log(data);
+              alert('에러!');
+            }
+          });
+        }else{
+          alert('취소하셨습니다.');
+        }
+      });
+      $('.metro-wrap').on('click', '.click-d', function () {
         var goodsName = $(this).attr('id');
         MNet.sendHttp({
           path: SERVER_PATH.MENU_INFO,
@@ -105,7 +126,7 @@
         });
       });
     },
-    drawNoticeList: function (ctg) {
+    drawNoticeList: function () {
       var self = this;
       MNet.sendHttp({
         path: SERVER_PATH.WISH_LIST,
@@ -115,13 +136,13 @@
           var items = "";
           $.each(data.list, function (index, item) {
             console.log(item);
-            items += "<li id='" + item.goodsName + "' class ='menu'>";
-            items += "<div class='thumbnail-wrap'>";
+            items += "<li id='"+ item.goodsName +"' class ='menu'>";
+            items += "<div class='thumbnail-wrap click-d' id='"+ item.goodsName +"'>";
             items += "<div class='thumbnail'>";
-            items += "<img src='" + item.goodsImage + " ' alt=''/>";
+            items += "<img src='http://192.168.0.31:8080/view/goods/upload/" +item.goodsImage +" ' alt=''/>";
             items += "</div>";
             items += "<span class='label-info none'>";
-            items += "<img src= '" + item.goodsImage + "' alt='50%'/>";
+            items += "<img src= 'http://192.168.0.31:8080/view/goods/upload/" + item.goodsImage + "' alt='50%'/>";
             items += "</span>";
             items += "</div>";
             items += "<div class='info-box'>";
@@ -129,12 +150,13 @@
             items += "<strong class='ellipsis_1'>";
             items += item.goodsName;
             items += "</strong>";
-            items += "<div class='info-box-btm'>";
+            items += "</div>";
+            items += "<button type='button' id='"+ item.goodsNum +"' class='hurt' data='"+ item.wishlist +"'></button>";
+            items += "<span class='info-box-btm'>";
             items += "<p style='text-align:right;' class='ellipsis_1'>";
-            items += item.goodsPrice + '원';
+            items += item.goodsPrice + ' 원';
             items += "</p>";
-            items += "</div>";
-            items += "</div>";
+            items += "</span>";
             items += "</div>";
             items += "</li>";
           });

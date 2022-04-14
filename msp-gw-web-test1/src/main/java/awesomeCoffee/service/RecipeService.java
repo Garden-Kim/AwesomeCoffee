@@ -68,9 +68,8 @@ public class RecipeService {
 		return sqlSession.selectList("Recipe.recipeList");
 	}
 
-	public RecipeDTO recipeInfo(Map<String, Object> param) {
-		
-		return sqlSession.selectOne("Recipe.recipeInfo", param);
+	public List<RecipeDTO> recipeInfo(Map<String, Object> param) {
+		return sqlSession.selectList("Recipe.recipeInfo", param);
 	}
 
 	public int recipeDelete(Map<String, Object> param) {

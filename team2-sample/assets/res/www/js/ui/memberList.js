@@ -30,54 +30,50 @@
     drawNoticeList: function () {
       var self = this;
       MNet.sendHttp({
-        path: SERVER_PATH.ORDER_LIST_LIST,
-        data: self.data.requset,
+        path: SERVER_PATH.STORE_MEM_LIST,
+        data: {},
         succ: function (data) {
           var items = "";
           if(data.list === ''){
             items += "<h1 style='font-size:2rem;color:#888;text-align:center;margin-top:5rem;'>"
-            items += "주문 내역이 없습니다.</h1>"
-            $(".order-menu").append(items);
+            items += "회원목록이 없습니다.</h1>"
+            $(".memberList").append(items);
           }else{
             $.each(data.list, function (index, item) {
-              items += "<ul data='" + item.orderNum + "' class='orderOne bg-white' >";
+              items += "<ul data='" + item.memberNum + "' class='memberOne bg-white' >";
               items += "<li>";
-              items += item.orderTime;
-              items += "<span>";
-              items += " / 주문번호 : "+ item.orderNum;
+              items += "<div>";
+              items += "아이디 : " + item.memberId;
+              items += "<span style='color:#aaa'>";
+              items += " / 회원번호 : "+ item.memberNum;
               items += "</span>";
-              items += "</li>";
-              items += "<li class='img-wrap orderList'>";
-              items += "<div class='img'>";
-              items += "<img src='http://192.168.0.31:8080/view/goods/upload/";
-              items += item.imgUrl; /// 대표이미지
-              items += "' alt=''/>";
               items += "</div>";
-              items += "<span class='label-info none'>";
-              items += "<img src='http://192.168.0.31:8080/view/goods/upload/";
-              items += item.imgUrl;
-              items += "' alt='50%'/>";
-              items += "</span>";
               items += "</li>";
-              items += "<li class='info-box'>";
-              items += "<div class='info-box-top' style='margin-top: 1rem;' id='" + item.orderNum + "'>";
-              items += "조리상태 <strong class='cookState'>";
-              items += item.cookState;
-              items += "</strong>";
-              items += "수령상태 <strong class='takeout' >";
-              items += item.takeout;
-              items += "</strong>";
+              items += "<li>";
+              items += "<div>";
+              items += "성명 ";
               items += "</div>";
-              items += "<div class='order-info' style='font-size: 1.6rem;'>";
-              items += item.titleGoodsName;
-              items += "<strong>";
-              items += "/ "+ item.orderPrice + " 원";
-              items += "</strong>";
+              items += "<div>";
+              items += "연락처 ";
+              items += "</div>";
+              items += "<div>";
+              items += "이메일 ";
+              items += "</div>";
+              items += "</li>";
+              items += "<li class='member-info'>";
+              items += "<div>";
+              items += item.memberName;
+              items += "</div>";
+              items += "<div>";
+              items += item.memberPhone;
+              items += "</div>";
+              items += "<div>";
+              items += item.memberEmail;
               items += "</div>";
               items += "</li>";
               items += "</ul>";
             });
-            $(".order-menu").append(items);
+            $(".memberList").append(items);
             $('.cookState:contains(N)').css('color', 'red');
             $('.takeout:contains(N)').css('color', 'red');
             $('.cookState:contains(Y)').css('color', 'blue');
@@ -134,24 +130,25 @@
         $('.wrapper').fadeTo("fast", 1);
         $('.wrapper').attr('style', 'position:relative;height:100%;background-color:#fff;');
       });
-      // 회원 사이드바
-      $('#m-orderList').on('click', function(){
+      
+// 관리자 사이드바
+      $('#menu-order-food').on('click', function(){
+        M.page.html('./foodOrder.html');
+      });      
+      $('#menu-payment-list').on('click', function(){
+      //   발주내역   M.page.html('./.html');
+      });       
+      $('#menu-sales').on('click', function(){
+        M.page.html('./sales.html');
+      });      
+      $('#menu-menu').on('click', function(){
         M.page.html('./menuList.html');
-      });
-      $('#m-storeList').on('click', function(){
+      });          
+      $('#menu-member-info').on('click', function(){
+        M.page.replace('./memberList.html');
+      });   
+      $('#menu-store-info').on('click', function(){
         M.page.html('./storeList.html');
-      });
-      $('#m-userInfo').on('click', function(){
-        M.page.html('./userInfo.html');
-      });
-      $('#m-cart').on('click', function(){
-        M.page.html('./cart.html');
-      });
-      $('#m-interest').on('click', function(){
-        M.page.html('./wishList.html');
-      });
-      $('#m-payList').on('click', function(){
-        M.page.replace('./payList.html');
       });
     },
   };

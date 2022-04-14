@@ -46,7 +46,7 @@
           var items = "";
           self.data.requset.lastSeqNo = data.lastSeqNo;
           $.each(data.list, function (index, item) {
-            items += "<ul class='empOrderItem' data-seq='" + item.orderNum + "'>"
+            items += "<ul class='empOrderItem bg-white' data-seq='" + item.orderNum + "'>"
             items += "<li data-seq='" + item.orderNum + "' class='empOrderDetail'>";
             items += item.orderNum;
             items += "</li>";

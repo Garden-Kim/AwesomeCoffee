@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0, user-scalable=no" name="viewport"/>
-  <title>발주하기</title>
+  <title>Hello! Mobile!</title>
   <link href="../css/morpheus-style.css" rel="stylesheet"/>
   <link href="../css/swiper.min.css" rel="stylesheet"/>
   <link href="../css/muikit.css" rel="stylesheet"/>
@@ -13,7 +13,7 @@
 <div class="wrapper">
   <header class="header line">
     <h1>
-      발주 목록 확인
+      발주 내역 목록
     </h1>
     <button class="btn-back l-fix" type="button">
       뒤로가기
@@ -26,40 +26,11 @@
     <div class="cont-wrap">
       <!-- 태블릿에서 볼때 왼쪽에 정렬될 내용 -->
       <div>
-        <table class="tbl-ipt" style="border-collapse: separate; border-spacing: 0 1rem;">
-          <colgroup>
-            <col style="width:50%"/>
-            <col style="width:25%"/>
-            <col style="width:25%"/>
-          </colgroup>
-          <thead>
-          <tr>
-            <th>
-              식자재명
-            </th>
-            <th>
-              수량
-            </th>
-            <th>
-              가격
-            </th>
-          </tr>
-          </thead>
-          <tbody id="noti-wrap">
-
-          </tbody>
-          <tfoot>
-          <tr>
-            <td colspan="3">
-              총 가격 : <span id="totalPrice">0</span> 원
-            </td>
-          </tr>
-          </tfoot>
-        </table>
+        
       </div>
       <div class="btn-wrap">
         <button class="btn-point-color" id="btn-order" type="button">
-          발주 등록
+          결제하기
         </button>
       </div>
     </div>
@@ -79,5 +50,5 @@
 </body>
 
 <script src="../js/mcore.min.js" type="text/javascript"></script>
-<script src="../js/ui/fpayment.js" type="text/javascript"></script>
+<script src="../js/ui/foodPayList.js" type="text/javascript"></script>
 </html>

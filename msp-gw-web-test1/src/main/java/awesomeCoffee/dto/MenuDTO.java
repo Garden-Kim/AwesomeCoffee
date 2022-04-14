@@ -12,16 +12,16 @@ public class MenuDTO {
 	private String storeNum;
 	private String categoryNum;
 	private String originalFile;
-	
 	private String orderlistQty;
+	private String recipeContent;
 
-	
+
 	@Override
 	public String toString() {
 		return "MenuDTO [goodsNum=" + goodsNum + ", goodsName=" + goodsName + ", goodsPrice=" + goodsPrice
 				+ ", goodsContent=" + goodsContent + ", goodsImage=" + goodsImage + ", goodsKal=" + goodsKal
 				+ ", storeNum=" + storeNum + ", categoryNum=" + categoryNum + ", originalFile=" + originalFile
-				+ ", orderlistQty=" + orderlistQty + "]";
+				+ ", orderlistQty=" + orderlistQty + ", recipeContent=" + recipeContent + "]";
 	}
 
 	public String getGoodsNum() {
@@ -104,7 +104,13 @@ public class MenuDTO {
 		this.orderlistQty = orderlistQty;
 	}
 	
-	
+	public String getRecipeContent() {
+		return recipeContent;
+	}
+
+	public void setRecipeContent(String recipeContent) {
+		this.recipeContent = recipeContent;
+	}
 	
 	
 
