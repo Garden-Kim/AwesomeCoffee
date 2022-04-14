@@ -21,6 +21,7 @@ STORE_INFO : "api/store/info", // 매장상세정보(매장이름입력)
 STORE_LIST : "api/store/storeList", // 매장 리스트
 STORE_MEM_LIST : "api/store/memList", // 회원 리스트
 STORE_SEARCH_LIST : "api/store/searchList", // 매장검색
+MENU_CATEGORYEMPLIST : "api/category/menuEmpList", //카테고리별 메뉴리스트(관리자)
 
 // 레시피
 RECIPE_REGIST : "api/recipe/regist", // 레시피 등록
@@ -53,6 +54,7 @@ MENU_UPDATE_FILE : "api/menu/updateFile", 메뉴수정(이미지 포함)
 MENU_LIST : "api/menu/list", // 메뉴 리스트
 MENU_CATEGORYLIST : "api/category/menuList", // 카테고리별 메뉴리스트
 MENU_SEARCH : "api/menu/search", // 메뉴 검색
+MENU_EMPLIST : "api/menu/empList" , //메뉴 리스트(관리자)
 
 
 // 관심상품

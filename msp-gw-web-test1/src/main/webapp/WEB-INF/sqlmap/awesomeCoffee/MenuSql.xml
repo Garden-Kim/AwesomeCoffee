@@ -83,6 +83,12 @@
 	where goods_num = #{goodsNum}
 </update>
 
+<update id="updateRecipeContent">
+	UPDATE GOODS
+	SET RECIPE_CONTENT = #{recipeContent}
+	WHERE GOODS_NUM = #{goodsNum}
+</update>
+
 <delete id="deleteMenu">
 	delete 
 	from goods
