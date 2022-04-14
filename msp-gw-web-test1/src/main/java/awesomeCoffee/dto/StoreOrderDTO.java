@@ -12,6 +12,8 @@ public class StoreOrderDTO {
 	Date storeOrderDate;
 	int storeOrderPrice;
 	String listPrice;
+	String foodPrice;
+	
 	public String getStoreOrderNum() {
 		return storeOrderNum;
 	}
@@ -60,13 +62,19 @@ public class StoreOrderDTO {
 	public void setListPrice(String listPrice) {
 		this.listPrice = listPrice;
 	}
+	public String getFoodPrice() {
+		return foodPrice;
+	}
+	public void setFoodPrice(String foodPrice) {
+		this.foodPrice = foodPrice;
+	}
 	@Override
 	public String toString() {
 		return "StoreOrderDTO [storeOrderNum=" + storeOrderNum + ", storeNum=" + storeNum + ", foodNum=" + foodNum
 				+ ", foodName=" + foodName + ", storeOrderQty=" + storeOrderQty + ", storeOrderDate=" + storeOrderDate
-				+ ", storeOrderPrice=" + storeOrderPrice + ", listPrice=" + listPrice + "]";
+				+ ", storeOrderPrice=" + storeOrderPrice + ", listPrice=" + listPrice + ", foodPrice=" + foodPrice
+				+ "]";
 	}
 	
-
 	
 }

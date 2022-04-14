@@ -43,8 +43,8 @@
 		where storeorder_num = #{storeOrderNum}
 	</select>
 	
-	<select id="selectOrderDetail" parameterType="map" resultType="awesomeCoffee.dto.StoreOrderDTO">
-		select s.storeorder_num, s.storeorder_price, s.storeorder_date, s.storeorder_qty, f.food_name 
+	<select id="selectOrderDetail" parameterType="String" resultType="awesomeCoffee.dto.StoreOrderDTO">
+		select f.food_num, f.food_name , s.storeorder_price, s.storeorder_qty,   s.storeorder_qty*s.storeorder_price AS food_price
 		from store_order s, food f
 		where storeorder_num = #{storeOrderNum} and f.food_num = s.food_num
 	</select>

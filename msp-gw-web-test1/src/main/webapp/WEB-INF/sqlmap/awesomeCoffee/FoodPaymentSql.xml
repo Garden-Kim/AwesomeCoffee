@@ -13,7 +13,7 @@
 	<select id="selectFoodPaymentList" resultType="awesomeCoffee.dto.FoodPaymentDTO">
 		select * 
 		from food_payment
-		order by food_payment_num
+		order by food_payment_num desc
 	</select>
 
 	<!-- 입금내역 총합계 -->

@@ -70,10 +70,10 @@ public class StoreOrderService {
 		return sqlSession.selectList("StoreOrder.storeOrderList", storeNum);
 	}
 	// 발주 detail
-	public List<StoreOrderDTO> selectOrderDetail(Map<String, Object> param) {
-		return sqlSession.selectList("StoreOrder.selectOrderDetail", param);
+	public List<StoreOrderDTO> selectOrderDetail(String storeOrderNum) {
+		return sqlSession.selectList("StoreOrder.selectOrderDetail", storeOrderNum);
 	}
-	// 발주 detail 합계
+	// 발주 detail 합계 (전체)
 	public String storeOrderPrice(Map<String, Object> param) {
 		return sqlSession.selectOne("StoreOrder.storeOrderPrice", param);
 	}
