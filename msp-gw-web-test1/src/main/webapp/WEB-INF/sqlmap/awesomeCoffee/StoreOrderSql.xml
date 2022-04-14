@@ -22,9 +22,11 @@
 	</insert>
 
 	<select id="storeOrderList" resultType="awesomeCoffee.dto.StoreOrderDTO" parameterType="String">
-		SELECT *
-		FROM STORE_ORDER
+		select storeorder_num, store_num, storeorder_date
+		from store_order
 		where store_num = #{storeNum}
+		group by storeorder_num, store_num, storeorder_date
+		order by storeorder_num
 	</select>
 	
 	<!-- 발주내역 총합계 -->

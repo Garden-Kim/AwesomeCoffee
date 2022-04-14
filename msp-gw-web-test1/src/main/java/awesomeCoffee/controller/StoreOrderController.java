@@ -69,7 +69,6 @@ public class StoreOrderController {
 				Map<String, Object> map = new HashMap<String, Object>();
 				map.put("storeOrderNum", list.get(i).getStoreOrderNum());
 				map.put("foodNum", list.get(i).getFoodNum());
-				map.put("storeOrderDate", list.get(i).getStoreOrderDate());
 				map.put("storeOrderPrice", list.get(i).getStoreOrderPrice());
 				map.put("storeOrderQty", list.get(i).getStoreOrderQty());
 
@@ -122,10 +121,7 @@ public class StoreOrderController {
 				Map<String, Object> map = new HashMap<String, Object>();
 				map.put("storeOrderNum", storeOrderInfo.get(i).getStoreOrderNum());
 				map.put("storeNum", storeNum);
-				map.put("foodNum", storeOrderInfo.get(i).getFoodNum());
-				map.put("storeOrderQty", storeOrderInfo.get(i).getStoreOrderQty());
 				map.put("storeOrderDate", storeOrderInfo.get(i).getStoreOrderDate());
-				map.put("storeOrderPrice", storeOrderInfo.get(i).getStoreOrderPrice());
 
 				storeOrderList.add(map);
 			}
