@@ -119,22 +119,28 @@ public class OrderlistController {
 				for (int a = 0; a < goodsList.size(); a++) {
 					Map<String, Object> goodsMap = new HashMap<String, Object>();
 					goodsMap.put("goodsNum", goodsList.get(a).getGoodsNum());
+					goodsMap.put("goodsImage", goodsList.get(a).getGoodsImage());
 					goodsMap.put("orderPrice", goodsList.get(a).getOrderPrice());
 					goodsMap.put("goodsName", goodsList.get(a).getGoodsName());
 
 					list1.add(goodsMap);
 				}
 				map.put("list", list1);
-				// title goodsName
+				// title goodsName, goodsImage
 				if (goodsList.size() == 0) {
 					String titleGoodsName = "";
+					String titleGoodsImage = "";
 				}else if (goodsList.size() > 1) {
 					String titleGoodsName = goodsList.get(0).getGoodsName().toString() + " 외 " + (goodsList.size() - 1)
 							+ "개";
+					String titleGoodsImage = goodsList.get(0).getGoodsImage().toString();
 					map.put("titleGoodsName", titleGoodsName);
+					map.put("titleGoodsImage", titleGoodsImage);
 				} else {
 					String titleGoodsName = goodsList.get(0).getGoodsName().toString();
+					String titleGoodsImage = goodsList.get(0).getGoodsImage().toString();
 					map.put("titleGoodsName", titleGoodsName);
+					map.put("titleGoodsImage", titleGoodsImage);
 				}
 
 				orderList.add(map);

@@ -22,7 +22,7 @@
 	</insert>
 	
 	<select id="selectGoodsNums" parameterType="map" resultType="awesomeCoffee.dto.OrderlistDTO">
-		select  g.goods_num, g.goods_name, m.order_price, m.order_num, g.goods_price, o.orderlist_qty, o.orderlist_qty * g.goods_price AS price
+		select  g.goods_num, g.goods_name, g.goods_image, m.order_price, m.order_num, g.goods_price, o.orderlist_qty, o.orderlist_qty * g.goods_price AS price
 		from goods g, member_order m, orderlist o
 		where m.order_num = #{orderNum} and  m.member_num = #{memberNum} and g.goods_num = o.goods_num and o.order_num = m.order_num
 		
