@@ -91,27 +91,25 @@
       });
       $('.metro-wrap').on('click', '.menu', function () {
         var goodsNum = $(this).attr('id');
-        MNet.sendHttp({
-          path: SERVER_PATH.RECIPE_INFO,
-          data: {
-            goodsNum : goodsNum,
-          },
-          succ: function (data) {
-            if (data.rsltCode == '0000') {
-              M.page.html('./empRecipeDetail.html', {
-                param: {
-                  goodsNum: goodsNum
-                }
-              });
-            } else {
-              alert('페이지를 열 수 없습니다.');
+        var recipeYn = $(this).attr('data');
+        console.log(recipeYn);
+        if(recipeYn == 'Y'){
+          MNet.sendHttp({
+            path: SERVER_PATH.RECIPE_INFO,
+            data: {
+              goodsNum : goodsNum,
+            },
+            succ: function (data) {
+              if (data.rsltCode == '0000') {
+                M.page.html('./empRecipeDetail.html', {param: {goodsNum: goodsNum}});
+              } else {
+                alert('페이지를 열 수 없습니다.');
+              }
             }
-          },
-          error: function (data) {
-            console.log(data);
-            alert('에러!');
-          }
-        });
+          });
+        }else{
+          alert('레시피가 존재하지 않습니다.');
+        }
       });
     },
     drawNoticeList: function (ctg) {
@@ -126,13 +124,13 @@
           var items = "";
           $.each(data.list, function (index, item) {
             console.log(item);
-            items += "<li id='" + item.goodsNum + "' class ='menu'>";
+            items += "<li id='" + item.goodsNum + "' class ='menu' data='"+ item.recipeYn +"'>";
             items += "<div class='thumbnail-wrap'>";
             items += "<div class='thumbnail'>";
-            items += "<img src='" + item.goodsImage + " ' alt=''/>";
+            items += "<img src='http://192.168.0.31:8080/view/goods/upload/" + item.goodsImage + " ' alt=''/>";
             items += "</div>";
             items += "<span class='label-info none'>";
-            items += "<img src= '" + item.goodsImage + "' alt='50%'/>";
+            items += "<img src= 'http://192.168.0.31:8080/view/goods/upload/" + item.goodsImage + "' alt='50%'/>";
             items += "</span>";
             items += "</div>";
             items += "<div class='info-box'>";

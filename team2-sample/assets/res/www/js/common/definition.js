@@ -102,7 +102,8 @@
     MENU_LIST : "api/menu/list", // 메뉴 리스트
     MENU_CATEGORYLIST : "api/category/menuList", // 카테고리별 메뉴리스트
     MENU_SEARCH : "api/menu/search", // 메뉴 검색
-    
+    MENU_EMPLIST : "api/menu/empList" , //메뉴 리스트(관리자)
+    MENU_CATEGORYEMPLIST : "api/category/menuEmpList", //카테고리별 메뉴리스트(관리자)
     
     // 관심상품
     WISH_REGIST : "api/wishlist/update", // 관심상품 등록/삭제
@@ -119,8 +120,7 @@
     
     ORDER_REGIST :  "api/order/selectCartlist", // 주문 등록
     ORDER_DELETE : "api/order/delete", // 주문 삭제
-    ORDER_EMP_TODAYLIST : "api/order/empTodayList", // 오늘의 주문리스트
-    ORDER_EMP_LIST : "api/order/empList", // 주문리스트(매장이보는 전부)
+    ORDER_EMP_LIST : "api/order/empTodayList", // 주문리스트(매장이보는 전부)
     ORDER_EMP_DETAIL : "api/order/empDetail", // 직원 주문 상세 
     ORDER_EMP_LIST_N : "api/order/empListN", // 주문리스트(매장이보는 조리상태N)
     ORDER_EMP_LIST_Y : "api/order/empListY", // 주문리스트(매장이보는 조리상태Y)
@@ -143,9 +143,6 @@
     PAYMENT_DIRECTREGIST :  "api/payment/directRegist", // 바로주문결제
     PAYMENT_MEM_LIST : "api/payment/list", // 결제 목록 (회원)
     PAYMENT_YEARSUM : "api/payment/yearSum", // 결제 합계 (년)
-    PAYMENT_MONTHSUM : "api/payment/monthSum", // 결제 합계 (월)
-    PAYMENT_DAYSUM : "api/payment/daySum", // 결제 합계 (일)
-    PAYMENT_DATELIST: "api/payment/dateList", // 결제 리스트 (특정날짜)
     
     
     // 발주 

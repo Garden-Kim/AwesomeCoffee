@@ -22,37 +22,71 @@
       if(module.isEmpty(M.data.global('id'))){
         M.page.html('./login.html');
       }
-      MNet.sendHttp({
-        path: SERVER_PATH.NOTICE_LIST,
+      MNet.sendHttp({ ///// 결제 잔액
+        path: SERVER_PATH.FOOD_PAYMENT_PRICE,
         data: {
-          "loginId": M.data.global('id'),
-          "lastSeqNo": '0',
-          "cnt": '10',
         },
         succ: function (data) {
           console.log(data);
-          var items = "";
-          $.each(data.list, function (index, item) {
-            items += "<tr id='"+ item.seqNo +"' class ='test'>";
-            items += "<th>";
-            items += item.title;
-            items += "</th><th>";
-            items += item.title;
-            items += "</th><th>";
-            items += item.title;
-            items += "</th></tr>";;
-          });
-          $("#noti-wrap").html(items);
+          if(data.rsltCode == '0000'){
+            $("#restPayment").html(data.restPayment + ' 원 ');
+          }else{
+            alert("결제잔액을 불러오지 못했습니다.");
+          }
         },
-        error: function (data) {
+      });
+      MNet.sendHttp({
+        path: SERVER_PATH.FOOD_PAYMENT_LIST,
+        data: {
+        },
+        succ: function (data) {
           console.log(data);
-          alert("리스트를 가져오지 못했습니다.");
+          if(data.rsltCode == '0000'){
+            var items = '';
+            $.each(data.list, function (index, item) {
+              items += "<tr id='"+ item.foodPaymentNum +"' class ='test' style='height:5rem;font-size:1.5rem;'>";
+              items += "<th>";
+              items += item.foodPaymentNum;
+              items += "</th><th >";
+              items += item.foodPaymentDate;
+              items += "</th><th >";
+              items += item.foodPaymentPrice + " 원";
+              items += "</th></tr>";
+            });
+            $("#noti-wrap").html(items);
+          }else{
+            alert("입금내역을 불러오지 못했습니다.");
+          }
         },
       });
     },
     initEvent : function initEvent(){
       $('.l-fix').on('click', function(){
         M.page.back();
+      });
+      // 입금버튼
+      $('#btn-payment').on('click', function(){
+        var pay = $('#foodPaymentPrice').val().trim();
+        console.log(pay);
+        if(module.isEmpty(pay)){
+          alert("금액을 입력해주세요.");
+        }else{
+          MNet.sendHttp({ ///// 입금
+            path: SERVER_PATH.FOOD_PAYMENT_PAYMENT,
+            data: {
+              "foodPaymentPrice" : pay
+            },
+            succ: function (data) {
+              console.log(data);
+              if(data.rsltCode == '0000'){
+                alert("입금 완료되셨습니다.");
+                M.page.replace('./foodTransferList.html');
+              }else{
+                alert("입금을 실패하셨습니다.");
+              }
+            },
+          });
+        }
       });
       // 사이드바 
       $('.btn-menu').on('click', function () {
@@ -68,8 +102,7 @@
         $('.wrapper').attr('style', 'position:relative;height:100%;background-color:#fff;');
       });
       $('#btn-order').on('click', function(){
-        console.log('결제완료');
-        M.page.replace('./foodOrder.html');
+        M.page.html('./foodPayList.html');
       });
     }
   };

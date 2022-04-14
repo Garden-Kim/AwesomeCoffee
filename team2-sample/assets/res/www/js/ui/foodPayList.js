@@ -22,25 +22,29 @@
       if(module.isEmpty(M.data.global('id'))){
         M.page.html('./login.html');
       }
-      console.log(M.data.param('body'));
-      console.log(M.data.param('tbody'));
-      var data = M.data.param('body');
-      var items = '';
-      var totalP = 0;
-      $.each(data, function (index, item) {
-        items += "<tr id='"+ item.foodNum +"' class ='test' style='height:5rem;font-size:1.5rem;'>";
-        items += "<th>";
-        items += item.foodName;
-        items += "</th><th data='"+item.storeOrderQty+"'>";
-        items += item.storeOrderQty + " 개";
-        items += "</th><th data='"+item.foodPrice+"'>";
-        items += item.foodPrice + " 원";
-        items += "</th></tr>";
-        totalP += Number(item.foodPrice);
-      });
-      $("#noti-wrap").html(items);
-      $('#totalPrice').html(totalP);
-      
+/*      MNet.sendHttp({
+        path: SERVER_PATH.STORE_ORDER_LIST,
+        data: {},
+        succ: function (data) {
+          console.log(data);
+          var items = "";
+          $.each(data.list, function (index, item) {
+            items += "<tr id='"+ item.seqNo +"' class ='test'>";
+            items += "<th>";
+            items += item.title;
+            items += "</th><th>";
+            items += item.title;
+            items += "</th><th>";
+            items += item.title;
+            items += "</th></tr>";;
+          });
+          $("#noti-wrap").html(items);
+        },
+        error: function (data) {
+          console.log(data);
+          alert("리스트를 가져오지 못했습니다.");
+        },
+      });*/
     },
     initEvent : function initEvent(){
       $('.l-fix').on('click', function(){

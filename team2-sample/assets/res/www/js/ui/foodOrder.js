@@ -39,7 +39,7 @@
             items += "<ul id='"+ item.foodNum +"' class ='food-list bg-white'>";
             items += "<li>";
             items += "<input type='checkbox' value='"+ item.foodNum +"' name='color' class='chk-03' />";
-            items += "</li><li style='text-align:center;'>";
+            items += "</li><li class='foodName' style='text-align:center;'>";
             items += item.foodName;
             items += "</li><li class='foodQty'>";
             items += "<button type='button' class='qty qtyPlus'>";
@@ -125,29 +125,24 @@
       });
       this.els.$btnOrder.on('click', function(){
         var body = [];
+        var tbody = [];
         $("input[name=color]:checked").each(function(){
+          var i = 0;
           var foodNum = $(this).val();
+          var foodName = $(this).parent().siblings('.foodName').text();
           var qty = $(this).parent().siblings('.foodQty').children('span').text();
-          console.log(foodNum); 
+          var foodPrice = $(this).parent().siblings('.foodPrice').text();
+          console.log(foodPrice); 
           console.log(qty); 
-          var _body = { "foodNum": foodNum, "storeOrderQty" : qty };
+          var _body = { "foodNum": foodNum, "foodName" : foodName, "storeOrderQty" : qty , "foodPrice" : foodPrice };
+          var _tbody = { "foodNum": foodNum, "storeOrderQty" : qty };
           console.log(_body);
           body.push(_body);
+          tbody.push(_tbody);
         });
         console.log(body);
-        MNet.sendHttp({
-          path: SERVER_PATH.STORE_ORDER_REGI,
-          data: body,
-          succ: function (data) {
-            if(data.rsltCode == '0000'){
-              console.log(data);
-              M.page.html('./fpayment.html', {param : body});
-            }else{
-              console.log(data);
-              alert('에러!');
-            }
-          }
-        });
+        console.log(tbody);
+        M.page.html('./fpayment.html', {param : {"body" : body, "tbody" : tbody}});
         
         // M.page.html('./fpayment.html');
         
