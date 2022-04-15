@@ -43,13 +43,14 @@
           items += data.recipeContent;
           items += "</p>";
           items += "</div>";
+          
           $.each(data.list, function (index, item) {
             items += "<div class='recipe-detail-cont'>";
             items += "<span>";
             items += " 식자재번호 : " + item.foodNum;
             items += "</span>";
-            items += "<span>";
-            //items +=  // 이름
+            items += "<span style='margin-left:4rem;'>";
+            items +=  item.foodName;
             items += "</span>";
             items += "<span style='float:right'>";
             items += item.recipeFoodQty + ' 개';
@@ -96,10 +97,23 @@
       });
       $('#delBtn').on('click', function(){
         if (confirm("레시피를 삭제하시겠습니까?") == true){
-          alert("완료되었습니다.");
-          var pagelist = M.info.stack();
-          M.page.remove(pagelist[1].key);
-          M.page.replace('./list.html');
+          MNet.sendHttp({
+            path : SERVER_PATH.RECIPE_DELETE,
+            data: {
+              "goodsNum":M.data.param("goodsNum"),
+            },
+            succ: function(data){
+              if(data.rsltCode == '0000'){
+                var pagelist = M.info.stack();
+                console.log(pagelist);
+                M.page.remove(pagelist[1].key);
+                alert("삭제 완료되었습니다.");
+                M.page.replace('./menuList.html');
+              }else{
+                return alert('삭제에 실패하셨습니다.');
+              }
+            }
+          });
         }else return;
       });
       

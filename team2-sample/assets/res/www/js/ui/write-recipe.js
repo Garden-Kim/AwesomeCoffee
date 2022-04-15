@@ -64,6 +64,7 @@
           },
           succ: function (data) {
             console.log(data);
+            $('#modify').text('수정');
             self.els.$iptTitle.val(M.data.param('goodsName'));
             self.els.$iptContent.val(data.recipeContent);
             $('.catergory').val(data.list[0].foodNum);
@@ -75,13 +76,13 @@
               var items = "";
               items += "<div class='ipt-form-row plus-food'>"
               items += "<div class='select-box recipe-select'>"
-              items +=   "<select class='catergory' >"
+              items +=   "<select class='catergory plus' >"
               items +=     "<option value=''>식자재 등록</option>"
               items += self.data.li;
               items +=   "</select>"
               items += "</div>"
               items += "<div class='select-box recipe-select qty-select'> " 
-              items +=   "<select class='food-qty'>"
+              items +=   "<select class='food-qty plus'>"
               items +=     " <option value='1'>1 개</option>"
               items +=     " <option value='2'>2 개</option>"
               items +=     " <option value='3'>3 개</option>"
@@ -99,13 +100,13 @@
               items += "</button>"
               items += "</div>"
               $("#food-select").append(items);
-              $('.catergory').get()[2].val('2');
-              console.log($('.catergory').get()[2])
-              var get = $('.catergory').get();
-              get[i].val(data.list[i].foodNum);
-              $('.catergory').get(i).val(data.list[i].foodNum);
-              $('.food-qty').get(i).val(data.list[i].recipeFoodQty);
             }
+            var j = 1;
+            $('.catergory.plus').each(function () {
+              $(this).val(data.list[j].foodNum);
+              $(this).parent().siblings('.qty-select').children('select').val(data.list[j].recipeFoodQty);
+              j++;
+            });
           },
           error: function (data) {
             console.log(data);
@@ -138,13 +139,13 @@
         var items = "";
         items += "<div class='ipt-form-row plus-food'>"
         items += "<div class='select-box recipe-select'>"
-        items +=   "<select class='catergory' >"
+        items +=   "<select class='catergory plus' >"
         items +=     "<option value=''>식자재 등록</option>"
         items += self.data.li;
         items +=   "</select>"
         items += "</div>"
         items += "<div class='select-box recipe-select qty-select'> " 
-        items +=   "<select class='food-qty'>"
+        items +=   "<select class='food-qty plus'>"
         items +=     " <option value='1'>1 개</option>"
         items +=     " <option value='2'>2 개</option>"
         items +=     " <option value='3'>3 개</option>"
@@ -169,20 +170,7 @@
       });
       
       this.els.$btnPoint.on('click', function(){
-      // 작성버튼
-        var title = self.els.$iptTitle.val().trim();
-        var content = self.els.$iptContent.val().trim();
-        var recipeYn = M.data.param('recipeYn');
-        if(recipeYn == 'Y'){
-          if(module.isEmpty(title)){
-            return alert('제목을 입력해주세요.');
-          }
-          if(module.isEmpty(content)){
-            return alert('내용을 입력해주세요.');
-          }
-        }else{
-          self.writeOk();
-        }
+        self.writeOk();
       });
     },
     writeOk : function(){
@@ -221,10 +209,10 @@
         },
         succ: function(data){
           if(data.rsltCode == '0000'){
-            alert('등록 완료');
             var pagelist = M.info.stack();
             console.log(pagelist);
             M.page.remove(pagelist[1].key);
+            alert('등록 완료');
             M.page.replace('./menuList.html');
           }else{
             return alert('등록에 실패하셨습니다.');
