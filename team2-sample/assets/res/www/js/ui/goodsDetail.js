@@ -56,11 +56,11 @@
             $('#recipe-exist').text('레시피가 존재합니다.')
             $('#recipe-write').text('레시피 상세');
           }
-          if(data.categoryNum != '45 '){
+          if(data.categoryNum != '5'){
             MNet.sendHttp({
               path: SERVER_PATH.MENU_CATEGORYLIST,
               data: {
-                "categoryNum" : "45 ",
+                "categoryNum" : "5",
               },
               succ: function (data) {
                 console.log(data);
@@ -86,7 +86,7 @@
             MNet.sendHttp({
               path: SERVER_PATH.MENU_CATEGORYLIST,
               data: {
-                "categoryNum" : "42",
+                "categoryNum" : "3",
               },
               succ: function (data) {
                 console.log(data);

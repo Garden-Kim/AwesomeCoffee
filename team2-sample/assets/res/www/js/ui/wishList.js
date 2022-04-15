@@ -156,9 +156,6 @@
             items += "</strong>";
             items += "</div>";
             items += "<button type='button' id='"+ item.goodsNum +"' class='hurt' data='"+ item.wishlist +"'></button>";
-            items += "<span>";
-            items += item.goodsNum;
-            items += "</span>";
             items += "<span class='info-box-btm'>";
             items += "<p style='text-align:right;' class='ellipsis_1'>";
             items += item.goodsPrice + ' 원';
