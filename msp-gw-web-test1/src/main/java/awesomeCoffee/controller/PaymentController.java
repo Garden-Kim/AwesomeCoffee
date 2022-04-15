@@ -219,9 +219,9 @@ public class PaymentController {
 
 		List<Map<String, Object>> paymentList = new ArrayList<Map<String, Object>>();
 		List<PaymentDTO> monthList = paymentService.selectMonthSum(reqBodyMap);
-		String monthSum = "0";
 		for (int i = 1; i <= 12; i++) {
 			String j = null;
+			String monthSum = "0";
 			if(i < 10){
 				j = "0"+ Integer.toString(i);
 			}else {
@@ -230,6 +230,7 @@ public class PaymentController {
 			for( PaymentDTO dto : monthList ) {
 				System.out.println(i);
 				if(dto.getMonth() != null && j.equals(dto.getMonth())) {
+					System.out.println(dto.getMonthSum());
 					monthSum = dto.getMonthSum();
 					break;
 				}
