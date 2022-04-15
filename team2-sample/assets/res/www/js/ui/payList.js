@@ -83,6 +83,7 @@
             $('.cookState:contains(Y)').css('color', 'blue');
             $('.takeout:contains(Y)').css('color', 'blue');
           }
+            console.log(items);
         },
         error: function (data) {
           $(".order-menu").css("display", "none");
@@ -293,6 +294,24 @@
       });
       $('#m-payList').on('click', function () {
         M.page.replace('./payList.html');
+      });
+      $('#m-logout').on('click', function(){
+        MNet.sendHttp({
+          path: SERVER_PATH.LOGOUT,
+          data: {
+            "loginId": M.data.global('id')
+          },
+          succ: function (data) {
+            M.data.removeGlobal('id');
+            M.data.removeGlobal('grade');
+            M.data.removeStorage('AUTO_LOGIN_AUTH');
+            alert("로그아웃되셨습니다.");
+            M.page.html({
+                    url: "./login.html",
+                    actionType: "CLEAR_TOP"
+            });
+          }
+        });
       });
     },
   };

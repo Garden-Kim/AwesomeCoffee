@@ -102,9 +102,42 @@
         $('.wrapper').fadeTo("fast", 1);
         $('.wrapper').attr('style', 'position:relative;height:100%;background-color:#fff;');
       });
-      $('#btn-order').on('click', function(){
-        console.log('결제완료');
+// 관리자 사이드바
+      $('#menu-order-food').on('click', function(){
         M.page.replace('./foodOrder.html');
+      });      
+      $('#menu-payment-list').on('click', function(){
+        M.page.html('./foodTransferList.html');
+      });       
+      $('#menu-sales').on('click', function(){
+        M.page.html('./sales.html');
+      });      
+      $('#menu-menu').on('click', function(){
+        M.page.html('./menuList.html');
+      });          
+      $('#menu-member-info').on('click', function(){
+        M.page.html('./memberList.html');
+      });   
+      $('#menu-store-info').on('click', function(){
+        M.page.html('./storeList.html');
+      });
+      $('#menu-logout').on('click', function(){
+        MNet.sendHttp({
+          path: SERVER_PATH.LOGOUT,
+          data: {
+            "loginId": M.data.global('id')
+          },
+          succ: function (data) {
+            M.data.removeGlobal('id');
+            M.data.removeGlobal('grade');
+            M.data.removeStorage('AUTO_LOGIN_AUTH');
+            alert("로그아웃되셨습니다.");
+            M.page.html({
+                    url: "./login.html",
+                    actionType: "CLEAR_TOP"
+            });
+          }
+        });
       });
     }
   };

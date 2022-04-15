@@ -96,10 +96,10 @@
               items += "<li id='"+ item.goodsName +"' class ='menu'>";
               items += "<div class='thumbnail-wrap click-d' id='"+ item.goodsName +"'>";
               items += "<div class='thumbnail'>";
-              items += "<img src='" +item.goodsImage +" ' alt=''/>";
+              items += "<img src='http://192.168.0.31:8080/view/goods/upload/" +item.goodsImage +" ' alt=''/>";
               items += "</div>";
               items += "<span class='label-info none'>";
-              items += "<img src= '" + item.goodsImage + "' alt='50%'/>";
+              items += "<img src= 'http://192.168.0.31:8080/view/goods/upload/" + item.goodsImage + "' alt='50%'/>";
               items += "</span>";
               items += "</div>";
               items += "<div class='info-box'>";

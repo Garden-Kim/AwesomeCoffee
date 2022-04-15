@@ -61,10 +61,12 @@
         MNet.sendHttp({
           path: SERVER_PATH.STORE_ORDER_REGIST,
           data: {
-            "list": M.data.param('body'),
+            "list": M.data.param('tbody'),
           },
           succ: function (data) {
             console.log(data);
+            var pagelist = M.info.stack();
+            M.page.remove(pagelist[1].key);
             alert('발주가 완료되었습니다.');
             M.page.replace('./foodOrder.html');
           },
