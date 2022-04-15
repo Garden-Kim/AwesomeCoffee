@@ -143,7 +143,41 @@
             goodsName : search,
           },
           succ: function (data) {
-            M.page.html('./menuSearch.html',{param : {search	: search}});
+            console.log(data);
+            var items = "";
+            $.each(data.list, function (index, item) {
+              console.log(item);
+              console.log(item.goodsImage);
+              //http://211.241.199.241:28040/resources/img/1647853076507.jpg
+              items += "<li id='"+ item.goodsName +"' class ='menu'>";
+              items += "<div class='thumbnail-wrap click-d' id='"+ item.goodsName +"'>";
+              items += "<div class='thumbnail'>";
+              items += "<img src='http://192.168.0.31:8080/view/goods/upload/" +item.goodsImage +" ' alt=''/>";
+              items += "</div>";
+              items += "<span class='label-info none'>";
+              items += "<img src= 'http://192.168.0.31:8080/view/goods/upload/" + item.goodsImage + "' alt='50%'/>";
+              items += "</span>";
+              items += "</div>";
+              items += "<div class='info-box'>";
+              items += "<div class='info-box-top'>";
+              items += "<strong class='ellipsis_1'>";
+              items += item.goodsName;
+              items += "</strong>";
+              items += "</div>";
+              items += "<button type='button' id='"+ item.goodsNum +"' class='interest' data='"+ item.wishlist +"'></button>";
+              items += "<span class='info-box-btm'>";
+              items += "<p style='text-align:right;' class='ellipsis_1'>";
+              items += item.goodsPrice + ' 원';
+              items += "</p>";
+              items += "</span>";
+              items += "</div>";
+              items += "</li>";
+              console.log(item.wishlist);
+            });
+            $("#card").html(items);
+            $('button[data="Exist goods in wishlist"]').attr('class', 'hurt');
+            document.querySelector('.category li.on').classList.remove('on');
+            $('#value').text(search);
           },
           error: function (data) {
             console.log(data);

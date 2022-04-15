@@ -170,7 +170,10 @@
             succ: function (data) {
               console.log(data);
               alert('결제 완료되었습니다.');
-              M.page.replace('./main.html');
+              M.page.html({
+                      url: "./main.html",
+                      actionType: "CLEAR_TOP"
+              });
             },
             error: function (data) {
               console.log(data);
