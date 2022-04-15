@@ -51,6 +51,7 @@
             $(".metro-wrap").append(items);
             $("#tp").html('0');
           }else{
+            var items = "";
             var totalP = 0;
             $.each(data.list, function (index, item) {
               items += "<div class='cartMenu bg-white'>";
@@ -196,16 +197,17 @@
           bodyData.push(_body);
         });
         console.log(bodyData);
-        var body = JSON.stringify(bodyData);
-        console.log(body);
+        // var body = JSON.stringify(bodyData);
+        // console.log(body);
         MNet.sendHttp({
           path: SERVER_PATH.ORDER_REGIST,
-          data: {"list":body},
+          data: {
+            "list" : bodyData,
+            },
           succ: function (data) {
             if(data.rsltCode == '0000'){
               console.log(data);
-              
-              M.page.html('./payment.html');
+              M.page.html('./payment.html', {param : data });
             }else{
               console.log(data);
               alert('에러!');

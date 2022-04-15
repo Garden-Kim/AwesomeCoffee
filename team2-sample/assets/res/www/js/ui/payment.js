@@ -4,7 +4,7 @@
  * @date : 
  */
 
-(function ($, M, module, MNet, SERVER_PATH,CONFIG, window){
+(function ($, M, module, MNet, SERVER_PATH, CONFIG, window) {
   var seqNoSend;
   var page = {
     els: {
@@ -26,41 +26,41 @@
       //화면에서 세팅할 동적데이터
       var self = this;
       console.log(M.data.param('direct'));
-      if(M.data.param('direct') == 'Y'){
+      if (M.data.param('direct') == 'Y') {
         // 리스트화 시키기
         MNet.sendHttp({
           path: SERVER_PATH.ORDER_DIRECTORDER,
           data: {
             "goodsNum": M.data.param('goodsNum'),
-            "qty" :  M.data.param('qty')
+            "qty": M.data.param('qty')
           },
           succ: function (data) {
             var items = "";
-              items += "<div class='cartMenu bg-white' style='margin:1rem;width:95%'>";
-              items += "<div class='cartImg'>";
-              // 데이터 있을 경우 바꿔야할 코드 (현재는 임의의 이미지)
-              //items += "<img id='imgUrl' src='" + data.imgUrl + "'/>";
-              items += "<img src='../img/coffee_exam.png' id='imgUrl5'>";
-              items += "</div>";
-              items += "<ul>";
-              items += "<li data-seq='" + data.goodsNum + "' class='menuName' >";
-              items += "<span>";
-              items += data.goodsName;
-              items += "</span>";
-              items += "</li>";
-              items += "<li data-seq='" + data.goodsNum + "' class='price' >";
-              items += "<span> "
-              items += data.goodsPrice + " 원";
-              items += "</span>";
-              items += "<span style='color:#aaa;' class='goodsQty' data='"+ data.qty +"'>";
-              items += " / "+data.qty + " 개";
-              items += "</span>";
-              items += "<span style='float:right;'>";
-              items += "총 "+(Number(data.goodsPrice) * Number(data.qty)) + " 원";
-              items += "</span>";
-              items += "</li>";
-              items += "</ul>";
-              items += "</div>";
+            items += "<div class='cartMenu bg-white' style='margin:1rem;width:95%'>";
+            items += "<div class='cartImg'>";
+            // 데이터 있을 경우 바꿔야할 코드 (현재는 임의의 이미지)
+            //items += "<img id='imgUrl' src='" + data.imgUrl + "'/>";
+            items += "<img src='../img/coffee_exam.png' id='imgUrl5'>";
+            items += "</div>";
+            items += "<ul>";
+            items += "<li data-seq='" + data.goodsNum + "' class='menuName' >";
+            items += "<span>";
+            items += data.goodsName;
+            items += "</span>";
+            items += "</li>";
+            items += "<li data-seq='" + data.goodsNum + "' class='price' >";
+            items += "<span> "
+            items += data.goodsPrice + " 원";
+            items += "</span>";
+            items += "<span style='color:#aaa;' class='goodsQty' data='" + data.qty + "'>";
+            items += " / " + data.qty + " 개";
+            items += "</span>";
+            items += "<span style='float:right;'>";
+            items += "총 " + (Number(data.goodsPrice) * Number(data.qty)) + " 원";
+            items += "</span>";
+            items += "</li>";
+            items += "</ul>";
+            items += "</div>";
             $(".metro-wrap").append(items);
             console.log(data);
             $('#totalPrice').html(Number(data.goodsPrice) * Number(data.qty));
@@ -71,23 +71,28 @@
           error: function (data) {
             console.log(data);
             alert("실패");
-            M.page.html({url: "./main.html",
-                         actionType: 'CLEAR_TOP'});
+            M.page.html({
+              url: "./main.html",
+              actionType: 'CLEAR_TOP'
+            });
           }
         });
-      }else{
+      } else {
         // 리스트화
         MNet.sendHttp({
           path: SERVER_PATH.CART_LIST,
-          data: {},
+          data: {
+            "list": M.data.param('data')
+          },
           succ: function (data) {
+            var items = "";
             var totalP = 0;
             $.each(data.list, function (index, item) {
-              items += "<div class='cartMenu bg-white'>";
-              items += "<div class='cartImg'>";
+              items += "<div class='paymentMenu bg-white'>";
+              items += "<div class='paymentImg'>";
               // 데이터 있을 경우 바꿔야할 코드 (현재는 임의의 이미지)
               //items += "<img id='imgUrl' src='" + data.imgUrl + "'/>";
-              items += "<img src='http://192.168.0.31:8080/view/goods/upload/"+item.goodsImage+"'>";
+              items += "<img src='http://192.168.0.31:8080/view/goods/upload/" + item.goodsImage + "'>";
               items += "</div>";
               items += "<ul>";
               items += "<li data-seq='" + item.goodsNum + "' class='menuName' >";
@@ -95,16 +100,18 @@
               items += item.goodsName;
               items += "</span>";
               items += "</li>";
-              items += "<li data-seq='" + item.goodsNum + "' class='price' >";
-              items += "<span> "
-              items += item.goodsPrice
-              items += "</span>";
-              items += "<span data-q='"+ item.qty +"' class='qty goodsQty'>";
-              items += item.qty;
-              items += "</span>";
-              items += "</li>";
-              items += "<li>";
+              items += "<li class='menuPriceSum'>";
               items += (Number(item.goodsPrice) * Number(item.qty));
+              items += "</li>";
+              items += "<li data-seq='" + item.goodsNum + "' class='price' >";
+              //              items += "<span> "
+              //              items += item.goodsPrice
+              //              items += "</span>";
+              items += "<span data-q='" + item.qty + "' class='qty goodsQty'>";
+              items += "(수량 ";
+              items += item.qty;
+              items += "개) ";
+              items += "</span>";
               items += "</li>";
               items += "</ul>";
               items += "</div>";
@@ -112,55 +119,73 @@
               console.log(totalP);
             });
             $(".metro-wrap").append(items);
-            console.log(data);
-            $('#totalPrice').html(Number(data.goodsPrice) * Number(data.qty));
-            
+            $('#totalPrice').html(totalP);
+            console.log(totalP);
           },
           error: function (data) {
-            
+            alert("데이터를 불러오지 못했습니다.");
           }
         });
       }
     },
     initEvent: function initEvent() {
       var self = this;
-      
-      $('#payBtn').on('click', function(){
+
+      $('#payBtn').on('click', function () {
         var payment = $("input:radio[name='payment']:checked").val();
         console.log(payment);
         console.log(M.data.param('direct'));
-        if(module.isEmpty(payment)){
+        if (module.isEmpty(payment)) {
           return alert('결제 방법을 선택해주세요.');
         }
-        if(M.data.param('direct') == 'Y'){
+        // 바로결제 
+        if (M.data.param('direct') == 'Y') {
           console.log(M.data.param('goodsNum'));
           console.log($('.goodsQty').attr('data'));
           MNet.sendHttp({
             path: SERVER_PATH.PAYMENT_DIRECTREGIST,
             data: {
-              paymentKind : payment,
-              "goodsNum" : M.data.param('goodsNum'),
-              "qty" : $('.goodsQty').attr('data')
+              paymentKind: payment,
+              "goodsNum": M.data.param('goodsNum'),
+              "qty": $('.goodsQty').attr('data')
             },
             succ: function (data) {
-              if(data.rsltCode == '0000'){
-                console.log(data);            
+              if (data.rsltCode == '0000') {
+                console.log(data);
                 alert('결제 완료되었습니다.');
                 M.page.replace('./main.html');
-              }else{
+              } else {
                 console.log(data);
                 alert('에러!');
               }
             }
           });
-        }else{
+        } else {
+          // 장바구니에서 결제 
+          // var bodyData = [];
+          // $('.metro-wrap').each(function () {
+          //   var goodsNum = $(this).attr('data');
+          //   var qty = $(this).find('.goodsQty').text();
+          //   console.log(goodsNum);
+          //   console.log(qty);
+          //   var _body = {
+          //     "goodsNum": goodsNum,
+          //     "qty": qty
+          //   };
+          //   console.log(_body);
+          //   bodyData.push(_body);
+          // });
+          // console.log(bodyData);
+          // // var body = JSON.stringify(bodyData);
+          // // console.log(body);
           MNet.sendHttp({
-            path: SERVER_PATH.ORDER_REGIST,
+            path: SERVER_PATH.PAYMENT_MEM_REGIST,
             data: {
-              // goodsNum, qty 각각
+              "list": M.data.param('data'),
+              paymentKind : payment,
             },
             succ: function (data) {
-              console.log(data);            
+              console.log(data);
               alert('결제 완료되었습니다.');
               M.page.replace('./main.html');
             },
@@ -171,7 +196,7 @@
           });
         }
       });
-      
+
       // Dom Event 바인딩
       $('.btn-back').on('click', function () {
         M.page.back();
@@ -189,38 +214,38 @@
         $('.wrapper').fadeTo("fast", 1);
         $('.wrapper').attr('style', 'position:relative;height:100%;background-color:#fff;');
       });
-// 회원 사이드바
-      $('#m-orderList').on('click', function(){
+      // 회원 사이드바
+      $('#m-orderList').on('click', function () {
         M.page.html('./menuList.html');
       });
-      $('#m-storeList').on('click', function(){
+      $('#m-storeList').on('click', function () {
         M.page.html('./storeList.html');
       });
-      $('#m-userInfo').on('click', function(){
+      $('#m-userInfo').on('click', function () {
         M.page.html('./userInfo.html');
       });
-      $('#m-cart').on('click', function(){
+      $('#m-cart').on('click', function () {
         M.page.html('./cart.html');
       });
-      $('#m-interest').on('click', function(){
+      $('#m-interest').on('click', function () {
         M.page.html('./wishList.html');
       });
-      $('#m-payList').on('click', function(){
+      $('#m-payList').on('click', function () {
         M.page.html('./payList.html');
       });
-    }  
+    }
 
   };
   window.__page__ = page;
-})(jQuery, M, __util__, __mnet__, __serverPath__,__difinition__, window);
+})(jQuery, M, __util__, __mnet__, __serverPath__, __difinition__, window);
 
 // 해당 페이지에서 실제 호출
-(function($,M,pageFunc,window){
+(function ($, M, pageFunc, window) {
 
-  M.onReady(function(){
+  M.onReady(function () {
     pageFunc.init(); // 최초 화면 초기화
     pageFunc.initView();
     pageFunc.initEvent();
   });
-  
-})(jQuery,M,__page__,window);
+
+})(jQuery, M, __page__, window);
