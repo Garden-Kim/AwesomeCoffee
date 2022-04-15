@@ -80,9 +80,9 @@ public class MemberOrderService {
 	public List<MemberOrderDTO> memberCartList(Map<String, Object> param) {
 		return sqlSession.selectList("Order.memberCartList", param);
 	}
-	// 주문 read 회원 NN
-	public List<MemberOrderDTO> selectMemOrderNN(String memberNum) {
-		return sqlSession.selectList("Order.selectMemOrderNN", memberNum);
+	// 주문 read 회원 NNYN
+	public List<MemberOrderDTO> selectMemOrderNNYN(String memberNum) {
+		return sqlSession.selectList("Order.selectMemOrderNNYN", memberNum);
 	}
 	// 주문 read 회원 YN
 	public List<MemberOrderDTO> selectMemOrderYN(String memberNum) {

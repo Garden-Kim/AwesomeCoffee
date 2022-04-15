@@ -63,12 +63,12 @@
 		where member_num = #{memberNum}
 		order by onum desc
 	</select>
-	<!-- 회원 주문 조리 N 수령 N  -->
-	<select id="selectMemOrderNN"
+	<!-- 회원 주문 조리  수령 N  -->
+	<select id="selectMemOrderNNYN"
 		resultType="awesomeCoffee.dto.MemberOrderDTO">
 		select ORDER_NUM, ORDER_PRICE, ORDER_TIME, TAKEOUT, MEMBER_NUM, COOK_STATE, to_number(ORDER_NUM) onum
 		from member_order
-		where member_num = #{memberNum} and cook_state = 'N' and takeout = 'N'
+		where member_num = #{memberNum} and takeout = 'N'
 		order by onum desc
 	</select>
 	<!-- 회원 주문 조리 Y 수령 N -->

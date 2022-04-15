@@ -163,9 +163,9 @@ public class OrderlistController {
 	}
 	
 	
-	// 주문내역 read 회원 (조리상태가 N 수령상태 N)
-		@RequestMapping(method = RequestMethod.POST, value = "/api/orderlist/listNN")
-		public ModelAndView orderlistNN(HttpSession session, HttpServletRequest request) {
+	// 주문내역 read 회원 (조리상태가 NN, YN)
+		@RequestMapping(method = RequestMethod.POST, value = "/api/orderlist/listNN_YN")
+		public ModelAndView orderlistNNYN(HttpSession session, HttpServletRequest request) {
 			Map<String, Object> responseBodyMap = new HashMap<String, Object>();
 			Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
 			List<Map<String, Object>> orderList = new ArrayList<Map<String, Object>>();
@@ -181,7 +181,7 @@ public class OrderlistController {
 				responseBodyMap.put("rsltMsg", "Login required.");
 			} else {
 				String memberNum = memberService.getMemberNum(authInfo.getLoginId());
-				List<MemberOrderDTO> list = memberOrderService.selectMemOrderNN(memberNum);
+				List<MemberOrderDTO> list = memberOrderService.selectMemOrderNNYN(memberNum);
 				logger.info("======================= responseBodyMap : {}", list.size());
 
 				for (int i = 0; i < list.size(); i++) {
@@ -206,13 +206,18 @@ public class OrderlistController {
 					// title goodsName
 					if (goodsList.size() == 0) {
 						String titleGoodsName = "";
+						String titleGoodsImage = "";
 					}else if (goodsList.size() > 1) {
 						String titleGoodsName = goodsList.get(0).getGoodsName().toString() + " 외 " + (goodsList.size() - 1)
 								+ "개";
+						String titleGoodsImage = goodsList.get(0).getGoodsImage().toString();
 						map.put("titleGoodsName", titleGoodsName);
+						map.put("titleGoodsImage", titleGoodsImage);
 					} else {
 						String titleGoodsName = goodsList.get(0).getGoodsName().toString();
+						String titleGoodsImage = goodsList.get(0).getGoodsImage().toString();
 						map.put("titleGoodsName", titleGoodsName);
+						map.put("titleGoodsImage", titleGoodsImage);
 					}
 
 					orderList.add(map);

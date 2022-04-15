@@ -161,23 +161,6 @@
             }
           });
         } else {
-          // 장바구니에서 결제 
-          // var bodyData = [];
-          // $('.metro-wrap').each(function () {
-          //   var goodsNum = $(this).attr('data');
-          //   var qty = $(this).find('.goodsQty').text();
-          //   console.log(goodsNum);
-          //   console.log(qty);
-          //   var _body = {
-          //     "goodsNum": goodsNum,
-          //     "qty": qty
-          //   };
-          //   console.log(_body);
-          //   bodyData.push(_body);
-          // });
-          // console.log(bodyData);
-          // // var body = JSON.stringify(bodyData);
-          // // console.log(body);
           MNet.sendHttp({
             path: SERVER_PATH.PAYMENT_MEM_REGIST,
             data: {
