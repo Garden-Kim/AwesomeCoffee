@@ -46,7 +46,7 @@
             <span id="goodsQty"> 1</span>&nbsp;&nbsp; 
             <button id="qtyPlus" type="button"><img src='../img/icon-plus.png'></button>
         </span>
-        <div class="recipe-exist">
+        <div class="recipe-exist none">
           <span id="recipe-exist" style="padding: 1.5rem;"> 등록된 레시피가 없습니다. </span>
           <button class='btn-line' id='recipe-write' type='button'>
             레시피 등록
@@ -120,7 +120,7 @@
       <div class="commonLine" style="margin-bottom:5rem;"></div>
     </div>
   </div>
-  <div class="btn-wrap count2 btm-fix none">
+  <div class="btn-wrap count2 btm-fix none" id="manager">
     <button class="btn-point-color" id="modiBtn" type="button">
       수정
     </button>
@@ -128,7 +128,7 @@
       삭제
     </button>
   </div>
-  <div class="btn-wrap count2  btm-fix bg-white">
+  <div class="btn-wrap count2  btm-fix bg-white" id="mem-order">
     <button class="btn-point-color" id="cartBtn" type="button">
       장바구니 담기
     </button>
@@ -137,7 +137,7 @@
     </button>
   </div>
 </div>
-<section class="side-bar position none">
+<section class="side-bar position none" id="emp-side">
   <h1>메뉴</h1>
   <ul class="menu-side-bar">
     <li id="menu-order-food">식자재</li>
@@ -146,9 +146,10 @@
     <li id="menu-menu">상품관리</li>
     <li id="menu-member-info">회원정보</li>
     <li id="menu-store-info">매장정보</li>
+    <li id="menu-logout">로그아웃</li>
   </ul>
 </section>
-<section class="side-bar position">
+<section class="side-bar position" id="mem-side">
   <h1>메뉴</h1>
   <ul class="menu-side-bar">
     <li id="m-orderList">메뉴보기</li>
@@ -157,6 +158,7 @@
     <li id="m-cart">장바구니</li>
     <li id="m-interest">관심상품</li>
     <li id="m-payList">주문내역</li>
+    <li id="m-logout">로그아웃</li>
   </ul>
 </section>
 
