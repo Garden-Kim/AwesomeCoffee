@@ -197,6 +197,7 @@
         });
         console.log(bodyData);
         var body = JSON.stringify(bodyData);
+        console.log(body);
         MNet.sendHttp({
           path: SERVER_PATH.ORDER_REGIST,
           data: {"list":body},
