@@ -220,7 +220,7 @@ public class PaymentController {
 		//List<Map<String, Object>> paymentList = new ArrayList<Map<String, Object>>();
 		List<PaymentDTO> monthList = paymentService.selectMonthSum(reqBodyMap);
 		String monthSum = "0";
-		String monthsSum = "";
+		String monthsSum = "[";
 		for (int i = 1; i <= 12; i++) {
 			String j = null;
 			if(i < 10){
@@ -237,13 +237,14 @@ public class PaymentController {
 			}
 			if(j.equals("12")) monthsSum += "'" + monthSum + "'" ;
 			else monthsSum += "'" + monthSum + "'" + ",";
+			
 			/*
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("monthSum", monthSum);
 			paymentList.add(map);
 			*/
 		}
-		System.out.println(monthsSum);
+		monthsSum = monthsSum + "]";
 
 		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
 		if (StringUtils.isEmpty(authInfo)) {
