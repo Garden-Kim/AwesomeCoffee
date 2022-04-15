@@ -4,22 +4,20 @@
  * @date : 
  */
 
-(function ($, M, module, MNet, SERVER_PATH,CONFIG, window){
+(function ($, M, module, MNet, SERVER_PATH, CONFIG, window) {
 
   var page = {
-    els:  {
-    },
+    els: {},
     data: {},
-    init: function init(){
-    },
+    init: function init() {},
     /*
       진행도를 표시한다.
       @param {function} succCallback 완료 후 호출될 함수
     */
-    initView : function initView(){
+    initView: function initView() {
       console.log(M.data.global('id'));
       console.log(M.data.storage('AUTO_LOGIN_AUTH'));
-      if(module.isEmpty(M.data.global('id'))){
+      if (module.isEmpty(M.data.global('id'))) {
         M.page.html('./login.html');
       }
       console.log(M.data.param('body'));
@@ -28,22 +26,22 @@
       var items = '';
       var totalP = 0;
       $.each(data, function (index, item) {
-        items += "<tr id='"+ item.foodNum +"' class ='test' style='height:5rem;font-size:1.5rem;'>";
+        items += "<tr id='" + item.foodNum + "' class ='test' style='height:5rem;font-size:1.5rem;'>";
         items += "<th>";
         items += item.foodName;
-        items += "</th><th data='"+item.storeOrderQty+"'>";
+        items += "</th><th data='" + item.storeOrderQty + "'>";
         items += item.storeOrderQty + " 개";
-        items += "</th><th data='"+item.foodPrice+"'>";
+        items += "</th><th data='" + item.foodPrice + "'>";
         items += item.foodPrice + " 원";
         items += "</th></tr>";
         totalP += Number(item.foodPrice);
       });
       $("#noti-wrap").html(items);
       $('#totalPrice').html(totalP);
-      
+
     },
-    initEvent : function initEvent(){
-      $('.l-fix').on('click', function(){
+    initEvent: function initEvent() {
+      $('.l-fix').on('click', function () {
         M.page.back();
       });
       // 사이드바 
@@ -59,22 +57,34 @@
         $('.wrapper').fadeTo("fast", 1);
         $('.wrapper').attr('style', 'position:relative;height:100%;background-color:#fff;');
       });
-      $('#btn-order').on('click', function(){
-        console.log('결제완료');
-        M.page.replace('./foodOrder.html');
+      $('#btn-order').on('click', function () {
+        MNet.sendHttp({
+          path: SERVER_PATH.STORE_ORDER_REGIST,
+          data: {
+            "list": M.data.param('body'),
+          },
+          succ: function (data) {
+            console.log(data);
+            alert('발주가 완료되었습니다.');
+            M.page.replace('./foodOrder.html');
+          },
+          error: function () {
+            console.log('에러');
+          }
+        });
       });
     }
   };
   window.__page__ = page;
-})(jQuery, M, __util__, __mnet__, __serverPath__,__difinition__, window);
+})(jQuery, M, __util__, __mnet__, __serverPath__, __difinition__, window);
 
 // 해당 페이지에서 실제 호출
-(function($,M,pageFunc,window){
+(function ($, M, pageFunc, window) {
 
-  M.onReady(function(){
+  M.onReady(function () {
     pageFunc.init(); // 최초 화면 초기화
     pageFunc.initView();
     pageFunc.initEvent();
   });
-  
-})(jQuery,M,__page__,window);
+
+})(jQuery, M, __page__, window);

@@ -71,7 +71,7 @@
       $('#btn-payment').on('click', function(){
         var pay = $('#foodPaymentPrice').val().trim();
         console.log(pay);
-        if(module.isEmpty(pay)){
+        if(module.isEmpty(pay) || pay == '0'){
           alert("금액을 입력해주세요.");
         }else{
           MNet.sendHttp({ ///// 입금
