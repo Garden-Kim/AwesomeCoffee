@@ -31,7 +31,7 @@
 	
 	<!-- 발주내역 총합계 -->
 	<select id="storeOrderPriceSum" resultType="String" parameterType="String">
-		select sum(storeorder_price)
+		select nvl(sum(storeorder_price),0)
 		from store_order
 		where store_num = #{storeNum}
 	</select>
