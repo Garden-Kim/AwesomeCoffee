@@ -33,11 +33,18 @@
         data: self.data.requset,
         succ: function (data) {
           var items = "";
+         
           $.each(data.list, function (index, item) {
-            items += "<ul data='" + item.storeName + "' class='numSend metro-wrap store bg-white' >";
+            items += "<ul data='" + item.storeName + "' class='numSend";
+            var No = " ";
+            if(item.state == 'N'){
+              No = 'N';
+            }
+            items += No;
+            items +=" metro-wrap store bg-white'>";
             items += "<li class='img-wrap storeM'>";
             items += "<div class='img storeE'>";
-            items += "<img src='../img/store.jpg' alt=''/>";
+            items += "<img src='../img/store2.jpg' alt=''/>";
             items += "</div>";
             items += "<span class='label-info none'>";
             items += "<img src='' alt='50%'/>";
@@ -51,12 +58,22 @@
             items += "</div>";
             items += "<div class='info-box-btm storeS' style='width:100%;float:left;'>";
             items += "<strong style='text-align:left;' class='membOderList'>";
-            items += "매장주소 : <br>" + item.storeAddr;
+            items += "매장주소 : <br>" + item.storeAddr + "<br>";
             items += "</strong>";
+            items += "<p>"
+            items += "영업상태 : "
+            var state = "";
+            if(item.state == 'N'){
+              state = '<strong style="color:red;font-weight:bold;">영업종료';
+            }else if(item.state == 'Y'){
+              state = '<strong style="color:blue;font-weight:bold;">영업중';
+            }
+            items += state + " </strong>";
+            items += "</p>"
             items += "</div>";
-
             items += "</li>";
             items += "</ul>";
+            
           });
           $(".metro-wrap").append(items);
         },
@@ -69,6 +86,7 @@
     initEvent: function initEvent() {
       var self = this;
       // Dom Event 바인딩
+      
       $('.btn-back').on('click', function () {
         M.page.back();
       });
@@ -135,6 +153,10 @@
       //뒤로가기
       this.els.$back.on('click', function () {
         M.page.back();
+      });
+
+      $('#btnTop').on('click', function(){
+        $('.cont-wrap').scrollTop(0);
       });
     },
     addrSearch: function(){
