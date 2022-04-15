@@ -36,6 +36,7 @@
       var id = this.els.$loginIdIpt.val().trim();
       var nm = this.els.$userNmIpt.val().trim();
       var cp = this.els.$cellPhoneIpt.val().trim();
+      var regPhone = /^01([0|1|6|7|8|9])?([0-9]{3,4})?([0-9]{4})$/;
       if(module.isEmpty(id)){
         return alert('아이디를 입력해주세요.');
       }
@@ -45,12 +46,16 @@
       if(module.isEmpty(cp)){
         return alert('휴대폰 번호를 입력해주세요.');
       }
+      if(!regPhone.test(cp)){
+        return alert('휴대폰 번호를 11자리로 입력해주세요');
+      }
+
       MNet.sendHttp({
         path: SERVER_PATH.FIND,
         data: {
-          loginId : id,
-          userNm : nm,
-          cellPhone : cp
+          memberId : id,
+          memberName : nm,
+          memberPhone : cp
         },
         succ: function(data){
           if(data.existYn == 'Y'){

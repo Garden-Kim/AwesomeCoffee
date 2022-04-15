@@ -56,12 +56,14 @@
     idOk: function () {
       var self = this;
       var id = this.els.$loginIdIpt.val().trim();
+      var idRegExp = /^[a-zA-z0-9]{5,12}$/; //아이디 유효성 검사
+
       console.log(id);
       if (module.isEmpty(id)) {
         return alert('아이디를 입력해주세요.');
       }
-      if (id.length < 5) {
-        return alert('아이디를 5자 이상 입력해주세요.');
+      if (!idRegExp.test(id)) {
+        return alert('5~12자의 영문 대소문자와 \n숫자로만 입력해주세요.');
       }
       MNet.sendHttp({
         path: SERVER_PATH.DUPLICATE,
@@ -98,14 +100,6 @@
 
 
       var userNm = this.els.$userNmIpt.val().trim();
-      
-     
-
-      alert(userNm);
-      alert(cellphone);
-      alert(id);
-      alert(pw);
-      alert(email);      
 
       if (cellPhone == '') {
         return alert("전화번호를 입력해주세요");
@@ -127,7 +121,7 @@
         return alert('이메일을 입력해주세요.');
       }
       if(regPhone.test(cellphone) === false){
-        return alert('핸드폰 번호를 11자리로 입력해주세요');
+        return alert('휴대폰 번호를 11자리로 입력해주세요');
       }
 
       if (regEmail.test(email) === false) {
@@ -139,7 +133,7 @@
       if (self.els.$dupBtnOk === false) {
         return alert('아이디 중복체크를 해주세요.');
       }
-      
+      if(self.els.$pwOk){
           MNet.sendHttp({
             path: SERVER_PATH.JOIN,
             data: {
@@ -157,7 +151,7 @@
             }
           });
         
-      
+        }
     }
 
   };

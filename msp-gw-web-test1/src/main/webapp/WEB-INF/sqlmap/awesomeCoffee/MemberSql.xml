@@ -13,9 +13,13 @@
 	</insert>
 	
 	<select id="idDuplicate" parameterType="map" resultType="awesomeCoffee.dto.MemberDTO">
-		select * 
-		from member
-		where member_id = #{memberId}
+		SELECT MEMBER_ID 
+		FROM MEMBER
+		WHERE MEMBER_ID = #{memberId}
+		UNION
+		SELECT STORE_ID AS MEMBER_ID 
+		FROM STORE 
+		WHERE STORE_ID = #{memberId}
 	</select>
 	
 	<select id="confirmInfo" parameterType="map" resultType="awesomeCoffee.dto.MemberDTO">

@@ -58,6 +58,7 @@ public class MemberService {
 		if (info != null) {
 			result = "Y";
 		}
+		System.out.println(info);
 		return result;
 	}
 

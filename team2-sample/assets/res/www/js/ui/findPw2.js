@@ -21,7 +21,7 @@
       this.els.$changePwBtn = $('#changePwBtn');
     },
     initView : function initView(){
-      $('#loginId').attr("placeholder", M.data.global('id'));
+      $('#loginId').attr("placeholder", M.data.param('loginId'));
       
     },
     initEvent : function initEvent(){
@@ -44,8 +44,8 @@
         MNet.sendHttp({
           path: SERVER_PATH.PASSWORD,
           data: {
-            loginId : id,
-            password : pw
+            memberId : id,
+            memberPw : pw
           },
           succ: function(data){
             alert('비밀번호 변경에 성공하셨습니다.');

@@ -11,6 +11,7 @@ INFO : "api/member/info", //회원 정보 조회
 OUT : "api/member/out", //회원 탈퇴
 PASSWORD : "api/member/password", //비밀번호 변경
 DUPLICATE : "api/member/duplicate", //아이디 중복 체크
+FIND : "api/member/find", // 이름,전화번호,아이디로 본인인증
 
 // 매장
 STORE_REGIST : "api/store/regist", // 매장등록

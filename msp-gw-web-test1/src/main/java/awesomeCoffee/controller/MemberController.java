@@ -158,7 +158,7 @@ public class MemberController {
 		if (!StringUtils.isEmpty(info)) {
 			responseBodyMap.put("rsltCode", "0000");
 			responseBodyMap.put("rsltMsg", "Success");
-			responseBodyMap.put("memberId", info.getMemberId());
+			responseBodyMap.put("loginId", info.getMemberId());
 		} else {
 			responseBodyMap.put("rsltCode", "2003");
 			responseBodyMap.put("rsltMsg", "Data not found.");
