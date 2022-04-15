@@ -7,6 +7,7 @@
 (function ($, M, module, MNet, SERVER_PATH, CONFIG, window) {
   var storeAddr = M.data.param('storeAddr');
   var storeName = M.data.param('storeName');
+  var map;
   var page = {
     els: {
       $storeName: null,
@@ -52,7 +53,19 @@
       // Dom Event 바인딩
       this.els.$storeOrder.on('click', function () {
         self.storeOrder();
-      })
+      });
+      $('#btnRoadmap').on('click', function(){
+        self.setMapType('roadmap');
+      });
+      $('#btnSkyview').on('click', function(){
+        self.setMapType('skyview');
+      });
+      $('#zoomIn').on('click', function(){
+        self.zoomIn();
+      });
+      $('#zoomOut').on('click', function(){
+        self.zoomOut();
+      });
     },
     storeOrder: function () {
       M.page.html('./menuList.html');
@@ -67,7 +80,7 @@
         };
 
       // 지도를 생성합니다    
-      var map = new kakao.maps.Map(mapContainer, mapOption);
+      map = new kakao.maps.Map(mapContainer, mapOption);
 
       // 주소-좌표 변환 객체를 생성합니다
       var geocoder = new kakao.maps.services.Geocoder();
@@ -98,7 +111,31 @@
         }
       });
 
-    }
+    },
+    setMapType: function setMapType(maptype) { 
+      var roadmapControl = document.getElementById('btnRoadmap');
+      var skyviewControl = document.getElementById('btnSkyview'); 
+      if (maptype === 'roadmap') {
+          map.setMapTypeId(kakao.maps.MapTypeId.ROADMAP);    
+          roadmapControl.className = 'selected_btn';
+          skyviewControl.className = 'btn';
+      } else {
+          map.setMapTypeId(kakao.maps.MapTypeId.HYBRID);    
+          skyviewControl.className = 'selected_btn';
+          roadmapControl.className = 'btn';
+      }
+  },
+  
+  // 지도 확대, 축소 컨트롤에서 확대 버튼을 누르면 호출되어 지도를 확대하는 함수입니다
+  zoomIn: function zoomIn() {
+      map.setLevel(map.getLevel() - 1);
+  },
+  
+  // 지도 확대, 축소 컨트롤에서 축소 버튼을 누르면 호출되어 지도를 확대하는 함수입니다
+  zoomOut: function zoomOut() {
+      map.setLevel(map.getLevel() + 1);
+  },
+
   };
   window.__page__ = page;
 })(jQuery, M, __util__, __mnet__, __serverPath__, __difinition__, window);

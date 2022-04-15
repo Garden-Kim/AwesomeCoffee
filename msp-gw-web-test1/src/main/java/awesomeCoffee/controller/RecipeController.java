@@ -241,34 +241,8 @@ public class RecipeController {
 		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
 
 		Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
+		List<Map<String, Object>> ListReqBodyMap = (List<Map<String, Object>>) reqBodyMap.get("list"); 
 
-		String list = (String) reqBodyMap.get("list").toString();
-
-		String recipeContent = (String) reqBodyMap.get("recipeContent").toString();
-		String goodsNum = (String) reqBodyMap.get("goodsNum").toString();
-		System.out.println("list = " + list);
-		System.out.println("goodsNum = " + goodsNum);
-		System.out.println("recipeContent = " + recipeContent);
-
-		Gson gson = new Gson();
-
-		List<Map<String, Object>> list1 = new ArrayList<Map<String, Object>>();
-		list1 = gson.fromJson(list, list1.getClass());
-		System.out.println(list1);
-
-		Map<String, Object> recipeContent1 = new HashMap<String, Object>();
-
-		recipeContent1.put("recipeContent", (Object) recipeContent);
-		System.out.println(recipeContent1);
-		recipeContent1.put("goodsNum", (Object) goodsNum);
-
-		System.out.println("list1.size = " + list1.size());
-		for (int i = 0; i < list1.size(); i++) {
-			Map<String, Object> m = list1.get(i);
-			m.put("goodsNum", goodsNum);
-		}
-		System.out.println("list1 : " + list1);
-		System.out.println("recipeContent1 : " + recipeContent1);
 
 		if (reqHeadMap == null) {
 			reqHeadMap = new HashMap<String, Object>();
@@ -285,8 +259,8 @@ public class RecipeController {
 			responseBodyMap.put("rsltCode", "1003");
 			responseBodyMap.put("rsltMsg", "Login required.");
 		} else {
-			int result = recipeService.recipeUpdate(list1);
-			int result1 = menuService.updateRecipeContent(recipeContent1);
+			int result = recipeService.recipeUpdate(ListReqBodyMap);
+			int result1 = menuService.updateRecipeContent(reqBodyMap);
 			if (result > 0) {
 				responseBodyMap.put("rsltCode", "0000");
 				responseBodyMap.put("rsltMsg", "Success");

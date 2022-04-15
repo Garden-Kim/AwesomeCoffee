@@ -92,41 +92,10 @@ public class MemberOrderController {
 	@RequestMapping(method = RequestMethod.POST, value = "/api/order/selectCartlist")
 	public ModelAndView memberCartList(HttpSession session, HttpServletRequest request, HttpServletResponse response) {
 		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
-		Map<String, Object> reqBodyMap = new HashMap<String, Object>();
+		Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
 		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
 		List<Map<String, Object>> memberCartList = new ArrayList<Map<String, Object>>();
-
-		Map<String, Object> ListReqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
-		String str = (String)ListReqBodyMap.get("list").toString();
-		System.out.println("str = " + str);
-		Gson gson = new Gson();
-		List<Map<String, Object>> list1 = new ArrayList<Map<String, Object>>();
-		list1 = gson.fromJson(str, List.class);
-		System.out.println("list1 : " + list1);
-		System.out.println(list1.size());
-//		System.out.println(ListReqBodyMap.get("body"));
-//		String str = ListReqBodyMap.get("body").toString();
-//		str = str.replace("[{", "");
-//		str = str.replace("}]", "");
-//		String[] strArray = str.split("},");
-//		List<Map<String, Object>> list1 = new ArrayList<Map<String, Object>>();
-//		for (String s : strArray) {
-//			String s1 = s.replace("{", "");
-//			String[] sss = s1.split(",");
-//			Map<String, Object> m = new HashMap<String, Object>();
-//			for (String ss2 : sss) {
-//				String sss2[] = ss2.split(":");
-//				m.put(sss2[0], (Object) sss2[1]);
-//			}
-//			list1.add(m);
-//		}
-//		for (int ii = 0; ii < list1.size(); ii++) {
-//			System.out.println(list1);
-//		}
-//
-//		if (reqHeadMap == null) {
-//			reqHeadMap = new HashMap<String, Object>();
-//		}
+		List<Map<String, Object>> ListReqBodyMap = (List<Map<String, Object>>) reqBodyMap.get("list"); 
 
 		reqHeadMap.put(Const.RESULT_CODE, Const.OK);
 		reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
@@ -137,7 +106,7 @@ public class MemberOrderController {
 			responseBodyMap.put("rsltCode", "1003");
 			responseBodyMap.put("rsltMsg", "Login required.");
 		} else {
-			cartService.modifyCart(list1, memberNum);
+			cartService.modifyCart(ListReqBodyMap, memberNum);
 
 			List<MemberOrderDTO> list = memberOrderService.memberCartList(reqBodyMap);
 			logger.info("======================= CartListSize : {}", list.size());

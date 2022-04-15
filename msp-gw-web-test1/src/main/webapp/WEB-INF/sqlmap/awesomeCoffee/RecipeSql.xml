@@ -33,13 +33,13 @@
 		MERGE
 		INTO RECIPE a
 		USING dual
-		ON (a.GOODS_NUM = #{goodsNum} AND a.FOOD_NUM = #{foodNum})
+		ON (a.GOODS_NUM = #{goodsNum} AND a.FOOD_NUM = trunc(to_number(#{foodNum})))
 		WHEN MATCHED THEN
 		UPDATE
-		SET a.RECIPE_FOOD_QTY = #{recipeFoodQty}
+		SET a.RECIPE_FOOD_QTY = trunc(to_number(#{recipeFoodQty}))
 		WHEN NOT MATCHED THEN
 		INSERT (a.GOODS_NUM, a.FOOD_NUM, a.RECIPE_FOOD_QTY)
-		VALUES (#{goodsNum}, #{foodNum}, #{recipeFoodQty})
+		VALUES (#{goodsNum}, trunc(to_number(#{foodNum})), trunc(to_number(#{recipeFoodQty})))
 	</update>
 	
 </mapper>

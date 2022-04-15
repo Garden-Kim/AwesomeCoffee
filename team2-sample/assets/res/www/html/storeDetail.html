@@ -2,133 +2,232 @@
 <html lang="ko">
 
 <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1.0, user-scalable=no" name="viewport"/>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, user-scalable=no" name="viewport" />
   <title>매장선택화면</title>
   <style>
-        .btn-point-colorOther {
-            background-color: rgb(255, 208, 0);
-            color: #8B4F1D;
-            font-size: 20px;
-            font-weight: bold;
-        }
+    .map_wrap {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      height: 350px;
+    }
 
-        .detail-tit {
-            padding: 1rem 1.5rem;
-            border-bottom: 1px solid #e0e0e0;
-        }
+    .radius_border {
+      border: 1px solid #919191;
+      border-radius: 5px;
+    }
 
-        .detail-tit p {
-            font-size: 1.5rem;
-            line-height: 1.8
-        }
+    .custom_typecontrol {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      overflow: hidden;
+      height: 30px;
+      margin: 0;
+      padding: 0;
+      z-index: 1;
+      font-size: 12px;
+      font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+    }
 
-        .detail-tit p span {
-            font-size: inherit;
-            font-weight: 400;
-        }
+    .custom_typecontrol span {
+      display: block;
+      width: 65px;
+      height: 30px;
+      float: left;
+      text-align: center;
+      line-height: 30px;
+      cursor: pointer;
+    }
 
-        .detail-tit>span {
-            font-size: 1.3rem;
-            font-weight: 400;
-            color: #666;
-        }
+    .custom_typecontrol .btn {
+      background: #fff;
+      background: linear-gradient(#fff, #e6e6e6);
+    }
 
-        .detail-cont {
-            padding: 1.5rem;
-            width: 100%;
-            height: 400px;
-            text-align: center;
-        }
+    .custom_typecontrol .btn:hover {
+      background: #f5f5f5;
+      background: linear-gradient(#f5f5f5, #e3e3e3);
+    }
 
-        /**/
-        .detail-cont .listConter {
-            margin-top: 1.5rem;
-            font-size: 25px;
-            text-align: center;
-        }
+    .custom_typecontrol .btn:active {
+      background: #e6e6e6;
+      background: linear-gradient(#e6e6e6, #fff);
+    }
 
-        .detail-cont p {
-            margin-top: 1.5rem;
-            font-size: 25px;
-            display: inline-block;
-            height: 130px;
-        }
+    .custom_typecontrol .selected_btn {
+      color: #fff;
+      background: #425470;
+      background: linear-gradient(#425470, #5b6d8a);
+    }
 
-        .orderBtn {
-            width: 100%;
-            height: 50px;
-            padding-top: 11px;
-            text-align: center;
-            background-color: rgb(255, 208, 0);
-        }
+    .custom_typecontrol .selected_btn:hover {
+      color: #fff;
+    }
 
-        .orderList {
-            width: 100%;
-            height: 50px;
-            padding-top: 11px;
-            margin-bottom: 30px;
-            border: 1px solid red;
-            font-size: 20px;
-            color: #FF0000;
-            text-align: center;
-            background-color: lightpink;
-        }
-    
+    .custom_zoomcontrol {
+      position: absolute;
+      top: 50px;
+      right: 10px;
+      width: 36px;
+      height: 80px;
+      overflow: hidden;
+      z-index: 1;
+      background-color: #f5f5f5;
+    }
+
+    .custom_zoomcontrol span {
+      display: block;
+      width: 36px;
+      height: 40px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .custom_zoomcontrol span img {
+      width: 15px;
+      padding: 12px 0;
+      border: none;
+    }
+
+    .custom_zoomcontrol span:first-child {
+      border-bottom: 1px solid #bfbfbf;
+    }
+
+    .btn-point-colorOther {
+      background-color: rgb(255, 208, 0);
+      color: #8B4F1D;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .detail-tit {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .detail-tit p {
+      font-size: 1.5rem;
+      line-height: 1.8
+    }
+
+    .detail-tit p span {
+      font-size: inherit;
+      font-weight: 400;
+    }
+
+    .detail-tit>span {
+      font-size: 1.3rem;
+      font-weight: 400;
+      color: #666;
+    }
+
+    .detail-cont {
+      padding: 1.5rem;
+      width: 100%;
+      height: 400px;
+      text-align: center;
+    }
+
+    /**/
+    .detail-cont .listConter {
+      margin-top: 1.5rem;
+      font-size: 25px;
+      text-align: center;
+    }
+
+    .detail-cont p {
+      margin-top: 1.5rem;
+      font-size: 25px;
+      display: inline-block;
+      height: 130px;
+    }
+
+    .orderBtn {
+      width: 100%;
+      height: 50px;
+      padding-top: 11px;
+      text-align: center;
+      background-color: rgb(255, 208, 0);
+    }
+
+    .orderList {
+      width: 100%;
+      height: 50px;
+      padding-top: 11px;
+      margin-bottom: 30px;
+      border: 1px solid red;
+      font-size: 20px;
+      color: #FF0000;
+      text-align: center;
+      background-color: lightpink;
+    }
   </style>
-  <link href="../css/morpheus-style.css" rel="stylesheet"/>
-  <link href="../css/swiper.min.css" rel="stylesheet"/>
-  <link href="../css/muikit.css" rel="stylesheet"/>
+  <link href="../css/morpheus-style.css" rel="stylesheet" />
+  <link href="../css/swiper.min.css" rel="stylesheet" />
+  <link href="../css/muikit.css" rel="stylesheet" />
 
 
 </head>
 
 <body>
-<div class="wrapper">
-  <header class="header line">
-    <h1>
-      주문 매장 선택
-    </h1>
-    <button class="btn-back l-fix" type="button">
-      뒤로가기
-    </button>
-  </header>
-  <div class=" storeDetailBox">
-    <div class="stordDetail">
-      <div class="detail-cont">
-        <div id="map" style="width:100%;height:350px;"></div>
+  <div class="wrapper">
+    <header class="header line">
+      <h1>
+        주문 매장 선택
+      </h1>
+      <button class="btn-back l-fix" type="button">
+        뒤로가기
+      </button>
+    </header>
+    <div class=" storeDetailBox">
+      <div class="stordDetail">
+        <div class="detail-cont">
+          <div class="map_wrap">
+            <div id="map" style="width:100%;height:350px;position:relative;overflow:hidden;"></div>
+            <!-- 지도타입 컨트롤 div 입니다 -->
+            <div class="custom_typecontrol radius_border">
+              <span id="btnRoadmap" class="selected_btn">지도</span>
+              <span id="btnSkyview" class="btn">스카이뷰</span>
+            </div>
+            <!-- 지도 확대, 축소 컨트롤 div 입니다 -->
+            <div class="custom_zoomcontrol radius_border">
+              <span id="zoomIn"><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_plus.png"
+                  alt="확대"></span>
+              <span id="zoomOut"><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_minus.png"
+                  alt="축소"></span>
+            </div>
+          </div>
+          <div class="addrInfo" style="margin-top: 1.5rem;">
+            <span class="storeDetailTitle" id="storeName" style="font-size: x-large; font-weight: bold;">
+              매장이름
 
-        <div class="addrInfo" style="margin-top: 1.5rem;">
-                    <span class="storeDetailTitle" id="storeName"
-                          style="font-size: x-large; font-weight: bold;">
-                       매장이름
-                       
-                    </span>
-          <br/>
-          <p id="storeAddr" style="font-size: large; font-weight: bold;margin-bottom: 2rem;">
-            매장주소
-          </p>
+            </span>
+            <br />
+            <p id="storeAddr" style="font-size: large; font-weight: bold;margin-bottom: 2rem;">
+              매장주소
+            </p>
+          </div>
         </div>
-      </div>
-      <div class="orderList" style="margin-top: 6rem;">
-        <span>주문 완료 후 변경 또는 취소가 불가합니다.</span>
-      </div>
-      <div class="orderBtn">
-        <button class="btn-point-colorOther" id="storeOrder" type="button">
-          해당 매장에서 주문합니다.
-        </button>
-      </div>
+        <div class="orderList" style="margin-top: 6rem;">
+          <span>주문 완료 후 변경 또는 취소가 불가합니다.</span>
+        </div>
+        <div class="orderBtn">
+          <button class="btn-point-colorOther" id="storeOrder" type="button">
+            해당 매장에서 주문합니다.
+          </button>
+        </div>
 
+
+      </div>
 
     </div>
-
   </div>
-</div>
 
 
-<script
-  src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=ec46aea11c4031d061ccabdeb04fe845&libraries=services"
-  type="text/javascript"></script>
+  <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=ec46aea11c4031d061ccabdeb04fe845&libraries=services"
+    type="text/javascript"></script>
 
 
 

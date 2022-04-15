@@ -54,11 +54,7 @@
             items += item.storeAddr;
             items += "</strong>";
             items += "</div>";
-            items += "<div class='info-box-btm storeA'>";
-            items += "<strong class='membOderList'>";
-            items += "거리";
-            items += "</strong>";
-            items += "</div>";
+
             items += "</li>";
             items += "</ul>";
           });

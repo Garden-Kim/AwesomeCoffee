@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
 import com.ibm.db2.jcc.am.re;
 
 import awesomeCoffee.dto.AuthInfo;
@@ -110,9 +111,8 @@ public class StoreOrderController {
 	@RequestMapping(method = RequestMethod.POST, value = "/api/storeOrder/regist")
 	public ModelAndView regiStore(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
 		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
-		List<Map<String, Object>> reqBodyMap = (List<Map<String, Object>>) request.getAttribute(Const.BODY);
-
-		System.out.println(request.getAttribute(Const.BODY).toString());
+		Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
+		List<Map<String, Object>> ListReqBodyMap = (List<Map<String, Object>>) reqBodyMap.get("list"); 
 		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
 
 		if (reqHeadMap == null) {
@@ -122,13 +122,14 @@ public class StoreOrderController {
 		reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
 
 		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
-		String storeNum = storeService.getStoreNumById(authInfo.getLoginId());
+		
 		
 		if (StringUtils.isEmpty(authInfo)) {
 			responseBodyMap.put("rsltCode", "1003");
 			responseBodyMap.put("rsltMsg", "Login required.");
 		} else {
-			int result = storeOrderService.insertStoreOrder(reqBodyMap,storeNum);
+			String storeNum = storeService.getStoreNumById(authInfo.getLoginId());
+			int result = storeOrderService.insertStoreOrder(ListReqBodyMap,storeNum);
 			if (result > 0) {
 				responseBodyMap.put("rsltCode", "0000");
 				responseBodyMap.put("rsltMsg", "Success");

@@ -106,7 +106,7 @@ public class FoodPaymentController {
 			String orderPriceSum = storeOrderService.storeOrderPriceSum(storeNum);
 			String paymentPriceSum = foodPaymentService.foodPaymentPriceSum(storeNum);
 			
-			Integer restPriceSum = Integer.parseInt(orderPriceSum) -Integer.parseInt(paymentPriceSum) ;
+			Integer restPriceSum = Integer.parseInt(orderPriceSum) - Integer.parseInt(paymentPriceSum) ;
 			if (!StringUtils.isEmpty(restPriceSum)) {
 				responseBodyMap.put("rsltCode", "0000");
 				responseBodyMap.put("rsltMsg", "Success");
