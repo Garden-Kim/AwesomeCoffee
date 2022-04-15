@@ -134,7 +134,7 @@
     // 주문내역
     ORDER_LIST_REGIST : "api/orderlist/regist", // 주문 상세 등록
     ORDER_LIST_LIST : "api/orderlist/list", // 주문상세 리스트(회원)
-    ORDER_LIST_LISTNN : "api/orderlist/listNN", // 주문 리스트(회원 조리N 수령N)
+    ORDER_LIST_LISTNN_YN : "api/orderlist/listNN_YN", // 주문 리스트(회원 수령N)
     ORDER_LIST_LISTYN : "api/orderlist/listYN", // 주문 리스트(회원 조리Y 수령N)
     ORDER_LIST_LISTYY : "api/orderlist/listYY", // 주문 리스트(회원 조리Y 수령Y)
     ORDER_LIST_DETAIL : "api/orderlist/detail", // 회원 주문 상세 

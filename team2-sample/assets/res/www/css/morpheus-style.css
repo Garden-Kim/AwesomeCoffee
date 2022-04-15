@@ -285,7 +285,7 @@ html, body {max-width: 100%;overflow-x: hidden;max-height: 100%;}
 .numSend.metro-wrap{margin-bottom:.4rem;}
 .orderStatus{width:100%}
 .orderStatus li{width:28%}
-.orderStatus li:nth-child(1){ width:16%;}
+.orderStatus li:nth-child(1){width: 25%;}
 .orderOne{overflow:hidden;width:95%;height:auto;margin:1rem;}
 .order-menu img{overflow:hidden;height:9rem;border-radius: 10%; object-fit: cover;}
 .order-menu li:nth-child(1){width:100%; height:2rem;padding:.5rem; font-size:1.5rem; font-weight:bold;}
