@@ -236,7 +236,7 @@ public class PaymentController {
 				}
 			}
 			if(j.equals("12")) monthsSum += monthSum;
-			else monthsSum += monthSum + ",";
+			else monthsSum += "'" + monthSum + "'" + ",";
 			/*
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("monthSum", monthSum);
