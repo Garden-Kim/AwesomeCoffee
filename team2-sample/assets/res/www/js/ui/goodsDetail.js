@@ -19,7 +19,8 @@
       $qtyPlus: null,
       $qtyMinus: null,
     },
-    data: { goodsNum : ''},
+    data: { goodsNum : '',
+            goodsImage : ''},
     init: function init() {
       this.els.$imgUrl = $('#imgUrl');
       this.els.$title = $('#title');
@@ -62,11 +63,14 @@
           $('#imgUrl').attr('src', 'http://192.168.0.31:8080/view/goods/upload/'+ data.goodsImage);
           console.log(data.goodsNum);
           goodsNum = data.goodsNum;
+          goodsImage = data.goodsImage;
           console.log(goodsNum);
+          console.log(goodsImage);
           if(data.recipeYn == 'Y'){
             $('#recipe-exist').text('레시피가 존재합니다.')
             $('#recipe-write').text('레시피 상세');
           }
+          /////////// 추천메뉴
           if(data.categoryNum != '5'){
             MNet.sendHttp({
               path: SERVER_PATH.MENU_CATEGORYLIST,
@@ -238,7 +242,8 @@
       $('#recipe-write').on('click', function(){
         if($('#recipe-write').text() == '레시피 상세'){
           M.page.html('./recipeDetail.html',{param : { goodsName : M.data.param("goodsName"),
-                                                      goodsNum : goodsNum }});
+                                                      goodsNum : goodsNum,
+                                                      goodsImage : goodsImage}});
         }else{
           M.page.html('./write-recipe.html',{param : { goodsName : M.data.param("goodsName"),
                                                       goodsNum : goodsNum }});

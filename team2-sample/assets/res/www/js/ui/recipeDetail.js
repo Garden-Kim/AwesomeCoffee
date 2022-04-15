@@ -8,10 +8,6 @@
 
   var page = {
     els: {
-      $title: null,
-      $regDate: null,
-      $imgUrl: null,
-      $content: null,
       $loginId: null,
       $seqNum: null,
       $back: null,
@@ -19,10 +15,6 @@
     },
     data: {},
     init: function init() {
-      this.els.$title = $('#title');
-      this.els.$regDate = $('#regDate');
-      this.els.$imgUrl = $('#imgUrl');
-      this.els.$content = $('#content');
       this.els.$back = $("#back");
       this.els.$menu = $('#menu');
     },
@@ -41,33 +33,31 @@
           items += "</p>";
           items += "<span id='regDate'>";
           items += "상품번호 : " + M.data.param('goodsNum');
-          items += "</span><br/>";
-          items += "<span> ";
-          items += "Category : coffee";
           items += "</span>";
           items += "</div>";
           items += "<div class='recipe-detail-cont'>";
-          // 이미지 url
-          if (data.imgUrl != null) {
-            items += "<div class='img-wrap'>";
-            items += "<img id='imgUrl' src='http://192.168.0.31:8080/view/goods/upload/" + data.goodsImage + "'/>";
-            items += "</div>";
-/*            M.data.global("imgUrl", data.goodsImage);
-            var split = data.imgUrl.lastIndexOf('/');
-            var imgName = data.imgUrl.toString().substring(split + 1, );
-            M.data.global("imgName", imgName);*/
-          }
+          items += "<div class='img-wrap'>";
+          items += "<img id='imgUrl' src='http://192.168.0.31:8080/view/goods/upload/" + M.data.param('goodsImage') + "'/>";
+          items += "</div>";
           items += "<p id='content'>";
-          items += "물 : 100ml <br/> 에스프레소2샷 <br/> 휘핑크림200ml <br/> 설탕20g <br/> 얼음<br/>  ";
+          items += data.recipeContent;
           items += "</p>";
           items += "</div>";
+          $.each(data.list, function (index, item) {
+            items += "<div class='recipe-detail-cont'>";
+            items += "<span>";
+            items += " 식자재번호 : " + item.foodNum;
+            items += "</span>";
+            items += "<span>";
+            //items +=  // 이름
+            items += "</span>";
+            items += "<span style='float:right'>";
+            items += item.recipeFoodQty + ' 개';
+            items += "</span>";
+            items += "</div>";
+          });
 
           $("#notice-select").html(items);
-
-          self.els.$title.html(data.title);
-          self.els.$regDate.html(data.regDate);
-          self.els.$content.html(data.content);
-
         },
         error: function () {
           alert("데이터를 불러오지 못했습니다.");
@@ -95,8 +85,14 @@
         $('.wrapper').fadeTo("fast", 1);
         $('.wrapper').attr('style', 'position:relative;height:100%;background-color:#fff;');
       });
+      
+      
       $('#modiBtn').on('click', function(){
-        M.page.html('./write-recipe.html',{param : { seqNo : M.data.param('seqNo')}});
+        console.log(M.data.param("goodsName"));
+        console.log(M.data.param("goodsNum"));
+        M.page.html('./write-recipe.html',{param : { goodsName : M.data.param("goodsName"),
+                                                     goodsNum :  M.data.param("goodsNum"),
+                                                     recipeYn : 'Y'}});
       });
       $('#delBtn').on('click', function(){
         if (confirm("레시피를 삭제하시겠습니까?") == true){
@@ -105,7 +101,6 @@
           M.page.remove(pagelist[1].key);
           M.page.replace('./list.html');
         }else return;
-        
       });
       
       

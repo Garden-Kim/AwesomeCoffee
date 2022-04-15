@@ -25,6 +25,9 @@
     initView: function initView() {
       //화면에서 세팅할 동적데이터
       var self = this;
+      if(module.isEmpty(M.data.global('id'))){
+        M.page.html('./login.html');
+      }
       
     },
     initEvent: function initEvent() {

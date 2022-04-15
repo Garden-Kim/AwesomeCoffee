@@ -90,6 +90,7 @@
             });
           }
         });
+      });
       // 카테고리
       const tabList = document.querySelectorAll('.category li');
       for(var i = 0; i < tabList.length; i++){

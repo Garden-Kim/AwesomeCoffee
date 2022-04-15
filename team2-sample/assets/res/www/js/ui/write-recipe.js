@@ -49,21 +49,63 @@
         succ: function (data) {
           $.each(data.list, function (index, item) {
             li +="<option value='"+item.foodNum+"'>"+item.foodName+"</option>"
-          });
+          })
           $('#first').append(li);
           self.data.li = li;
           console.log(self.data.li);
         }
       });
       
-      if(!module.isEmpty(recipeYn)){
+      if(M.data.param('recipeYn') == 'Y'){
         MNet.sendHttp({
-          path: SERVER_PATH.NOTICE_DETAIL,
-          data: { ///////나중에
+          path: SERVER_PATH.RECIPE_INFO,
+          data: { 
+            goodsNum : M.data.param('goodsNum')
           },
           succ: function (data) {
-            self.els.$iptTitle.val(data.goodsName);
-            self.els.$iptContent.val(data.content);
+            console.log(data);
+            self.els.$iptTitle.val(M.data.param('goodsName'));
+            self.els.$iptContent.val(data.recipeContent);
+            $('.catergory').val(data.list[0].foodNum);
+            $('.food-qty').val(data.list[0].recipeFoodQty);
+            
+            for(i = 1; i < data.list.length; i ++){
+              console.log(self.data.li);
+              console.log(data.list[i].foodNum);
+              var items = "";
+              items += "<div class='ipt-form-row plus-food'>"
+              items += "<div class='select-box recipe-select'>"
+              items +=   "<select class='catergory' >"
+              items +=     "<option value=''>식자재 등록</option>"
+              items += self.data.li;
+              items +=   "</select>"
+              items += "</div>"
+              items += "<div class='select-box recipe-select qty-select'> " 
+              items +=   "<select class='food-qty'>"
+              items +=     " <option value='1'>1 개</option>"
+              items +=     " <option value='2'>2 개</option>"
+              items +=     " <option value='3'>3 개</option>"
+              items +=     "<option value='4'>4 개</option>"
+              items +=     "<option value='5'>5 개</option>"
+              items +=     "<option value='6'>6 개</option>"
+              items +=     "<option value='7'>7 개</option>"
+              items +=     "<option value='8'>8 개</option>"
+              items +=     "<option value='9'>9 개</option>"
+              items +=     "<option value='10'>10 개</option>"
+              items +=   "</select>"
+              items += "</div>"
+              items += "<button class='btn-line' id='del' type='button' >"
+              items +=   "식자재 삭제"
+              items += "</button>"
+              items += "</div>"
+              $("#food-select").append(items);
+              $('.catergory').get()[2].val('2');
+              console.log($('.catergory').get()[2])
+              var get = $('.catergory').get();
+              get[i].val(data.list[i].foodNum);
+              $('.catergory').get(i).val(data.list[i].foodNum);
+              $('.food-qty').get(i).val(data.list[i].recipeFoodQty);
+            }
           },
           error: function (data) {
             console.log(data);
@@ -71,6 +113,7 @@
           }
         });        
       }
+      
     },
     initEvent : function initEvent(){
       var self = this;

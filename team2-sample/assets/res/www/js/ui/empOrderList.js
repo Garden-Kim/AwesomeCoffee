@@ -110,6 +110,24 @@
       $('#menu-order-manage').on('click', function(){
         M.page.html("./orderManage.html"); 
       })
+      $('#menu-logout').on('click', function(){
+        MNet.sendHttp({
+          path: SERVER_PATH.LOGOUT,
+          data: {
+            "loginId": M.data.global('id')
+          },
+          succ: function (data) {
+            M.data.removeGlobal('id');
+            M.data.removeGlobal('grade');
+            M.data.removeStorage('AUTO_LOGIN_AUTH');
+            alert("로그아웃되셨습니다.");
+            M.page.html({
+                    url: "./login.html",
+                    actionType: "CLEAR_TOP"
+            });
+          }
+        });
+      });
       
       $('.empOrder').on('click', '.empOrderItem', function () {
         var orderNum = $(this).attr('data-seq');

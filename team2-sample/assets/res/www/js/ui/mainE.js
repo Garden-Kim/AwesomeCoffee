@@ -21,6 +21,9 @@
       @param {function} succCallback 완료 후 호출될 함수
     */
     initView : function initView(){
+      if(module.isEmpty(M.data.global('id'))){
+        M.page.html('./login.html');
+      }
     },
     initEvent : function initEvent(){
     $('#employee').on('click', function(){
