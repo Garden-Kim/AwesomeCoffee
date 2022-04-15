@@ -217,10 +217,9 @@ public class PaymentController {
 		reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
 		logger.info("======================= reqBodyMap : {}", reqBodyMap.toString());
 
-		//List<Map<String, Object>> paymentList = new ArrayList<Map<String, Object>>();
+		List<Map<String, Object>> paymentList = new ArrayList<Map<String, Object>>();
 		List<PaymentDTO> monthList = paymentService.selectMonthSum(reqBodyMap);
 		String monthSum = "0";
-		String monthsSum = "[";
 		for (int i = 1; i <= 12; i++) {
 			String j = null;
 			if(i < 10){
@@ -235,26 +234,20 @@ public class PaymentController {
 					break;
 				}
 			}
-			if(j.equals("12")) monthsSum += "'" + monthSum + "'" ;
-			else monthsSum += "'" + monthSum + "'" + ",";
-			
-			/*
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("monthSum", monthSum);
 			paymentList.add(map);
-			*/
 		}
-		monthsSum = monthsSum + "]";
 
 		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
 		if (StringUtils.isEmpty(authInfo)) {
 			responseBodyMap.put("rsltCode", "1003");
 			responseBodyMap.put("rsltMsg", "Login required.");
 		} else {
-			if (!StringUtils.isEmpty(monthsSum)) {
+			if (!StringUtils.isEmpty(paymentList)) {
 				responseBodyMap.put("rsltCode", "0000");
 				responseBodyMap.put("rsltMsg", "Success");
-				responseBodyMap.put("monthSum", monthsSum);
+				responseBodyMap.put("monthList", paymentList);
 			} else {
 				responseBodyMap.put("rsltCode", "2003");
 				responseBodyMap.put("rsltMsg", "Data not found.");
