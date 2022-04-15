@@ -37,21 +37,21 @@
             items += "<ul data='" + item.storeName + "' class='numSend metro-wrap store bg-white' >";
             items += "<li class='img-wrap storeM'>";
             items += "<div class='img storeE'>";
-            items += "<img src='./img/ico-alarm.png' alt=''/>";
+            items += "<img src='../img/store.jpg' alt=''/>";
             items += "</div>";
             items += "<span class='label-info none'>";
-            items += "<img src='./img/ico-alarm.png' alt='50%'/>";
+            items += "<img src='' alt='50%'/>";
             items += "</span>";
             items += "</li>";
             items += "<li class='info-box storeList'>";
             items += "<div class='info-box-top'>";
             items += "<strong class='membOderList' >";
-            items += item.storeName;
+            items += "매장이름 : <br> " + item.storeName;
             items += "</strong>";
             items += "</div>";
-            items += "<div class='info-box-btm storeS'>";
+            items += "<div class='info-box-btm storeS' style='width:100%;float:left;'>";
             items += "<strong style='text-align:left;' class='membOderList'>";
-            items += item.storeAddr;
+            items += "매장주소 : <br>" + item.storeAddr;
             items += "</strong>";
             items += "</div>";
 
@@ -71,9 +71,6 @@
       // Dom Event 바인딩
       $('.btn-back').on('click', function () {
         M.page.back();
-      });
-      $('.btn-modify').on('click', function(){
-        M.page.html('./write-store.html');
       });
       // 사이드바 
       $('.btn-menu').on('click', function () {
