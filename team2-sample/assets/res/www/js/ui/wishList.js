@@ -81,7 +81,11 @@
       });
       // 관심버튼
       $('#card').on('click', '.hurt', function() {
-        var goodsNum = $(this).attr('id' );
+        console.log($(this));
+        var goodsNum = $(this).attr('id');
+        console.log(goodsNum);
+
+        console.log(goodsNum);
         if (confirm("관심상품에서 삭제하시겠습니까?") == true){
           MNet.sendHttp({
             path: SERVER_PATH.WISH_REGIST,
@@ -152,6 +156,9 @@
             items += "</strong>";
             items += "</div>";
             items += "<button type='button' id='"+ item.goodsNum +"' class='hurt' data='"+ item.wishlist +"'></button>";
+            items += "<span>";
+            items += item.goodsNum;
+            items += "</span>";
             items += "<span class='info-box-btm'>";
             items += "<p style='text-align:right;' class='ellipsis_1'>";
             items += item.goodsPrice + ' 원';

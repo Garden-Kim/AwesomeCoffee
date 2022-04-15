@@ -6,9 +6,9 @@
 <mapper namespace="Wishlist">
 
 <select id="selectAllWishlist" resultType="awesomeCoffee.dto.WishlistDTO">
-	select *
-	from wishlist
-	where member_num = #{memberNum}
+	select g.goods_num, g.goods_name, g.goods_price, g.goods_image, w.member_num, w.wishlist_date
+	from wishlist w , goods g
+	where member_num = #{memberNum} and g.goods_num = w.goods_num
 	order by wishlist_date, goods_num
 </select>
 

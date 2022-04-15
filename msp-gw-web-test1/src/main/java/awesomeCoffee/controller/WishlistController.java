@@ -95,14 +95,11 @@ public class WishlistController {
 			String memberNum = memberService.getMemberNum(authInfo.getLoginId());
 			List<WishlistDTO> list = wishlistService.selectAllWishlist(memberNum);
 			logger.info("======================= responseBodyMap : {}", list.size());
-			List<MenuDTO> menuList = menuService.selectWishMenu(memberNum);
 			for (int i =0; i<list.size() ; i++) {
-				
 				Map<String , Object> map = new HashMap<String, Object>();
-				map.put("goodsName", menuList.get(i).getGoodsName());
-				map.put("goodsPrice", menuList.get(i).getGoodsPrice());
-				map.put("goodsImage", menuList.get(i).getGoodsImage());
-				
+				map.put("goodsName", list.get(i).getGoodsName());
+				map.put("goodsPrice", list.get(i).getGoodsPrice());
+				map.put("goodsImage", list.get(i).getGoodsImage());
 				map.put("memberNum", list.get(i).getMemberNum());
 				map.put("goodsNum", list.get(i).getGoodsNum());
 				map.put("wishlistDate", list.get(i).getWishlistDate());
@@ -111,7 +108,7 @@ public class WishlistController {
 			}
 			logger.info("======================= wishlist : {}" , wishlist.toString());
 						
-			if (!StringUtils.isEmpty(list)) {
+			if (!StringUtils.isEmpty(wishlist)) {
 				responseBodyMap.put("rsltCode", "0000");
 				responseBodyMap.put("rsltMsg", "Success");
 				responseBodyMap.put("list",wishlist);
