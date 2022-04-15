@@ -9,7 +9,9 @@
   var page = {
     els:  {
     },
-    data: {},
+    data: {
+      rest: ''
+    },
     init: function init(){
     },
     /*
@@ -29,7 +31,10 @@
         succ: function (data) {
           console.log(data);
           if(data.rsltCode == '0000'){
+            this.data.rest = data.restPayment;
             $("#restPayment").html(data.restPayment + ' 원 ');
+            $("#restPayment").attr('data', data.restPayment);
+            console.log(this.data.rest);
           }else{
             alert("결제잔액을 불러오지 못했습니다.");
           }
@@ -61,6 +66,7 @@
       });
     },
     initEvent : function initEvent(){
+      var self = this;
       $('.l-fix').on('click', function(){
         M.page.back();
       });
@@ -70,9 +76,13 @@
       // 입금버튼
       $('#btn-payment').on('click', function(){
         var pay = $('#foodPaymentPrice').val().trim();
+        var restPayment = $("#restPayment").attr('data');
         console.log(pay);
-        if(module.isEmpty(pay) || pay == '0'){
-          alert("금액을 입력해주세요.");
+        console.log(restPayment);
+        if(module.isEmpty(pay) || 1000 > Number(pay)){
+          alert("입금액은 1000원 이상이어야 합니다.");
+        }else if(Number(pay) > Number(restPayment)){
+          alert("결제 잔액을 초과하여 입금하실 수 없습니다.");
         }else{
           MNet.sendHttp({ ///// 입금
             path: SERVER_PATH.FOOD_PAYMENT_PAYMENT,
