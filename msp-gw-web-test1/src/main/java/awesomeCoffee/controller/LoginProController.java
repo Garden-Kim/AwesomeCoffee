@@ -127,6 +127,7 @@ public class LoginProController {
 			responseBodyMap.put("rsltCode", "0000");
 			responseBodyMap.put("rsltMsg", "Success");
 			session.setAttribute("authInfo", authInfo);
+			responseBodyMap.put("grade", authInfo.getGrade());
 
 		} else {
 			responseBodyMap.put("rsltCode", "2003");
