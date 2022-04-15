@@ -93,18 +93,18 @@ public class RecipeService {
 		return result;
 	}
 
-	public int recipeUpdate(List<Map<String, Object>> param) {
+	public int recipeUpdate(List<Map<String, Object>> param,Map<String, Object> reqBodyMap ) {
 		// 트렌젝션 구현
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 		TransactionStatus status = transactionManager_sample.getTransaction(def);
-
+		
 		int result = 0;
 		try {
 			for (Map<String, Object> map : param) {
 				RecipeDTO dto = new RecipeDTO();
 				dto.setFoodNum(map.get("foodNum").toString());
-				dto.setGoodsNum(map.get("goodsNum").toString());
+				dto.setGoodsNum(reqBodyMap.get("goodsNum").toString());
 				dto.setRecipeFoodQty(map.get("recipeFoodQty").toString());
 
 //						String storeOrderNum = sqlSession.selectOne("StoreOrder.createStoreOrderNum");

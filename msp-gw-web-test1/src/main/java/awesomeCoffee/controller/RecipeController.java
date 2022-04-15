@@ -39,7 +39,9 @@ public class RecipeController {
 	RecipeService recipeService;
 	@Autowired
 	MenuService menuService;
-
+	@Autowired
+	FoodService foodService;
+/*
 	// 레시피수정
 	@RequestMapping(method = RequestMethod.POST, value = "/api/recipe/update")
 	public ModelAndView updateRecipe(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
@@ -85,6 +87,7 @@ public class RecipeController {
 
 		return mv;
 	}
+	*/
 
 	// 레시피조회
 	@RequestMapping(method = RequestMethod.POST, value = "/api/recipe/info")
@@ -105,6 +108,7 @@ public class RecipeController {
 
 		List<RecipeDTO> info = recipeService.recipeInfo(reqBodyMap);
 		MenuDTO mDto = menuService.getMenuInfoByNum(reqBodyMap);
+		
 		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
 		if (StringUtils.isEmpty(authInfo)) {
 			responseBodyMap.put("rsltCode", "1003");
@@ -117,7 +121,8 @@ public class RecipeController {
 					map.put("goodsNum", info.get(i).getGoodsNum());
 					map.put("recipeFoodQty", info.get(i).getRecipeFoodQty());
 					map.put("foodNum", info.get(i).getFoodNum());
-
+					FoodDTO fDto = foodService.foodInfo(map);
+					map.put("foodName", fDto.getFoodName());
 					recipeList.add(map);
 				}
 				if (!StringUtils.isEmpty(info)) {
@@ -259,7 +264,7 @@ public class RecipeController {
 			responseBodyMap.put("rsltCode", "1003");
 			responseBodyMap.put("rsltMsg", "Login required.");
 		} else {
-			int result = recipeService.recipeUpdate(ListReqBodyMap);
+			int result = recipeService.recipeUpdate(ListReqBodyMap, reqBodyMap);
 			int result1 = menuService.updateRecipeContent(reqBodyMap);
 			if (result > 0) {
 				responseBodyMap.put("rsltCode", "0000");
