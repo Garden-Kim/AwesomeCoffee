@@ -20,7 +20,7 @@
       <button type="button" class="btn-back l-fix">
         뒤로가기
       </button>
-      <button type="button" class="btn-modify r-fix" id="btn-modify">
+      <button type="button" class="btn-modify r-fix none" id="btn-modify">
         메뉴등록
       </button>
       <button type="button" class="btn-menu r-fix">
@@ -73,18 +73,19 @@
       <!-- 하단 고정 버튼 -->
     </button>
   </div>
-  <section class="side-bar position none">
+  <section class="side-bar position none" id="emp-side">
     <h1>메뉴</h1>
     <ul class="menu-side-bar">
       <li id="menu-order-food">식자재</li>
-      <li id="menu-payment-list">발주내역</li>
+      <li id="menu-payment-list">발주입금</li>
       <li id="menu-sales">매출현황</li>
       <li id="menu-menu">상품관리</li>
       <li id="menu-member-info">회원정보</li>
       <li id="menu-store-info">매장정보</li>
+      <li id="menu-logout">로그아웃</li>
     </ul>
   </section>
-  <section class="side-bar position">
+  <section class="side-bar position"  id="mem-side">
     <h1>메뉴</h1>
     <ul class="menu-side-bar">
       <li id="m-orderList">메뉴보기</li>
@@ -93,6 +94,7 @@
       <li id="m-cart">장바구니</li>
       <li id="m-interest">관심상품</li>
       <li id="m-payList">주문내역</li>
+      <li id="m-logout">로그아웃</li>
     </ul>
   </section>
 </body>

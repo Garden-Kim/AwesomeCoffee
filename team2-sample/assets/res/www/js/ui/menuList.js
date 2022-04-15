@@ -32,52 +32,101 @@
       if(module.isEmpty(M.data.global('id'))){
         M.page.html('./login.html');
       }
-      MNet.sendHttp({
-        path: SERVER_PATH.MENU_CATEGORYLIST,
-        data: {
-          "categoryNum" : "2",
-        },
-        succ: function (data) {
-          console.log(data);
-          var items = "";
-          $.each(data.list, function (index, item) {
-            console.log(item);
-            console.log(item.goodsImage);
-            //http://211.241.199.241:28040/resources/img/1647853076507.jpg
-            items += "<li id='"+ item.goodsName +"' class ='menu'>";
-            items += "<div class='thumbnail-wrap click-d' id='"+ item.goodsName +"'>";
-            items += "<div class='thumbnail'>";
-            items += "<img src='" +item.goodsImage +" ' alt=''/>";
-            items += "</div>";
-            items += "<span class='label-info none'>";
-            items += "<img src= '" + item.goodsImage + "' alt='50%'/>";
-            items += "</span>";
-            items += "</div>";
-            items += "<div class='info-box'>";
-            items += "<div class='info-box-top'>";
-            items += "<strong class='ellipsis_1'>";
-            items += item.goodsName;
-            items += "</strong>";
-            items += "</div>";
-            items += "<button type='button' id='"+ item.goodsNum +"' class='interest' data='"+ item.wishlist +"'></button>";
-            items += "<span class='info-box-btm'>";
-            items += "<p style='text-align:right;' class='ellipsis_1'>";
-            items += item.goodsPrice + ' 원';
-            items += "</p>";
-            items += "</span>";
-            items += "</div>";
-            items += "</li>";
-            console.log(item.wishlist);
-          });
-          $("#card").append(items);
-          $('button[data="Exist goods in wishlist"]').attr('class', 'hurt');
-        },
-        error: function (data) {
-          console.log(data);
-          alert("리스트를 가져오지 못했습니다.");
-        },
-      });
-
+      if(M.data.global('grade') == 'store'){
+        document.querySelector('#btn-modify').classList.remove('none');
+        document.querySelector('#emp-side').classList.remove('none');
+        document.querySelector('#mem-side').classList.add('none');
+        MNet.sendHttp({
+          path: SERVER_PATH.MENU_CATEGORYEMPLIST,
+          data: {
+            "categoryNum" : "2",
+          },
+          succ: function (data) {
+            console.log(data);
+            var items = "";
+            $.each(data.list, function (index, item) {
+              console.log(item);
+              console.log(item.goodsImage);
+              //http://211.241.199.241:28040/resources/img/1647853076507.jpg
+              items += "<li id='"+ item.goodsName +"' class ='menu'>";
+              items += "<div class='thumbnail-wrap click-d' id='"+ item.goodsName +"'>";
+              items += "<div class='thumbnail'>";
+              items += "<img src='" +item.goodsImage +" ' alt=''/>";
+              items += "</div>";
+              items += "<span class='label-info none'>";
+              items += "<img src= '" + item.goodsImage + "' alt='50%'/>";
+              items += "</span>";
+              items += "</div>";
+              items += "<div class='info-box'>";
+              items += "<div class='info-box-top'>";
+              items += "<strong class='ellipsis_1'>";
+              items += item.goodsName;
+              items += "</strong>";
+              items += "</div>";
+              items += "<span class='info-box-btm'>";
+              items += "<p style='text-align:right;' class='ellipsis_1'>";
+              items += item.goodsPrice + ' 원';
+              items += "</p>";
+              items += "</span>";
+              items += "</div>";
+              items += "</li>";
+              console.log(item.wishlist);
+            });
+            $("#card").append(items);
+            $('button[data="Exist goods in wishlist"]').attr('class', 'hurt');
+          },
+          error: function (data) {
+            console.log(data);
+            alert("리스트를 가져오지 못했습니다.");
+          },
+        });
+      }else{
+        MNet.sendHttp({
+          path: SERVER_PATH.MENU_CATEGORYLIST,
+          data: {
+            "categoryNum" : "2",
+          },
+          succ: function (data) {
+            console.log(data);
+            var items = "";
+            $.each(data.list, function (index, item) {
+              console.log(item);
+              console.log(item.goodsImage);
+              //http://211.241.199.241:28040/resources/img/1647853076507.jpg
+              items += "<li id='"+ item.goodsName +"' class ='menu'>";
+              items += "<div class='thumbnail-wrap click-d' id='"+ item.goodsName +"'>";
+              items += "<div class='thumbnail'>";
+              items += "<img src='" +item.goodsImage +" ' alt=''/>";
+              items += "</div>";
+              items += "<span class='label-info none'>";
+              items += "<img src= '" + item.goodsImage + "' alt='50%'/>";
+              items += "</span>";
+              items += "</div>";
+              items += "<div class='info-box'>";
+              items += "<div class='info-box-top'>";
+              items += "<strong class='ellipsis_1'>";
+              items += item.goodsName;
+              items += "</strong>";
+              items += "</div>";
+              items += "<button type='button' id='"+ item.goodsNum +"' class='interest' data='"+ item.wishlist +"'></button>";
+              items += "<span class='info-box-btm'>";
+              items += "<p style='text-align:right;' class='ellipsis_1'>";
+              items += item.goodsPrice + ' 원';
+              items += "</p>";
+              items += "</span>";
+              items += "</div>";
+              items += "</li>";
+              console.log(item.wishlist);
+            });
+            $("#card").append(items);
+            $('button[data="Exist goods in wishlist"]').attr('class', 'hurt');
+          },
+          error: function (data) {
+            console.log(data);
+            alert("리스트를 가져오지 못했습니다.");
+          },
+        });    
+      }
     },
     initEvent : function initEvent(){
       var self = this;
@@ -113,51 +162,99 @@
           var ctg = $(this).parent('li').attr('id');
           this.parentNode.classList.add('on');
           console.log(ctg);
-          MNet.sendHttp({
-            path: SERVER_PATH.MENU_CATEGORYLIST,
-            data: {
-              "categoryNum" : ctg,
-            },
-            succ: function (data) {
-              console.log(data);
-              var items = "";
-              $.each(data.list, function (index, item) {
-                console.log(item);
-                console.log(item.goodsImage);
-                //http://192.168.0.31:8080/view/goods/upload/{goodsImage}
-                //http://211.241.199.241:28040/resources/img/1647853076507.jpg
-                items += "<li id='"+ item.goodsName +"' class ='menu'>";
-                items += "<div class='thumbnail-wrap click-d' id='"+ item.goodsName +"'>";
-                items += "<div class='thumbnail'>";
-                items += "<img src='http://192.168.0.31:8080/view/goods/upload/" +item.goodsImage +" ' alt=''/>";
-                items += "</div>";
-                items += "<span class='label-info none'>";
-                items += "<img src= '" + item.goodsImage + "' alt='50%'/>";
-                items += "</span>";
-                items += "</div>";
-                items += "<div class='info-box'>";
-                items += "<div class='info-box-top'>";
-                items += "<strong class='ellipsis_1'>";
-                items += item.goodsName;
-                items += "</strong>";
-                items += "</div>";
-                items += "<button type='button' id='"+ item.goodsNum +"' class='interest' data='"+ item.wishlist +"'></button>";
-                items += "<span class='info-box-btm'>";
-                items += "<p style='text-align:right;' class='ellipsis_1'>";
-                items += item.goodsPrice + ' 원';
-                items += "</p>";
-                items += "</span>";
-                items += "</div>";
-                items += "</li>";
-              });
-              $("#card").html(items);
-              $('button[data="Exist goods in wishlist"]').attr('class', 'hurt');
-            },
-            error: function (data) {
-              console.log(data);
-              alert("리스트를 가져오지 못했습니다.");
-            },
-          });
+          if(M.data.global('grade') == 'store'){
+            MNet.sendHttp({
+              path: SERVER_PATH.MENU_CATEGORYEMPLIST,
+              data: {
+                "categoryNum" : ctg,
+              },
+              succ: function (data) {
+                console.log(data);
+                var items = "";
+                $.each(data.list, function (index, item) {
+                  console.log(item);
+                  console.log(item.goodsImage);
+                  //http://192.168.0.31:8080/view/goods/upload/{goodsImage}
+                  //http://211.241.199.241:28040/resources/img/1647853076507.jpg
+                  items += "<li id='"+ item.goodsName +"' class ='menu'>";
+                  items += "<div class='thumbnail-wrap click-d' id='"+ item.goodsName +"'>";
+                  items += "<div class='thumbnail'>";
+                  items += "<img src='http://192.168.0.31:8080/view/goods/upload/" +item.goodsImage +" ' alt=''/>";
+                  items += "</div>";
+                  items += "<span class='label-info none'>";
+                  items += "<img src= '" + item.goodsImage + "' alt='50%'/>";
+                  items += "</span>";
+                  items += "</div>";
+                  items += "<div class='info-box'>";
+                  items += "<div class='info-box-top'>";
+                  items += "<strong class='ellipsis_1'>";
+                  items += item.goodsName;
+                  items += "</strong>";
+                  items += "</div>";
+                  items += "<span class='info-box-btm'>";
+                  items += "<p style='text-align:right;' class='ellipsis_1'>";
+                  items += item.goodsPrice + ' 원';
+                  items += "</p>";
+                  items += "</span>";
+                  items += "</div>";
+                  items += "</li>";
+                });
+                $("#card").html(items);
+                $('button[data="Exist goods in wishlist"]').attr('class', 'hurt');
+              },
+              error: function (data) {
+                console.log(data);
+                alert("리스트를 가져오지 못했습니다.");
+              },
+            });
+          
+          }else{
+            MNet.sendHttp({
+              path: SERVER_PATH.MENU_CATEGORYLIST,
+              data: {
+                "categoryNum" : ctg,
+              },
+              succ: function (data) {
+                console.log(data);
+                var items = "";
+                $.each(data.list, function (index, item) {
+                  console.log(item);
+                  console.log(item.goodsImage);
+                  //http://192.168.0.31:8080/view/goods/upload/{goodsImage}
+                  //http://211.241.199.241:28040/resources/img/1647853076507.jpg
+                  items += "<li id='"+ item.goodsName +"' class ='menu'>";
+                  items += "<div class='thumbnail-wrap click-d' id='"+ item.goodsName +"'>";
+                  items += "<div class='thumbnail'>";
+                  items += "<img src='http://192.168.0.31:8080/view/goods/upload/" +item.goodsImage +" ' alt=''/>";
+                  items += "</div>";
+                  items += "<span class='label-info none'>";
+                  items += "<img src= '" + item.goodsImage + "' alt='50%'/>";
+                  items += "</span>";
+                  items += "</div>";
+                  items += "<div class='info-box'>";
+                  items += "<div class='info-box-top'>";
+                  items += "<strong class='ellipsis_1'>";
+                  items += item.goodsName;
+                  items += "</strong>";
+                  items += "</div>";
+                  items += "<button type='button' id='"+ item.goodsNum +"' class='interest' data='"+ item.wishlist +"'></button>";
+                  items += "<span class='info-box-btm'>";
+                  items += "<p style='text-align:right;' class='ellipsis_1'>";
+                  items += item.goodsPrice + ' 원';
+                  items += "</p>";
+                  items += "</span>";
+                  items += "</div>";
+                  items += "</li>";
+                });
+                $("#card").html(items);
+                $('button[data="Exist goods in wishlist"]').attr('class', 'hurt');
+              },
+              error: function (data) {
+                console.log(data);
+                alert("리스트를 가져오지 못했습니다.");
+              },
+            });        
+          }
         });
       };
       // 관심상품 버튼
@@ -227,12 +324,30 @@
       $('#m-payList').on('click', function(){
         M.page.html('./payList.html');
       });
+      $('#m-logout').on('click', function(){
+        MNet.sendHttp({
+          path: SERVER_PATH.LOGOUT,
+          data: {
+            "loginId": M.data.global('id')
+          },
+          succ: function (data) {
+            M.data.removeGlobal('id');
+            M.data.removeGlobal('grade');
+            M.data.removeStorage('AUTO_LOGIN_AUTH');
+            alert("로그아웃되셨습니다.");
+            M.page.html({
+                    url: "./login.html",
+                    actionType: "CLEAR_TOP"
+            });
+          }
+        });
+      });
 // 관리자 사이드바
       $('#menu-order-food').on('click', function(){
         M.page.html('./foodOrder.html');
       });      
       $('#menu-payment-list').on('click', function(){
-      //   발주내역   M.page.html('./.html');
+        M.page.html('./foodTransferList.html');
       });       
       $('#menu-sales').on('click', function(){
         M.page.html('./sales.html');
@@ -245,6 +360,24 @@
       });   
       $('#menu-store-info').on('click', function(){
         M.page.html('./storeList.html');
+      });
+      $('#menu-logout').on('click', function(){
+        MNet.sendHttp({
+          path: SERVER_PATH.LOGOUT,
+          data: {
+            "loginId": M.data.global('id')
+          },
+          succ: function (data) {
+            M.data.removeGlobal('id');
+            M.data.removeGlobal('grade');
+            M.data.removeStorage('AUTO_LOGIN_AUTH');
+            alert("로그아웃되셨습니다.");
+            M.page.html({
+                    url: "./login.html",
+                    actionType: "CLEAR_TOP"
+            });
+          }
+        });
       });
       
       this.els.$btnModify.on('click', function(){

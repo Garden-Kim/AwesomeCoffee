@@ -35,6 +35,17 @@
     initView: function initView() {
       //화면에서 세팅할 동적데이터
       var self = this;
+      if(M.data.global('grade') == 'store'){
+        document.querySelector('.recommandationMenu').classList.add('none');
+        document.querySelector('.goodsCnt').classList.add('none');
+        document.querySelector('.recipe-exist').classList.remove('none');
+        document.querySelector('#mem-side').classList.add('none');
+        document.querySelector('#emp-side').classList.remove('none');
+        document.querySelector('#mem-order').classList.add('none');
+        document.querySelector('#manager').classList.remove('none');
+      }
+      
+      
       console.log(M.data.param("goodsName"));
       MNet.sendHttp({
         path: SERVER_PATH.MENU_INFO,
@@ -167,6 +178,24 @@
       $('#m-payList').on('click', function(){
         M.page.html('./payList.html');
       });
+      $('#m-logout').on('click', function(){
+        MNet.sendHttp({
+          path: SERVER_PATH.LOGOUT,
+          data: {
+            "loginId": M.data.global('id')
+          },
+          succ: function (data) {
+            alert("로그아웃되셨습니다.");
+            M.data.removeGlobal('id');
+            M.data.removeGlobal('grade');
+            M.data.removeStorage('AUTO_LOGIN_AUTH');
+            M.page.html({
+                    url: "./login.html",
+                    actionType: "CLEAR_TOP"
+            });
+          }
+        });
+      });
 // 관리자 사이드바
       $('#menu-order-food').on('click', function(){
         M.page.html('./foodOrder.html');
@@ -181,10 +210,28 @@
         M.page.replace('./menuList.html');
       });          
       $('#menu-member-info').on('click', function(){
-      //    회원정보  M.page.html('./.html');
+        M.page.html('./memberList.html');
       });   
       $('#menu-store-info').on('click', function(){
         M.page.html('./storeList.html');
+      });
+      $('#menu-logout').on('click', function(){
+        MNet.sendHttp({
+          path: SERVER_PATH.LOGOUT,
+          data: {
+            "loginId": M.data.global('id')
+          },
+          succ: function (data) {
+            alert("로그아웃되셨습니다.");
+            M.data.removeGlobal('id');
+            M.data.removeGlobal('grade');
+            M.data.removeStorage('AUTO_LOGIN_AUTH');
+            M.page.html({
+                    url: "./login.html",
+                    actionType: "CLEAR_TOP"
+            });
+          }
+        });
       });
       
       

@@ -73,6 +73,23 @@
       $('#menu-order-manage').on('click', function(){
         M.page.html("./orderManage.html"); 
       })
+      $('#menu-logout').on('click', function(){
+        MNet.sendHttp({
+          path: SERVER_PATH.LOGOUT,
+          data: {
+            "loginId": M.data.global('id')
+          },
+          succ: function (data) {
+            M.data.removeGlobal('id');
+            M.data.removeGlobal('grade');
+            M.data.removeStorage('AUTO_LOGIN_AUTH');
+            alert("로그아웃되셨습니다.");
+            M.page.html({
+                    url: "./login.html",
+                    actionType: "CLEAR_TOP"
+            });
+          }
+        });
       // 카테고리
       const tabList = document.querySelectorAll('.category li');
       for(var i = 0; i < tabList.length; i++){
@@ -119,7 +136,7 @@
     drawNoticeList: function (ctg) {
       var self = this;
       MNet.sendHttp({
-        path: SERVER_PATH.MENU_CATEGORYLIST,
+        path: SERVER_PATH.MENU_CATEGORYEMPLIST,
         data: {
           "categoryNum" : ctg,
         },

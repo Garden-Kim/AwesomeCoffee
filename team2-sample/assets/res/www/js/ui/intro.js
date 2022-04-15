@@ -47,6 +47,7 @@
       if(existLoginData){
         this.startProgress(function(){
           M.data.global({'id' : existLoginData.id });
+          M.data.global({'grade' : existLoginData.grade });
           MNet.sendHttp({
             path: SERVER_PATH.LOGIN,
             data: {
@@ -56,8 +57,14 @@
             succ: function(data){
               if(module.isEmpty(M.data.global('id'))){
                 self.moveLoginPage();
-              }else{
-                M.page.replace('./mainE.html');
+              }else{ // 자동로그인
+                if(M.data.global('grade') == 'store'){
+                  M.page.replace('./mainE.html');
+                }else if(M.data.global('grade') == 'member'){
+                  M.page.replace('./main.html');
+                }else{
+                  self.moveLoginPage();
+                }
               }
             },
             error : function() {

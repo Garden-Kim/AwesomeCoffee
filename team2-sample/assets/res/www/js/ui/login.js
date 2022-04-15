@@ -31,6 +31,7 @@
     */
     initView : function initView(){
       console.log(M.data.global('id'));
+      console.log(M.data.global('grade'));
       console.log(M.data.storage('AUTO_LOGIN_AUTH'));
     },
     initEvent : function initEvent(){
@@ -48,14 +49,6 @@
       this.els.$joinBtn.on('click', function(){
         M.page.html('./join1.html');
       });
-    },
-    
-    setAutoLogin: function(id, pw){
-      // 자동 로그인 기능
-      M.data.storage('AUTO_LOGIN_AUTH', {id: id, pw: pw});
-    },
-    unsetAutoLogin: function(){
-      M.data.removeStorage('AUTO_LOGIN_AUTH');
     },
     login : function(){
       var self = this;
@@ -76,15 +69,32 @@
           // 로그인 성공시 콜백 - true일때 id, pw 저장
           if(data.rsltCode == '0000'){
             M.data.global({'id' : id });
-            if(isAutoLogin) self.setAutoLogin(id, pw);
-            M.page.replace('./mainE.html');          
+            M.data.global({'grade' : data.grade });
+            if(isAutoLogin) self.setAutoLogin(id, pw, data.grade);
+            if(data.grade == 'store'){
+              M.page.replace('./mainE.html');
+            }else if(data.grade == 'member'){
+              M.page.replace('./main.html');
+            }else{
+              M.page.html({
+                      url: "./login.html",
+                      actionType: "CLEAR_TOP"
+              });
+            }         
           }else{
             return alert('아이디와 비밀번호가 일치하지 않습니다.');
           }
         }
       });
       
-    }
+    },
+    setAutoLogin: function(id, pw, grade){
+      // 자동 로그인 기능
+      M.data.storage('AUTO_LOGIN_AUTH', {id: id, pw: pw, grade:grade});
+    },
+    unsetAutoLogin: function(){
+      M.data.removeStorage('AUTO_LOGIN_AUTH');
+    },
     
   };
   window.__page__ = page;
