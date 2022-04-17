@@ -19,7 +19,7 @@
     <settings/>
     <default_action>
         <orient>default</orient>
-        <orient-tablet>default</orient-tablet>
+        <orient-tablet>port</orient-tablet>
         <animate>default</animate>
         <indicator>n</indicator>
     </default_action>
@@ -40,7 +40,7 @@
         <http>
 			<GW_SERVER>
 				<path>mcore.edu.sample.implementation.HttpDefaultNetworkManager</path>
-				<address>http://192.168.0.31:8080/</address>
+				<address>http://192.168.0.28:8080/</address>
 				<timeout>30000</timeout>
 				<encoding>utf-8</encoding>
 				<type>rest</type>

@@ -88,7 +88,7 @@
             M.data.removeStorage('AUTO_LOGIN_AUTH');
             alert("로그아웃되셨습니다.");
             M.page.html({
-                    url: "./login.html",
+                    url: "./intro.html",
                     actionType: "CLEAR_TOP"
             });
           }

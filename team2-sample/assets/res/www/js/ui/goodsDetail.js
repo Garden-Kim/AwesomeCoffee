@@ -194,7 +194,7 @@
             M.data.removeGlobal('grade');
             M.data.removeStorage('AUTO_LOGIN_AUTH');
             M.page.html({
-                    url: "./login.html",
+                    url: "./intro.html",
                     actionType: "CLEAR_TOP"
             });
           }
@@ -231,7 +231,7 @@
             M.data.removeGlobal('grade');
             M.data.removeStorage('AUTO_LOGIN_AUTH');
             M.page.html({
-                    url: "./login.html",
+                    url: "./intro.html",
                     actionType: "CLEAR_TOP"
             });
           }

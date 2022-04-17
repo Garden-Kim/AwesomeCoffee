@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import m.client.android.library.core.common.CommonLibHandler;
+import m.client.android.library.core.common.LibDefinitions;
+import m.client.android.library.core.utils.CommonLibUtil;
 import m.client.android.library.core.utils.Logger;
 import android.app.Activity;
 import android.content.res.AssetManager;
@@ -47,7 +49,7 @@ public class Startup extends Activity {
         ////////////////////////////////////////////////////////////////////////////////
         // - 중요 -e
         // 최초 시작 Activity에 아래의 코드를 넣어야 한다. 
-
+        CommonLibUtil.setVariableToStorage(LibDefinitions.strings.KEY_USE_LOCAL_SERVER, "false", this);
         commLibHandle.processAppInit(this);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 
