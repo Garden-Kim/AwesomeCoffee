@@ -7,8 +7,7 @@
 (function ($, M, module, MNet, SERVER_PATH, CONFIG, window) {
 
   var page = {
-    els: {
-    },
+    els: {},
     data: {
       requset: {
         loginId: M.data.global('id'),
@@ -55,26 +54,26 @@
         $('.wrapper').fadeTo("fast", 1);
         $('.wrapper').attr('style', 'position:relative;height:100%;background-color:#fff;');
       });
-// 관리자 사이드바
-      $('#menu-order-food').on('click', function(){
+      // 관리자 사이드바
+      $('#menu-order-food').on('click', function () {
         M.page.html('./foodOrder.html');
-      });      
-      $('#menu-payment-list').on('click', function(){
+      });
+      $('#menu-payment-list').on('click', function () {
         M.page.html('./foodTransferList.html');
-      });       
-      $('#menu-sales').on('click', function(){
+      });
+      $('#menu-sales').on('click', function () {
         M.page.replace('./sales.html');
-      });      
-      $('#menu-menu').on('click', function(){
+      });
+      $('#menu-menu').on('click', function () {
         M.page.html('./menuList.html');
-      });          
-      $('#menu-member-info').on('click', function(){
+      });
+      $('#menu-member-info').on('click', function () {
         M.page.html('./memberList.html');
-      });   
-      $('#menu-store-info').on('click', function(){
+      });
+      $('#menu-store-info').on('click', function () {
         M.page.html('./storeList.html');
       });
-      $('#menu-logout').on('click', function(){
+      $('#menu-logout').on('click', function () {
         MNet.sendHttp({
           path: SERVER_PATH.LOGOUT,
           data: {
@@ -86,8 +85,8 @@
             M.data.removeStorage('AUTO_LOGIN_AUTH');
             alert("로그아웃되셨습니다.");
             M.page.html({
-                    url: "./login.html",
-                    actionType: "CLEAR_TOP"
+              url: "./login.html",
+              actionType: "CLEAR_TOP"
             });
           }
         });
@@ -206,9 +205,9 @@
       })
     }
   };
-    
-    
-  
+
+
+
   window.__page__ = page;
 })(jQuery, M, __util__, __mnet__, __serverPath__, __difinition__, window);
 

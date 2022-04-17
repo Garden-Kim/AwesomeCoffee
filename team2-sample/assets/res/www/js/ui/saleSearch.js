@@ -7,8 +7,7 @@
 (function ($, M, MNet, module, config, SERVER_PATH, window) {
 
   var page = {
-    els: {
-    },
+    els: {},
     data: {
       requset: {
         loginId: M.data.global('id'),
@@ -22,14 +21,7 @@
       if (module.isEmpty(M.data.global('id'))) {
         M.page.html('./login.html');
       }
-      // 초기 그래프 
-      // var year = M.data.param("year");
-      // console.log(year);
-      // console.log(M.data.param('year'));
-      // if (year ==  '19'){
-      //   console.log("nnnnnn");
-      //   $('#19').add('on');
-      // }
+
       MNet.sendHttp({
         path: SERVER_PATH.PAYMENT_MONTHSUM,
         data: {
