@@ -74,9 +74,8 @@
         console.log(id);
         console.log(pw);
         MNet.sendHttp({
-          path: SERVER_PATH.CHECK_PASSWORD,
+          path: SERVER_PATH.PW_CHK,
           data: {
-            loginId: id,
             password: pw,
           },
           succ: function (data) {
@@ -120,9 +119,8 @@
           return alert('휴대폰 번호를 정확히 입력해주세요.');
         }
         MNet.sendHttp({
-          path: SERVER_PATH.CHECK_PASSWORD,
+          path: SERVER_PATH.PW_CHK,
           data: {
-            loginId: id,
             password: pw
           },
           succ: function (data) {
@@ -130,10 +128,9 @@
               MNet.sendHttp({
                 path: SERVER_PATH.UPDATE,
                 data: {
-                  loginId : id,
-                  password : pw,
-                  cellPhone: cp,
-                  email: email  
+                  memberId : id,
+                  memberPhone: cp,
+                  memberEmail: email  
                 },
                 succ: function(data){
                   alert('수정이 완료되었습니다.');
@@ -160,9 +157,8 @@
         console.log(id);
         console.log(pw);
         MNet.sendHttp({
-          path: SERVER_PATH.CHECK_PASSWORD,
+          path: SERVER_PATH.PW_CHK,
           data: {
-            loginId: id,
             password: pw,
           },
           succ: function (data) {
@@ -171,7 +167,7 @@
                   MNet.sendHttp({
                     path: SERVER_PATH.OUT,
                     data: {
-                      loginId: id,
+                      memberId: id,
                     },
                     succ: function (data) {
                       if (data.rsltCode == '0000') {
