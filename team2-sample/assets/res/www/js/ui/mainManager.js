@@ -91,6 +91,24 @@
       $('#btn-storeInfo').on('click', function () {
         M.page.html('./storeInfo.html');
       });
+      $('#logout').on('click', function () {
+        MNet.sendHttp({
+          path: SERVER_PATH.LOGOUT,
+          data: {
+            "loginId": M.data.global('id')
+          },
+          succ: function (data) {
+            M.data.removeGlobal('id');
+            M.data.removeGlobal('grade');
+            M.data.removeStorage('AUTO_LOGIN_AUTH');
+            alert("로그아웃되셨습니다.");
+            M.page.html({
+              url: "./intro.html",
+              actionType: "CLEAR_TOP"
+            });
+          }
+        });
+      });
     }
   };
   window.__page__ = page;

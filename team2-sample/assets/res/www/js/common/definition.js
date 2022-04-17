@@ -103,6 +103,7 @@
     MENU_LIST : "api/menu/list", // 메뉴 리스트
     MENU_CATEGORYLIST : "api/category/menuList", // 카테고리별 메뉴리스트
     MENU_SEARCH : "api/menu/search", // 메뉴 검색
+    MENU_EMPSERCH : "api/menu/empSearch", // 메뉴 검색 (관리자)
     MENU_EMPLIST : "api/menu/empList" , //메뉴 리스트(관리자)
     MENU_CATEGORYEMPLIST : "api/category/menuEmpList", //카테고리별 메뉴리스트(관리자)
     
