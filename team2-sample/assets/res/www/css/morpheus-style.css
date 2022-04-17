@@ -174,9 +174,9 @@ li.txt-btn .btn-txt{position:absolute;right:1.5rem;display:inline-block;color:#9
 /* type01 */
 .main-menu-box{overflow:hidden;}
 .main-menu-box li{float:left;width:33.3333%;color:#fff;}
-.main-menu-box li:nth-child(1){background:#00b2f0 url(../img/ico-edu-01.png) no-repeat center 35%;background-size:2.4rem;}
+/* .main-menu-box li:nth-child(1){background:#00b2f0 url(../img/ico-edu-01.png) no-repeat center 35%;background-size:2.4rem;}
 .main-menu-box li:nth-child(2){background:#0081c7 url(../img/ico-edu-02.png) no-repeat center 30%;background-size:1.7rem;}
-.main-menu-box li:nth-child(3){background:#55ba47 url(../img/ico-edu-03.png) no-repeat center 35%;background-size:1.9rem;}
+.main-menu-box li:nth-child(3){background:#55ba47 url(../img/ico-edu-03.png) no-repeat center 35%;background-size:1.9rem;} */
 .main-menu-box.type01 li{padding:4.5rem 0 1.2rem 0;height:7rem;text-align:center;}
 /* type02 */
 .main-menu-box.type02 li{position:relative;float:none;width:100%;height:6rem;padding-left:20%;line-height:6rem;}
@@ -196,22 +196,46 @@ li.txt-btn .btn-txt{position:absolute;right:1.5rem;display:inline-block;color:#9
 .main-menu-box.type05{border:1px solid #e0e0e0;}
 .main-menu-box.type05 li{background:none;color:#333;border-right:1px solid #e0e0e0;}
 .main-menu-box.type05 li:last-child{border-right:0;}
-/* type04 */
+
+/* 회원 메뉴 아이콘 */
 .main-menu-box.type04,
 .main-menu-box.type06{position:absolute;bottom:0; width:100%;border:1px solid #e0e0e0;border-bottom:0;background-color:#fff;text-align:center;}
 .main-menu-box.type04 li,
 .main-menu-box.type06 li{padding:5.4rem 0 1.5rem;background-color:#fff;color:#333;font-size:1.4rem;font-weight:400;border-right:1px solid #e0e0e0;border-bottom:1px solid #e0e0e0;}
 .main-menu-box.type04 li:nth-child(3n),
 .main-menu-box.type06 li:nth-child(3n){border-right:0;}
-.main-menu-box.type04 li:nth-child(1){background:url(../img/ico-menu-01.png) no-repeat center 2.1rem;background-size:2rem;}
-.main-menu-box.type04 li:nth-child(2){background:url(../img/ico-menu-02.png) no-repeat center 2.1rem;background-size:2.3rem;}
-.main-menu-box.type04 li:nth-child(3){background:url(../img/ico-menu-03.png) no-repeat center 2.1rem;background-size:1.9rem;}
-.main-menu-box.type04 li:nth-child(4){background:url(../img/ico-menu-04.png) no-repeat center 2.1rem;background-size:2.8rem;}
-.main-menu-box.type04 li:nth-child(5){background:url(../img/ico-menu-05.png) no-repeat center 2.1rem;background-size:3.5rem;}
-.main-menu-box.type04 li:nth-child(6){background:url(../img/ico-menu-06.png) no-repeat center 2.1rem;background-size:2.5rem;}
-.main-menu-box.type04 li:nth-child(7){background:url(../img/ico-menu-07.png) no-repeat center 2.1rem;background-size:1.9rem;}
-.main-menu-box.type04 li:nth-child(8){background:url(../img/ico-menu-08.png) no-repeat center 2.1rem;background-size:2.5rem;}
-.main-menu-box.type04 li:nth-child(9){background:url(../img/ico-menu-09.png) no-repeat center 2.1rem;background-size:2rem;}
+.main-menu-box.type04 li:nth-child(1){background: url(../img/orderImage.png) no-repeat center 1.0rem; background-size: 45px;}
+.main-menu-box.type04 li:nth-child(2){background: url(../img/map.png) no-repeat center 1.0rem; background-size: 45px;}
+.main-menu-box.type04 li:nth-child(3){background: url(../img/mypageImage.png) no-repeat center 1.0rem; background-size: 45px;}
+.main-menu-box.type04 li:nth-child(4){background: url(../img/cartImage.png) no-repeat center 1.0rem; background-size: 45px;}
+.main-menu-box.type04 li:nth-child(5){background: url(../img/wishlist.png) no-repeat center 1.0rem; background-size: 45px;}
+.main-menu-box.type04 li:nth-child(6){background: url(../img/orderListImage.png) no-repeat center 1.0rem; background-size: 45px;}
+
+/* 관리자 메뉴 아이콘*/
+
+.main-menu-box.manager,
+.main-menu-box.type06{position:absolute;bottom:0; width:100%;border:1px solid #e0e0e0;border-bottom:0;background-color:#fff;text-align:center;}
+.main-menu-box.manager li,
+.main-menu-box.type06 li{padding:5.4rem 0 1.5rem;background-color:#fff;color:#333;font-size:1.4rem;font-weight:400;border-right:1px solid #e0e0e0;border-bottom:1px solid #e0e0e0;}
+.main-menu-box.manager li:nth-child(3n),
+.main-menu-box.type06 li:nth-child(3n){border-right:0;}
+.main-menu-box.manager li:nth-child(1){background:url(../img/food.png) no-repeat center 1.0rem; background-size: 45px;}
+.main-menu-box.manager li:nth-child(2){background:url(../img/payment.png) no-repeat center 1.0rem; background-size: 45px;}
+.main-menu-box.manager li:nth-child(3){background: url(../img/saleImage.png) no-repeat center 1.0rem; background-size: 45px;}
+.main-menu-box.manager li:nth-child(4){background:url(../img/orderImage.png) no-repeat center 1.0rem; background-size: 45px;}
+.main-menu-box.manager li:nth-child(5){background:url(../img/memberlist.png) no-repeat center 1.0rem; background-size: 45px;}
+.main-menu-box.manager li:nth-child(6){background:url(../img/store.png) no-repeat center 1.0rem; background-size: 45px;}
+
+
+/* 직원/관리자 메인 */
+.main-menu-box.mainSection{position:absolute;bottom:0; width:150%;border:1px solid #e0e0e0;border-bottom:0;background-color:#fff;text-align:center;}
+
+.main-menu-box.mainSection li{height: 610px; padding:20rem 0 1.5rem;background-color:#fff;color:#333;font-size:2rem;;font-weight:400;}
+.main-menu-box.mainSection li:nth-child(1){height: 500;text-align: center; background-color:rgb(255, 208, 0); border-right: 1px solid #000;}
+.main-menu-box.mainSection li:nth-child(2){height: 500;text-align: center; background-color:rgb(255, 208, 0)}
+
+
+
 /* type06 */
 .main-menu-box.type06 li{position:relative;font-size:1.5rem;padding:8rem 0 1rem;}
 .main-menu-box.type06 li::before{content:'';position:absolute;top:1.4rem;left:50%;width:5rem;height:5rem;margin-left:-2.5rem;background:url(../img/sprite-ico-menu.png) no-repeat;background-size:auto 100%;}
@@ -253,7 +277,7 @@ li.txt-btn .btn-txt{position:absolute;right:1.5rem;display:inline-block;color:#9
 .loginPosition {margin-top: 6rem;}
 /*혜리씨 줄 로고 위치*/
 /*메인버튼*/
-.main-menu-box.type04.manager{position:fixed;bottom:0;width:100%;}
+.main-menu-box.manager{position:fixed;bottom:0;width:100%;}
 /*메인버튼*/
 /* 모바일 수평 스크롤 금지 */
 html, body {max-width: 100%;overflow-x: hidden;max-height: 100%;}
@@ -683,14 +707,20 @@ strong.ellipsis{position:relative;display:inline-block;width:100%;}
 .emp-main-menu.type06 li{padding:5.4rem 0 1.5rem;background-color:#fff;color:#333;font-size:1.4rem;font-weight:400;border-right:1px solid #e0e0e0;border-bottom:1px solid #e0e0e0;}
 .emp-main-menu.type04 li:nth-child(3n),
 .emp-main-menu.type06 li:nth-child(3n){border-right:0;}
-.emp-main-menu.type04 li:nth-child(1){background:url(../img/icon3.png) no-repeat center 2.1rem;background-size:2rem;}
-.emp-main-menu.type04 li:nth-child(2){background:url(../img/icon1.png) no-repeat center 2.1rem;background-size:2.3rem;}
-.emp-main-menu.type04 li:nth-child(3){background:url(../img/icon2.png) no-repeat center 2.1rem;background-size:1.9rem;}
+.emp-main-menu.type04 li:nth-child(1){background: url(../img/orderImage.png) no-repeat center 1.0rem; background-size: 45px;}
+.emp-main-menu.type04 li:nth-child(2){background: url(../img/pickup.png) no-repeat center 1.0rem; background-size: 45px;}
+.emp-main-menu.type04 li:nth-child(3){background: url(../img/recipe.png) no-repeat center 1.0rem; background-size: 45px;}
+.emp-main-menu.type04 li:nth-child(4){background: url(../img/orderListImage.png) no-repeat center 1.0rem; background-size: 45px;}
+.emp-main-menu.type04 li:nth-child(5){background: url(../img/store.png) no-repeat center 1.0rem; background-size: 45px;}
+.emp-main-menu.type04 li:nth-child(6){background: url(../img/logout.png) no-repeat center 1.0rem; background-size: 45px;}
+
 .emp-main-menu.type06 li{position:relative;font-size:1.5rem;padding:8rem 0 1rem;}
 .emp-main-menu.type06 li::before{content:'';position:absolute;top:1.4rem;left:50%;width:5rem;height:5rem;margin-left:-2.5rem;background:url(../img/sprite-ico-menu.png) no-repeat;background-size:auto 100%;}
 .emp-main-menu.type06 li:nth-child(1)::before{background-position:0 0;}
 .emp-main-menu.type06 li:nth-child(2)::before{background-position:-5rem 0;}
 .emp-main-menu.type06 li:nth-child(3)::before{background-position:-10rem 0;}
+
+
 /* 직원메인 메뉴 버튼 */
 
 /*직원 주문 리스트*/

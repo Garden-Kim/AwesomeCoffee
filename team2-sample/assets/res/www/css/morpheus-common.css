@@ -108,8 +108,8 @@ img{width:100%;}
 
 /* Header */
 .header{position:relative;height:5rem;text-align:center;background-color:#fff;}
-.header h1{line-height:5rem;font-size:1.9rem;font-weight:bold;}
-.header h1.logo{text-indent:-9999rem;background:url(../img/coffeeOneCup.png) no-repeat center center;background-size:12.1rem;}
+.header h1{line-height:5.2rem;font-size:1.9rem;font-weight:bold;}
+.header h1.logo{text-indent:-9999rem;background:url(../img/logoImage.png) no-repeat center center;background-size:12.1rem;  background-color: rgb(255, 208, 0);}
 .header h1.logo.wit{background:url(../img/logo-wit.png) no-repeat center center;background-size:11.2rem;}
 .line{border-bottom:1px solid #e0e0e0;}
 .line-t{border-top:1px solid #e0e0e0;}

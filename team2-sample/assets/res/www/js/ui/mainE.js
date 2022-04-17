@@ -32,10 +32,6 @@
     $('#manager').on('click', function(){
       M.page.html('./mainManager.html');
     });
-    $('#member').on('click', function(){
-      M.page.html('./main.html');
-    });
-    
     }
   };
   window.__page__ = page;
