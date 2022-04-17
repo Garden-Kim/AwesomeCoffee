@@ -7,7 +7,7 @@
   <link href="../css/morpheus-style.css" rel="stylesheet"/>
   <link href="../css/swiper.min.css" rel="stylesheet"/>
   <link href="../css/muikit.css" rel="stylesheet"/>
-  
+
   <link href="../css/test.css" rel="stylesheet"/>
 </head>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -51,15 +51,15 @@
   </div>
   <div class="container">
     <section class="main-box-01">
-        <div class="img-wrap">
-          <!-- <img alt="서버 점검중입니다." id="imgUrl" src="../img/img-info.png"/> -->
-          <canvas id="myChart"></canvas>
-        </div>
+      <div class="img-wrap">
+        <!-- <img alt="서버 점검중입니다." id="imgUrl" src="../img/img-info.png"/> -->
+        <canvas id="myChart"></canvas>
+      </div>
       <div class="detail-cont" style="padding: 1.2rem;">
         <div class="img-wrap">
           <span style="float:right; margin-right:2rem; font-size: 17px; font-weight: bold;float: left;">
            날짜 선택  <input type="date" id="inputDate" value="2022-01-01"
-                 min="2018-01-01" max="2022-12-31" class="selectDate" >
+                         min="2018-01-01" max="2022-12-31" class="selectDate" >
                   <button class="btn-search"></button>
           </span>
         </div>
@@ -72,26 +72,18 @@
         </h2>
 
         <span style="float:right; margin-right:2rem; font-size: 17px; font-weight: bold;">
-        매출 합계 : 
-      <span id="paymentSum" style="font-weight:bold;  font-size: 17px; "> 
-    </span>
-
-
+          매출 합계 :
+          <span id="paymentSum" style="font-weight:bold;  font-size: 17px; "> </span> 
+        </span>
       </div>
-      <ul class="noti-wrap" id="noti-wrap">
-
-      </ul>
     </section>
     <section class="paymentListbox">
-      <div class="emp-tab-menu-wrap  bg-white">
-        <div class="cont-wrap"  style="margin-bottom: 5rem";>
-    
-          <div class="paymentList"  style="margin-bottom: 5rem";>
-    
-          </div>
+      <div class="emp-tab-menu-wrap  bg-white" style="height: 20rem;">
+        <div class="paymentList" style="overflow:hidden;height: auto;">
+
         </div>
       </div>
-      </section>
+    </section>
   </div>
 </div>
 <section class="side-bar position">
