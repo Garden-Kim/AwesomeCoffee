@@ -57,7 +57,7 @@
               items += "<div class='cartImg'>";
               // 데이터 있을 경우 바꿔야할 코드 (현재는 임의의 이미지)
               //items += "<img id='imgUrl' src='" + data.imgUrl + "'/>";
-              items += "<img src='../img/coffee_exam.png'>";
+              items += "<img src='http://192.168.0.31:8080/view/goods/upload/" +item.goodsImage +" ' alt=''/>";
               items += "</div>";
               items += "<ul data='" + item.goodsNum + "' class='cartList'>";
               items += "<li class='menuName' >";

@@ -40,7 +40,7 @@
             items += "<div class='cartImg'>";
             // 데이터 있을 경우 바꿔야할 코드 (현재는 임의의 이미지)
             //items += "<img id='imgUrl' src='" + data.imgUrl + "'/>";
-            items += "<img src='../img/coffee_exam.png' id='imgUrl5'>";
+            items += "<img src='http://192.168.0.31:8080/view/goods/upload/" +data.goodsImage +" ' alt=''/>";
             items += "</div>";
             items += "<ul>";
             items += "<li data-seq='" + data.goodsNum + "' class='menuName' >";
@@ -88,7 +88,7 @@
             var items = "";
             var totalP = 0;
             $.each(data.list, function (index, item) {
-              items += "<div class='paymentMenu bg-white'>";
+              items += "<div class='paymentMenu bg-white' style='margin:1rem;width:95%'>";
               items += "<div class='paymentImg'>";
               // 데이터 있을 경우 바꿔야할 코드 (현재는 임의의 이미지)
               //items += "<img id='imgUrl' src='" + data.imgUrl + "'/>";
