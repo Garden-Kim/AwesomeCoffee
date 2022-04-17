@@ -31,7 +31,7 @@
           clearInterval(interval); // 반복실행을 멈춘다.
           succCallback();
         }
-      }, 5); // 반복적으로 함수를 실행시켜준다. 
+      }, 1); // 반복적으로 함수를 실행시켜준다. 
     },
     moveLoginPage : function moveLoginPage(){
       // 에러발생시 함수 이름이 뜨도록
