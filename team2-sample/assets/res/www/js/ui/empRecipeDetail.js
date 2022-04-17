@@ -35,38 +35,37 @@
         }, 
         succ: function (data) {
           var items = "";
-          items += "<div class='recipe-detail-tit'>";
+          items += "<div class='recipe-detail-tit bg-white'>";
           items += "<p id='title'>";
           items += M.data.param('goodsName');
           items += "</p>";
           items += "<span id='regDate'>";
-          items += "RecipeNumber : " + data.goodsNum;
-          items += "</span><br/>";
-          items += "<span> ";
-          items += "Category : coffee";
+          items += "상품번호 : " + M.data.param('goodsNum');
           items += "</span>";
           items += "</div>";
-          items += "<div class='recipe-detail-cont'>";
-          // 이미지 url
-          if (data.goodsImage != null) {
-            items += "<div class='img-wrap'>";
-            items += "<img id='imgUrl' src='http://192.168.0.31:8080/view/goods/upload/" + data.goodsImage + "'/>";
-            items += "</div>";
-            M.data.global("imgUrl", data.goodsImage);
-            var split = data.goodsImage.lastIndexOf('/');
-            var imgName = data.goodsImage.toString().substring(split + 1, );
-            M.data.global("imgName", imgName);
-          }
+          items += "<div class='recipe-detail-cont bg-white'>";
+          items += "<div class='img-wrap'>";
+          items += "<img id='imgUrl' src='http://192.168.0.31:8080/view/goods/upload/" + M.data.param('goodsImage') + "'/>";
+          items += "</div>";
           items += "<p id='content'>";
-          items += "물 : 100ml <br/> 에스프레소2샷 <br/> 휘핑크림200ml <br/> 설탕20g <br/> 얼음<br/>  ";
+          items += data.recipeContent;
           items += "</p>";
           items += "</div>";
-
+          
+          $.each(data.list, function (index, item) {
+            items += "<div class='recipe-detail-cont bg-white' style='width:100% ;height:4rem;border:2px solid #eee; margin:.5rem 0; padding:1rem;'>";
+            items += "<li style='float:left; width:40%; font-size:1.5rem;'>";
+            items += " 식자재번호 : " + item.foodNum;
+            items += "</li>";
+            items += "<li  style='float:left; width:40% ; font-size:1.5rem;'>";
+            items += " | " + item.foodName;
+            items += "</li>";
+            items += "<li style='float:right; width:20%;  font-size:1.5rem;'>";
+            items += item.recipeFoodQty + ' 개';
+            items += "</li>";
+            items += "</div>";
+          });
           $("#notice-select").html(items);
-
-          self.els.$title.html(data.title);
-          self.els.$regDate.html(data.regDate);
-          self.els.$content.html(data.content);
 
         },
         error: function () {
