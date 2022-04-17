@@ -111,7 +111,8 @@
         var goodsNum = $(this).attr('id');
         var recipeYn = $(this).attr('data');
         var goodsName = $(this).attr('data-n');
-        console.log(goodsName);
+        var goodsImage = $(this).attr('data-i');
+        console.log(goodsImage);
         console.log(recipeYn);
         console.log(goodsName);
         if(recipeYn == 'Y'){
@@ -123,7 +124,8 @@
             succ: function (data) {
               if (data.rsltCode == '0000') {
                 M.page.html('./empRecipeDetail.html',{param : { goodsName : goodsName,
-                                                                goodsNum : goodsNum }});
+                                                                goodsNum : goodsNum ,
+                                                                goodsImage : goodsImage }});
               } else {
                 alert('매장정보로 로그인하세요.');
               }
@@ -146,7 +148,7 @@
           var items = "";
           $.each(data.list, function (index, item) {
             console.log(item);
-            items += "<li id='" + item.goodsNum + "' class ='menu' data='"+ item.recipeYn +"' data-n='"+ item.goodsName +"'>";
+            items += "<li id='" + item.goodsNum + "' class ='menu' data='"+ item.recipeYn +"' data-n='"+ item.goodsName +"' data-i='"+ item.goodsImage +"'>";
             items += "<div class='thumbnail-wrap'>";
             items += "<div class='thumbnail'>";
             items += "<img src='http://192.168.0.31:8080/view/goods/upload/" + item.goodsImage + " ' alt=''/>";
