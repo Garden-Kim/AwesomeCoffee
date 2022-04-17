@@ -27,7 +27,7 @@
         }, 
         succ: function (data) {
           var items = "";
-          items += "<div class='recipe-detail-tit'>";
+          items += "<div class='recipe-detail-tit bg-white'>";
           items += "<p id='title'>";
           items += M.data.param('goodsName');
           items += "</p>";
@@ -35,7 +35,7 @@
           items += "상품번호 : " + M.data.param('goodsNum');
           items += "</span>";
           items += "</div>";
-          items += "<div class='recipe-detail-cont'>";
+          items += "<div class='recipe-detail-cont bg-white'>";
           items += "<div class='img-wrap'>";
           items += "<img id='imgUrl' src='http://192.168.0.31:8080/view/goods/upload/" + M.data.param('goodsImage') + "'/>";
           items += "</div>";
@@ -45,16 +45,16 @@
           items += "</div>";
           
           $.each(data.list, function (index, item) {
-            items += "<div class='recipe-detail-cont'>";
-            items += "<span>";
+            items += "<div class='recipe-detail-cont bg-white' style='width:100% ;height:4rem;border:2px solid #eee; margin:.5rem 0; padding:1rem;'>";
+            items += "<li style='float:left; width:40%; font-size:1.5rem;'>";
             items += " 식자재번호 : " + item.foodNum;
-            items += "</span>";
-            items += "<span style='margin-left:4rem;'>";
-            items +=  item.foodName;
-            items += "</span>";
-            items += "<span style='float:right'>";
+            items += "</li>";
+            items += "<li  style='float:left; width:40% ; font-size:1.5rem;'>";
+            items += " | " + item.foodName;
+            items += "</li>";
+            items += "<li style='float:right; width:20%;  font-size:1.5rem;'>";
             items += item.recipeFoodQty + ' 개';
-            items += "</span>";
+            items += "</li>";
             items += "</div>";
           });
 

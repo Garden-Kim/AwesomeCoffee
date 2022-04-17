@@ -187,25 +187,47 @@
       if(module.isEmpty(content)){
         return alert('내용을 입력해주세요.');
       }
-      MNet.sendHttp({
-        path : SERVER_PATH.RECIPE_REGIST,
-        data: {
-          "recipeContent": content,
-          "goodsNum":M.data.param("goodsNum"),
-          "list": fbody
-        },
-        succ: function(data){
-          if(data.rsltCode == '0000'){
-            var pagelist = M.info.stack();
-            console.log(pagelist);
-            M.page.remove(pagelist[1].key);
-            alert('등록 완료');
-            M.page.replace('./menuList.html');
-          }else{
-            return alert('등록에 실패하셨습니다.');
+      if(M.data.param('recipeYn') == 'Y'){
+        MNet.sendHttp({
+          path : SERVER_PATH.RECIPE_UPDEATE,
+          data: {
+            "recipeContent": content,
+            "goodsNum":M.data.param("goodsNum"),
+            "list": fbody
+          },
+          succ: function(data){
+            if(data.rsltCode == '0000'){
+              var pagelist = M.info.stack();
+              console.log(pagelist);
+              M.page.remove(pagelist[1].key);
+              alert('레시피 수정 완료');
+              M.page.replace('./menuList.html');
+            }else{
+              return alert('레시피 수정에 실패하셨습니다.');
+            }
           }
-        }
-      });
+        });
+      }else{
+        MNet.sendHttp({
+          path : SERVER_PATH.RECIPE_REGIST,
+          data: {
+            "recipeContent": content,
+            "goodsNum":M.data.param("goodsNum"),
+            "list": fbody
+          },
+          succ: function(data){
+            if(data.rsltCode == '0000'){
+              var pagelist = M.info.stack();
+              console.log(pagelist);
+              M.page.remove(pagelist[1].key);
+              alert('레시피 등록 완료');
+              M.page.replace('./menuList.html');
+            }else{
+              return alert('레시피 등록에 실패하셨습니다.');
+            }
+          }
+        });
+      }
     },
   };
   window.__page__ = page;
