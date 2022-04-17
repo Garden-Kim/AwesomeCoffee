@@ -91,23 +91,41 @@
         $('.wrapper').fadeTo("fast", 1);
         $('.wrapper').attr('style', 'position:relative;height:100%;background-color:#fff;');
       });
+
       // 사이드바 메뉴
       this.els.$menuOrderList.on('click', function () {
         M.page.html("./empOrderList.html");
-      })
+      });
       this.els.$menuPickup.on('click', function () {
         M.page.replace("./pickupList.html");
-      })
+      });
       this.els.$menuRecipeList.on('click', function () {
         M.page.html("./recipeList.html");
-      })
+      });
       this.els.$menuStoreInfo.on('click', function () {
         M.page.html("./storeInfo.html"); 
-      })
+      });
       $('#menu-order-manage').on('click', function(){
         M.page.html("./orderManage.html"); 
       })
-
+      $('#menu-logout').on('click', function(){
+        MNet.sendHttp({
+          path: SERVER_PATH.LOGOUT,
+          data: {
+            "loginId": M.data.global('id')
+          },
+          succ: function (data) {
+            M.data.removeGlobal('id');
+            M.data.removeGlobal('grade');
+            M.data.removeStorage('AUTO_LOGIN_AUTH');
+            alert("로그아웃되셨습니다.");
+            M.page.html({
+                    url: "./login.html",
+                    actionType: "CLEAR_TOP"
+            });
+          }
+        });
+      });
       // 픽업 완료 기능
       $('.pickup').on('click', '.pickupState', function () {
         var orderNum = $(this).attr('data-seq');
