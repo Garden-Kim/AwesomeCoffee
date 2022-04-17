@@ -315,7 +315,7 @@ html, body {max-width: 100%;overflow-x: hidden;max-height: 100%;}
 /* 회원 주문상세페이지*/
 .orderInfo{font-size:1.5rem;padding:.5rem;padding-left:1rem; }
 .order-detail{width:95%;height:4rem;margin:1rem;}
-.order-detail li{position:relative;float:left; font-size:1.5rem; padding:1rem 0 1rem 1rem; width:32%;}
+.order-detail li{position:relative; overflow: hidden;float:left;height: 3rem; font-size:1.5rem; padding:1rem 0 1rem 1rem; width:32%;}
 .order-detail li:nth-child(1){width:36%}
 /* 회원 주문상세페이지*/
 /* 직원 주문상세페이지*/
