@@ -228,7 +228,7 @@ li.txt-btn .btn-txt{position:absolute;right:1.5rem;display:inline-block;color:#9
 
 
 /* 직원/관리자 메인 */
-.btn-arrow {background: url(../img/ico-arrow-white.png) no-repeat;  }
+.btn-arrow {background: url(../img/ico-arrow-white.png) no-repeat; background-position: 2.5rem 0rem; }
 .main-menu-box.mainSection{position:absolute;bottom:0; width:150%;border:1px solid #e0e0e0;border-bottom:0;background-color:#fff;text-align:center;}
 
 .main-menu-box.mainSection li{height: 610px; padding:20rem 0 1.5rem;align-items: center;background-color:#fff;color:#8B4F1D;font-size:2rem;;font-weight:400;}
