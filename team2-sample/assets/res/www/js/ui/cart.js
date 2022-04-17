@@ -5,7 +5,8 @@
  */
 
 (function ($, M, module, MNet, SERVER_PATH, CONFIG, window) {
-
+  var totalPSum = null;
+  var totalP = null;
   var page = {
     els: {
       $back: null,
@@ -51,7 +52,7 @@
             $("#tp").html('0');
           } else {
             var items = "";
-            var totalP = 0;
+            
             $.each(data.list, function (index, item) {
               items += "<div class='cartMenu bg-white'>";
               items += "<div class='cartImg'>";
@@ -70,7 +71,7 @@
               items += "</li>";
               items += "<li data-seq='" + item.goodsNum + "' class='price' >";
               items += "<span class='goodsPrice' data-p='" + (Number(item.goodsPrice) * Number(item.qty)) + "' id='" + item.goodsPrice + "'> "
-              items += (Number(item.goodsPrice) * Number(item.qty)) + " 원";
+              items += (Number(item.goodsPrice) * Number(item.qty)).toLocaleString() + " 원";
               items += "</span>";
               items += "<button type='button' class='qty qtyPlus'>";
               items += "<img src='../img/icon-plus.png' >";
@@ -88,8 +89,9 @@
               console.log(totalP);
             });
             $(".metro-wrap").append(items);
+            totalPSum = Number(totalP).toLocaleString();
             console.log(totalP);
-            $("#tp").html(totalP);
+            $("#tp").html(totalPSum);
           }
         },
         error: function (data) {
@@ -161,22 +163,28 @@
         var qty = Number($(this).parent().children('.goodsQty').text());
         var ser = qty + 1;
         var price = Number($(this).parent().children('.goodsPrice').attr('id'));
-        $(this).parent().children('.goodsPrice').html(price * ser + ' 원');
+        var sum = (price * ser).toLocaleString();
+        totalP += price;
+        totalPSum = Number(totalP).toLocaleString();
+        $(this).parent().children('.goodsPrice').html(sum + ' 원');
         $(this).parent().children('.goodsPrice').attr('data-p', price * ser);
         $(this).parent().children('.goodsQty').html(ser);
         $(this).parent().children('.goodsQty').attr('data-q', ser);
-        $("#tp").html(Number($("#tp").text()) + price);
+        $("#tp").html(totalPSum);
       });
       $(".metro-wrap").on("click", ".qtyMinus ", function () {
         var qty = Number($(this).parent().children('.goodsQty').text());
         if (qty != 1) {
           var ser = qty - 1;
           var price = Number($(this).parent().children('.goodsPrice').attr('id'));
-          $(this).parent().children('.goodsPrice').html(price * ser + ' 원');
+          var sum = (price * ser).toLocaleString();
+          totalP -= price;
+          totalPSum = Number(totalP).toLocaleString();
+          $(this).parent().children('.goodsPrice').html(sum + ' 원');
           $(this).parent().children('.goodsPrice').attr('data-p', price * ser);
           $(this).parent().children('.goodsQty').html(ser);
           $(this).parent().children('.goodsQty').attr('data-q', ser);
-          $("#tp").html(Number($("#tp").text()) - price);
+          $("#tp").html(totalPSum);
         }
       });
       // 삭제버튼

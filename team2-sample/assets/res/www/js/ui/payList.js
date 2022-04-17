@@ -71,7 +71,7 @@
               items += "<div class='order-info' style='font-size: 1.6rem;'>";
               items += item.titleGoodsName;
               items += "<strong>";
-              items += "/ " + item.orderPrice + " 원";
+              items += "/ " + Number(item.orderPrice).toLocaleString() + " 원";
               items += "</strong>";
               items += "</div>";
               items += "</li>";
@@ -153,7 +153,7 @@
                     items += "<div class='order-info' style='font-size: 1.6rem;'>";
                     items += item.titleGoodsName;
                     items += "<strong>";
-                    items += "/ " + item.orderPrice + " 원";
+                    items += "/ " + Number(item.orderPrice).toLocaleString() + " 원";
                     items += "</strong>";
                     items += "</div>";
                     items += "</li>";
@@ -214,7 +214,7 @@
                     items += "<div class='order-info' style='font-size: 1.6rem;'>";
                     items += item.titleGoodsName;
                     items += "<strong>";
-                    items += "/ " + item.orderPrice + " 원";
+                    items += "/ " + Number(item.orderPrice).toLocaleString() + " 원";
                     items += "</strong>";
                     items += "</div>";
                     items += "</li>";

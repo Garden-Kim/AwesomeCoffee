@@ -50,20 +50,20 @@
             items += "</li>";
             items += "<li data-seq='" + data.goodsNum + "' class='price' >";
             items += "<span> "
-            items += data.goodsPrice + " 원";
+            items += Number(data.goodsPrice).toLocaleString() + " 원";
             items += "</span>";
             items += "<span style='color:#aaa;' class='goodsQty' data='" + data.qty + "'>";
             items += " / " + data.qty + " 개";
             items += "</span>";
             items += "<span style='float:right;'>";
-            items += "총 " + (Number(data.goodsPrice) * Number(data.qty)) + " 원";
+            items += "총 " + (Number(data.goodsPrice) * Number(data.qty)).toLocaleString() + " 원";
             items += "</span>";
             items += "</li>";
             items += "</ul>";
             items += "</div>";
             $(".metro-wrap").append(items);
             console.log(data);
-            $('#totalPrice').html(Number(data.goodsPrice) * Number(data.qty));
+            $('#totalPrice').html((Number(data.goodsPrice) * Number(data.qty)).toLocaleString());
             if (data.imgUrl != null) {
               $('#imgUrl5').attr('src', data.goodsImage);
             }
@@ -108,7 +108,7 @@
               items += " / " + item.qty + " 개";
               items += "</span>";
               items += "<span style='float:right;'>";
-              items += "총 " + (Number(item.goodsPrice) * Number(item.qty)) + " 원";
+              items += "총 " + (Number(item.goodsPrice) * Number(item.qty)).toLocaleString() + " 원";
               items += "</span>";
               items += "</li>";
               items += "</ul>";
@@ -116,8 +116,9 @@
               totalP += Number(Number(item.goodsPrice) * Number(item.qty));
               console.log(totalP);
             });
+            var totalPSum = Number(totalP).toLocaleString();
             $(".metro-wrap").append(items);
-            $('#totalPrice').html(totalP);
+            $('#totalPrice').html(totalPSum);
             console.log(totalP);
           },
           error: function (data) {
@@ -140,12 +141,13 @@
         if (M.data.param('direct') == 'Y') {
           console.log(M.data.param('goodsNum'));
           console.log($('.goodsQty').attr('data'));
+          var qty = $('.goodsQty').attr('data').trim();
           MNet.sendHttp({
             path: SERVER_PATH.PAYMENT_DIRECTREGIST,
             data: {
               paymentKind: payment,
               "goodsNum": M.data.param('goodsNum'),
-              "qty": $('.goodsQty').attr('data')
+              "qty": qty
             },
             succ: function (data) {
               if (data.rsltCode == '0000') {

@@ -34,7 +34,7 @@ public class PaymentDTO {
 		return paymentPrice;
 	}
 	public void setPaymentPrice(String paymentPrice) {
-		this.paymentPrice = paymentPrice;
+		this.paymentPrice = paymentPrice.trim();
 	}
 	public String getMonthSum() {
 		return monthSum;

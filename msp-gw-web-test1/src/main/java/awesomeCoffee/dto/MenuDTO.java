@@ -45,7 +45,7 @@ public class MenuDTO {
 	}
 
 	public void setGoodsPrice(String goodsPrice) {
-		this.goodsPrice = goodsPrice;
+		this.goodsPrice = goodsPrice.trim();
 	}
 
 	public String getGoodsContent() {

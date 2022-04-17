@@ -23,8 +23,9 @@
 		from food
 		where foodNum = #{foodNum}
 	</select>
+
 	<select id="foodList" resultType="awesomeCoffee.dto.FoodDTO">
-		SELECT *
+		SELECT FOOD_NUM, TO_CHAR(FOOD_PRICE , '999,999,999,999,999') as foodPrice, FOOD_NAME
 		FROM FOOD
 	</select>
 	

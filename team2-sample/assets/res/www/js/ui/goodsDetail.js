@@ -58,7 +58,7 @@
           $('#title').text(data.goodsName);
           $('#content').html(data.goodsContent );
           $('#kal').text(data.goodsKal + ' Kal');
-          $('.goodsPrice').text(data.goodsPrice);
+          $('.goodsPrice').text(Number(data.goodsPrice).toLocaleString());
           $('.goodsPrice').attr('id', data.goodsPrice);
           $('#imgUrl').attr('src', 'http://192.168.0.31:8080/view/goods/upload/'+ data.goodsImage);
           console.log(data.goodsNum);
@@ -83,17 +83,17 @@
                 console.log(data.list[0].goodsName);
                 $('#imgUrl1').attr('src','http://192.168.0.31:8080/view/goods/upload/' + data.list[0].goodsImage);
                 $('#goodsName1').text(data.list[0].goodsName);
-                $('#goodsPrice1').text(data.list[0].goodsPrice + ' 원');
+                $('#goodsPrice1').text(Number(data.list[0].goodsPrice).toLocaleString() + ' 원');
                 $('#menu1').attr('data',data.list[0].goodsName);
                 
                 $('#imgUrl2').attr('src','http://192.168.0.31:8080/view/goods/upload/' + data.list[1].goodsImage);
                 $('#goodsName2').text(data.list[1].goodsName);
-                $('#goodsPrice2').text(data.list[1].goodsPrice + ' 원');
+                $('#goodsPrice2').text(Number(data.list[1].goodsPrice).toLocaleString() + ' 원');
                 $('#menu2').attr('data',data.list[1].goodsName);
                 
                 $('#imgUrl3').attr('src','http://192.168.0.31:8080/view/goods/upload/' + data.list[2].goodsImage);
                 $('#goodsName3').text(data.list[2].goodsName);
-                $('#goodsPrice3').text(data.list[2].goodsPrice + ' 원');
+                $('#goodsPrice3').text(Number(data.list[2].goodsPrice).toLocaleString() + ' 원');
                 $('#menu3').attr('data',data.list[2].goodsName);
               }
             });
@@ -109,17 +109,17 @@
                 console.log(data.list[0].goodsName);
                 $('#imgUrl1').attr('src','http://192.168.0.31:8080/view/goods/upload/' + data.list[0].goodsImage);
                 $('#goodsName1').text(data.list[0].goodsName);
-                $('#goodsPrice1').text(data.list[0].goodsPrice + ' 원');
+                $('#goodsPrice1').text(Number(data.list[0].goodsPrice).toLocaleString() + ' 원');
                 $('#menu1').attr('data',data.list[0].goodsName);
                 
                 $('#imgUrl2').attr('src','http://192.168.0.31:8080/view/goods/upload/' + data.list[1].goodsImage);
                 $('#goodsName2').text(data.list[1].goodsName);
-                $('#goodsPrice2').text(data.list[1].goodsPrice + ' 원');
+                $('#goodsPrice2').text(Number(data.list[1].goodsPrice).toLocaleString() + ' 원');
                 $('#menu2').attr('data',data.list[1].goodsName);
                 
                 $('#imgUrl3').attr('src','http://192.168.0.31:8080/view/goods/upload/' + data.list[2].goodsImage);
                 $('#goodsName3').text(data.list[2].goodsName);
-                $('#goodsPrice3').text(data.list[2].goodsPrice + ' 원');
+                $('#goodsPrice3').text(Number(data.list[2].goodsPrice).toLocaleString() + ' 원');
                 $('#menu3').attr('data',data.list[2].goodsName);
               }
             });
@@ -309,14 +309,16 @@
       var self = this;
       var price = Number($('.goodsPrice').attr('id'));
       var ser = Number($('#goodsQty').html()) - 1;
-      $('.goodsPrice').html(price * ser);
+      var sum = (price * ser).toLocaleString();
+      $('.goodsPrice').html(sum);
       $('#goodsQty').html(ser);
     },
     qtyPlus: function () {
       var self = this;
       var price = Number($('.goodsPrice').attr('id'));
       var ser = Number($('#goodsQty').html()) + 1;
-      $('.goodsPrice').html(price * ser);
+      var sum = (price * ser).toLocaleString();
+      $('.goodsPrice').html(sum);
       $('#goodsQty').html(ser);
 
     },
