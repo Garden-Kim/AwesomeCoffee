@@ -25,7 +25,7 @@
 	</select>
 
 	<select id="foodList" resultType="awesomeCoffee.dto.FoodDTO">
-		SELECT FOOD_NUM, TO_CHAR(FOOD_PRICE , '999,999,999,999,999') as foodPrice, FOOD_NAME
+		SELECT *
 		FROM FOOD
 	</select>
 	

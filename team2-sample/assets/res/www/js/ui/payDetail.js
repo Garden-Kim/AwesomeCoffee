@@ -44,11 +44,11 @@
             items += item.goodsName;
             items += "</li>";
             items += "<li class='info-box'>";
-            items += item.goodsPrice + " 원";
+            items += Number(item.goodsPrice).toLocaleString() + " 원";
             items += " / "+ item.orderlistQty + " 개";
             items += "</li>";
             items += "<li>";
-            items += "합계 : " + item.price + " 원";
+            items += "합계 : " + Number(item.price).toLocaleString() + " 원";
             items += "</li>";
             items += "</ul>";
           });
@@ -56,7 +56,7 @@
           $('#orderNum').html(M.data.param('orderNum'));
           $('#orderDate').html(data.orderDate);
           $('#payMethod').html(data.paymentKind);
-          $('#paymentPrice').html(data.paymentPrice);
+          $('#paymentPrice').html(Number(data.paymentPrice).toLocaleString());
         },
         error: function (data) {
           $(".empOrderlist").css("display", "none");

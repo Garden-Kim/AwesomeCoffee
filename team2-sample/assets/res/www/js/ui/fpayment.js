@@ -30,14 +30,15 @@
         items += "<th>";
         items += item.foodName;
         items += "</th><th data='" + item.storeOrderQty + "'>";
-        items += item.storeOrderQty + " 개";
+        items += Number(item.storeOrderQty).toLocaleString() + " 개";
         items += "</th><th data='" + item.foodPrice + "'>";
-        items += item.foodPrice + " 원";
+        items += Number(item.foodPrice).toLocaleString() + "원";
         items += "</th></tr>";
         totalP += Number(item.foodPrice);
       });
+      var totalPSum = totalP.toLocaleString();
       $("#noti-wrap").html(items);
-      $('#totalPrice').html(totalP);
+      $('#totalPrice').html(totalPSum);
 
     },
     initEvent: function initEvent() {

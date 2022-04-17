@@ -65,7 +65,7 @@
               items += "</div>";
               items += "<span class='info-box-btm'>";
               items += "<p style='text-align:right;' class='ellipsis_1'>";
-              items += item.goodsPrice + ' 원';
+              items += Number(item.goodsPrice).toLocaleString() + ' 원';
               items += "</p>";
               items += "</span>";
               items += "</div>";

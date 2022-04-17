@@ -32,7 +32,7 @@
           console.log(data);
           if(data.rsltCode == '0000'){
             this.data.rest = data.restPayment;
-            $("#restPayment").html(data.restPayment + ' 원 ');
+            $("#restPayment").html(Number(data.restPayment).toLocaleString() + ' 원 ');
             $("#restPayment").attr('data', data.restPayment);
             console.log(this.data.rest);
           }else{
@@ -55,7 +55,7 @@
               items += "</th><th >";
               items += item.foodPaymentDate;
               items += "</th><th >";
-              items += item.foodPaymentPrice + " 원";
+              items += Number(item.foodPaymentPrice).toLocaleString() + " 원";
               items += "</th></tr>";
             });
             $("#noti-wrap").html(items);

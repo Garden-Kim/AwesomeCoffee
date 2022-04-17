@@ -18,7 +18,7 @@ public class FoodDTO {
 		return foodPrice;
 	}
 	public void setFoodPrice(String foodPrice) {
-		this.foodPrice = foodPrice.trim();
+		this.foodPrice = foodPrice;
 	}
 	public String getFoodName() {
 		return foodName;

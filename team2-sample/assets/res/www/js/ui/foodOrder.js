@@ -52,7 +52,7 @@
             items += "<img src='../img/icon-minus.png'>";
             items += "</button>";
             items += "</li><li class='foodPrice' data-p='"+item.foodPrice+"' id='" +item.foodPrice+"'>";
-            items += item.foodPrice;
+            items += Number(item.foodPrice).toLocaleString() + '원';
             items += "</li></ul>";;
           });
           $("#noti-wrap").html(items);
@@ -123,7 +123,8 @@
         var qty = Number($(this).parent().children('span').text());
         var ser = qty + 1;
         var price = Number($(this).parent().siblings('.foodPrice').attr('id'));
-        $(this).parent().siblings('.foodPrice').html(price * ser);
+        var sum = (price * ser).toLocaleString();
+        $(this).parent().siblings('.foodPrice').html(sum+'원');
         $(this).parent().siblings('.foodPrice').attr('data-p', price * ser);
         $(this).parent().children('span').html(ser);
         $(this).parent().children('span').attr('data-q', ser);
@@ -135,8 +136,8 @@
           console.log(qty);
           console.log(ser);
           var price = Number($(this).parent().siblings('.foodPrice').attr('id'));
-          console.log(price);
-          $(this).parent().siblings('.foodPrice').html(price * ser);
+          var sum = (price * ser).toLocaleString();
+          $(this).parent().siblings('.foodPrice').html(sum+'원');
           $(this).parent().siblings('.foodPrice').attr('data-p', price * ser);
           $(this).parent().children('span').html(ser);
           $(this).parent().children('span').attr('data-q', ser);
@@ -150,7 +151,7 @@
           var foodNum = $(this).val();
           var foodName = $(this).parent().siblings('.foodName').text();
           var qty = $(this).parent().siblings('.foodQty').children('span').text();
-          var foodPrice = $(this).parent().siblings('.foodPrice').text();
+          var foodPrice = $(this).parent().siblings('.foodPrice').attr('id');
           console.log(foodPrice); 
           console.log(qty); 
           var _body = { "foodNum": foodNum, "foodName" : foodName, "storeOrderQty" : qty , "foodPrice" : foodPrice };
