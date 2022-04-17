@@ -41,53 +41,55 @@ public class RecipeController {
 	MenuService menuService;
 	@Autowired
 	FoodService foodService;
-/*
+
 	// 레시피수정
 	@RequestMapping(method = RequestMethod.POST, value = "/api/recipe/update")
 	public ModelAndView updateRecipe(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
 
 		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
-		List<Map<String, Object>> reqBodyMap = (List<Map<String, Object>>) request.getAttribute(Const.BODY);
+		System.out.println(request.getAttribute(Const.BODY).toString());
 		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
+
+		Map<String, Object> reqBodyMap = (Map<String, Object>) request.getAttribute(Const.BODY);
+		List<Map<String, Object>> ListReqBodyMap = (List<Map<String, Object>>) reqBodyMap.get("list"); 
+
 
 		if (reqHeadMap == null) {
 			reqHeadMap = new HashMap<String, Object>();
 		}
-
 		reqHeadMap.put(Const.RESULT_CODE, Const.OK);
 		reqHeadMap.put(Const.RESULT_MESSAGE, Const.SUCCESS);
 
-		logger.info("======================= reqBodyMap : {}", reqBodyMap.toString());
+//			reqBodyMap.put("storeId", authInfo.getLoginId());
+//			StoreDTO dto = storeService.getStoreInfoById(reqBodyMap);
+//			reqBodyMap.put("storeNum",dto.getStoreNum());
 
 		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
 		if (StringUtils.isEmpty(authInfo)) {
 			responseBodyMap.put("rsltCode", "1003");
 			responseBodyMap.put("rsltMsg", "Login required.");
 		} else {
-			if (authInfo.getGrade().equals("store")) {
-				// int result1 = menuService.updateRecipeContent(reqBodyMap);
-				int result = recipeService.recipeUpdate(reqBodyMap);
-
-				if (result > 0) {
-					responseBodyMap.put("rsltCode", "0000");
-					responseBodyMap.put("rsltMsg", "Success");
-				} else {
-					responseBodyMap.put("rsltCode", "2003");
-					responseBodyMap.put("rsltMsg", "Data not found.");
-				}
+			List<RecipeDTO> dto = recipeService.recipeInfo(reqBodyMap);
+			if(dto.size() > 0) {
+				int delete = recipeService.recipeDelete(reqBodyMap);
+			}
+			int result = recipeService.recipeUpdate(ListReqBodyMap, reqBodyMap);
+			int result1 = menuService.updateRecipeContent(reqBodyMap);
+			if (result > 0 && result1 > 0) {
+				responseBodyMap.put("rsltCode", "0000");
+				responseBodyMap.put("rsltMsg", "Success");
 			} else {
-				responseBodyMap.put("rsltCode", "1011");
-				responseBodyMap.put("rsltMsg", "No permission.");
+				responseBodyMap.put("rsltCode", "2003");
+				responseBodyMap.put("rsltMsg", "Data not found.");
 			}
 		}
-
 		ModelAndView mv = new ModelAndView("defaultJsonView");
 		mv.addObject(Const.HEAD, reqHeadMap);
 		mv.addObject(Const.BODY, responseBodyMap);
 
 		return mv;
 	}
-	*/
+
 
 	// 레시피조회
 	@RequestMapping(method = RequestMethod.POST, value = "/api/recipe/info")
