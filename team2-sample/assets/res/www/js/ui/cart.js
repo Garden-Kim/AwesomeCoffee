@@ -70,7 +70,7 @@
               items += "</li>";
               items += "<li data-seq='" + item.goodsNum + "' class='price' >";
               items += "<span class='goodsPrice' data-p='" + (Number(item.goodsPrice) * Number(item.qty)) + "' id='" + item.goodsPrice + "'> "
-              items += (Number(item.goodsPrice) * Number(item.qty));
+              items += (Number(item.goodsPrice) * Number(item.qty)) + " 원";
               items += "</span>";
               items += "<button type='button' class='qty qtyPlus'>";
               items += "<img src='../img/icon-plus.png' >";
@@ -161,7 +161,7 @@
         var qty = Number($(this).parent().children('.goodsQty').text());
         var ser = qty + 1;
         var price = Number($(this).parent().children('.goodsPrice').attr('id'));
-        $(this).parent().children('.goodsPrice').html(price * ser);
+        $(this).parent().children('.goodsPrice').html(price * ser + ' 원');
         $(this).parent().children('.goodsPrice').attr('data-p', price * ser);
         $(this).parent().children('.goodsQty').html(ser);
         $(this).parent().children('.goodsQty').attr('data-q', ser);
@@ -172,7 +172,7 @@
         if (qty != 1) {
           var ser = qty - 1;
           var price = Number($(this).parent().children('.goodsPrice').attr('id'));
-          $(this).parent().children('.goodsPrice').html(price * ser);
+          $(this).parent().children('.goodsPrice').html(price * ser + ' 원');
           $(this).parent().children('.goodsPrice').attr('data-p', price * ser);
           $(this).parent().children('.goodsQty').html(ser);
           $(this).parent().children('.goodsQty').attr('data-q', ser);

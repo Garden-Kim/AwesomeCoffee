@@ -100,17 +100,15 @@
               items += item.goodsName;
               items += "</span>";
               items += "</li>";
-              items += "<li class='menuPriceSum'>";
-              items += (Number(item.goodsPrice) * Number(item.qty));
-              items += "</li>";
               items += "<li data-seq='" + item.goodsNum + "' class='price' >";
-              //              items += "<span> "
-              //              items += item.goodsPrice
-              //              items += "</span>";
-              items += "<span data-q='" + item.qty + "' class='qty goodsQty'>";
-              items += "(수량 ";
-              items += item.qty;
-              items += "개) ";
+              items += "<span> "
+              items += item.goodsPrice + " 원";
+              items += "</span>";
+              items += "<span style='color:#aaa;' class='goodsQty' data='" + item.qty + "'>";
+              items += " / " + item.qty + " 개";
+              items += "</span>";
+              items += "<span style='float:right;'>";
+              items += "총 " + (Number(item.goodsPrice) * Number(item.qty)) + " 원";
               items += "</span>";
               items += "</li>";
               items += "</ul>";
