@@ -104,24 +104,42 @@
         $('.wrapper').attr('style', 'position:relative;height:100%;background-color:#fff;');
       });
 
-// 회원 사이드바
-      $('#m-orderList').on('click', function(){
+      // 회원 사이드바
+      $('#m-orderList').on('click', function () {
         M.page.html('./menuList.html');
       });
-      $('#m-storeList').on('click', function(){
+      $('#m-storeList').on('click', function () {
         M.page.replace('./storeList.html');
       });
-      $('#m-userInfo').on('click', function(){
+      $('#m-userInfo').on('click', function () {
         M.page.html('./userInfo.html');
       });
-      $('#m-cart').on('click', function(){
+      $('#m-cart').on('click', function () {
         M.page.html('./cart.html');
       });
-      $('#m-interest').on('click', function(){
+      $('#m-interest').on('click', function () {
         M.page.html('./wishList.html');
       });
-      $('#m-payList').on('click', function(){
+      $('#m-payList').on('click', function () {
         M.page.html('./payList.html');
+      });
+      $('#m-logout').on('click', function(){
+        MNet.sendHttp({
+          path: SERVER_PATH.LOGOUT,
+          data: {
+            "loginId": M.data.global('id')
+          },
+          succ: function (data) {
+            M.data.removeGlobal('id');
+            M.data.removeGlobal('grade');
+            M.data.removeStorage('AUTO_LOGIN_AUTH');
+            alert("로그아웃되셨습니다.");
+            M.page.html({
+                    url: "./login.html",
+                    actionType: "CLEAR_TOP"
+            });
+          }
+        });
       });
 
       //  게시글 클릭시 게시글 상세보기 동작
