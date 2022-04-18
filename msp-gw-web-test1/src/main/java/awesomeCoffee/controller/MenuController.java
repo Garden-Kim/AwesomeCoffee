@@ -397,9 +397,14 @@ public class MenuController {
 		} else {
 			List<MenuDTO> dto = menuService.selectCategoryMenu(reqBodyMap);
 			String recipeYn;
+			String grade = authInfo.getGrade();
+			List<WishlistDTO> wishlist = null;
+			if(grade.equals("member")) {
 			String memberNum = memberService.getMemberNum(authInfo.getLoginId());
-			List<WishlistDTO> wishlist = wishlistService.selectAllWishlist(memberNum);
+			wishlist = wishlistService.selectAllWishlist(memberNum);
+			
 			System.out.println(wishlist.size());
+			}
 			for (int i = 0; i < dto.size(); i++) {
 				Map<String, Object> map = new HashMap<String, Object>();
 				if (wishlist!=null) {
