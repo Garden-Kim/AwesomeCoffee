@@ -52,7 +52,7 @@
           } else {
             self.data.requset.lastSeqNo = data.lastSeqNo;
             $.each(data.list, function (index, item) {
-              items += "<ul class='pickupState' data-seq='" + item.orderNum + "'>"
+              items += "<ul class='pickupState bg-white' style='height: 6rem;' data-seq='" + item.orderNum + "'>"
               items += "<li >";
               items += item.orderNum;
               items += "</li>";

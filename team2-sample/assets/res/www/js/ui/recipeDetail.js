@@ -55,7 +55,7 @@
             items += " 식자재번호 : " + item.foodNum;
             items += "</li>";
             items += "<li  style='float:left; width:40% ; font-size:1.5rem;'>";
-            items += " | " + item.foodName;
+            items += item.foodName;
             items += "</li>";
             items += "<li style='float:right; width:20%;  font-size:1.5rem;'>";
             items += item.recipeFoodQty + ' 개';
