@@ -119,6 +119,7 @@ li.txt-btn .btn-txt{position:absolute;right:1.5rem;display:inline-block;color:#9
 .main-box-03,
 .main-box-04{margin:1rem;padding:1rem;background-color:#fff;}
 .tit-wrap{overflow:hidden;padding:.3rem 0 1rem;}
+.sales {padding:.3rem 0 1rem; width: 100%;}
 .tit-wrap h2{float:left;font-size:1.4rem;font-weight:bold;color:#000;}
 .tit-wrap h2 span{font-size:inherit;font-weight:400;}
 .tit-wrap .btn-txt{float:right;font-weight:400;color:#bbb;}
