@@ -151,10 +151,10 @@
             items += "<li id='" + item.goodsNum + "' class ='menu' data='"+ item.recipeYn +"' data-n='"+ item.goodsName +"' data-i='"+ item.goodsImage +"'>";
             items += "<div class='thumbnail-wrap'>";
             items += "<div class='thumbnail'>";
-            items += "<img src='http://192.168.0.31:8080/view/goods/upload/" + item.goodsImage + " ' alt=''/>";
+            items += "<img src='http://61.75.82.57:8823/view/goods/upload/" + item.goodsImage + " ' alt=''/>";
             items += "</div>";
             items += "<span class='label-info none'>";
-            items += "<img src= 'http://192.168.0.31:8080/view/goods/upload/" + item.goodsImage + "' alt='50%'/>";
+            items += "<img src= 'http://61.75.82.57:8823/view/goods/upload/" + item.goodsImage + "' alt='50%'/>";
             items += "</span>";
             items += "</div>";
             items += "<div class='info-box'>";

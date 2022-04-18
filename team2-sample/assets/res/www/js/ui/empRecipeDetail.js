@@ -49,7 +49,7 @@
           items += "</div>";
           items += "<div class='recipe-detail-cont bg-white'>";
           items += "<div class='img-wrap'>";
-          items += "<img id='imgUrl' src='http://192.168.0.31:8080/view/goods/upload/" + M.data.param('goodsImage') + "'/>";
+          items += "<img id='imgUrl' src='http://61.75.82.57:8823/view/goods/upload/" + M.data.param('goodsImage') + "'/>";
           items += "</div>";
           items += "<p id='content'>";
           items += content;
