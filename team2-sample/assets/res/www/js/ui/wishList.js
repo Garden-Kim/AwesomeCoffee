@@ -155,35 +155,41 @@
         path: SERVER_PATH.WISH_LIST,
         data: {},
         succ: function (data) {
-          console.log(data);
           var items = "";
-          $.each(data.list, function (index, item) {
-            console.log(item);
-            items += "<li id='"+ item.goodsName +"' class ='menu'>";
-            items += "<div class='thumbnail-wrap click-d' id='"+ item.goodsName +"'>";
-            items += "<div class='thumbnail'>";
-            items += "<img src='http://192.168.0.31:8080/view/goods/upload/" +item.goodsImage +" ' alt=''/>";
-            items += "</div>";
-            items += "<span class='label-info none'>";
-            items += "<img src= 'http://192.168.0.31:8080/view/goods/upload/" + item.goodsImage + "' alt='50%'/>";
-            items += "</span>";
-            items += "</div>";
-            items += "<div class='info-box'>";
-            items += "<div class='info-box-top'>";
-            items += "<strong class='ellipsis_1'>";
-            items += item.goodsName;
-            items += "</strong>";
-            items += "</div>";
-            items += "<button type='button' id='"+ item.goodsNum +"' class='hurt' data='"+ item.wishlist +"'></button>";
-            items += "<span class='info-box-btm'>";
-            items += "<p style='text-align:right;' class='ellipsis_1'>";
-            items += Number(item.goodsPrice).toLocaleString() + ' 원';
-            items += "</p>";
-            items += "</span>";
-            items += "</div>";
-            items += "</li>";
-          });
-          $("#card").html(items);
+          console.log(data);
+          if (data.list == '') {
+            items += "<h1 style='font-size:2rem;color:#888;text-align:center;margin-top:5rem;'>"
+            items += "관심상품이 존재하지 않습니다.</h1>"
+            $("#card").html(items);
+          } else {
+            $.each(data.list, function (index, item) {
+              console.log(item);
+              items += "<li id='"+ item.goodsName +"' class ='menu'>";
+              items += "<div class='thumbnail-wrap click-d' id='"+ item.goodsName +"'>";
+              items += "<div class='thumbnail'>";
+              items += "<img src='http://192.168.0.31:8080/view/goods/upload/" +item.goodsImage +" ' alt=''/>";
+              items += "</div>";
+              items += "<span class='label-info none'>";
+              items += "<img src= 'http://192.168.0.31:8080/view/goods/upload/" + item.goodsImage + "' alt='50%'/>";
+              items += "</span>";
+              items += "</div>";
+              items += "<div class='info-box'>";
+              items += "<div class='info-box-top'>";
+              items += "<strong class='ellipsis_1'>";
+              items += item.goodsName;
+              items += "</strong>";
+              items += "</div>";
+              items += "<button type='button' id='"+ item.goodsNum +"' class='hurt' data='"+ item.wishlist +"'></button>";
+              items += "<span class='info-box-btm'>";
+              items += "<p style='text-align:right;' class='ellipsis_1'>";
+              items += Number(item.goodsPrice).toLocaleString() + ' 원';
+              items += "</p>";
+              items += "</span>";
+              items += "</div>";
+              items += "</li>";
+            });
+            $("#card").html(items);
+          }
         },
         error: function (data) {
           alert("리스트를 가져오지 못했습니다.");

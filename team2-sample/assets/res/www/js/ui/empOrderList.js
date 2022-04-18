@@ -44,27 +44,32 @@
         data: self.data.requset,
         succ: function (data) {
           var items = "";
-          self.data.requset.lastSeqNo = data.lastSeqNo;
-          $.each(data.list, function (index, item) {
-            items += "<ul class='empOrderItem bg-white' data-seq='" + item.orderNum + "'>"
-            items += "<li data-seq='" + item.orderNum + "' class='empOrderDetail'>";
-            items += item.orderNum;
-            items += "</li>";
-            items += "<li data-seq='" + item.orderNum + "' class='empOrderDetail'>";
-            items += item.memberNum;
-            items += "</li>";
-            items += "<li data-seq='" + item.orderNum + "' class='empOrderDetail'>";
-            items += item.orderTime;
-            items += "</li>";
-            items += "<li data-seq='" + item.orderNum + "' class='empOrderDetail'>";
-            items += item.orderPrice;
-            items += "</li>";
-            items += "<li data-seq='" + item.orderNum + "' class='empOrderState'>";
-            items += item.cookState;
-            items += "</li>";
-            items += "</ul>"
-          });
-          $(".empOrder").append(items);
+          if (data.list == '') {
+            items += "<h1 style='font-size:2rem;color:#888;text-align:center;margin-top:5rem;'>"
+            items += "조리 대기 중인 주문이 존재하지 않습니다. </h1>"
+            $(".empOrder").html(items);
+          } else {
+            $.each(data.list, function (index, item) {
+              items += "<ul class='empOrderItem bg-white' data-seq='" + item.orderNum + "'>"
+              items += "<li data-seq='" + item.orderNum + "' class='empOrderDetail'>";
+              items += item.orderNum;
+              items += "</li>";
+              items += "<li data-seq='" + item.orderNum + "' class='empOrderDetail'>";
+              items += item.memberNum;
+              items += "</li>";
+              items += "<li data-seq='" + item.orderNum + "' class='empOrderDetail'>";
+              items += item.orderTime;
+              items += "</li>";
+              items += "<li data-seq='" + item.orderNum + "' class='empOrderDetail'>";
+              items += item.orderPrice;
+              items += "</li>";
+              items += "<li data-seq='" + item.orderNum + "' class='empOrderState'>";
+              items += item.cookState;
+              items += "</li>";
+              items += "</ul>"
+            });
+            $(".empOrder").html(items);
+          }
         },
         error: function (data) {
           $(".btn-wrap").css("display", "none");
@@ -137,7 +142,10 @@
             orderNum : orderNum
           },
           succ: function (data) {
-            M.page.html('./empOrderDetail.html', {param : { orderNum : orderNum}});
+            M.page.html({ url: './empOrderDetail.html', 
+                          actionType: "NO_HISTORY",
+                          param : { orderNum : orderNum},
+                          });
           }
         });
       })
@@ -152,6 +160,11 @@
 (function($,M,pageFunc,window){
 
   M.onReady(function(){
+    pageFunc.init(); // 최초 화면 초기화
+    pageFunc.initView();
+    pageFunc.initEvent();
+  });
+  M.onRestore(function() {
     pageFunc.init(); // 최초 화면 초기화
     pageFunc.initView();
     pageFunc.initEvent();

@@ -106,23 +106,30 @@
         },
         succ: function (data) {
           var items = "";
-          $.each(data.list, function (index, item) {
-            items += "<ul class='paymentList'>"
-            items += "<li class='list'>";
-            items += item.orderNum;
-            items += "</li>";
-            items += "<li class='list'>";
-            items += item.paymentKind;
-            items += "</li>";
-            items += "<li class='list'>";
-            items += item.paymentDate;
-            items += "</li>";
-            items += "<li class='list'>";
-            items += item.paymentPrice;
-            items += "</li>";
-            items += "</ul>"
-          });
-          $(".paymentList").append(items);
+          console.log(data);
+          if (data.list == '') {
+            items += "<h1 style='font-size:2rem;color:#888;text-align:center;margin-top:5rem;'>"
+            items += "결제목록이 존재하지 않습니다.</h1>"
+            $(".metro-paymentList").html(items);
+          } else {
+            $.each(data.list, function (index, item) {
+              items += "<ul class='paymentList'>"
+              items += "<li class='list'>";
+              items += item.orderNum;
+              items += "</li>";
+              items += "<li class='list'>";
+              items += item.paymentKind;
+              items += "</li>";
+              items += "<li class='list'>";
+              items += item.paymentDate;
+              items += "</li>";
+              items += "<li class='list'>";
+              items += item.paymentPrice;
+              items += "</li>";
+              items += "</ul>"
+            });
+            $(".paymentList").append(items);
+          }
         },
         error: function (data) {
           console.log(data);

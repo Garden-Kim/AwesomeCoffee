@@ -217,9 +217,6 @@
           },
           succ: function(data){
             if(data.rsltCode == '0000'){
-              var pagelist = M.info.stack();
-              console.log(pagelist);
-              M.page.remove(pagelist[1].key);
               alert('레시피 등록 완료');
               M.page.replace('./menuList.html');
             }else{

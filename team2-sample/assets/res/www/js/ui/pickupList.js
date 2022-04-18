@@ -45,24 +45,30 @@
         data: self.data.requset,
         succ: function (data) {
           var items = "";
-          self.data.requset.lastSeqNo = data.lastSeqNo;
-          $.each(data.list, function (index, item) {
-            items += "<ul class='pickupState' data-seq='" + item.orderNum + "'>"
-            items += "<li >";
-            items += item.orderNum;
-            items += "</li>";
-            items += "<li>";
-            items += item.memberNum;
-            items += "</li>";
-            items += "<li>";
-            items += item.orderTime;
-            items += "</li>";
-            items += "<li>";
-            items += item.takeout;
-            items += "</li>";
-            items += "</ul>"
-          });
-          $(".pickup").append(items);
+          if (data.list == '') {
+            items += "<h1 style='font-size:2rem;color:#888;text-align:center;margin-top:5rem;'>"
+            items += "수령 대기 중인 주문이 존재하지 않습니다. </h1>"
+            $(".pickup").html(items);
+          } else {
+            self.data.requset.lastSeqNo = data.lastSeqNo;
+            $.each(data.list, function (index, item) {
+              items += "<ul class='pickupState' data-seq='" + item.orderNum + "'>"
+              items += "<li >";
+              items += item.orderNum;
+              items += "</li>";
+              items += "<li>";
+              items += item.memberNum;
+              items += "</li>";
+              items += "<li>";
+              items += item.orderTime;
+              items += "</li>";
+              items += "<li>";
+              items += item.takeout;
+              items += "</li>";
+              items += "</ul>"
+            });
+            $(".pickup").html(items);
+          }
         },
         error: function (data) {
           $(".pickup").css("display", "none");

@@ -130,6 +130,8 @@
                 },
                 succ: function (data) {
                   alert('주문이 조리완료되었습니다.');
+                  var pagelist = M.info.stack();
+                  M.page.remove(pagelist[1].key);
                   M.page.replace('./empOrderList.html');
                 },
                 error: function (data) {

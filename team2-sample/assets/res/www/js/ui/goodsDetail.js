@@ -334,5 +334,10 @@
     pageFunc.initView();
     pageFunc.initEvent();
   });
+  M.onRestore(function() {
+    pageFunc.init(); // 최초 화면 초기화
+    pageFunc.initView();
+    pageFunc.initEvent();
+  });
   
 })(jQuery,M,__page__,window);
