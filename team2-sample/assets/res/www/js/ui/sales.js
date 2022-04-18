@@ -23,15 +23,80 @@
         M.page.html('./login.html');
       }
       // 초기 그래프 
-      var chart = new Chart(document.getElementById("myChart"), {
-        type: 'line',
+      var year = '22';
+      MNet.sendHttp({
+        path: SERVER_PATH.PAYMENT_MONTHSUM,
         data: {
-          labels: [],
-          datasets: [{
-            label: [],
-            data: [],
-          }, ],
-          borderWidth: 1
+          "year": year,
+        },
+        succ: function (data) {
+          console.log(data);
+          list = []
+          M.data.param('year', year);
+          $.each(data.monthList, function (index, item) {
+            list.push({
+              "monthSum": item.monthSum
+            });
+          });
+
+          console.log(list);
+          var month1 = list[0].monthSum;
+          var month2 = list[1].monthSum;
+          var month3 = list[2].monthSum;
+          var month4 = list[3].monthSum;
+          var month5 = list[4].monthSum;
+          var month6 = list[5].monthSum;
+          var month7 = list[6].monthSum;
+          var month8 = list[7].monthSum;
+          var month9 = list[8].monthSum;
+          var month10 = list[9].monthSum;
+          var month11 = list[10].monthSum;
+          var month12 = list[11].monthSum;
+
+          for (j = 0; list.length < j; j++) {
+
+            var i = list[j].month;
+          }
+          var i = 0;
+          myChart = new Chart(document.getElementById('myChart'), {
+            type: 'bar',
+            data: {
+              labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+              datasets: [{
+                label: '월 매출',
+                data: [month1, month2, month3, month4, month5, month6, month7, month8, month9, month10, month11, month12]
+
+                  ,
+                backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)',
+                  'rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                  'rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)',
+                  'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)',
+                  'rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)',
+                  'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+              }]
+            },
+            options: {
+              scales: {
+                yAxes: [{
+                  ticks: {
+                    beginAtZero: true
+                  }
+                }]
+              }
+            }
+          });
+
+        },
+        error: function (data) {
+          console.log(data);
+          alert(" fail ");
         },
       });
     },

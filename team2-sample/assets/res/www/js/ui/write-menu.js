@@ -174,21 +174,21 @@
           var pagelist = M.info.stack();
           M.page.remove(pagelist[1].key);
           alert('등록 완료되었습니다.');
-          M.page.replace('./menuList.html');
+          M.page.replace('./menuempList.html');
         },
         progress: function (head) {
           var pagelist = M.info.stack();
           M.page.remove(pagelist[1].key);
           console.log(head);
           alert('등록 완료');
-          M.page.replace('./menuList.html');
+          M.page.replace('./menuempList.html');
         },
         error : function (head) {
           console.log(head);
           var pagelist = M.info.stack();
           M.page.remove(pagelist[1].key);
           alert('등록이 완료되었습니다.');
-          M.page.replace('./menuList.html');
+          M.page.replace('./menuempList.html');
         }
       })
     },  
