@@ -217,18 +217,20 @@
           }
         });
       });     
-
       $('#addrSearch').on('click', function(){
         self.getAddr();
+        $('.tbl-ipt').attr('style','pointer-events: none; ');
+        $('#btn-two button').attr('disabled',true);
       });
-/*      $('.daum_popup').on('blur', function () {
-        console.log('취소');
-        element_layer.style.display = 'none';
-      });*/
       $('#btnCloseLayer').on('click', function(){
         element_layer.style.display = 'none';
+        $('.tbl-ipt').attr('style','pointer-events: auto; ');
+        $('#btn-two button').attr('disabled',false);
+        var pw = self.els.$passwordIpt.val().trim();
+        if(pw == ''){
+          $('#saveBtn').attr('disabled',true);
+        }
       });
-      
     },
     getAddr: function () {
       var self = this;

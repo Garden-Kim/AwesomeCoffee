@@ -36,8 +36,8 @@
 								<th class="bul">
 									매장 정보
 								</th>
-								<td id="changePw">
-									비밀번호 변경
+								<td>
+                  <span id="changePw">비밀번호 변경</span>
 								</td>
 							</tr>
 						</thead>
@@ -83,7 +83,7 @@
 								</th>
 								<td>
 									<input type="text" id="addr" placeholder="주소 입력" class="full3" style="width: 60%;"/>
-									<button type="button" id="addrSearch"class="btn-line">
+									<button type="button" id="addrSearch" class="btn-line">
 										찾기
 									</button>
 								</td>
@@ -100,19 +100,19 @@
 						</tbody>
 					</table>
 				</div>
-				<div class="btn-wrap count2 btm-fix pd">
-					<button type="button" id="saveBtn" class="btn-point-color">
-						수정
-					</button>
-					<button type="button" id="outBtn" class="btn-line">
-						매장상태 변경
-					</button>
-				</div>
+        <div class="btn-wrap count2 btn-fix pd" style="padding-top:5rem;" id="btn-two">
+          <button type="button" id="saveBtn" class="btn-point-color">
+            수정
+          </button>
+          <button type="button" id="outBtn" class="btn-line">
+            매장상태 변경
+          </button>
+        </div>
 			</div>
 		</div>
 		<div id="layer" style="display:none;position:fixed;overflow:hidden;z-index:1;-webkit-overflow-scrolling:touch;">
 			<img src="https://t1.daumcdn.net/postcode/resource/images/close.png" id="btnCloseLayer" style="position:absolute;right:-3px;top:-3px;z-index:1;width: 20px;height: 18px;" alt="닫기 버튼">
-			</div>
+    </div>
 	</div>
 
 		<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
