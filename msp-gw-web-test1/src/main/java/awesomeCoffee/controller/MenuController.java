@@ -43,7 +43,7 @@ public class MenuController {
 	private WishlistService wishlistService;
 	@Autowired
 	private MemberService memberService;
-	
+
 	// 메뉴검색(직원)
 	@RequestMapping(method = RequestMethod.POST, value = "/api/menu/empSearch")
 	public ModelAndView menuEmpSearch(HttpServletRequest request, HttpSession session) {
@@ -95,6 +95,7 @@ public class MenuController {
 
 		return mv;
 	}
+
 	// 메뉴검색(회원)
 	@RequestMapping(method = RequestMethod.POST, value = "/api/menu/search")
 	public ModelAndView menuSearch(HttpServletRequest request, HttpSession session) {
@@ -120,8 +121,8 @@ public class MenuController {
 			List<WishlistDTO> wishlist = wishlistService.selectAllWishlist(memberNum);
 			for (int i = 0; i < dto.size(); i++) {
 				Map<String, Object> map = new HashMap<String, Object>();
-				if (wishlist!=null) {
-					for(int j=0; j < wishlist.size(); j++) {
+				if (wishlist != null) {
+					for (int j = 0; j < wishlist.size(); j++) {
 						if (wishlist.get(j).getGoodsNum().equals(dto.get(i).getGoodsNum())) {
 							map.put("wishlist", "Exist goods in wishlist");
 						}
@@ -179,7 +180,7 @@ public class MenuController {
 		} else {
 
 			MenuDTO info = menuService.getMenuInfo(reqBodyMap);
-			String recipeYn= menuService.getRecipeYn(info.getGoodsNum());
+			String recipeYn = menuService.getRecipeYn(info.getGoodsNum());
 			if (!StringUtils.isEmpty(info)) {
 				responseBodyMap.put("rsltCode", "0000");
 				responseBodyMap.put("rsltMsg", "Success");
@@ -316,21 +317,24 @@ public class MenuController {
 		reqBodyMap.put("goodsContent", request.getParameter("goodsContent"));
 		reqBodyMap.put("goodsKal", request.getParameter("goodsKal"));
 		reqBodyMap.put("categoryNum", request.getParameter("categoryNum"));
-
+		reqBodyMap.put("originalFile", request.getParameter("originalFile"));
 		MultipartFile menuImage = request.getFile("goodsImage");
-
 
 		String fileDir = "/view/goods/upload";
 		String filePath = request.getSession().getServletContext().getRealPath(fileDir);
 		System.out.println(filePath);
+		System.out.println("req.get.originalFile : "+reqBodyMap.get("originalFile"));
+		System.out.println("menuImage.originalFile : "+menuImage.getOriginalFilename());
 		
+		
+
 		// 메뉴 이미지 가져오기
 		MenuDTO dto = menuService.getMenuInfoByNum(reqBodyMap);
 		String fileName = dto.getGoodsImage();
-
-		
+		System.out.println("dto.originalFile : " + dto.getOriginalFile());
+		System.out.println("dto.goodsImage : " + dto.getGoodsImage());
 		// 메뉴 이미지 있으면 폴더에서 삭제
-		if (fileName != null) {
+		if (fileName != null && !fileName.equals(menuImage.getOriginalFilename())) {
 			File f = new File(filePath + "/" + fileName);
 			if (f.exists()) {
 				f.delete();
@@ -344,19 +348,24 @@ public class MenuController {
 
 		// 7b2582aca35e4525b4a579d84e8b6c9d
 		// 중복 방지
-		String storeName = UUID.randomUUID().toString().replace("-", "");
-		String storeFileName = storeName + extension;
-		File file = new File(filePath + "/" + storeFileName);
-		try {
-			menuImage.transferTo(file); // 파일을 저장
-		} catch (Exception e) {
-			e.printStackTrace();
+		if (!dto.getGoodsImage().equals(menuImage.getOriginalFilename())) {
+			String storeName = UUID.randomUUID().toString().replace("-", "");
+			String storeFileName = storeName + extension;
+			File file = new File(filePath + "/" + storeFileName);
+			try {
+				menuImage.transferTo(file); // 파일을 저장
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			reqBodyMap.put("goodsImage", storeFileName);
+			
+			System.out.println("========== 이미지이름 : " + reqBodyMap.get("goodsImage"));
+			System.out.println("========== 오리지날이름 : " + reqBodyMap.get("originalFile"));
+		}else {
+			reqBodyMap.put("goodsImage", dto.getGoodsImage());
 		}
-		reqBodyMap.put("originalFile", originalFile);
-		reqBodyMap.put("goodsImage", storeFileName);
-
-		System.out.println("========== 이미지이름 : " + reqBodyMap.get("goodsImage"));
-
+		System.out.println("========== 이미지이름2 : " + reqBodyMap.get("goodsImage"));
+		System.out.println("========== 오리지날이름2 : " + reqBodyMap.get("originalFile"));
 		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
 		if (StringUtils.isEmpty(authInfo)) {
 			responseBodyMap.put("rsltCode", "1003");
@@ -399,16 +408,16 @@ public class MenuController {
 			String recipeYn;
 			String grade = authInfo.getGrade();
 			List<WishlistDTO> wishlist = null;
-			if(grade.equals("member")) {
-			String memberNum = memberService.getMemberNum(authInfo.getLoginId());
-			wishlist = wishlistService.selectAllWishlist(memberNum);
-			
-			System.out.println(wishlist.size());
+			if (grade.equals("member")) {
+				String memberNum = memberService.getMemberNum(authInfo.getLoginId());
+				wishlist = wishlistService.selectAllWishlist(memberNum);
+
+				System.out.println(wishlist.size());
 			}
 			for (int i = 0; i < dto.size(); i++) {
 				Map<String, Object> map = new HashMap<String, Object>();
-				if (wishlist!=null) {
-					for(int j=0; j < wishlist.size(); j++) {
+				if (wishlist != null) {
+					for (int j = 0; j < wishlist.size(); j++) {
 						if (wishlist.get(j).getGoodsNum().equals(dto.get(i).getGoodsNum())) {
 							map.put("wishlist", "Exist goods in wishlist");
 						}
@@ -469,8 +478,8 @@ public class MenuController {
 			List<WishlistDTO> wishlist = wishlistService.selectAllWishlist(memberNum);
 			for (int i = 0; i < dto.size(); i++) {
 				Map<String, Object> map = new HashMap<String, Object>();
-				if (wishlist!=null) {
-					for(int j=0; j < wishlist.size(); j++) {
+				if (wishlist != null) {
+					for (int j = 0; j < wishlist.size(); j++) {
 						if (wishlist.get(j).getGoodsNum().equals(dto.get(i).getGoodsNum())) {
 							map.put("wishlist", "Exist goods in wishlist");
 						}
@@ -486,7 +495,7 @@ public class MenuController {
 				map.put("storeNum", dto.get(i).getStoreNum());
 				recipeYn = menuService.getRecipeYn(dto.get(i).getGoodsNum());
 				map.put("recipeYn", recipeYn);
-				
+
 				menuList.add(map);
 			}
 			logger.info("======================= menuList : {}", dto.toString());
@@ -506,7 +515,6 @@ public class MenuController {
 
 		return mv;
 	}
-
 
 	// 메뉴 리스트 (카테고리별) (관리자)
 	@RequestMapping(method = RequestMethod.POST, value = "/api/category/menuEmpList")
@@ -594,7 +602,7 @@ public class MenuController {
 				map.put("storeNum", dto.get(i).getStoreNum());
 				recipeYn = menuService.getRecipeYn(dto.get(i).getGoodsNum());
 				map.put("recipeYn", recipeYn);
-				
+
 				menuList.add(map);
 			}
 			logger.info("======================= menuList : {}", dto.toString());
@@ -615,7 +623,6 @@ public class MenuController {
 		return mv;
 	}
 
-	
 	// 메뉴 등록
 	@RequestMapping(method = RequestMethod.POST, value = "/api/menu/regist")
 	public @ResponseBody Map<String, Object> menuRegist(MultipartHttpServletRequest request, HttpSession session) {

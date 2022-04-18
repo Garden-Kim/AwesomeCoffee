@@ -19,7 +19,7 @@
     data: {
       title : '',
       content : '',
-      imgPath : '',
+      imgPath : null,
       goodsNum : '',
     },
     init: function init(){
@@ -163,6 +163,7 @@
         { name: "goodsPrice", content: price, type: "TEXT" },
         { name: "goodsKal ", content: kal, type: "TEXT" },
         { name: "categoryNum", content: ctg, type: "TEXT" },
+        { name: "originalFile", content: imgN, type: "TEXT" },
       ]
       console.log(body);
       MNet.fileHttpSend({
@@ -193,6 +194,8 @@
     },  
     // 이미지 포함 
     modifyWithUpload: function modifyWithUpload(goodsNum, title, content, price, kal, ctg, goodsImg) {
+      var self = this;
+      var imgN = self.els.$iptImg.val().trim();
       var body = [
         { name: "goodsNum", content: goodsNum, type: "TEXT" },
         { name: "goodsImage", content: goodsImg, type: "FILE" },
@@ -201,6 +204,7 @@
         { name: "goodsPrice", content: price, type: "TEXT" },
         { name: "goodsKal ", content: kal, type: "TEXT" },
         { name: "categoryNum", content: ctg, type: "TEXT" },
+        { name: "originalFile", content: imgN, type: "TEXT" },
       ]
       console.log(body);
       MNet.fileHttpSend({

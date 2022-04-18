@@ -72,7 +72,8 @@
 <update id="updateFileMenu">
 	update goods
 	set goods_name = #{goodsName}, goods_price = #{goodsPrice}, goods_content = #{goodsContent}, 
-		 goods_image = #{goodsImage}, goods_kal = #{goodsKal}, category_num = #{categoryNum} 
+		 goods_image = #{goodsImage}, goods_kal = #{goodsKal}, category_num = #{categoryNum},
+		 original_file = #{originalFile} 
 	where goods_num = #{goodsNum}
 </update>
 
