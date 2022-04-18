@@ -221,6 +221,10 @@
       $('#addrSearch').on('click', function(){
         self.getAddr();
       });
+/*      $('.daum_popup').on('blur', function () {
+        console.log('취소');
+        element_layer.style.display = 'none';
+      });*/
       $('#btnCloseLayer').on('click', function(){
         element_layer.style.display = 'none';
       });

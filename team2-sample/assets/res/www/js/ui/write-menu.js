@@ -63,6 +63,8 @@
             goodsNum = data.goodsNum;
             console.log(goodsNum);
             console.log(self.data.goodsNum);
+            console.log(data.originalFile);
+            console.log(self.data.imgPath);
           },
           error: function (data) {
             console.log(data);
@@ -88,6 +90,7 @@
         var imgN = self.els.$iptImg.val().trim();
             console.log(goodsNum);
             console.log(self.data.goodsNum);
+            console.log(self.data.imgPath);
         ////////////////////////////////////////// 수정
         if(!module.isEmpty(gN)){  // 수정
           if(module.isEmpty(title)){
