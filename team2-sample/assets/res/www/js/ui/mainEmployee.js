@@ -75,6 +75,30 @@
         $(".mySlideDiv").eq(newIndex).addClass("active");
         $(".mySlideDiv").eq(newIndex).show();
       }
+      MNet.sendHttp({
+        path: SERVER_PATH.ORDER_EMP_LIST_N,
+        data: {},
+        succ: function (data) {
+          console.log(data);
+          if (data.list != '') {
+            var length = data.list.length;
+            document.querySelector('#order-length').classList.remove('none');
+            $('#order-length').text(length);
+          }
+        },
+      });
+      MNet.sendHttp({
+        path: SERVER_PATH.ORDER_TAKE_LIST,
+        data: {},
+        succ: function (data) {
+          console.log(data);
+          if (data.list != '') {
+            var length = data.list.length;
+            document.querySelector('#pickup-length').classList.remove('none');
+            $('#pickup-length').text(length);
+          }
+        },
+      });
     },
     initEvent: function initEvent() {
       var self = this;

@@ -724,6 +724,15 @@ strong.ellipsis{position:relative;display:inline-block;width:100%;}
 
 
 /* 직원메인 메뉴 버튼 */
+.badge{background-color: rgb(255, 208, 0); color:black;
+  content: attr(data-badge);
+  position: absolute;top: 10px;
+  font-size: 1.3rem;font-weight: border;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  line-height: 20px;
+  border-radius: 50%;}
 
 /*직원 주문 리스트*/
 .empOrder-list { position:relative; height: 4.5rem; float:left; margin-top:1rem;width:100%;font-size:1.6rem;}
