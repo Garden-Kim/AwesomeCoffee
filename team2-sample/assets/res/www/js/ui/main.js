@@ -83,10 +83,26 @@
         $(".mySlideDiv").eq(newIndex).addClass("active");
         $(".mySlideDiv").eq(newIndex).show();
       }
+      MNet.sendHttp({
+        path: SERVER_PATH.ORDER_LIST_LISTNN,
+        data: {},
+        succ: function (data) {
+          console.log(data);
+          if (data.list != '') {
+            var length = data.list.length;
+            document.querySelector('#order-current').classList.remove('none');
+          }else{
+            document.querySelector('#order-current').classList.remove('none');
+            self.orderPickup();
+          }
+        },
+      });
     },
     initEvent: function initEvent() {
       // Dom Event 바인딩
-
+      $('#retry').on('click', function(){
+        M.page.replace();
+      });
       $('.announcementFour').on('click', '.ellipsis', function () {
         var seqNo = $(this).attr('data');
         console.log(seqNo);
@@ -135,9 +151,21 @@
           }
         });
       });
-
-
     },
+    orderPickup : function(){
+      MNet.sendHttp({
+        path: SERVER_PATH.ORDER_LIST_LISTYN,
+        data: {},
+        succ: function (head) {
+          console.log(head);
+          if (head.list != '') {
+            $('#order-current').text('수령전');
+          }else{
+            document.querySelector('#order-current').classList.add('none');
+          }
+        },
+      });
+    }
 
 
   };
@@ -151,6 +179,9 @@
     pageFunc.init(); // 최초 화면 초기화
     pageFunc.initView();
     pageFunc.initEvent();
+  });
+  M.onRestore(function() {
+    pageFunc.initView();
   });
 
 })(jQuery, M, __page__, window);

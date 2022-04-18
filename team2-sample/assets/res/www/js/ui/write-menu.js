@@ -170,13 +170,13 @@
         succ: function (data) {
           console.log(data);
           var pagelist = M.info.stack();
-          M.page.remove(pagelist[1].key);
+          M.page.remove(pagelist[2].key);
           alert('등록 완료되었습니다.');
           M.page.replace('./menuList.html');
         },
         progress: function (head) {
           var pagelist = M.info.stack();
-          M.page.remove(pagelist[1].key);
+          M.page.remove(pagelist[2].key);
           console.log(head);
           alert('등록 완료');
           M.page.replace('./menuList.html');
@@ -213,14 +213,16 @@
         body: body,
         succ: function () {
           var pagelist = M.info.stack();
-          M.page.remove(pagelist[1].key);    
+          M.page.remove(pagelist[2].key);    
           M.page.remove(pagelist[2].key);   
+          M.page.remove(pagelist[2].key);
           alert('이미지를 포함한 상품 수정이 완료되었습니다.');
           M.page.replace('./menuList.html');  
         },
         progress: function () {
           var pagelist = M.info.stack();
-          M.page.remove(pagelist[1].key);        
+          M.page.remove(pagelist[2].key);        
+          M.page.remove(pagelist[2].key);
           M.page.remove(pagelist[2].key);
           alert('이미지 및 상품 수정이 완료되었습니다.');
           M.page.replace('./menuList.html');

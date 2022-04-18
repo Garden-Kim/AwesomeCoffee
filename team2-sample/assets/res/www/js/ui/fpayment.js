@@ -67,7 +67,7 @@
           succ: function (data) {
             console.log(data);
             var pagelist = M.info.stack();
-            M.page.remove(pagelist[1].key);
+            M.page.remove(pagelist[2].key);
             alert('발주가 완료되었습니다.');
             M.page.replace('./foodOrder.html');
           },

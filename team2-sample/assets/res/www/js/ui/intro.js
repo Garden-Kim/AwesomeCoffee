@@ -44,6 +44,8 @@
       // 화면에서 세팅할 동적데이터
       var self = this;
       var existLoginData =  M.data.storage('AUTO_LOGIN_AUTH');
+      var imgHttp = 'http://61.75.82.57:8823/view/goods/upload/';
+      M.data.global({ 'imgHttp' : imgHttp });
       if(existLoginData){
         this.startProgress(function(){
           M.data.global({'id' : existLoginData.id });

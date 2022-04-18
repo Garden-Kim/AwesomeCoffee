@@ -40,7 +40,7 @@
             items += "<div class='cartImg'>";
             // 데이터 있을 경우 바꿔야할 코드 (현재는 임의의 이미지)
             //items += "<img id='imgUrl' src='" + data.imgUrl + "'/>";
-            items += "<img src='http://61.75.82.57:8823/view/goods/upload/" +data.goodsImage +" ' alt=''/>";
+            items += "<img src='" + M.data.global('imgHttp') +data.goodsImage +" ' alt=''/>";
             items += "</div>";
             items += "<ul>";
             items += "<li data-seq='" + data.goodsNum + "' class='menuName' >";
@@ -92,7 +92,7 @@
               items += "<div class='paymentImg'>";
               // 데이터 있을 경우 바꿔야할 코드 (현재는 임의의 이미지)
               //items += "<img id='imgUrl' src='" + data.imgUrl + "'/>";
-              items += "<img src='http://61.75.82.57:8823/view/goods/upload/" + item.goodsImage + "'>";
+              items += "<img src='" + M.data.global('imgHttp') + item.goodsImage + "'>";
               items += "</div>";
               items += "<ul>";
               items += "<li data-seq='" + item.goodsNum + "' class='menuName' >";

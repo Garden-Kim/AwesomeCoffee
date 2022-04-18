@@ -102,6 +102,9 @@
     },
     initEvent: function initEvent() {
       var self = this;
+      $('#retry').on('click', function(){
+        M.page.replace();
+      });
       this.els.$order.on('click', function () {
         M.page.html("./empOrderList.html");
       });

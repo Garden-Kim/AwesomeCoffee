@@ -20,6 +20,9 @@
       <h1 class="logo" style="background-color: rgb(255, 208, 0);">
         회원페이지
       </h1>
+      <button class="btn-retry l-fix" id="retry" type="button">
+        새로고침
+      </button>
       <div id="logout" class="btn-logout r-fix" style="font-size: 1.3rem;padding: 1.7rem 0 0 0;height: 5rem;color: white;">
         <span>로그아웃</span>
         <button class="btn-arrow"></button>
@@ -50,6 +53,7 @@
             <div class="mySlideDiv fade">
               <img src="../img/event_3main.JPG">
             </div>
+          </div>
 
         </section>
 
@@ -58,7 +62,7 @@
             주문하기
           </li>
           <li id="storeList" style="text-align:center">
-            주변매장
+            매장위치
           </li>
           <li id="userInfoBtn" style="text-align:center">
             마이 페이지
@@ -70,7 +74,7 @@
             관심상품
           </li>
           <li id="payList" style="text-align:center">
-            주문내역
+            주문내역<span class="badge-ord none" id="order-current">조리중</span>
           </li>
         </ul>
 

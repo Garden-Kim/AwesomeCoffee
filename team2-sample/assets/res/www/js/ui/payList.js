@@ -49,12 +49,12 @@
               items += "</li>";
               items += "<li class='img-wrap orderList'>";
               items += "<div class='img'>";
-              items += "<img src='http://61.75.82.57:8823/view/goods/upload/";
+              items += "<img src='" + M.data.global('imgHttp');
               items += item.titleGoodsImage; /// 대표이미지
               items += "' alt=''/>";
               items += "</div>";
               items += "<span class='label-info none'>";
-              items += "<img src='http://61.75.82.57:8823/view/goods/upload/";
+              items += "<img src='" + M.data.global('imgHttp');
               items += item.titleGoodsImage;
               items += "' alt='50%'/>";
               items += "</span>";
@@ -131,12 +131,12 @@
                     items += "</li>";
                     items += "<li class='img-wrap orderList'>";
                     items += "<div class='img'>";
-                    items += "<img src='http://61.75.82.57:8823/view/goods/upload/";
+                    items += "<img src='" + M.data.global('imgHttp');
                     items += item.titleGoodsImage; /// 대표이미지
                     items += "' alt=''/>";
                     items += "</div>";
                     items += "<span class='label-info none'>";
-                    items += "<img src='http://61.75.82.57:8823/view/goods/upload/";
+                    items += "<img src='" + M.data.global('imgHttp');
                     items += item.titleGoodsImage;
                     items += "' alt='50%'/>";
                     items += "</span>";
@@ -192,12 +192,12 @@
                     items += "</li>";
                     items += "<li class='img-wrap orderList'>";
                     items += "<div class='img'>";
-                    items += "<img src='http://61.75.82.57:8823/view/goods/upload/";
+                    items += "<img src='" + M.data.global('imgHttp');
                     items += item.titleGoodsImage; /// 대표이미지
                     items += "' alt=''/>";
                     items += "</div>";
                     items += "<span class='label-info none'>";
-                    items += "<img src='http://61.75.82.57:8823/view/goods/upload/";
+                    items += "<img src='" + M.data.global('imgHttp');
                     items += item.titleGoodsImage;
                     items += "' alt='50%'/>";
                     items += "</span>";
