@@ -34,6 +34,10 @@
           goodsNum: M.data.param('goodsNum')
         }, 
         succ: function (data) {
+          var content = data.recipeContent;
+          content = content.replace(/\r\n/ig, '<br/>');
+          content = content.replace(/\\n/ig, '<br/>');
+          content = content.replace(/\n/ig, '<br/>');
           var items = "";
           items += "<div class='recipe-detail-tit bg-white'>";
           items += "<p id='title'>";
@@ -48,7 +52,7 @@
           items += "<img id='imgUrl' src='http://192.168.0.31:8080/view/goods/upload/" + M.data.param('goodsImage') + "'/>";
           items += "</div>";
           items += "<p id='content'>";
-          items += data.recipeContent;
+          items += content;
           items += "</p>";
           items += "</div>";
           

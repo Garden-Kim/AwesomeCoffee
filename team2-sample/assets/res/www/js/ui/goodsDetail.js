@@ -54,9 +54,13 @@
           "goodsName": M.data.param("goodsName"),
         },
         succ: function (data) {
+          var content = data.goodsContent;
+          content = content.replace(/\r\n/ig, '<br/>');
+          content = content.replace(/\\n/ig, '<br/>');
+          content = content.replace(/\n/ig, '<br/>');
           console.log(data);
           $('#title').text(data.goodsName);
-          $('#content').html(data.goodsContent );
+          $('#content').html(content );
           $('#kal').text(data.goodsKal + ' Kal');
           $('.goodsPrice').text(Number(data.goodsPrice).toLocaleString());
           $('.goodsPrice').attr('id', data.goodsPrice);
