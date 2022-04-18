@@ -70,7 +70,6 @@
               items += "</span>";
               items += "</div>";
               items += "</li>";
-              console.log(item.wishlist);
             });
             $("#card").append(items);
             $('button[data="Exist goods in wishlist"]').attr('class', 'hurt');
@@ -245,7 +244,7 @@
           }
           var ctg = $(this).parent('li').attr('id');
           this.parentNode.classList.add('on');
-          console.log(ctg);
+          console.log("ctg = "+ctg);
           if(M.data.global('grade') == 'store'){
             MNet.sendHttp({
               path: SERVER_PATH.MENU_CATEGORYEMPLIST,

@@ -300,7 +300,7 @@ public class MenuController {
 
 	// 메뉴 수정 (파일 업로드 포함)
 	@RequestMapping(method = RequestMethod.POST, value = "/api/menu/updateFile")
-	public @ResponseBody Map<String, Object> menuUpdateFile(MultipartHttpServletRequest request, HttpSession session) {
+	public ModelAndView menuUpdateFile(MultipartHttpServletRequest request, HttpSession session) {
 		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
 		Map<String, Object> reqBodyMap = new HashMap<String, Object>();
 		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
@@ -323,10 +323,8 @@ public class MenuController {
 		String fileDir = "/view/goods/upload";
 		String filePath = request.getSession().getServletContext().getRealPath(fileDir);
 		System.out.println(filePath);
-		System.out.println("req.get.originalFile : "+reqBodyMap.get("originalFile"));
-		System.out.println("menuImage.originalFile : "+menuImage.getOriginalFilename());
-		
-		
+		System.out.println("req.get.originalFile : " + reqBodyMap.get("originalFile"));
+		System.out.println("menuImage.originalFile : " + menuImage.getOriginalFilename());
 
 		// 메뉴 이미지 가져오기
 		MenuDTO dto = menuService.getMenuInfoByNum(reqBodyMap);
@@ -358,14 +356,14 @@ public class MenuController {
 				e.printStackTrace();
 			}
 			reqBodyMap.put("goodsImage", storeFileName);
-			
+
 			System.out.println("========== 이미지이름 : " + reqBodyMap.get("goodsImage"));
 			System.out.println("========== 오리지날이름 : " + reqBodyMap.get("originalFile"));
-		}else {
+		} else {
 			reqBodyMap.put("goodsImage", dto.getGoodsImage());
 		}
 		System.out.println("========== 이미지이름2 : " + reqBodyMap.get("goodsImage"));
-		System.out.println("========== 오리지날이름2 : " + reqBodyMap.get("originalFile"));
+		System.out.println("========== 오리지날이름 : " + reqBodyMap.get("originalFile"));
 		AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
 		if (StringUtils.isEmpty(authInfo)) {
 			responseBodyMap.put("rsltCode", "1003");
@@ -381,7 +379,10 @@ public class MenuController {
 				responseBodyMap.put("rsltMsg", "Data not found.");
 			}
 		}
-		return responseBodyMap;
+		ModelAndView mv = new ModelAndView("defaultJsonView");
+		mv.addObject(Const.BODY, responseBodyMap);
+		mv.addObject(Const.HEAD, reqHeadMap);
+		return mv;
 	}
 
 	// 메뉴 리스트 (카테고리별)
@@ -625,7 +626,7 @@ public class MenuController {
 
 	// 메뉴 등록
 	@RequestMapping(method = RequestMethod.POST, value = "/api/menu/regist")
-	public @ResponseBody Map<String, Object> menuRegist(MultipartHttpServletRequest request, HttpSession session) {
+	public ModelAndView menuRegist(MultipartHttpServletRequest request, HttpSession session) {
 		Map<String, Object> reqHeadMap = (Map<String, Object>) request.getAttribute(Const.HEAD);
 		Map<String, Object> reqBodyMap = new HashMap<String, Object>();
 		Map<String, Object> responseBodyMap = new HashMap<String, Object>();
@@ -649,6 +650,7 @@ public class MenuController {
 		System.out.println(filePath);
 
 		String originalFile = menuImage.getOriginalFilename();
+		System.out.println("originalFile = " + originalFile);
 
 		// .png
 		String extension = originalFile.substring(originalFile.lastIndexOf("."));
@@ -686,6 +688,10 @@ public class MenuController {
 				responseBodyMap.put("rsltMsg", "Data not found.");
 			}
 		}
-		return responseBodyMap;
+		ModelAndView mv = new ModelAndView("defaultJsonView");
+		mv.addObject(Const.BODY, responseBodyMap);
+		mv.addObject(Const.HEAD, reqHeadMap);
+
+		return mv;
 	}
 }

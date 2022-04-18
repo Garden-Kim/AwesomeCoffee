@@ -61,10 +61,10 @@
             self.data.imgPath = data.goodsImage;
             self.data.goodsNum = data.goodsNum;
             goodsNum = data.goodsNum;
-            console.log(goodsNum);
-            console.log(self.data.goodsNum);
-            console.log(data.originalFile);
-            console.log(self.data.imgPath);
+            console.log("goodsNum = " +  goodsNum);
+            console.log("data.goodsNum = " + self.data.goodsNum);
+            console.log("data.originalFile = " + data.originalFile);
+            console.log("data.imgPath = " + self.data.imgPath);
           },
           error: function (data) {
             console.log(data);
@@ -88,9 +88,7 @@
         var price = self.els.$iptPrice.val().trim();
         var kal = self.els.$iptKal.val().trim();
         var imgN = self.els.$iptImg.val().trim();
-            console.log(goodsNum);
-            console.log(self.data.goodsNum);
-            console.log(self.data.imgPath);
+
         ////////////////////////////////////////// 수정
         if(!module.isEmpty(gN)){  // 수정
           if(module.isEmpty(title)){
@@ -116,7 +114,7 @@
             self.modifyWithUpload(goodsNum, title, content, price, kal, ctg, self.data.imgPath);
           }else{ 
           ///////////////////////////////////////////////////////////////////오리지널명으로 교체*/
-          self.modifyWithUpload(goodsNum, title, content, price, kal, ctg, self.data.imgPath);
+          self.modifyWithUpload();
 //          }
         
         }else{
@@ -162,8 +160,8 @@
         { name: "goodsName", content: title, type: "TEXT" },
         { name: "goodsPrice", content: price, type: "TEXT" },
         { name: "goodsKal ", content: kal, type: "TEXT" },
-        { name: "categoryNum", content: ctg, type: "TEXT" },
-        { name: "originalFile", content: imgN, type: "TEXT" },
+        { name: "categoryNum", content: ctg, type: "TEXT" }
+    
       ]
       console.log(body);
       MNet.fileHttpSend({
@@ -174,28 +172,31 @@
           var pagelist = M.info.stack();
           M.page.remove(pagelist[1].key);
           alert('등록 완료되었습니다.');
-          M.page.replace('./menuempList.html');
+          M.page.replace('./menuList.html');
         },
         progress: function (head) {
           var pagelist = M.info.stack();
           M.page.remove(pagelist[1].key);
           console.log(head);
           alert('등록 완료');
-          M.page.replace('./menuempList.html');
+          M.page.replace('./menuList.html');
         },
         error : function (head) {
-          console.log(head);
-          var pagelist = M.info.stack();
-          M.page.remove(pagelist[1].key);
-          alert('등록이 완료되었습니다.');
-          M.page.replace('./menuempList.html');
+          alert("에러임");
         }
       })
     },  
     // 이미지 포함 
-    modifyWithUpload: function modifyWithUpload(goodsNum, title, content, price, kal, ctg, goodsImg) {
+    modifyWithUpload: function modifyWithUpload() {
       var self = this;
+      var ctg = $('.menu-select').val();
+      var title = self.els.$iptTitle.val().trim();
+      var content = self.els.$iptContent.val().trim();
+      var price = self.els.$iptPrice.val().trim();
+      var kal = self.els.$iptKal.val().trim();
       var imgN = self.els.$iptImg.val().trim();
+      var goodsImg = self.data.imgPath;
+      var goodsNum = self.data.goodsNum;
       var body = [
         { name: "goodsNum", content: goodsNum, type: "TEXT" },
         { name: "goodsImage", content: goodsImg, type: "FILE" },
@@ -225,11 +226,7 @@
           M.page.replace('./menuList.html');
         },
         error : function () {
-          var pagelist = M.info.stack();
-          M.page.remove(pagelist[1].key);        
-          M.page.remove(pagelist[2].key);
-          alert('상품 수정이 완료되었습니다.');
-          M.page.replace('./menuList.html');
+          alert("에러");
         }
       })
     },  
