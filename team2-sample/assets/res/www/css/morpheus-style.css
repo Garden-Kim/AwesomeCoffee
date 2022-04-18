@@ -230,11 +230,11 @@ li.txt-btn .btn-txt{position:absolute;right:1.5rem;display:inline-block;color:#9
 
 /* 직원/관리자 메인 */
 .btn-arrow {background: url(../img/ico-arrow-white.png) no-repeat; background-position: 2.5rem 0rem; }
-.main-menu-box.mainSection{position:absolute;bottom:0; width:150%;border:1px solid #e0e0e0;border-bottom:0;background-color:#fff;text-align:center;}
+.main-menu-box.mainSection{position:relative;bottom:0; width:100%;border:1px solid #e0e0e0;border-bottom:0;background-color:#fff;text-align:center;}
 
-.main-menu-box.mainSection li{height: 610px; padding:20rem 0 1.5rem;align-items: center;background-color:#fff;color:#8B4F1D;font-size:2rem;;font-weight:400;}
-.main-menu-box.mainSection li:nth-child(1){height: 500;text-align: center; background-color:rgb(255, 208, 0); }
-.main-menu-box.mainSection li:nth-child(2){height: 500;text-align: center; }
+.main-menu-box.mainSection li{height:100%;width:50%; padding:20rem 0 1.5rem;align-items: center;background-color:#fff;color:#8B4F1D;font-size:2rem;;font-weight:400;}
+.main-menu-box.mainSection li:nth-child(1){height: 100%;text-align: center; background-color:rgb(255, 208, 0); }
+.main-menu-box.mainSection li:nth-child(2){height: 100%;text-align: center; }
 
 
 
