@@ -57,6 +57,7 @@
 	<select id="memberList" resultType="awesomeCoffee.dto.MemberDTO">
 		SELECT *
 		FROM MEMBER
+		ORDER BY MEMBER_NUM
 	</select>
 
 	
