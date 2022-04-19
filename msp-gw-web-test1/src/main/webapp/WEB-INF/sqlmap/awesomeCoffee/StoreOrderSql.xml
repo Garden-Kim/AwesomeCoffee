@@ -44,7 +44,7 @@
 	</select>
 	
 	<select id="selectOrderDetail" parameterType="String" resultType="awesomeCoffee.dto.StoreOrderDTO">
-		select f.food_num, f.food_name , s.storeorder_price, s.storeorder_qty,   s.storeorder_qty*s.storeorder_price AS food_price
+		select f.food_num, f.food_name , s.storeorder_price, s.storeorder_qty,   s.storeorder_qty*f.food_price AS food_price
 		from store_order s, food f
 		where storeorder_num = #{storeOrderNum} and f.food_num = s.food_num
 	</select>

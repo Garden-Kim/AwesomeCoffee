@@ -11,9 +11,9 @@
 	</insert>
 	
 	<select id="selectFoodPaymentList" resultType="awesomeCoffee.dto.FoodPaymentDTO">
-		select * 
+		select food_payment_num, store_num, food_payment_price, food_payment_date, to_number(food_payment_num) onum
 		from food_payment
-		order by food_payment_num desc
+		order by onum desc
 	</select>
 
 	<!-- 입금내역 총합계 -->

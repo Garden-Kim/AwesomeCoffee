@@ -34,7 +34,7 @@
         items += "</th><th data='" + item.foodPrice + "'>";
         items += Number(item.foodPrice).toLocaleString() + "원";
         items += "</th></tr>";
-        totalP += Number(item.foodPrice);
+        totalP += Number(item.foodPrice * item.storeOrderQty);
       });
       var totalPSum = totalP.toLocaleString();
       $("#noti-wrap").html(items);
